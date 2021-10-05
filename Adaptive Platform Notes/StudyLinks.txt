@@ -1,0 +1,16 @@
+POSIX interfaces
+https://www.youtube.com/watch?v=cex9XrZCU14&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY
+
+https://www.youtube.com/watch?v=ss1-REMJ9GA&list=PL9IEJIKnBJjFNNfpY6fHjVzAwtgRYjhPw
+
+Modern Embedded Systems Programming Course
+https://www.youtube.com/playlist?list=PLPW8O6W-1chwyTzI3BHwBLbGQoPFxPAPM
+
+RTOS
+https://www.youtube.com/playlist?fbclid=IwAR0MLztpBn5uI63IRSN_eRcJTTlP0JLAi5Zlnh98KQmV5ub9N01t7lbkNI4&list=PLVxBVAdu4pn7UTHjmslHicZiYtyRbxs6z&app=desktop
+
+https://www.udemy.com/course/mastering-rtos-hands-on-with-freertos-arduino-and-stm32fx/
+
+Modern C++
+https://www.youtube.com/watch?v=18c3MTX0PK0&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb&index=2https://www.udemy.com/course/beg-modern-cpp/
+https://www.udemy.com/course/beg-modern-cpp/
