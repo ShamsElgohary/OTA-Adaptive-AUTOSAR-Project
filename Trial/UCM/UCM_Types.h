@@ -121,17 +121,9 @@ typedef vector<GetHistoryType> GetHistoryVectorType;
 /* Campaign failure type */
 typedef uint8_t& CampaignFailureType;
 
-typedef struct
-{
-	CampaignFailureType CampaignFailure;
-	UCMStepErrorType UCMStepError;
-}CampaignErrorType;
 
-typedef struct
-{
-	CampaignErrorType CampaignError;
-	HistoryVectorType HistoryVector;
-} CampaignHistoryType ;
+/* UCM Software Package step at which error occured */
+typedef uint8_t& SoftwarePackageStepType;
 
 typedef struct
 {
@@ -141,5 +133,34 @@ typedef struct
 
 }UCMStepErrorType;
 
+typedef struct
+{
+	CampaignFailureType CampaignFailure;
+	UCMStepErrorType UCMStepError;
+}CampaignErrorType;
+
+
+/* History of an UCM */
+typedef struct
+{
+	UCMIdentifierType id;
+	 GetHistoryVectorType HistoryVector;
+}HistoryVectorType;
+
+typedef struct
+{
+	CampaignErrorType CampaignError;
+	HistoryVectorType HistoryVector;
+} CampaignHistoryType ;
+
+/* Represents the status of Campaign */
+typedef uint8_t& CampaignStateType;
+
+/* Represents the state of an update from OTA Client perspective.Represents the state of an update from OTA Client perspective */
+typedef uint8_t& TransferStateType;
+
+
+/* The type of the Safety Policy */
+typedef string SafetyPolicyType;
 
 #endif /* UCM_TYPES_H_ */
