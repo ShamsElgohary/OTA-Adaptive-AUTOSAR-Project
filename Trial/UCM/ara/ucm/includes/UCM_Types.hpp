@@ -6,8 +6,9 @@
 /* Description: Header file that lists all types provided by the UCM.
 /*
 /******************************************************************************/
+#ifndef UCM_TYPES_HPP_
+#define UCM_TYPES_HPP_
 
-#pragma once
 #include <iostream>
 #include <vector>
 
@@ -22,7 +23,10 @@ namespace ara
 		using UCMIdentifierType = string;
 
 		/* Represents a handle identifier used to reference a particular transfer request */
+
+		
 		using TransferIdType = uint8_t[16];
+		//using TransferIdType = vector<uint8_t>(16, 0);
 		//using TransferIdType = uint64_t;		// For Simplicity Right now
 
 		/* SW Cluster or SW Package shortName attribute inherited from referrable metaClass */
@@ -319,3 +323,5 @@ namespace ara
 	}
 }
 
+
+#endif
