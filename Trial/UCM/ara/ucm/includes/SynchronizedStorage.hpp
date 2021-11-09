@@ -23,7 +23,7 @@ namespace ara
 
 			static void AddItem(ara::ucm::TransferIdType transferId, ara::ucm::transfer::SoftwarePackage Package);
 			static void DeleteItem(ara::ucm::TransferIdType transferId);
-			static ara::ucm::transfer::SoftwarePackage GetItem(ara::ucm::TransferIdType transferId);
+			static ara::ucm::transfer::SoftwarePackage * GetItem(ara::ucm::TransferIdType transferId);
 		};
 	}
 }

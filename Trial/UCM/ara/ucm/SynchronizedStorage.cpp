@@ -36,7 +36,7 @@ void SynchronizedStorage::DeleteItem(TransferIdType transferId)
 }
 
 
-SoftwarePackage SynchronizedStorage::GetItem(TransferIdType transferId)
+SoftwarePackage *SynchronizedStorage::GetItem(TransferIdType transferId)
 {
     map<TransferIdType, SoftwarePackage>::iterator itr;
     bool CorrectID;
@@ -54,10 +54,11 @@ SoftwarePackage SynchronizedStorage::GetItem(TransferIdType transferId)
 
         if (CorrectID == true)
         {
-            return itr->second;           
+            return &(itr->second);           
         }
     }
 
-   // RETURN SOMETHING TO INDICATE WRONG ID 
+    /* NO MATCHING ID HAS BEEN FOUND */
+   return nullptr; 
 }
 
