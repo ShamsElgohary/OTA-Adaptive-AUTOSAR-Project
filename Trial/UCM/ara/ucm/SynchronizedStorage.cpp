@@ -1,27 +1,63 @@
-#include <iostream>
-#include <fstream>
-#include<iterator>
-#include<vector>
-#include "nlohmann/json.hpp"
-
-#include "UCM_Types.hpp"
-#include "Transfer.hpp"
-#include "SynchronizedStorage.hpp"
-
+#include "includes/SynchronizedStorage.hpp"
 
 using json = nlohmann::json;
+using namespace ara::ucm;
+using namespace ara::ucm::transfer;
 
-void AddItem(ara::ucm::TransferIdType, ara::ucm::transfer::SoftwarePackage)
+
+void SynchronizedStorage::AddItem(TransferIdType transferId, SoftwarePackage Package)
 {
-
+    Data.emplace(transferId, Package);
+     // Data.insert(pair<TransferIdType, SoftwarePackage> (transferId, Package) );
 }
 
-void DeleteItem(ara::ucm::TransferIdType)
+void SynchronizedStorage::DeleteItem(TransferIdType transferId)
 {
+    map<TransferIdType, SoftwarePackage>::iterator itr;
+    bool CorrectID;
+    /* IF THE CORRECT ID IS FOUND ERASE THE PACKAGE CORRESPONDING TO THIS ID*/   
+    for (itr = Data.begin(); itr != Data.end(); ++itr) {
+        CorrectID = true;
 
+        for (uint8_t i = 0; i < 16 ; i++)
+        {          
+            if ( itr->first[i] != transferId[i])    
+            {
+                CorrectID = false;
+            }
+        }
+
+        if (CorrectID == true)
+        {
+            Data.erase(itr->first); 
+            break;        
+        }
+    }
 }
 
-ara::ucm::transfer::SoftwarePackage GetItem(ara::ucm::TransferIdType)
-{
 
+SoftwarePackage SynchronizedStorage::GetItem(TransferIdType transferId)
+{
+    map<TransferIdType, SoftwarePackage>::iterator itr;
+    bool CorrectID;
+    /* IF THE CORRECT ID IS FOUND RETURN THE PACKAGE CORRESPONDING TO THIS ID*/  
+    for (itr = Data.begin(); itr != Data.end(); ++itr) {
+        CorrectID = true;
+
+        for (uint8_t i = 0; i < 16 ; i++)
+        {          
+            if ( itr->first[i] != transferId[i])     /* CHECK IF ID DOESN'T MATCH */
+            {
+                CorrectID = false;
+            }
+        }
+
+        if (CorrectID == true)
+        {
+            return itr->second;           
+        }
+    }
+
+   // RETURN SOMETHING TO INDICATE WRONG ID 
 }
+

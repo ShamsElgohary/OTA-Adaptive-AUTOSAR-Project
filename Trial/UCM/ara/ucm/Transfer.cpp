@@ -1,17 +1,33 @@
-#include <iostream>
-#include <fstream>
-#include <iterator>
-#include <vector>
-#include "nlohmann/json.hpp"
-
-#include "UCM_Types.hpp"
-#include "Transfer.hpp"
-
+#include "includes/Transfer.hpp"
+/* Map is used in the .cpp */
+#include "includes/SynchronizedStorage.hpp"
 
 using json = nlohmann::json;
 using namespace ara::ucm::transfer;
 using namespace ara::ucm;
 
+
+/*////////////////////////////////////////////////////////////////////////////
+
+                FUNCTIONS USED IN THE BELOW METHODS
+
+////////////////////////////////////////////////////////////////////////////*/
+
+
+/* Used to get the path of our current directory */
+string GetCurrentDirectory()
+{
+    char directoryPath[FILENAME_MAX];
+    getcwd(directoryPath,FILENAME_MAX);
+    return directoryPath;
+}
+
+
+/*////////////////////////////////////////////////////////////////////////////
+
+    SOFTWARE PACKAGE CLASS : TRANSFER METHODS USED TO TRANSFER PACKAGES
+
+////////////////////////////////////////////////////////////////////////////*/
 
 
 ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferStart(uint64_t Size)
@@ -80,8 +96,7 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
 
     /* WRITING THE ADJUSTMENTS TO THE FILE */
     ofstream JSON_PipeFile( jsonPath );
-	JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
-
+	JSON_PipeFile<< setw(4)<< UCM_PipeData <<endl;
 
     StartTransferOutput.TransferStartResult = TransferStartSuccessType::kSuccess;
 	return StartTransferOutput;
@@ -90,8 +105,111 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
 
 
 ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData (ara::ucm::TransferIdType id, ara::ucm::ByteVectorType data, uint64_t blockCounter)
-{
+{    
+    ara::ucm::transfer::SoftwarePackage *SwPkg;
+    
+    /************** ERROR CHECKING **************/
+    
+    ara::ucm::OperationResultType ret = ara::ucm::OperationResultType::kSuccess;
+	/* Check ID validity & Get SoftwarePackage  (CurrentSoftwarePackages > Vector of struct of SwPackageInfoType) */
+	
+	// ara::ucm::transfer::SoftwarePackage * SwPkg = ara::ucm::transfer::SynchronizedStorage::GetItem(id);
+	if (SwPkg == nullptr)
+	{
+		cout << "[UCM TRANSFER DATA] InvalidTransferId" << endl;
+		ret = ara::ucm::OperationResultType::kInvalidTransferId;
+		return ret;
+	}
 
+    /* Change The ID to String To get paths */
+    string StringID = to_string(SwPkg -> transferId[0]);   
+    for (uint8_t i =1 ; i < 16 ; i++)
+    {
+      StringID += '-' + to_string(SwPkg -> transferId[i]);
+    }
+
+	/* FIRST MAKING THE JSON FILE MODIFIABLE */
+    nlohmann::json UCM_PipeData;
+    ifstream JSON_Modifiable("PackageManagerPipe.json");
+    JSON_Modifiable >> UCM_PipeData;
+
+	/* Check for size of received block */
+	if (data.size() > (SwPkg -> BlockSize))
+	{
+		cout << "[UCM TRANSFER DATA] IncorrectBlockSize" << endl;
+		ret = ara::ucm::OperationResultType::kIncorrectBlockSize;
+		/* Write Output to JSON File */
+		UCM_PipeData.at("UCM_OTA").at("TransferData").at("Output").at("err") = ret;
+        /* WRITING THE ADJUSTMENTS TO THE FILE */
+		ofstream JSON_PipeFile("PackageManagerPipe.json");
+		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+		return ret;
+	}
+
+	/* Validate Size with Transfer Instance */
+	uint64_t Size = SwPkg->expectedBytes;
+	if (((SwPkg->receivedBytes + data.size()) > Size))
+	{
+		cout << "[UCM TRANSFER DATA] IncorrectSize" << endl;
+		ret = ara::ucm::OperationResultType::kIncorrectSize;
+		/* Write Output to JSON File */
+		UCM_PipeData.at("UCM_OTA").at("TransferData").at("Output").at("err") = ret;
+        /* WRITING THE ADJUSTMENTS TO THE FILE */
+		ofstream JSON_PipeFile("PackageManagerPipe.json");
+		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+		return ret;
+	}
+
+	/* Vaildate Block Counter */
+	if (blockCounter != (SwPkg -> receivedBlocks))
+	{
+		cout << "[UCM TRANSFER DATA] IncorrectBlock" << endl;
+		ret = ara::ucm::OperationResultType::kIncorrectBlock;
+		/* Write Output to JSON File */
+		UCM_PipeData.at("UCM_OTA").at("TransferData").at("Output").at("err") = ret;
+        /* WRITING THE ADJUSTMENTS TO THE FILE */
+		ofstream JSON_PipeFile("PackageManagerPipe.json");
+		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+		return ret;
+	}
+
+    /************** UPDATE ZIP FILE **************/
+    /* Constract the Path */
+    string zipPath = "TransferID:" + StringID + ".zip";
+
+    /* Open File To Update */
+    std::ofstream zipIn(zipPath, ios::app);
+
+    /* Convert Data to String */
+    std::string stringData (reinterpret_cast<const char *>(&data[0]), data.size());
+
+    /* Append Data to zip File */
+    zipIn << stringData;
+
+    /* Close File */
+    zipIn.close();
+
+    /************** WRITE INPUT & OUTPUT DATA TO JSON FILE **************/
+	/* Write Input to JSON File (ID -> First Time) & (BlockCounter -> Increment) & (Data -> Append) */
+	if (blockCounter == 0)
+	{
+		UCM_PipeData.at("UCM_OTA").at("TransferData").at("Input").at("ID") = StringID;
+	}
+	UCM_PipeData.at("UCM_OTA").at("TransferData").at("Input").at("blockCounter") = blockCounter;
+	
+	// std::string stringData (reinterpret_cast <char*>(data), sizeof(data));
+	UCM_PipeData.at("UCM_OTA").at("TransferData").at("Input").at("dataBlock") = stringData;
+
+	/* Increment ConsecutiveBytesReceived & ConsecutiveBlocksReceived */
+	SwPkg -> receivedBytes += data.size();
+	SwPkg -> receivedBlocks += 1;
+
+	/* Write Output to JSON File */
+	UCM_PipeData.at("UCM_OTA").at("TransferData").at("Output").at("err") = ret;
+	/* WRITING THE ADJUSTMENTS TO THE FILE */
+	ofstream JSON_PipeFile("PackageManagerPipe.json");
+	JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+	return ret;
 }
 
 ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(ara::ucm::TransferIdType id)
@@ -133,6 +251,26 @@ void ara::ucm::transfer::SoftwarePackage::SetPackageId(TransferIdType Id)
     TransferInfo.SetTransferId(Id);
 }
 
+uint64_t ara::ucm::transfer::SoftwarePackage::GetPackageExpectedBytes()
+{
+    return TransferInfo.GetExpectedBytes();
+}
+uint64_t ara::ucm::transfer::SoftwarePackage::GetPackageReceivedBytes()
+{
+   return TransferInfo.GetReceivedBytes();
+}
+string ara::ucm::transfer::SoftwarePackage::GetPackagePath()
+{
+    return TransferInfo.GetTransferPath();
+}
+SwPackageStateType ara::ucm::transfer::SoftwarePackage::GetPackageState()
+{
+    return TransferInfo.GetTransferState();
+}
+TransferIdType &ara::ucm::transfer::SoftwarePackage::GetPackageId()
+{
+    return TransferInfo.GetTransferId();
+}
 
 
 /*////////////////////////////////////////////////////////////////////////////
@@ -195,24 +333,4 @@ SwPackageStateType ara::ucm::transfer::TransferInstance::GetTransferState()
 TransferIdType &ara::ucm::transfer::TransferInstance::GetTransferId()
 {
     return transferId;
-}
-
-
-
-
-
-
-/*////////////////////////////////////////////////////////////////////////////
-
-                HELPER FUNCTIONS USED IN THE ABOVE METHODS
-
-////////////////////////////////////////////////////////////////////////////*/
-
-
-/* Used to get the path of our current directory */
-string GetCurrentDirectory()
-{
-    char directoryPath[FILENAME_MAX];
-    getcwd(directoryPath,FILENAME_MAX);
-    return directoryPath;
 }

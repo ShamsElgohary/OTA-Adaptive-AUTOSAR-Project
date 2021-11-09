@@ -3,6 +3,13 @@
         "deque": "cpp",
         "string": "cpp",
         "vector": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "iostream": "cpp",
+        "array": "cpp",
+        "forward_list": "cpp",
+        "unordered_map": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "valarray": "cpp"
     }
 }

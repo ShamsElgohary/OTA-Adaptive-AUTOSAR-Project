@@ -1,8 +1,14 @@
 #pragma once
-#include "SynchronizedStorage.hpp"
-#include "UCM_Types.hpp"
-#include <stdlib.h>
+
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <vector>
+#include <utility>
 #include <unistd.h>
+#include <iomanip>
+#include "nlohmann/json.hpp"
+#include "UCM_Types.hpp"
 
 
 namespace ara
@@ -11,6 +17,34 @@ namespace ara
 	{
 		namespace transfer
 		{
+
+			class TransferInstance
+			{
+				
+				private:
+					uint64_t expectedBytes;
+					uint64_t receivedBytes = 0;
+					string path;
+					ara::ucm::SwPackageStateType TransferState;
+					TransferIdType transferId;
+
+				public:
+					void SetExpectedBytes(uint64_t expectedBytes);
+					void SetReceivedBytes(uint64_t receivedBytes);
+					void SetTransferPath(string path);
+					void SetTransferState(SwPackageStateType TransferState);
+					void SetTransferId(TransferIdType transferId);
+
+					uint64_t GetExpectedBytes();
+					uint64_t GetReceivedBytes();
+					string GetTransferPath();
+					SwPackageStateType GetTransferState();
+					TransferIdType &GetTransferId();			
+				
+			};
+
+
+
 			class SoftwarePackage
 			{
 				private:
@@ -31,35 +65,16 @@ namespace ara
 				void SetPackageState(SwPackageStateType State);
 				void SetPackageId(TransferIdType Id);
 
+				uint64_t GetPackageExpectedBytes();
+				uint64_t GetPackageReceivedBytes();
+				string GetPackagePath();
+				SwPackageStateType GetPackageState();
+				TransferIdType &GetPackageId();
 				
 
 
 			};
 
-			class TransferInstance
-			{
-				private:
-					uint64_t expectedBytes;
-					uint64_t receivedBytes = 0;
-					string path;
-					ara::ucm::SwPackageStateType TransferState;
-					TransferIdType transferId;
-
-				public:
-					void SetExpectedBytes(uint64_t expectedBytes);
-					void SetReceivedBytes(uint64_t receivedBytes);
-					void SetTransferPath(string path);
-					void SetTransferState(SwPackageStateType TransferState);
-					void SetTransferId(TransferIdType transferId);
-
-					uint64_t GetExpectedBytes();
-					uint64_t GetReceivedBytes();
-					string GetTransferPath();
-					SwPackageStateType GetTransferState();
-					TransferIdType &GetTransferId();
-					
-				
-			};
 		}
 	}
 }
