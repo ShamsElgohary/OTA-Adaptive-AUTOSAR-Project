@@ -214,7 +214,51 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 
 ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(ara::ucm::TransferIdType id)
 {
+	ara::ucm::transfer::SoftwarePackage *SwPkg = ara::ucm::transfer::SynchronizedStorage::GetItem(id);
 
+    ara::ucm::OperationResultType ret = ara::ucm::OperationResultType::kSuccess;
+
+    /*************************ERROR CHECKING***************************/
+
+    /* FIRST MAKING THE JSON FILE MODIFIABLE */
+    nlohmann::json UCM_PipeData;
+    ifstream JSON_Modifiable("PackageManagerPipe.json");
+    JSON_Modifiable >> UCM_PipeData;
+    
+    //1- Authentication
+
+    //2- Package Version
+
+    //3- Size
+    // gives an error if total transferred data size does not match expected data size provided with TransferStart
+    if (SwPkg->GetPackageReceivedBytes() != SwPkg->GetPackageExpectedBytes())
+    {
+        cout << "[UCM TRANSFER EXIT] InsufficientData" << endl;
+		ret = ara::ucm::OperationResultType::kInsufficientData;
+		/* Write Output to JSON File */
+		UCM_PipeData.at("UCM_OTA").at("TransferEXIT").at("Output").at("err") = ret;
+        /* WRITING THE ADJUSTMENTS TO THE FILE */
+		ofstream JSON_PipeFile("PackageManagerPipe.json");
+		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+		return ret;
+    }
+
+    //4- Manifest checking
+
+
+    //5- ID
+    //3ala hasab el implementation elly han3mlo l GetId()
+    if (SwPkg == nullptr)
+	{
+		cout << "[UCM TRANSFER EXIT] InvalidTransferId" << endl;
+		ret = ara::ucm::OperationResultType::kInvalidTransferId;
+        /* Write Output to JSON File */
+        UCM_PipeData.at("UCM_OTA").at("TransferEXIT").at("Output").at("err") = ret;
+        /* WRITING THE ADJUSTMENTS TO THE FILE */
+		ofstream JSON_PipeFile("PackageManagerPipe.json");
+		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+		return ret;
+	}
 }
 
 
