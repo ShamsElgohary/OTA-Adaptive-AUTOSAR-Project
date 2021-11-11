@@ -46,7 +46,6 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
 
     /* This  is the file where ota will read from */
     string jsonPath = "PackageManagerPipe.json";
-    string PackagePath;
 
 	/* Number Of Blocks to Read, Size in bytes and each 4 bytes are 1 block */
 	StartTransferOutput.BlockSize = NewPackage.GetPackageBlockSize();
@@ -69,18 +68,18 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
     /* Get path of packages folder */
     std::string command;
     std::string ProjectPath = GetCurrentDirectory() ;
-    cout << "Project Path is " << ProjectPath <<"\n";
     std::string ZIP_PackagesPath = ProjectPath + "/ZIP_Packages/";
+    /* Check first if path exists, if not create the folder ZIP_Packages*/
     if(!IsPathExist(ZIP_PackagesPath.c_str()))
     {
         command = "mkdir " + ZIP_PackagesPath;
         system(command.c_str());
     }
+    
 
     string ParentPath = GetCurrentDirectory();
-    PackagePath = GetCurrentDirectory()+ "/ZIP_Packages/";
     /* change dir to path of packages folder */
-    chdir(PackagePath.c_str());
+    chdir(ZIP_PackagesPath.c_str());
 
     /* Create Zipped File */
     ofstream MyFile("TransferID:" + StringID + ".zip");
@@ -93,7 +92,7 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
     NewPackage.SetPackageExpectedBlocks(ceil(((float) Size)/NewPackage.GetPackageBlockSize()));
 
     /* Path of the created File to write data into */
-    NewPackage.SetPackagePath(PackagePath); 
+    NewPackage.SetPackagePath(ZIP_PackagesPath); 
     /* Assign ID to the Package */
     NewPackage.SetPackageId(StartTransferOutput.id);
     NewPackage.SetPackageState( SwPackageStateType::kTransferring );
@@ -119,7 +118,7 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
 
     StartTransferOutput.TransferStartResult = TransferStartSuccessType::kSuccess;
 
-    /* change dir to path of packages folder */
+    /* change dir to path of parent folder */
     chdir(ParentPath.c_str());
 
 	return StartTransferOutput;

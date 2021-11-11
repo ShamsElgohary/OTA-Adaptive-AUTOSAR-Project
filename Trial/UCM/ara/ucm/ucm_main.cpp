@@ -15,7 +15,8 @@ int main (void)
 
     std::ifstream in;
     uint64_t length;
-    in.open("//home//yasmin/Desktop//Graduation_Project//Test.txt");      // open input file
+    
+    in.open("//home//shams//Desktop//test2.zip");      // open input file
     in.seekg(0, std::ios::end);    // go to the end
     length = in.tellg();           // report location (this is the length)
     in.seekg(0, std::ios::beg);    // go back to the beginning
