@@ -1,17 +1,20 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <vector>
 #include "includes/Transfer.hpp"
 
 using namespace std;
-using namespace ara::ucm::transfer;
+using namespace ara::ucm;
+
+ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath);
 
 int main (void)
 {
     cout << "Eshta8lt!!!!" << endl;
 
     std::ifstream in;
-    int length;
+    uint64_t length;
     in.open("//home//yasmin/Desktop//Graduation_Project//Test.txt");      // open input file
     in.seekg(0, std::ios::end);    // go to the end
     length = in.tellg();           // report location (this is the length)
@@ -20,9 +23,11 @@ int main (void)
     in.read(StringData, length);       // read the whole file into the buffer
     in.close();     
 
-    ara::ucm::ByteVectorType ByteData;
+    ara::ucm::ByteVectorType ByteData, TotalByteData;
     ara::ucm::transfer::SoftwarePackage SWPKG;
 
+    //TotalByteData = ReadZipInBytes("//home//yasmin/Desktop//Graduation_Project//Test.txt");
+    //length = TotalByteData.size();
     ara::ucm::TransferStartReturnType StartReturn = SWPKG.TransferStart(length);
     uint32_t BlockNumber = ceil((float) length / (float) StartReturn.BlockSize);
     uint32_t BlockCounter = 0;
@@ -42,6 +47,21 @@ int main (void)
     }
 
     SWPKG.TransferExit(StartReturn.id);    
+}
+
+ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath)
+{
+    ifstream ifs(ZipPath, ios::binary | ios::ate);
+    ifstream::pos_type pos = ifs.tellg();
+    vector<char> result(pos);
+    ifs.seekg(0, ios::beg);
+    ifs.read(&result[0], pos);
+    ara::ucm::ByteVectorType resultByte;
+    for (uint8_t i=0; i<result.size(); i++)
+    {
+        resultByte.push_back(result[i]);
+    }
+    return resultByte;
 }
 
 
