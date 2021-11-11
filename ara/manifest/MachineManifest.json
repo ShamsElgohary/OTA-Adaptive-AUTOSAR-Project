@@ -1,0 +1,21 @@
+{
+  "function_groups": 
+  {
+    "machineState": 
+    {
+      "states": ["off","running","sleep"] 
+    },
+    
+    "fn1": 
+    {
+      "states": ["stop","play"]
+    },
+    
+    "fn2": 
+    {
+      "states": ["turnOff","turnOn"]
+    }
+  }
+
+}
+
