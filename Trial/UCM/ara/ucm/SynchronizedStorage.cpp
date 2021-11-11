@@ -4,60 +4,57 @@ using json = nlohmann::json;
 using namespace ara::ucm;
 using namespace ara::ucm::transfer;
 
+map <std::string, ara::ucm::transfer::SoftwarePackage> ara::ucm::SynchronizedStorage::Data;
 
-void SynchronizedStorage::AddItem(TransferIdType transferId, SoftwarePackage Package)
+void SynchronizedStorage::AddItem(ara::ucm::TransferIdType &transferId, ara::ucm::transfer::SoftwarePackage Package)
 {
-    Data.emplace(transferId, Package);
+    string StringID = to_string(transferId[0]);   
+    for (uint8_t i =1 ; i < 16 ; i++)
+    {
+      StringID += '-' + to_string(transferId[i]);
+    }
+    Data.emplace(StringID, Package);
      // Data.insert(pair<TransferIdType, SoftwarePackage> (transferId, Package) );
 }
 
-void SynchronizedStorage::DeleteItem(TransferIdType transferId)
+void SynchronizedStorage::DeleteItem(TransferIdType &transferId)
 {
-    map<TransferIdType, SoftwarePackage>::iterator itr;
-    bool CorrectID;
+    map<std::string, SoftwarePackage>::iterator itr;
+
+    string StringID = to_string(transferId[0]);   
+    for (uint8_t i =1 ; i < 16 ; i++)
+    {
+      StringID += '-' + to_string(transferId[i]);
+    }
     /* IF THE CORRECT ID IS FOUND ERASE THE PACKAGE CORRESPONDING TO THIS ID*/   
-    for (itr = Data.begin(); itr != Data.end(); ++itr) {
-        CorrectID = true;
-
-        for (uint8_t i = 0; i < 16 ; i++)
-        {          
-            if ( itr->first[i] != transferId[i])    
-            {
-                CorrectID = false;
-            }
-        }
-
-        if (CorrectID == true)
+    for (itr = Data.begin(); itr != Data.end(); ++itr) 
+    {
+        if ( itr->first == StringID)    
         {
             Data.erase(itr->first); 
-            break;        
+            return;
         }
     }
 }
 
 
-SoftwarePackage *SynchronizedStorage::GetItem(TransferIdType transferId)
+ara::ucm::transfer::SoftwarePackage * SynchronizedStorage::GetItem(TransferIdType &transferId)
 {
-    map<TransferIdType, SoftwarePackage>::iterator itr;
-    bool CorrectID;
+    map<std::string, SoftwarePackage>::iterator itr;
+
+    string StringID = to_string(transferId[0]);   
+    for (uint8_t i =1 ; i < 16 ; i++)
+    {
+      StringID += '-' + to_string(transferId[i]);
+    }
     /* IF THE CORRECT ID IS FOUND RETURN THE PACKAGE CORRESPONDING TO THIS ID*/  
-    for (itr = Data.begin(); itr != Data.end(); ++itr) {
-        CorrectID = true;
-
-        for (uint8_t i = 0; i < 16 ; i++)
-        {          
-            if ( itr->first[i] != transferId[i])     /* CHECK IF ID DOESN'T MATCH */
-            {
-                CorrectID = false;
-            }
-        }
-
-        if (CorrectID == true)
+    for (itr = Data.begin(); itr != Data.end(); ++itr) 
+    {
+        if ( itr->first == StringID)    
         {
-            return &(itr->second);           
+            return &(itr->second);
         }
     }
-
     /* NO MATCHING ID HAS BEEN FOUND */
    return nullptr; 
 }

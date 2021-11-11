@@ -7,8 +7,10 @@
 #include <utility>
 #include <unistd.h>
 #include <iomanip>
+#include <sys/stat.h>
 #include "nlohmann/json.hpp"
 #include "UCM_Types.hpp"
+
 
 
 namespace ara
@@ -24,6 +26,9 @@ namespace ara
 				private:
 					uint64_t expectedBytes;
 					uint64_t receivedBytes = 0;
+					uint32_t expectedBlocks;
+					uint32_t receivedBlocks = 0;
+					uint32_t blockSize = 8;
 					string path;
 					ara::ucm::SwPackageStateType TransferState;
 					TransferIdType transferId;
@@ -31,15 +36,21 @@ namespace ara
 				public:
 					void SetExpectedBytes(uint64_t expectedBytes);
 					void SetReceivedBytes(uint64_t receivedBytes);
+					void SetExpectedBlocks(uint32_t expectedBlocks);
+					void SetReceivedBlocks(uint32_t receivedBlocks);
+					void SetBlockSize (uint32_t blockSize);
 					void SetTransferPath(string path);
 					void SetTransferState(SwPackageStateType TransferState);
 					void SetTransferId(TransferIdType transferId);
 
 					uint64_t GetExpectedBytes();
 					uint64_t GetReceivedBytes();
+					uint32_t GetExpectedBlocks();
+					uint32_t GetReceivedBlocks();
+					uint32_t GetBlockSize ();
 					string GetTransferPath();
 					SwPackageStateType GetTransferState();
-					TransferIdType &GetTransferId();			
+					void GetTransferId(ara::ucm::TransferIdType &TransferID);			
 				
 			};
 
@@ -55,24 +66,27 @@ namespace ara
 
 				/* METHODS RELATED TO THE TRANSFER OPERATION OF THE UCM */
 				static ara::ucm::TransferStartReturnType TransferStart(uint64_t Size);
-				static ara::ucm::OperationResultType  TransferData(TransferIdType id, ByteVectorType data, uint64_t blockCounter);
-				static ara::ucm::OperationResultType TransferExit(TransferIdType id);
+				static ara::ucm::OperationResultType  TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter);
+				static ara::ucm::OperationResultType TransferExit(TransferIdType &id);
 
 				/* METHODS RELATED TO THE TransferInfo OBJECT SINCE DATA IS ENCAPSULATED*/
 				void SetPackageExpectedBytes(uint64_t expectedBytes);
 				void SetPackageReceivedBytes(uint64_t receivedBytes);
+				void SetPackageExpectedBlocks(uint32_t expectedBlocks);
+				void SetPackageReceivedBlocks(uint32_t receivedBlocks);
+				void SetPackageBlockSize (uint32_t blockSize);
 				void SetPackagePath(string path);
 				void SetPackageState(SwPackageStateType State);
 				void SetPackageId(TransferIdType Id);
 
 				uint64_t GetPackageExpectedBytes();
 				uint64_t GetPackageReceivedBytes();
+				uint32_t GetPackageExpectedBlocks();
+				uint32_t GetPackageReceivedBlocks();
+				uint32_t GetPackageBlockSize ();
 				string GetPackagePath();
 				SwPackageStateType GetPackageState();
-				TransferIdType &GetPackageId();
-				
-
-
+				void GetPackageId(ara::ucm::TransferIdType &TransferID);
 			};
 
 		}

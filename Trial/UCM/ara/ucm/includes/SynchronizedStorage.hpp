@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <map>
 #include <iterator>
+#include <string>
 
 #include "UCM_Types.hpp"
 #include "Transfer.hpp"
@@ -17,13 +18,13 @@ namespace ara
 		{
 			private:
 
-			static map <ara::ucm::TransferIdType, ara::ucm::transfer::SoftwarePackage> Data;
+			static map <std::string, ara::ucm::transfer::SoftwarePackage> Data;
 
 			public:
 
-			static void AddItem(ara::ucm::TransferIdType transferId, ara::ucm::transfer::SoftwarePackage Package);
-			static void DeleteItem(ara::ucm::TransferIdType transferId);
-			static ara::ucm::transfer::SoftwarePackage * GetItem(ara::ucm::TransferIdType transferId);
+			static void AddItem(ara::ucm::TransferIdType &transferId, ara::ucm::transfer::SoftwarePackage Package);
+			static void DeleteItem(ara::ucm::TransferIdType &transferId);
+			static ara::ucm::transfer::SoftwarePackage * GetItem(ara::ucm::TransferIdType &transferId);
 		};
 	}
 }

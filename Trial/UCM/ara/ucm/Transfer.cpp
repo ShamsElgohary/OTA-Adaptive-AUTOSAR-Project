@@ -22,6 +22,12 @@ string GetCurrentDirectory()
     return directoryPath;
 }
 
+bool IsPathExist(const std::string &s)
+{
+  struct stat buffer;
+  return (stat (s.c_str(), &buffer) == 0);
+}
+
 
 /*////////////////////////////////////////////////////////////////////////////
 
@@ -39,11 +45,11 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
 	TransferStartReturnType StartTransferOutput;
 
     /* This  is the file where ota will read from */
-    string jsonPath = "UCM_PackageManagerPipe.json";
+    string jsonPath = "PackageManagerPipe.json";
     string PackagePath;
 
 	/* Number Of Blocks to Read, Size in bytes and each 4 bytes are 1 block */
-	StartTransferOutput.BlockSize = ceil(Size / 4);
+	StartTransferOutput.BlockSize = NewPackage.GetPackageBlockSize();
 
     /* Initialize random seed: */
 	srand (time(NULL));
@@ -61,7 +67,18 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
     }
 
     /* Get path of packages folder */
-    PackagePath = GetCurrentDirectory()+ "//Packages";
+    std::string command;
+    std::string ProjectPath = GetCurrentDirectory() ;
+    cout << "Project Path is " << ProjectPath <<"\n";
+    std::string ZIP_PackagesPath = ProjectPath + "/ZIP_Packages/";
+    if(!IsPathExist(ZIP_PackagesPath.c_str()))
+    {
+        command = "mkdir " + ZIP_PackagesPath;
+        system(command.c_str());
+    }
+
+    string ParentPath = GetCurrentDirectory();
+    PackagePath = GetCurrentDirectory()+ "/ZIP_Packages/";
     /* change dir to path of packages folder */
     chdir(PackagePath.c_str());
 
@@ -73,6 +90,8 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
 
     /* Expected Size in Bytes */
     NewPackage.SetPackageExpectedBytes(Size);
+    NewPackage.SetPackageExpectedBlocks(ceil(((float) Size)/NewPackage.GetPackageBlockSize()));
+
     /* Path of the created File to write data into */
     NewPackage.SetPackagePath(PackagePath); 
     /* Assign ID to the Package */
@@ -96,24 +115,26 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
 
     /* WRITING THE ADJUSTMENTS TO THE FILE */
     ofstream JSON_PipeFile( jsonPath );
-	JSON_PipeFile<< setw(4)<< UCM_PipeData <<endl;
+	JSON_PipeFile << setw(4)<< UCM_PipeData <<endl;
 
     StartTransferOutput.TransferStartResult = TransferStartSuccessType::kSuccess;
+
+    /* change dir to path of packages folder */
+    chdir(ParentPath.c_str());
+
 	return StartTransferOutput;
 }
 
 
 
-ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData (ara::ucm::TransferIdType id, ara::ucm::ByteVectorType data, uint64_t blockCounter)
+ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData (ara::ucm::TransferIdType &id, ara::ucm::ByteVectorType data, uint64_t blockCounter)
 {    
-    ara::ucm::transfer::SoftwarePackage *SwPkg;
-    
     /************** ERROR CHECKING **************/
     
     ara::ucm::OperationResultType ret = ara::ucm::OperationResultType::kSuccess;
 	/* Check ID validity & Get SoftwarePackage  (CurrentSoftwarePackages > Vector of struct of SwPackageInfoType) */
 	
-	// ara::ucm::transfer::SoftwarePackage * SwPkg = ara::ucm::transfer::SynchronizedStorage::GetItem(id);
+	ara::ucm::transfer::SoftwarePackage * SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
 	if (SwPkg == nullptr)
 	{
 		cout << "[UCM TRANSFER DATA] InvalidTransferId" << endl;
@@ -122,11 +143,17 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 	}
 
     /* Change The ID to String To get paths */
-    string StringID = to_string(SwPkg -> transferId[0]);   
+    ara::ucm::TransferIdType TransferID;
+    SwPkg -> GetPackageId(TransferID);
+    string StringID = to_string(TransferID[0]);   
     for (uint8_t i =1 ; i < 16 ; i++)
     {
-      StringID += '-' + to_string(SwPkg -> transferId[i]);
+      StringID += '-' + to_string(TransferID[i]);
     }
+    string ParentPath = GetCurrentDirectory();
+    string PackagePath = GetCurrentDirectory()+ "/ZIP_Packages/";
+    /* change dir to path of packages folder */
+    chdir(PackagePath.c_str());
 
 	/* FIRST MAKING THE JSON FILE MODIFIABLE */
     nlohmann::json UCM_PipeData;
@@ -134,7 +161,7 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
     JSON_Modifiable >> UCM_PipeData;
 
 	/* Check for size of received block */
-	if (data.size() > (SwPkg -> BlockSize))
+	if (data.size() > (SwPkg -> GetPackageBlockSize()))
 	{
 		cout << "[UCM TRANSFER DATA] IncorrectBlockSize" << endl;
 		ret = ara::ucm::OperationResultType::kIncorrectBlockSize;
@@ -147,8 +174,8 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 	}
 
 	/* Validate Size with Transfer Instance */
-	uint64_t Size = SwPkg->expectedBytes;
-	if (((SwPkg->receivedBytes + data.size()) > Size))
+	uint64_t Size = SwPkg -> GetPackageExpectedBytes();
+	if (((SwPkg->GetPackageReceivedBytes() + data.size()) > Size))
 	{
 		cout << "[UCM TRANSFER DATA] IncorrectSize" << endl;
 		ret = ara::ucm::OperationResultType::kIncorrectSize;
@@ -161,7 +188,7 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 	}
 
 	/* Vaildate Block Counter */
-	if (blockCounter != (SwPkg -> receivedBlocks))
+	if (blockCounter != (SwPkg -> GetPackageReceivedBlocks()))
 	{
 		cout << "[UCM TRANSFER DATA] IncorrectBlock" << endl;
 		ret = ara::ucm::OperationResultType::kIncorrectBlock;
@@ -174,11 +201,12 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 	}
 
     /************** UPDATE ZIP FILE **************/
+
     /* Constract the Path */
-    string zipPath = "TransferID:" + StringID + ".zip";
+    string zipName = "TransferID:" + StringID + ".zip";
 
     /* Open File To Update */
-    std::ofstream zipIn(zipPath, ios::app);
+    std::ofstream zipIn(zipName, ios::app);
 
     /* Convert Data to String */
     std::string stringData (reinterpret_cast<const char *>(&data[0]), data.size());
@@ -201,30 +229,49 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 	UCM_PipeData.at("UCM_OTA").at("TransferData").at("Input").at("dataBlock") = stringData;
 
 	/* Increment ConsecutiveBytesReceived & ConsecutiveBlocksReceived */
-	SwPkg -> receivedBytes += data.size();
-	SwPkg -> receivedBlocks += 1;
+
+	SwPkg -> SetPackageReceivedBytes(data.size() + (SwPkg -> GetPackageReceivedBytes()));
+    SwPkg -> SetPackageReceivedBlocks(1 + (SwPkg -> GetPackageReceivedBlocks()));
 
 	/* Write Output to JSON File */
 	UCM_PipeData.at("UCM_OTA").at("TransferData").at("Output").at("err") = ret;
 	/* WRITING THE ADJUSTMENTS TO THE FILE */
 	ofstream JSON_PipeFile("PackageManagerPipe.json");
-	JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+	JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;    
+
+    /* change dir to path of packages folder */
+    chdir(ParentPath.c_str());
+
 	return ret;
 }
 
-ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(ara::ucm::TransferIdType id)
+ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(ara::ucm::TransferIdType &id)
 {
-	ara::ucm::transfer::SoftwarePackage *SwPkg = ara::ucm::transfer::SynchronizedStorage::GetItem(id);
+	ara::ucm::transfer::SoftwarePackage *SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
 
     ara::ucm::OperationResultType ret = ara::ucm::OperationResultType::kSuccess;
 
     /*************************ERROR CHECKING***************************/
+
+    string ParentPath = GetCurrentDirectory();
+    string PackagePath = GetCurrentDirectory()+ "/ZIP_Packages/";
+    /* change dir to path of packages folder */
+    chdir(PackagePath.c_str());
 
     /* FIRST MAKING THE JSON FILE MODIFIABLE */
     nlohmann::json UCM_PipeData;
     ifstream JSON_Modifiable("PackageManagerPipe.json");
     JSON_Modifiable >> UCM_PipeData;
     
+    /* Change The ID to String */
+    ara::ucm::TransferIdType TransferID;
+    SwPkg -> GetPackageId(TransferID);
+    string StringID = to_string(TransferID[0]);   
+    for (uint8_t i =1 ; i < 16 ; i++)
+    {
+      StringID += '-' + to_string(TransferID[i]);
+    }
+
     //1- Authentication
 
     //2- Package Version
@@ -236,10 +283,13 @@ ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(
         cout << "[UCM TRANSFER EXIT] InsufficientData" << endl;
 		ret = ara::ucm::OperationResultType::kInsufficientData;
 		/* Write Output to JSON File */
-		UCM_PipeData.at("UCM_OTA").at("TransferEXIT").at("Output").at("err") = ret;
+        UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Input").at("ID") = StringID;
+		UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Output").at("err") = ret;
         /* WRITING THE ADJUSTMENTS TO THE FILE */
 		ofstream JSON_PipeFile("PackageManagerPipe.json");
 		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+        /* change dir to path of packages folder */
+        chdir(ParentPath.c_str());
 		return ret;
     }
 
@@ -253,12 +303,26 @@ ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(
 		cout << "[UCM TRANSFER EXIT] InvalidTransferId" << endl;
 		ret = ara::ucm::OperationResultType::kInvalidTransferId;
         /* Write Output to JSON File */
-        UCM_PipeData.at("UCM_OTA").at("TransferEXIT").at("Output").at("err") = ret;
+        UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Input").at("ID") = StringID;
+        UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Output").at("err") = ret;
         /* WRITING THE ADJUSTMENTS TO THE FILE */
 		ofstream JSON_PipeFile("PackageManagerPipe.json");
-		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+		JSON_PipeFile << setw(4) << UCM_PipeData <<endl;
+        /* change dir to path of packages folder */
+        chdir(ParentPath.c_str());
 		return ret;
-	}
+    }
+    /* Write Output to JSON File */
+    UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Input").at("ID") = StringID;
+    UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Output").at("err") = ret;
+    /* WRITING THE ADJUSTMENTS TO THE FILE */
+    ofstream JSON_PipeFile("PackageManagerPipe.json");
+    JSON_PipeFile << setw(4) << UCM_PipeData <<endl;
+
+    /* change dir to path of packages folder */
+    chdir(ParentPath.c_str());
+
+    return ret;
 }
 
 
@@ -280,6 +344,21 @@ void ara::ucm::transfer::SoftwarePackage::SetPackageReceivedBytes(uint64_t recei
     TransferInfo.SetReceivedBytes(receivedBytes);
 }
 
+void ara::ucm::transfer::SoftwarePackage::SetPackageExpectedBlocks(uint32_t expectedBlocks)
+{
+    TransferInfo.SetExpectedBlocks(expectedBlocks);
+}
+
+void ara::ucm::transfer::SoftwarePackage::SetPackageReceivedBlocks(uint32_t receivedBlocks)
+{
+    TransferInfo.SetReceivedBlocks(receivedBlocks);
+}
+
+void ara::ucm::transfer::SoftwarePackage::SetPackageBlockSize (uint32_t blockSize)
+{
+    TransferInfo.SetBlockSize(blockSize);
+}
+
 void ara::ucm::transfer::SoftwarePackage::SetPackagePath(string path)
 {
     TransferInfo.SetTransferPath(path);
@@ -299,21 +378,39 @@ uint64_t ara::ucm::transfer::SoftwarePackage::GetPackageExpectedBytes()
 {
     return TransferInfo.GetExpectedBytes();
 }
+
 uint64_t ara::ucm::transfer::SoftwarePackage::GetPackageReceivedBytes()
 {
    return TransferInfo.GetReceivedBytes();
 }
+
+uint32_t ara::ucm::transfer::SoftwarePackage::GetPackageExpectedBlocks()
+{
+    return TransferInfo.GetExpectedBlocks();
+}
+uint32_t ara::ucm::transfer::SoftwarePackage::GetPackageReceivedBlocks()
+{
+    return TransferInfo.GetReceivedBlocks();
+}
+
+uint32_t ara::ucm::transfer::SoftwarePackage::GetPackageBlockSize ()
+{
+    return TransferInfo.GetBlockSize();
+}
+
 string ara::ucm::transfer::SoftwarePackage::GetPackagePath()
 {
     return TransferInfo.GetTransferPath();
 }
+
 SwPackageStateType ara::ucm::transfer::SoftwarePackage::GetPackageState()
 {
     return TransferInfo.GetTransferState();
 }
-TransferIdType &ara::ucm::transfer::SoftwarePackage::GetPackageId()
+
+void ara::ucm::transfer::SoftwarePackage::GetPackageId(ara::ucm::TransferIdType &TransferID)
 {
-    return TransferInfo.GetTransferId();
+    TransferInfo.GetTransferId(TransferID);
 }
 
 
@@ -340,6 +437,21 @@ void ara::ucm::transfer::TransferInstance::SetReceivedBytes(uint64_t receivedByt
     this->receivedBytes = receivedBytes;
 }
 
+void ara::ucm::transfer::TransferInstance::SetExpectedBlocks(uint32_t expectedBlocks)
+{
+    this->expectedBlocks = expectedBlocks;
+}
+
+void ara::ucm::transfer::TransferInstance::SetReceivedBlocks(uint32_t receivedBlocks)
+{
+    this->receivedBlocks = receivedBlocks;
+}
+
+void ara::ucm::transfer::TransferInstance::SetBlockSize (uint32_t blockSize)
+{
+    this->blockSize = blockSize;
+}
+
 void ara::ucm::transfer::TransferInstance::SetTransferState(SwPackageStateType TransferState)
 {
     this->TransferState = TransferState;
@@ -364,6 +476,21 @@ uint64_t ara::ucm::transfer::TransferInstance::GetReceivedBytes()
     return receivedBytes;
 }
 
+uint32_t ara::ucm::transfer::TransferInstance::GetExpectedBlocks()
+{
+    return expectedBlocks;
+}
+
+uint32_t ara::ucm::transfer::TransferInstance::GetReceivedBlocks()
+{
+    return receivedBlocks;
+}
+
+uint32_t ara::ucm::transfer::TransferInstance::GetBlockSize ()
+{
+    return blockSize;
+}
+
 string ara::ucm::transfer::TransferInstance::GetTransferPath()
 {
     return path;
@@ -374,7 +501,10 @@ SwPackageStateType ara::ucm::transfer::TransferInstance::GetTransferState()
     return TransferState;
 }
 
-TransferIdType &ara::ucm::transfer::TransferInstance::GetTransferId()
+void ara::ucm::transfer::TransferInstance::GetTransferId(ara::ucm::TransferIdType &TransferID)
 {
-    return transferId;
+    for(uint8_t i = 0; i < 16; ++i)
+    {
+        TransferID[i] = transferId[i];
+    }
 }
