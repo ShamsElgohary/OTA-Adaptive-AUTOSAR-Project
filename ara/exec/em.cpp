@@ -13,8 +13,6 @@
 #include <errno.h>
 #include <sys/wait.h>
 #include <boost/filesystem.hpp>
-#include <mutex>
-#include <condition_variable>
 
 using namespace ara::exec;
 using namespace std;
@@ -26,8 +24,7 @@ vector <Executable>  executables;
 
 map<string,vector<Process>> current_processes; 
 
-mutex n;
-condition_variable c_v ;
+
 
 void getFunctionGroups()
 {
@@ -79,7 +76,7 @@ void getExcutables()
 
 void terminate_all_process(string fn_name )
 {
-for(auto index:current_processes[fn_name]){
+for(auto& index: current_processes[fn_name]){
     kill(index.id,SIGTERM);
 }
 }
@@ -106,20 +103,12 @@ void process_handel(Process &process)
       {
          if(y.name==x)
          {
-             unique_lock <mutex> gaurd {n};
-             c_v.wait(gaurd,[]{return y.current_state!=Kidel});
+             y.check_for_state(Process::processState::Kidel);
          }
-      }
-      
+      } 
     }
-    
     process.run();
-    {
-    unique_lock <mutex> gaurd {n};
     process.update_state();
-    gaurd.unlock();
-    }
-    c_v.notify_one();
 }
 
 

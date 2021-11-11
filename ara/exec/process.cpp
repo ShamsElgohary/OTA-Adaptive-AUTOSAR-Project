@@ -23,6 +23,8 @@ Process::CtorToken Process::preconstruct(Executable &ex,string fng,string state)
 
 Process::Process(Process::CtorToken &&token)
 {
+    n =new mutex();
+    c_v =new condition_variable();
     current_state =processState::Kidel ;
     name  =  token.name;
     executable_path =  token.executable_path ;
@@ -43,11 +45,24 @@ int Process::run()
 void Process::update_state()
 {
     int fd = open(name.c_str(), O_RDWR); 
-    read(fd, &current_state, sizeof(uint8_t));
+    
+    {
+        unique_lock <mutex> gaurd {*n};
+        read(fd, &current_state, sizeof(uint8_t));
+    }
+
+    c_v->notify_one();
     close(fd);
     unlink(name.c_str());
+}
+void Process::check_for_state(processState s)
+{
+    unique_lock <mutex> gaurd {*n};
+    c_v->wait(gaurd,[&]{return current_state!= s;});
 }
 void Process::terminate()
 {
 
 }
+
+

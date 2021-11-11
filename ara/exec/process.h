@@ -1,6 +1,9 @@
 #pragma once
 #include <bits/stdc++.h>
 #include "executable.h"
+#include <mutex>
+#include <condition_variable>
+
 using namespace std;
 namespace ara 
 {
@@ -24,7 +27,8 @@ namespace ara
                     string function_group_name;
                     string function_group_state; 
             }CtorToken; 
-            
+            mutex *n;
+            condition_variable *c_v ;
             int id;
             string name;
             string executable_path;
@@ -34,6 +38,7 @@ namespace ara
             Executable::startUpConfigration configration;
             static Process::CtorToken preconstruct(Executable &ex,string fng,string state);
             Process(Process::CtorToken && token);
+            void check_for_state(processState s);
             void update_state();
             int run();
             void terminate();
