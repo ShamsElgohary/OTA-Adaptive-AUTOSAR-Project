@@ -15,13 +15,15 @@ int main (void)
 
     std::ifstream in;
     uint64_t length;
+    uint64_t stop;;
     
-    in.open("//home//shams//Desktop//test2.zip");      // open input file
+    in.open("//home//tabakh//Desktop//GP//src//pkgs//test.zip");      // open input file
     in.seekg(0, std::ios::end);    // go to the end
     length = in.tellg();           // report location (this is the length)
     in.seekg(0, std::ios::beg);    // go back to the beginning
     char * StringData = new char[length];   // allocate memory for a buffer of appropriate dimension
     in.read(StringData, length);       // read the whole file into the buffer
+    stop = in.gcount();
     in.close();     
 
     ara::ucm::ByteVectorType ByteData, TotalByteData;
@@ -48,6 +50,8 @@ int main (void)
     }
 
     SWPKG.TransferExit(StartReturn.id);    
+
+    cout<<"5lst"<<endl;
 }
 
 ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath)

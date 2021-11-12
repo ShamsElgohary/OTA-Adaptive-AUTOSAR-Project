@@ -1,12 +1,10 @@
-#pragma once
-
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include <iterator>
 #include <vector>
 #include "nlohmann/json.hpp"
-#include "UCM_Types.hpp"
+#include "includes/UCM_Types.hpp"
 #include "includes/Parsing.hpp"
 
 using namespace ara::ucm::parsing;

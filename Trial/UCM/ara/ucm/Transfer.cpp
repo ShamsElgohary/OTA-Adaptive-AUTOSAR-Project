@@ -14,6 +14,21 @@ using namespace ara::ucm;
 ////////////////////////////////////////////////////////////////////////////*/
 
 
+json jsonReadFromFile(string jsonName)
+{
+    ifstream i(jsonName);
+    json j;
+    i >> j;
+    return j;
+}
+void jsonWriteInFile(string jsonName, json j)
+{
+    ofstream o(jsonName);
+    o << setw(4) << j << endl;
+    o.close();
+}
+
+
 /* Used to get the path of our current directory */
 string GetCurrentDirectory()
 {
@@ -104,8 +119,7 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
    /* FIRST MAKING THE JSON FILE MODIFIABLE */
     nlohmann::json UCM_PipeData;
 
-    ifstream JSON_Modifiable(jsonPath);
-    JSON_Modifiable >> UCM_PipeData;
+    UCM_PipeData = jsonReadFromFile(jsonPath);
 
     /* WRITING OUR OPERATION INPUT */
     UCM_PipeData.at("UCM_OTA").at("TransferStart").at("Input").at("Size") = Size;
@@ -113,8 +127,7 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
     UCM_PipeData.at("UCM_OTA").at("TransferStart").at("Output").at("ID") =  StringID;
 
     /* WRITING THE ADJUSTMENTS TO THE FILE */
-    ofstream JSON_PipeFile( jsonPath );
-	JSON_PipeFile << setw(4)<< UCM_PipeData <<endl;
+    jsonWriteInFile(jsonPath,UCM_PipeData);
 
     StartTransferOutput.TransferStartResult = TransferStartSuccessType::kSuccess;
 
@@ -156,8 +169,7 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 
 	/* FIRST MAKING THE JSON FILE MODIFIABLE */
     nlohmann::json UCM_PipeData;
-    ifstream JSON_Modifiable("PackageManagerPipe.json");
-    JSON_Modifiable >> UCM_PipeData;
+    UCM_PipeData = jsonReadFromFile("PackageManagerPipe.json");
 
 	/* Check for size of received block */
 	if (data.size() > (SwPkg -> GetPackageBlockSize()))
@@ -167,8 +179,7 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 		/* Write Output to JSON File */
 		UCM_PipeData.at("UCM_OTA").at("TransferData").at("Output").at("err") = ret;
         /* WRITING THE ADJUSTMENTS TO THE FILE */
-		ofstream JSON_PipeFile("PackageManagerPipe.json");
-		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+        jsonWriteInFile("PackageManagerPipe.json",UCM_PipeData);
 		return ret;
 	}
 
@@ -181,8 +192,7 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 		/* Write Output to JSON File */
 		UCM_PipeData.at("UCM_OTA").at("TransferData").at("Output").at("err") = ret;
         /* WRITING THE ADJUSTMENTS TO THE FILE */
-		ofstream JSON_PipeFile("PackageManagerPipe.json");
-		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+        jsonWriteInFile("PackageManagerPipe.json",UCM_PipeData);
 		return ret;
 	}
 
@@ -194,8 +204,7 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 		/* Write Output to JSON File */
 		UCM_PipeData.at("UCM_OTA").at("TransferData").at("Output").at("err") = ret;
         /* WRITING THE ADJUSTMENTS TO THE FILE */
-		ofstream JSON_PipeFile("PackageManagerPipe.json");
-		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+        jsonWriteInFile("PackageManagerPipe.json",UCM_PipeData);
 		return ret;
 	}
 
@@ -225,7 +234,9 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 	UCM_PipeData.at("UCM_OTA").at("TransferData").at("Input").at("blockCounter") = blockCounter;
 	
 	// std::string stringData (reinterpret_cast <char*>(data), sizeof(data));
-	UCM_PipeData.at("UCM_OTA").at("TransferData").at("Input").at("dataBlock") = stringData;
+
+
+	//UCM_PipeData.at("UCM_OTA").at("TransferData").at("Input").at("dataBlock") = stringData;
 
 	/* Increment ConsecutiveBytesReceived & ConsecutiveBlocksReceived */
 
@@ -235,8 +246,7 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 	/* Write Output to JSON File */
 	UCM_PipeData.at("UCM_OTA").at("TransferData").at("Output").at("err") = ret;
 	/* WRITING THE ADJUSTMENTS TO THE FILE */
-	ofstream JSON_PipeFile("PackageManagerPipe.json");
-	JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;    
+    jsonWriteInFile("PackageManagerPipe.json",UCM_PipeData);  
 
     /* change dir to path of packages folder */
     chdir(ParentPath.c_str());
@@ -259,8 +269,7 @@ ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(
 
     /* FIRST MAKING THE JSON FILE MODIFIABLE */
     nlohmann::json UCM_PipeData;
-    ifstream JSON_Modifiable("PackageManagerPipe.json");
-    JSON_Modifiable >> UCM_PipeData;
+    UCM_PipeData=jsonReadFromFile("PackageManagerPipe.json");
     
     /* Change The ID to String */
     ara::ucm::TransferIdType TransferID;
@@ -285,8 +294,7 @@ ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(
         UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Input").at("ID") = StringID;
 		UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Output").at("err") = ret;
         /* WRITING THE ADJUSTMENTS TO THE FILE */
-		ofstream JSON_PipeFile("PackageManagerPipe.json");
-		JSON_PipeFile<<setw(4)<< UCM_PipeData <<endl;
+        jsonWriteInFile("PackageManagerPipe.json",UCM_PipeData);
         /* change dir to path of packages folder */
         chdir(ParentPath.c_str());
 		return ret;
@@ -305,8 +313,7 @@ ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(
         UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Input").at("ID") = StringID;
         UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Output").at("err") = ret;
         /* WRITING THE ADJUSTMENTS TO THE FILE */
-		ofstream JSON_PipeFile("PackageManagerPipe.json");
-		JSON_PipeFile << setw(4) << UCM_PipeData <<endl;
+        jsonWriteInFile("PackageManagerPipe.json",UCM_PipeData);
         /* change dir to path of packages folder */
         chdir(ParentPath.c_str());
 		return ret;
@@ -315,8 +322,7 @@ ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(
     UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Input").at("ID") = StringID;
     UCM_PipeData.at("UCM_OTA").at("TransferExit").at("Output").at("err") = ret;
     /* WRITING THE ADJUSTMENTS TO THE FILE */
-    ofstream JSON_PipeFile("PackageManagerPipe.json");
-    JSON_PipeFile << setw(4) << UCM_PipeData <<endl;
+    jsonWriteInFile("PackageManagerPipe.json",UCM_PipeData);
 
     /* change dir to path of packages folder */
     chdir(ParentPath.c_str());
