@@ -1,8 +1,10 @@
 #pragma once
 
 #include <stdlib.h>
+#include <map>
 #include <vector>
 #include <iterator>
+#include <sys/stat.h>
 
 #include "UCM_Types.hpp"
 
@@ -17,10 +19,10 @@ namespace ara
 			class SWCLManager
 			{
 				private:
-					static vector <ara::ucm::SwClusterInfoType> SWClustersData;
+					static map <ara::ucm::storage::ReversibleAction * , ara::ucm::SwClusterInfoType> SWClustersData;
 
 				public:
-					static void AddSWCLChangeInfo(ara::ucm::SwClusterInfoType);
+					static void AddSWCLChangeInfo(ara::ucm::SwClusterInfoType NewSWClusterInfo, ara::ucm::storage::ReversibleAction *);
 					static void CommitChanges();
 					static vector <ara::ucm::SwClusterInfoType> GetPresentSWCLs();
 					static vector <ara::ucm::SwClusterInfoType> GetSWCLsChangeInfo();
@@ -34,12 +36,13 @@ namespace ara
 			class ReversibleAction
 			{
 				private:
-				
+					
 
 				public:
-					virtual void CommitChanges() = 0;
-					virtual ara::ucm::OperationResultType Execute() = 0;
-					virtual void RevertChanges() = 0;
+					ara::ucm::SwClusterInfoType SwClusterInfo;
+					void CommitChanges();
+					void Execute();
+					void RevertChanges();
 			};
 
 			class InstallAction :public ReversibleAction
@@ -49,7 +52,7 @@ namespace ara
 
 				public:
 					void CommitChanges();
-					ara::ucm::OperationResultType Execute();
+					void Execute();
 					void RevertChanges();
 			};
 
@@ -60,7 +63,7 @@ namespace ara
 
 				public:
 					void CommitChanges();
-					ara::ucm::OperationResultType Execute();
+					void Execute();
 					void RevertChanges();
 			};
 
@@ -71,11 +74,9 @@ namespace ara
 
 				public:
 					void CommitChanges();
-					ara::ucm::OperationResultType Execute();
+					void Execute();
 					void RevertChanges();
 			};
-
-
 		}
 	}
 }

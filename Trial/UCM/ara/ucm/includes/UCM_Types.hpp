@@ -116,8 +116,6 @@ namespace ara
 			SwNameType Name;
 			StrongRevisionLabelString Version;
 			SwClusterStateType State;
-			ara::ucm::storage::ReversibleAction * Action;
-
 		}SwClusterInfoType;
 
 		/* Represents a dynamic size array of SoftwareClusters */
