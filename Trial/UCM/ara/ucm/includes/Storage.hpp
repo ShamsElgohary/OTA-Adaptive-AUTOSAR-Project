@@ -1,13 +1,7 @@
 #pragma once
 
-#include <stdlib.h>
-#include <map>
-#include <vector>
-#include <iterator>
-#include <sys/stat.h>
 
-#include "UCM_Types.hpp"
-
+#include "UCM_Common.hpp"
 
 
 namespace ara

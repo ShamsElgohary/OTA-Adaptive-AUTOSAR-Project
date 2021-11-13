@@ -1,17 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <fstream>
-#include <iterator>
-#include <vector>
-#include <utility>
-#include <unistd.h>
-#include <iomanip>
-#include <sys/stat.h>
-#include "nlohmann/json.hpp"
-#include "UCM_Types.hpp"
-
-
+#include "UCM_Common.hpp"
 
 namespace ara
 {

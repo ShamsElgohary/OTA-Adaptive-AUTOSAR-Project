@@ -1,11 +1,6 @@
 #pragma once
 
-#include <stdlib.h>
-#include <map>
-#include <iterator>
-#include <string>
-
-#include "UCM_Types.hpp"
+#include "UCM_Common.hpp"
 #include "Transfer.hpp"
 
 
