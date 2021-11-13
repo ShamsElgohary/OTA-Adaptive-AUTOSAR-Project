@@ -112,17 +112,35 @@ void ara::ucm::storage::SWCLManager::RemoveSWCL(ara::ucm::SwClusterInfoType Chan
 
 void ara::ucm::storage::InstallAction::Execute()
 {
-
+    /* Get path of clusters folder */
+    std::string command;
+    std::string ClustersPath = "clusters_path"; //hayb2a path mawgod 
+    std::string swClusterPath = ClustersPath + "/cluster_name/"; //assuming i have the cluster name
+    /* Check first if path exists, if not create the folder ZIP_Packages*/
+    if (!IsPathExist(swClusterPath.c_str()))
+    {
+        command = "mkdir " + swClusterPath;
+        system(command.c_str());
+    }
+    ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kAdded);
 }
 
 void ara::ucm::storage::InstallAction::CommitChanges()
 {
-
+    ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kPresent);
 }
 
 void ara::ucm::storage::InstallAction::RevertChanges()
 {
-
+    // Remove the directory made by Install
+    std::string SWDirectoryPath = "path";
+    std::string command;
+    if (IsPathExist(SWDirectoryPath.c_str()))
+    {
+        command = "rm -r " + SWDirectoryPath;
+        system(command.c_str());
+    }
+    /*ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kPresent);*/
 }
 
 

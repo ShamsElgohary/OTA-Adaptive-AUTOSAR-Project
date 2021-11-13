@@ -10,18 +10,19 @@ namespace ara
 		{
 			class SoftwarePackageParser
 			{
-				private:
+			private:
 
 
 
-				public:
+			public:
 
-				vector<string> SoftwareClusterManifestParser(string ClusterPath, string TransferID );
-
-				vector<string> SoftwarePackageManifestParser(string ClusterPath, string TransferID );
-
+				SwClusterInfoType GetSwClusterInfo(string PackagePath, string TransferID);
+				void SoftwarePackageParser::SwPackageManifestParser(string PackagePath, string TransferID);
+				ActionType GetActionType();
+				string GetActivationAction();
+				string GetDeltaPackageApplicableVersion();
 				/* FILE PATH, ZIPPED FILE NAME IS OBTAINED FROM THE TRANSFER ID*/
-				void UnzipFile(string FilePath, string TransferID );
+				void UnzipFile(string FilePath, string TransferID);
 			};
 		}
 	}
