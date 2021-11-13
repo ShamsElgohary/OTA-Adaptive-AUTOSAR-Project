@@ -22,11 +22,13 @@ namespace ara
 				public:
 					static void AddSWCLChangeInfo(ara::ucm::SwClusterInfoType);
 					static void CommitChanges();
-					static ara::ucm::SwClusterInfoType GetPresentSWCLs();
-					static ara::ucm::SwClusterInfoType GetSWCLsChangeInfo();
+					static vector <ara::ucm::SwClusterInfoType> GetPresentSWCLs();
+					static vector <ara::ucm::SwClusterInfoType> GetSWCLsChangeInfo();
 					static void IndexActionsAndSWCLs();
 					static void ResetSWCLChangeInfo();
 					static void RevertChanges();
+					static void SetSWCLState(ara::ucm::SwClusterInfoType ChangedSWCluster, ara::ucm::SwClusterStateType State);
+					static void RemoveSWCL(ara::ucm::SwClusterInfoType ChangedSWCluster);
 			};
 			/*       PURE VIRUAL & HAS NO IMPLEMENTATION        */
 			class ReversibleAction
