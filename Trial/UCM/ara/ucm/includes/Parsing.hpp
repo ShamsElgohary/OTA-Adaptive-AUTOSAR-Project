@@ -1,6 +1,12 @@
 #pragma once
 
 #include "UCM_Common.hpp"
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
+namespace pt = boost::property_tree;
+using namespace ara::ucm;
+
 
 namespace ara
 {
@@ -11,20 +17,18 @@ namespace ara
 			class SoftwarePackageParser
 			{
 			private:
-
-
+				ActionType actionType;
+				string activationAction;
+				string deltaPackageApplicableVersion;
 
 			public:
-
-				SwClusterInfoType GetSwClusterInfo(string PackagePath, string TransferID);
-				void SoftwarePackageParser::SwPackageManifestParser(string PackagePath, string TransferID);
+				SwClusterInfoType GetSwClusterInfo(string PackagePath);
+				void SoftwarePackageParser::SwPackageManifestParser(string PackagePath);
 				ActionType GetActionType();
 				string GetActivationAction();
 				string GetDeltaPackageApplicableVersion();
-				/* FILE PATH, ZIPPED FILE NAME IS OBTAINED FROM THE TRANSFER ID*/
-				void UnzipFile(string FilePath, string TransferID);
+				void UnzipFile(string FilePath);
 			};
 		}
 	}
 }
-

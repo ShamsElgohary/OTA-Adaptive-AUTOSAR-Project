@@ -42,27 +42,23 @@ void PackageManagerImpl::ProcessSwPackage(TransferIdType &id)
 
     ActionType action { SWParser_instance.GetActionType() };
 
+    /* IMPORTANT */
+    shared_ptr<storage::ReversibleAction> actionPtr;
+
     /* CHECK ACTION TYPE AND ACT ACCORDING TO IT */
     if ( action == ActionType::kUpdate )
     {
-        // UpdateInstance should have a constructor that takes PackagePath 
-        shared_ptr<storage::UpdateAction> updateInstance;
-        ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo , updateInstance);
-        updateInstance->Execute();
+        actionPtr = make_shared<storage::UpdateAction> (SWPackagePath,NewSwClusterInfo) ;   
     }
 
     else if ( action == ActionType::kInstall )
     {
-        shared_ptr<storage::InstallAction> installInstance;
-        ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo , installInstance);
-        installInstance->Execute();
+        actionPtr = make_shared<storage::InstallAction> (SWPackagePath,NewSwClusterInfo) ;   
     }
     
     else if ( action == ActionType::kRemove )
-    {
-        shared_ptr<storage::InstallAction> removeInstance;
-        ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo , removeInstance);
-        removeInstance->Execute();
+    {    
+        actionPtr = make_shared<storage::RemoveAction> (SWPackagePath,NewSwClusterInfo) ;   
     }
 
     else
@@ -70,6 +66,8 @@ void PackageManagerImpl::ProcessSwPackage(TransferIdType &id)
         // WRONG ACTION TYPE
     }
 
+    actionPtr->Execute();
+    ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo , actionPtr);
     return;
 }
 

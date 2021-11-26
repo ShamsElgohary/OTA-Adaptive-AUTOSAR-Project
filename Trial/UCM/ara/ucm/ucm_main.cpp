@@ -11,13 +11,12 @@ ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath);
 
 int main (void)
 {
-    cout << "Eshta8lt!!!!" << endl;
 
     std::ifstream in;
     uint64_t length;
     uint64_t stop;;
     
-    in.open("//home//tabakh//Desktop//GP//src//pkgs//test.zip");      // open input file
+    in.open("//home//shams//Desktop//test.zip");      // open input file
     in.seekg(0, std::ios::end);    // go to the end
     length = in.tellg();           // report location (this is the length)
     in.seekg(0, std::ios::beg);    // go back to the beginning

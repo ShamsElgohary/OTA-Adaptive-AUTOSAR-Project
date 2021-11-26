@@ -141,7 +141,6 @@ namespace ara
 			kUpdate = 0U,
 			kInstall = 1U,
 			kRemove = 2U,
-
 		};
 
 

@@ -1,5 +1,7 @@
 #include "includes/Storage.hpp"
 
+using namespace ara::ucm;
+
 /*////////////////////////////////////////////////////////////////////////////
 
     SWCLManager Class Methods
@@ -7,9 +9,11 @@
 ////////////////////////////////////////////////////////////////////////////*/
 
 
-map <ara::ucm::storage::ReversibleAction * , ara::ucm::SwClusterInfoType> SWClustersData;
+map < shared_ptr<ara::ucm::storage::ReversibleAction> , ara::ucm::SwClusterInfoType> SWClustersData;
 
-void ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(ara::ucm::SwClusterInfoType NewSWClusterInfo, ara::ucm::storage::ReversibleAction * ReversibleAct)
+
+
+void ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(SwClusterInfoType NewSWClusterInfo, shared_ptr<storage::ReversibleAction> ReversibleAct)
 {
     ara::ucm::storage::SWCLManager::SWClustersData.emplace(ReversibleAct, NewSWClusterInfo);
 }
@@ -20,7 +24,7 @@ void ara::ucm::storage::SWCLManager::CommitChanges()
     {
         if ((itr->second).State!= ara::ucm::SwClusterStateType::kPresent)
         {
-            ara::ucm::storage::ReversibleAction * Act = itr -> first;
+            shared_ptr<ara::ucm::storage::ReversibleAction>  Act = itr -> first;
             Act -> CommitChanges();
         }
     }
@@ -75,7 +79,7 @@ void ara::ucm::storage::SWCLManager::RevertChanges()
     {
         if ((itr->second).State  != ara::ucm::SwClusterStateType::kPresent)
         {
-            ara::ucm::storage::ReversibleAction * Act = itr ->first;
+            shared_ptr<ara::ucm::storage::ReversibleAction> Act = itr ->first;
             Act -> RevertChanges();
         }
     }
@@ -103,25 +107,50 @@ void ara::ucm::storage::SWCLManager::RemoveSWCL(ara::ucm::SwClusterInfoType Chan
     }
 }
 
+
+
+/*////////////////////////////////////////////////////////////////////////////
+
+    ReversibleAction Class Constructor
+
+////////////////////////////////////////////////////////////////////////////*/
+
+ara::ucm::storage::ReversibleAction::ReversibleAction(string swPackagePath, ara::ucm::SwClusterInfoType SwClusterInfo)
+{
+    this-> swPackagePath = swPackagePath;
+    this-> SwClusterInfo = SwClusterInfo;
+}
+
+
 /*////////////////////////////////////////////////////////////////////////////
 
     InstallAction Class Methods
 
 ////////////////////////////////////////////////////////////////////////////*/
 
+/* CONSTRUCTOR */
+ara::ucm::storage::InstallAction::InstallAction(string swPackagePath, SwClusterInfoType SwClusterInfo): ReversibleAction(swPackagePath,SwClusterInfo)
+{}
+
 
 void ara::ucm::storage::InstallAction::Execute()
 {
-    /* Get path of clusters folder */
-    std::string command;
-    std::string ClustersPath = "clusters_path"; //hayb2a path mawgod 
-    std::string swClusterPath = ClustersPath + "/cluster_name/"; //assuming i have the cluster name
-    /* Check first if path exists, if not create the folder ZIP_Packages*/
-    if (!IsPathExist(swClusterPath.c_str()))
+
+    /* GET THE SW CLUSTER INSIDE THE SW PACKAGE  */
+    string clusterTransferPath { this->swPackagePath + "/" + this->SwClusterInfo.Name };   
+
+    /* GET THE PATH TO THE FILE SYSTEM DIRECTORY */
+    string clusterInFileSystem { fileSystemPath + "/" + this->SwClusterInfo.Name + "/" + this->SwClusterInfo.Version }; 
+
+    if (IsPathExist(clusterInFileSystem.c_str()) == false )
     {
-        command = "mkdir " + swClusterPath;
+        command = "mkdir " + clusterInFileSystem;
         system(command.c_str());
     }
+
+    /* MOVE THE PACKAGE CONTENTS TO THE FILE SYSTEM DIRECTORY */
+    command = "mv "+ clusterTransferPath + " " + fileSystemPath;   
+    system(command.c_str());
     ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kAdded);
 }
 
@@ -132,15 +161,15 @@ void ara::ucm::storage::InstallAction::CommitChanges()
 
 void ara::ucm::storage::InstallAction::RevertChanges()
 {
-    // Remove the directory made by Install
-    std::string SWDirectoryPath = "path";
-    std::string command;
-    if (IsPathExist(SWDirectoryPath.c_str()))
+    /* GET THE PATH TO THE FILE SYSTEM DIRECTORY ( VERSION NEEDED ) */
+    string clusterInFileSystem { fileSystemPath + "/" + this->SwClusterInfo.Name + "/" + this->SwClusterInfo.Version }; 
+
+    if (IsPathExist(clusterInFileSystem.c_str()))
     {
-        command = "rm -r " + SWDirectoryPath;
+        command = "rm -r " + clusterInFileSystem;
         system(command.c_str());
     }
-    /*ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kPresent);*/
+
 }
 
 
@@ -151,6 +180,9 @@ void ara::ucm::storage::InstallAction::RevertChanges()
 
 ////////////////////////////////////////////////////////////////////////////*/
 
+/* CONSTRUCTOR */
+ara::ucm::storage::RemoveAction::RemoveAction(string swPackagePath, SwClusterInfoType SwClusterInfo): ReversibleAction(swPackagePath,SwClusterInfo)
+{}
 
 void ara::ucm::storage::RemoveAction::Execute()
 {
@@ -159,14 +191,15 @@ void ara::ucm::storage::RemoveAction::Execute()
 
 void ara::ucm::storage::RemoveAction::CommitChanges()
 {
-    // Remove the directory made by Install
-    std::string SWDirectoryPath = "3abat";
-    std::string command;
-    if(IsPathExist(SWDirectoryPath.c_str()))
+    /* GET THE PATH TO THE FILE SYSTEM DIRECTORY ( VERSION NEEDED ) */
+    string clusterInFileSystem { fileSystemPath + "/" + this->SwClusterInfo.Name + "/" + this->SwClusterInfo.Version }; 
+
+    if (IsPathExist(clusterInFileSystem.c_str()))
     {
-        command = "rm -r " + SWDirectoryPath;
+        command = "rm -r " + clusterInFileSystem;
         system(command.c_str());
     }
+
 }
 
 void ara::ucm::storage::RemoveAction::RevertChanges()
@@ -182,57 +215,56 @@ void ara::ucm::storage::RemoveAction::RevertChanges()
 ////////////////////////////////////////////////////////////////////////////*/
 
 
+/* CONSTRUCTOR */
+ara::ucm::storage::UpdateAction::UpdateAction(string swPackagePath, SwClusterInfoType SwClusterInfo): ReversibleAction(swPackagePath,SwClusterInfo)
+{}
+
 void ara::ucm::storage::UpdateAction::Execute()
 {
-    string command;
-    /* GET CURRENT WORKING DIRECTORY PATH */
-    string ProjectPath = GetCurrentDirectory();
-    chdir(ProjectPath.c_str());
+    /* GET THE SW CLUSTER INSIDE THE SW PACKAGE*/
+    string clusterTransferPath { this->swPackagePath + "/" + this->SwClusterInfo.Name };   
 
-    /* GET THE PACKAGE */
-    string ClusterPath =  ProjectPath + "\\ZIP_Packages\\ TID"  ;   
+    /* GET THE PATH TO THE FILE SYSTEM DIRECTORY ( VERSION NEEDED ) */
+    string clusterInFileSystem { fileSystemPath + "/" + this->SwClusterInfo.Name + "/" + this->SwClusterInfo.Version }; 
 
-    /* GET THE PATH TO THE FILE SYSTEM DIRECTORY AND CHECK IF IT DOESN'T EXIST */
-    std::string SWDirectoryPath = "?\\FileSystemPath\\SWNAME";
-    if (IsPathExist(SWDirectoryPath.c_str()) == false )
+    if (IsPathExist(clusterInFileSystem.c_str()) == false )
     {
-        command = "mkdir " + SWDirectoryPath;
+        command = "mkdir " + clusterInFileSystem;
         system(command.c_str());
     }
 
     /* MOVE THE PACKAGE CONTENTS TO THE FILE SYSTEM DIRECTORY */
-    /* -b HERE IS A UNIX COMMAND THAT WILL CREATE A BACKUP FILE THAT WILL BE OVERWRITTEN AS A RESULT  */
-    std::string command = "mv -b "+ ClusterPath + " " + SWDirectoryPath;   
+    command = "mv "+ clusterTransferPath + " " + fileSystemPath;   
     system(command.c_str());
     ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kUpdated);
-    
 }
+
 
 void ara::ucm::storage::UpdateAction::CommitChanges()
 {
-     /* NAME AND PATH OF BACKUP FILE */
-    string SWDirectoryPathBackUp = "?\\FileSystemPath\\SWNAME~";   
-    string command;
-    if (IsPathExist(SWDirectoryPathBackUp.c_str()) == true ) 
+    string clusterInFileSystem { fileSystemPath + "/" + this->SwClusterInfo.Name }; 
+    
+    if (IsPathExist(clusterInFileSystem.c_str()) == true ) 
     {
-        command = "rm -r " + SWDirectoryPathBackUp;
+        chdir(clusterInFileSystem.c_str());
+        /* REMOVE PREVIOUS OLD VERSIONS */
+        command = "rm -r !(" + this->SwClusterInfo.Name + "/" + this->SwClusterInfo.Version + ")";
+        system(command.c_str());
     }
 
     ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kPresent);
 }
 
+
 void ara::ucm::storage::UpdateAction::RevertChanges()
 {
-    string SWDirectoryPath = "?\\FileSystemPath\\SWNAME";
-    /* NAME AND PATH OF BACKUP FILE */
-    string SWDirectoryPathBackUp = "?\\FileSystemPath\\SWNAME~";
-    string command;
-    if(IsPathExist(SWDirectoryPath.c_str()))
+    /* GET THE PATH TO THE FILE SYSTEM DIRECTORY ( VERSION NEEDED ) */
+    string clusterInFileSystem { fileSystemPath + "/" + this->SwClusterInfo.Name + "/" + this->SwClusterInfo.Version }; 
+
+    if(IsPathExist(clusterInFileSystem.c_str()))
     {
-        command = "rm -r " + SWDirectoryPath;
+        command = "rm -r " + clusterInFileSystem;
         system(command.c_str());
-        /* RENAME BACKUP WITH ITS ORIGINAL NAME (REVERT) */
-        command = "mv " + SWDirectoryPathBackUp + " " + SWDirectoryPath;
     }
 
     ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kPresent);
