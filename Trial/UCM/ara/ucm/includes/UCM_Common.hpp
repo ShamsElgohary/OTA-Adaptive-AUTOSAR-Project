@@ -20,16 +20,29 @@
 #include <unistd.h>
 #include <iomanip>
 #include <sys/stat.h>
-#include "nlohmann/json.hpp"
 #include "UCM_Types.hpp"
+#include "nlohmann/json.hpp"
 
 using json = nlohmann::json;
 
-json jsonReadFromFile(string jsonName);
+/* VARIABLES THAT WILL BE USED THROUGHTOUT MOST OF THE UCM FILES */
+extern const string UCM_Path;
+extern const string ZIP_PackagesPath;
+extern const string fileSystemPath;
+extern string command;
 
-void jsonWriteInFile(string jsonName, json j);
+/* USED TO GET FILE SYSTEM PATH */
+//string GetFileSystemPath();
 
 /* Used to get the path of our current directory */
 string GetCurrentDirectory();
 
+/* CHECKS IF PATH EXISTS */
 bool IsPathExist(const std::string &s);
+
+/* CONVERTS ID INTO A STRING FORMAT */
+string Convert2StringID(ara::ucm::TransferIdType &TransferID);
+
+json jsonReadFromFile(string jsonName);
+
+void jsonWriteInFile(string jsonName, json j);

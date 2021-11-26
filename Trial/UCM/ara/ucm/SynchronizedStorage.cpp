@@ -6,32 +6,25 @@ using namespace ara::ucm::transfer;
 
 map <std::string, ara::ucm::transfer::SoftwarePackage> ara::ucm::SynchronizedStorage::Data;
 
+
 void SynchronizedStorage::AddItem(ara::ucm::TransferIdType &transferId, ara::ucm::transfer::SoftwarePackage Package)
 {
-    string StringID = to_string(transferId[0]);   
-    for (uint8_t i =1 ; i < 16 ; i++)
-    {
-      StringID += '-' + to_string(transferId[i]);
-    }
+    string StringID { Convert2StringID(transferId) };
     Data.emplace(StringID, Package);
      // Data.insert(pair<TransferIdType, SoftwarePackage> (transferId, Package) );
 }
 
 void SynchronizedStorage::DeleteItem(TransferIdType &transferId)
 {
+    string StringID { Convert2StringID(transferId) };
+    
     map<std::string, SoftwarePackage>::iterator itr;
-
-    string StringID = to_string(transferId[0]);   
-    for (uint8_t i =1 ; i < 16 ; i++)
-    {
-      StringID += '-' + to_string(transferId[i]);
-    }
     /* IF THE CORRECT ID IS FOUND ERASE THE PACKAGE CORRESPONDING TO THIS ID*/   
     for (itr = Data.begin(); itr != Data.end(); ++itr) 
     {
         if ( itr->first == StringID)    
         {
-            Data.erase(itr->first); 
+            Data.erase(itr); 
             return;
         }
     }
@@ -40,13 +33,8 @@ void SynchronizedStorage::DeleteItem(TransferIdType &transferId)
 
 ara::ucm::transfer::SoftwarePackage * SynchronizedStorage::GetItem(TransferIdType &transferId)
 {
+    string StringID { Convert2StringID(transferId) };
     map<std::string, SoftwarePackage>::iterator itr;
-
-    string StringID = to_string(transferId[0]);   
-    for (uint8_t i =1 ; i < 16 ; i++)
-    {
-      StringID += '-' + to_string(transferId[i]);
-    }
     /* IF THE CORRECT ID IS FOUND RETURN THE PACKAGE CORRESPONDING TO THIS ID*/  
     for (itr = Data.begin(); itr != Data.end(); ++itr) 
     {

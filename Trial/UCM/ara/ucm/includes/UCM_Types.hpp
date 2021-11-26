@@ -68,10 +68,7 @@ namespace ara
 			StrongRevisionLabelString Version;
 			TransferIdType TransferID;
 
-			// El Wesli
 			uint64_t ConsecutiveBytesReceived;
-
-			// El Wesli
 			uint64_t ConsecutiveBlocksReceived;
 			SwPackageStateType State;
 			
