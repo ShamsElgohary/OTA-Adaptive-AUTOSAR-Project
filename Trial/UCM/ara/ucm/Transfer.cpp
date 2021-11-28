@@ -105,25 +105,19 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
     string zipName = ZIP_PackagesPath + "/TransferID:" + StringID + ".zip";    
 
     /* Open File To Update */
-    std::ofstream zipIn(zipName, ios::app);
+    std::ofstream zipIn(zipName,  ios::binary | ios::app);
 
-    /* Convert Data to String */
-    std::string stringData (reinterpret_cast<const char *>(&data[0]), data.size());
-
-    static int i = 0;
     /* Append Data to zip File */
-    zipIn << data[i];
-
-    i++;
+    for(char byte : data)
+    {   
+        zipIn << byte;
+    }
     
     /* Close File */
     zipIn.close();
 
-	
-	// std::string stringData (reinterpret_cast <char*>(data), sizeof(data));
 
 	/* Increment ConsecutiveBytesReceived & ConsecutiveBlocksReceived */
-
 	SwPkg -> SetPackageReceivedBytes(data.size() + (SwPkg -> GetPackageReceivedBytes()));
     SwPkg -> SetPackageReceivedBlocks(1 + (SwPkg -> GetPackageReceivedBlocks()));
 
