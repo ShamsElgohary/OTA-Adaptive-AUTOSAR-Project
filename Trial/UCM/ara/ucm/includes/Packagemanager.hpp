@@ -15,7 +15,6 @@ namespace ara
 			class PackageManagerImpl {
 			private:
 			/* The current status of UCM */
-			static PackageManagerStatusType CurrentStatus;
 
 			public:
 
