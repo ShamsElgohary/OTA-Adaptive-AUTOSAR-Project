@@ -2,20 +2,22 @@
 
 /* THESE PATHS ARE CONSTANTS AND THEY DO NOT CHANGE */
 const string UCM_Path = GetCurrentDirectory() ;
-const string ZIP_PackagesPath = UCM_Path + "/ZIP_Packages/";
-const string fileSystemPath = "/home/shams/VS_Workspace/Latest/UCM/executables";
+const string ZIP_PackagesPath = UCM_Path + "/ZIP_Packages";
+const string fileSystemPath = GetFileSystemPath();
+const string fileBackupPath = GetFileSystemPath() + "/Backup";
+
 string command;
 
-/*
-string GetFileSystemPath()
+
+static string GetFileSystemPath()
 {
-  string fileSystemPath { GetCurrentDirectory() };
-  command = "cd ../..";
-  system(&command[0]);
-  fileSystemPath = fileSystemPath + "\\executables";
+  chdir(  "../.." );
+  string fileSystemPath { GetCurrentDirectory() + "/executables" };
+  /* RETURN TO PROGRAM PATH */
+  chdir( &UCM_Path[0] );
   return fileSystemPath;
 }
-*/
+
 
 /* Used to get the path of our current directory */
 string GetCurrentDirectory()

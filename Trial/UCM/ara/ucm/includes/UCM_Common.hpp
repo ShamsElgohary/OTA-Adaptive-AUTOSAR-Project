@@ -22,6 +22,7 @@
 #include <sys/stat.h>
 #include "UCM_Types.hpp"
 #include "nlohmann/json.hpp"
+#include "log.hpp"
 
 using json = nlohmann::json;
 
@@ -29,10 +30,11 @@ using json = nlohmann::json;
 extern const string UCM_Path;
 extern const string ZIP_PackagesPath;
 extern const string fileSystemPath;
+extern const string fileBackupPath;
 extern string command;
 
-/* USED TO GET FILE SYSTEM PATH */
-//string GetFileSystemPath();
+/* USED TO GET FILE SYSTEM PATH (ONLY IN THIS FILE) */
+static string GetFileSystemPath();
 
 /* Used to get the path of our current directory */
 string GetCurrentDirectory();
@@ -46,3 +48,4 @@ string Convert2StringID(ara::ucm::TransferIdType &TransferID);
 json jsonReadFromFile(string jsonName);
 
 void jsonWriteInFile(string jsonName, json j);
+

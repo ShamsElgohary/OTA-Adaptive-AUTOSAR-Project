@@ -13,13 +13,13 @@ namespace ara
 		{
 			private:
 
-			static map <std::string, ara::ucm::transfer::SoftwarePackage> Data;
+			static map <std::string, shared_ptr<ara::ucm::transfer::SoftwarePackage>>  Data;
 
 			public:
 
-			static void AddItem(ara::ucm::TransferIdType &transferId, ara::ucm::transfer::SoftwarePackage Package);
+			static void AddItem(ara::ucm::TransferIdType &transferId, shared_ptr<ara::ucm::transfer::SoftwarePackage> Package);
 			static void DeleteItem(ara::ucm::TransferIdType &transferId);
-			static ara::ucm::transfer::SoftwarePackage * GetItem(ara::ucm::TransferIdType &transferId);
+			static shared_ptr<ara::ucm::transfer::SoftwarePackage> GetItem(ara::ucm::TransferIdType &transferId);
 		};
 	}
 }

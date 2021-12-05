@@ -14,9 +14,6 @@ using namespace ara::ucm;
 
 ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferStart(uint64_t Size)
 {
-	/* Information of the NewPackage to be transfered */
-	SoftwarePackage NewPackage;
-
 	/* This will hold the data that will be returned from this operation */
 	TransferStartReturnType StartTransferOutput;
 
@@ -36,79 +33,65 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
     }
 
     string StringID { Convert2StringID(StartTransferOutput.id) };
-    ofstream MyFile( ZIP_PackagesPath + "/TransferID:" + StringID + ".zip");
+    string FilePath {ZIP_PackagesPath + "/TransferID:" + StringID + ".zip" }; 
+
+    /* CREATE A ZIPPED FILE */
+    ofstream MyFile( FilePath );
     MyFile.close();
 
-    /* SET ALL DATA OF THE 'NewPackage' THAT IS TO BE TRANSFERED (Size in Bytes , Number of Blocks, etc.) */
-    NewPackage.SetPackageExpectedBytes(Size);
-    NewPackage.SetPackageExpectedBlocks(ceil(((float) Size)/NewPackage.GetPackageBlockSize()));
-    NewPackage.SetPackagePath(ZIP_PackagesPath); 
-    NewPackage.SetPackageId(StartTransferOutput.id);
-    NewPackage.SetPackageState( SwPackageStateType::kTransferring );
+	/* Information of the NewPackage to be transfered */
+    shared_ptr<SoftwarePackage> NewPackagePtr = make_shared<SoftwarePackage>(Size, FilePath, SwPackageStateType::kTransferring, StartTransferOutput.id );    
 
     /* ADD THE PACKAGE WITH ITS ID TO THE SYNCHRONIZED STORAGE 
     ( MAP IS STATIC SO MAP "Data" IS SHARED BETWEEN THE SS CLASS AND WON'T BE DELETED EXCEPT MANUALLY) */
-    ara::ucm::SynchronizedStorage::AddItem(StartTransferOutput.id, NewPackage);
+    ara::ucm::SynchronizedStorage::AddItem(StartTransferOutput.id, NewPackagePtr );
 
-	StartTransferOutput.BlockSize = NewPackage.GetPackageBlockSize();
-    StartTransferOutput.TransferStartResult = TransferStartSuccessType::kSuccess;
+	StartTransferOutput.BlockSize = NewPackagePtr->TransferInfo.GetBlockSize();
+    StartTransferOutput.TransferStartResult = OperationResultType::kSuccess;
 	return StartTransferOutput;
 }
 
 
+
+
 ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData (ara::ucm::TransferIdType &id, ara::ucm::ByteVectorType data, uint64_t blockCounter)
 {    
-    ara::ucm::OperationResultType ret = ara::ucm::OperationResultType::kSuccess;
 	/* Check ID validity & Get SoftwarePackage  (CurrentSoftwarePackages > Vector of struct of SwPackageInfoType) */
-	
-	ara::ucm::transfer::SoftwarePackage * SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
+	shared_ptr<ara::ucm::transfer::SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
 	if (SwPkg == nullptr)
 	{
-		cout << "[UCM TRANSFER DATA] InvalidTransferId" << endl;
-		ret = ara::ucm::OperationResultType::kInvalidTransferId;
-		return ret;
+		return ara::ucm::OperationResultType::kInvalidTransferId;
 	}
-
-    /* Change The ID to String To get paths */
-    ara::ucm::TransferIdType TransferID;
-    SwPkg -> GetPackageId(TransferID);
-    string StringID { Convert2StringID(TransferID) };
 
 	/* Check for size of received block */
 	if (data.size() > (SwPkg -> GetPackageBlockSize()))
 	{
-		cout << "[UCM TRANSFER DATA] IncorrectBlockSize" << endl;
-		ret = ara::ucm::OperationResultType::kIncorrectBlockSize;
-		return ret;
+		return ara::ucm::OperationResultType::kIncorrectBlockSize;
 	}
 
 	/* Validate Size with Transfer Instance */
 	uint64_t Size = SwPkg -> GetPackageExpectedBytes();
 	if ( SwPkg->GetPackageReceivedBytes() > Size )
 	{
-		cout << "[UCM TRANSFER DATA] IncorrectSize" << endl;
-		ret = ara::ucm::OperationResultType::kIncorrectSize;
-		return ret;
+		return ara::ucm::OperationResultType::kIncorrectSize;
 	}
 
 	/* Vaildate Block Counter */
 	if (blockCounter != (SwPkg -> GetPackageReceivedBlocks()))
 	{
-		cout << "[UCM TRANSFER DATA] IncorrectBlock" << endl;
-		ret = ara::ucm::OperationResultType::kIncorrectBlock;
-		return ret;
+		return ara::ucm::OperationResultType::kIncorrectBlock;
 	}
 
     /************** UPDATE ZIP FILE **************/
 
     /* Constract the Path */
-    string zipName = ZIP_PackagesPath + "/TransferID:" + StringID + ".zip";    
+    string zipName = SwPkg->GetPackagePath();
 
     /* Open File To Update */
-    std::ofstream zipIn(zipName,  ios::binary | ios::app);
+    std::ofstream zipIn(zipName, ios::binary | ios::app);
 
     /* Append Data to zip File */
-    for(char byte : data)
+    for( uint8_t byte : data)
     {   
         zipIn << byte;
     }
@@ -116,59 +99,82 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
     /* Close File */
     zipIn.close();
 
-
 	/* Increment ConsecutiveBytesReceived & ConsecutiveBlocksReceived */
 	SwPkg -> SetPackageReceivedBytes(data.size() + (SwPkg -> GetPackageReceivedBytes()));
     SwPkg -> SetPackageReceivedBlocks(1 + (SwPkg -> GetPackageReceivedBlocks()));
 
-	return ret;
+	return ara::ucm::OperationResultType::kSuccess;;
 }
+
+
 
 ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(ara::ucm::TransferIdType &id)
 {
-	ara::ucm::transfer::SoftwarePackage *SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
-
-    ara::ucm::OperationResultType ret = ara::ucm::OperationResultType::kSuccess;
-
-    /*************************ERROR CHECKING***************************/
-
-
-    
-    /* Change The ID to String */
-    ara::ucm::TransferIdType TransferID;
-    SwPkg -> GetPackageId(TransferID);
-    string StringID { Convert2StringID(TransferID) };
+	/* Check ID validity & Get SoftwarePackage To Get Its Path */
+	shared_ptr<ara::ucm::transfer::SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
+    if (SwPkg == nullptr)
+	{
+        return ara::ucm::OperationResultType::kInvalidTransferId;
+    }
 
     //1- Authentication
 
     //2- Package Version
 
-    //3- Size
-    // gives an error if total transferred data size does not match expected data size provided with TransferStart
-
+    // Gives an error if total transferred data size does not match expected data size provided with TransferStart
     if (SwPkg->GetPackageReceivedBytes() != SwPkg->GetPackageExpectedBytes())
     {
-        cout << "[UCM TRANSFER EXIT] InsufficientData" << endl;
-		ret = ara::ucm::OperationResultType::kInsufficientData;
-		return ret;
+		return ara::ucm::OperationResultType::kInsufficientData;
     }
 
     //4- Manifest checking
 
-    //5- ID
-    
-    //3ala hasab el implementation elly han3mlo l GetId()
-    if (SwPkg == nullptr)
-	{
-		cout << "[UCM TRANSFER EXIT] InvalidTransferId" << endl;
-		ret = ara::ucm::OperationResultType::kInvalidTransferId;
-        /* change dir to path of packages folder */
-		return ret;
-    }
-
-    return ret;
+    return ara::ucm::OperationResultType::kSuccess;
 }
 
+
+
+ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferDelete(TransferIdType &id)
+{
+	/* Check ID validity & Get SoftwarePackage To Get Its Path */
+    shared_ptr<ara::ucm::transfer::SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
+    if (SwPkg == nullptr)
+	{
+        return ara::ucm::OperationResultType::kInvalidTransferId;
+    }
+
+    command = "rm " + SwPkg->GetPackagePath();
+    system(&command[0]);
+    
+    SynchronizedStorage::DeleteItem(id);
+
+    return ara::ucm::OperationResultType::kSuccess;
+}
+
+
+/*////////////////////////////////////////////////////////////////////////////
+
+    CONSTRUCTOR OF SOFTWARE PACKAGE
+
+////////////////////////////////////////////////////////////////////////////*/
+
+
+
+/* CONSTRUCTOR FOR TRANSFER INSTANCE */
+ara::ucm::transfer::SoftwarePackage::SoftwarePackage (uint64_t expectedBytes, string path, ara::ucm::SwPackageStateType TransferState, TransferIdType transferId)
+{
+    this->TransferInfo.SetExpectedBytes(expectedBytes);
+    this->TransferInfo.SetTransferPath(path);
+    this->TransferInfo.SetTransferState(TransferState);
+    this->TransferInfo.SetTransferId(transferId);
+    this->TransferInfo.SetExpectedBlocks( ceil(((float) expectedBytes) / this->TransferInfo.GetBlockSize()) );
+}
+
+/* DEFAULT CONSTRUCTOR */
+ara::ucm::transfer::SoftwarePackage::SoftwarePackage()
+{
+
+}
 
 
 /*////////////////////////////////////////////////////////////////////////////
@@ -256,7 +262,7 @@ void ara::ucm::transfer::SoftwarePackage::GetPackageId(ara::ucm::TransferIdType 
 {
     TransferInfo.GetTransferId(TransferID);
 }
-
+ 
 
 /*////////////////////////////////////////////////////////////////////////////
 

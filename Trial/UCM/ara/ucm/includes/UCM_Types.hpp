@@ -124,7 +124,7 @@ namespace ara
 		{
 			kIdle = 0U,
 			kReady = 1U,
-			kBusy = 2U,
+			kProcessing = 2U,
 			kActivating = 3U,
 			kActivated = 4U,
 			kRollingBack = 5U,
@@ -273,45 +273,14 @@ namespace ara
 		};
 
 
-
-		enum class TransferStartSuccessType : uint8_t
-		{
-			kSuccess = 0U,
-			kInsufficientMemory = 1U,
-
-		};
-
-
 		typedef struct
 		{
 			TransferIdType id;		  // Size (in bytes) of the Software Package to be transferred
 			uint32_t BlockSize;		  // Size of the blocks to be received with TransferData method
-			TransferStartSuccessType TransferStartResult; // Success or Failure
+			OperationResultType TransferStartResult; // Success or Failure
 
 		}TransferStartReturnType;
 
-
-		enum class TransferDataReturnType :uint8_t
-		{
-			kSuccess = 0U,
-			kIncorrectBlock = 1U,
-			kIncorrectBlockSize = 2U,
-			kInsufficientMemory = 3U,
-			kInvalidTransferId = 4U,
-			kOperationNotPermitted = 5U,
-
-		};
-
-		
-		enum class TransferExitReturnType :uint8_t
-		{
-			kSuccess = 0U,
-			kInsufficientData = 1U,
-			kPackageInconsistent = 2U,
-			kInvalidTransferId = 3U,
-			kOperationNotPermitted = 4U,
-
-		};
 	}
 }
 

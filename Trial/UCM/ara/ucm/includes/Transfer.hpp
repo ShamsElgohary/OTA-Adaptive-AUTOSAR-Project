@@ -52,13 +52,19 @@ namespace ara
 				TransferInstance TransferInfo;
 
 				public:
+				/* CONSTRUCTOR FOR TRANSFER INSTANCE */
+				SoftwarePackage (uint64_t expectedBytes, string path, ara::ucm::SwPackageStateType TransferState, TransferIdType transferId);
+				
+				SoftwarePackage();
 
 				/* METHODS RELATED TO THE TRANSFER OPERATION OF THE UCM */
 				static ara::ucm::TransferStartReturnType TransferStart(uint64_t Size);
 				static ara::ucm::OperationResultType  TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter);
 				static ara::ucm::OperationResultType TransferExit(TransferIdType &id);
+				static ara::ucm::OperationResultType TransferDelete(TransferIdType &id);
 
-				/* METHODS RELATED TO THE TransferInfo OBJECT SINCE DATA IS ENCAPSULATED*/
+				/* METHODS RELATED TO THE TransferInfo OBJECT SINCE DATA IS ENCAPSULATED */
+				
 				void SetPackageExpectedBytes(uint64_t expectedBytes);
 				void SetPackageReceivedBytes(uint64_t receivedBytes);
 				void SetPackageExpectedBlocks(uint32_t expectedBlocks);
@@ -75,7 +81,8 @@ namespace ara
 				uint32_t GetPackageBlockSize ();
 				string GetPackagePath();
 				SwPackageStateType GetPackageState();
-				void GetPackageId(ara::ucm::TransferIdType &TransferID);
+				void GetPackageId(ara::ucm::TransferIdType &TransferID); 
+				
 			};
 
 		}
