@@ -7,7 +7,7 @@ SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
 {
     SwClusterInfoType swClusterInfo;
 
-    string Path = PackagePath + "/" + "swclustermanifest.json";
+    string Path = PackagePath + "/SoftwareCluster/SwClusterManifest.json";
     // Create a root
     pt::ptree root;
     // Load the json file in this ptree
@@ -23,14 +23,13 @@ SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
 
 void SoftwarePackageParser::SwPackageManifestParser(string PackagePath)
 {
-string Path = PackagePath + "/" + "swpackagemanifest.json";
+string Path = PackagePath + "/SwPackageManifest.json";
 // Create a root
 pt::ptree root;
 // Load the json file in this ptree
 pt::read_json(Path, root);
 
-
-string actionTypeString { root.get<string>("actionType", 0) };
+string actionTypeString { root.get<string>("actionType") };
 
 if ( actionTypeString == "Install")
 {  
@@ -48,7 +47,8 @@ else if( actionTypeString == "Remove" )
 }
 
 activationAction = root.get<std::string>("activationAction");
-deltaPackageApplicableVersion = root.get<std::string>("deltaPackageApplicableVersion");
+//deltaPackageApplicableVersion = root.get<std::string>("deltaPackageApplicableVersion");
+
 }
 
 ActionType SoftwarePackageParser::GetActionType()
@@ -66,9 +66,28 @@ string SoftwarePackageParser::GetDeltaPackageApplicableVersion()
 return deltaPackageApplicableVersion;
 }
 
-void SoftwarePackageParser::UnzipFile(string FilePath)
+string SoftwarePackageParser::UnzipPackage(string SoftwarePackage)
 {
-    string command = "unzip " + FilePath + ".zip";
+
+    /* PACKAGE WILL BE A DIRECTORY NOT A ZIPPED FILE  (DISREGARD .ZIP) */
+    string UnzippedPath { SoftwarePackage.substr( 0, SoftwarePackage.length()- 4) };    
+
+    /* If Path Doesn't Exist,Then Make Directory */
+    if( IsPathExist(UnzippedPath.c_str()) == false )
+    {
+        command = "mkdir " + UnzippedPath;
+        system(&command[0]);
+    }
+
+    /* UNZIP IN NEW PATH ( DIRECTORY WITH THE SAME NAME (TRANSFER ID : --) ) */
+    chdir(UnzippedPath.c_str());
+    command = "unzip " + SoftwarePackage;
     system(command.c_str());
+
+    /* REMOVE TRANSFERED ZIPPED FILE */
+    command = "rm -r " + SoftwarePackage;
+    system(command.c_str());
+
+    return UnzippedPath;
 }
 

@@ -23,11 +23,11 @@ namespace ara
 
 			public:
 				SwClusterInfoType GetSwClusterInfo(string PackagePath);
-				void SoftwarePackageParser::SwPackageManifestParser(string PackagePath);
+				void SwPackageManifestParser(string PackagePath);
 				ActionType GetActionType();
 				string GetActivationAction();
 				string GetDeltaPackageApplicableVersion();
-				void UnzipFile(string FilePath);
+				string UnzipPackage(string SoftwarePackage);
 			};
 		}
 	}
