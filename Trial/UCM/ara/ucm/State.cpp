@@ -3,6 +3,19 @@
 using namespace ara::ucm::storage;
 using namespace ara::ucm::state;
 
+PackageManagerState::PackageManagerState(PackageManagerStatusType &pkgmgr_CurrentStatus)
+{
+    /* CURRENT STATUS IS REFERENCED TO THE STATUS IN THE INTERFACE PACKAGEMANAGER */
+    this->CurrentStatus = &pkgmgr_CurrentStatus;
+}
+
+/* DEFAULT CONSTRUCTOR */
+PackageManagerState::PackageManagerState()
+{
+
+}
+
+
 void PackageManagerState::dependencyCheck(void)
 {
 
@@ -11,14 +24,14 @@ void PackageManagerState::dependencyCheck(void)
 void PackageManagerState::Activate()
 {
 
-    if (PackageManagerState::CurrentStatus != PackageManagerStatusType::kReady)
+    if ((*CurrentStatus) != PackageManagerStatusType::kReady)
     {
         /* PKG not in ready state */
         /*Operation Not Permitted*/
         return;
     }
 
-    PackageManagerState::CurrentStatus = PackageManagerStatusType::kActivating;
+    (*CurrentStatus) = PackageManagerStatusType::kActivating;
     /* Get all Clusters with kPresent State */
     vector<ara::ucm::SwClusterInfoType> PresentSWCls = SWCLManager::GetPresentSWCLs();
 
@@ -50,7 +63,7 @@ void PackageManagerState::Activate()
 
         if(PrepareState == SM_ReceivedStates::kPrepareFailed)
         {
-            PackageManagerState::CurrentStatus = PackageManagerStatusType::kReady;
+            (*CurrentStatus) = PackageManagerStatusType::kReady;
 
             PreActivation Failed Error
 
@@ -61,7 +74,7 @@ void PackageManagerState::Activate()
         {
             if(RejectedCounter == 6 (hash define for rejected counter))
             {
-                PackageManagerState::CurrentStatus = PackageManagerStatusType::kReady;
+                (*CurrentStatus) = PackageManagerStatusType::kReady;
 
                 PreActivation Failed Error
 
@@ -80,12 +93,12 @@ void PackageManagerState::Activate()
     do
     {
         SM_ReceivedStates VerifyState = SM::VerifyUpdate(functional_Group);
-        PackageManagerState::CurrentStatus = PackageManagerStatusType::kVerifing;
+        (*CurrentStatus) = PackageManagerStatusType::kVerifing;
 
 
         if(VerifyState == SM_ReceivedStates::kVerifyFailed)
         {
-            PackageManagerState::CurrentStatus = PackageManagerStatusType::kReady;
+            (*CurrentStatus) = PackageManagerStatusType::kReady;
 
             VerificationFailed Failed Error
 
@@ -103,12 +116,12 @@ void PackageManagerState::Activate()
                 return
             }
             RejectedCounter++;
-            
+            `
         }
     }while(VerifyState != kVerified);    
 
     */
-    PackageManagerState::CurrentStatus = PackageManagerStatusType::kActivated;
+    (*CurrentStatus) = PackageManagerStatusType::kActivated;
 
 
 }
@@ -122,24 +135,93 @@ void PackageManagerState::Finish()
 void PackageManagerState::GetStatus()
 {
 }
-void PackageManagerState::ProcessSwPackage(ara::ucm::TransferIdType id)
+
+ara::ucm::OperationResultType PackageManagerState::ProcessSwPackage(TransferIdType &id)
 {
+    /* ONLY ONE PACKAGE CAN BE PROCESSED AT A TIME AND UCM STATE MUST BE IDLE */
+    if ( (*CurrentStatus) != PackageManagerStatusType::kIdle )
+    {
+       return ara::ucm::OperationResultType::kOperationNotPermitted;
+    }
+
+    /* CURRENT STATUS OF UCM = START PROCESSING */
+    (*CurrentStatus) = PackageManagerStatusType::kProcessing;
+
+    /* CREATE A POINTER TO GET THE SOFTWARE PACKAGE THROUGH THE ID */
+    shared_ptr<ara::ucm::transfer::SoftwarePackage> ptrToSwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
+
+    /* CHECK FOR CORRECT ID */
+    if (ptrToSwPkg == nullptr)
+	{
+       return ara::ucm::OperationResultType::kInvalidTransferId;
+    }
+
+    /* GET PACKAGE */
+    string SWPackagePath{ptrToSwPkg->GetPackagePath()} ;
+
+    /* USED TO PARSE */
+    ara::ucm::parsing::SoftwarePackageParser SWParser_instance;
+    
+    /* SWPACKAGEPATH IS UPDATED WITH ITS PATH AFTER UNZIPPING */
+    SWPackagePath = SWParser_instance.UnzipPackage(SWPackagePath);
+    
+    SWParser_instance.SwPackageManifestParser(SWPackagePath);
+
+    SwClusterInfoType NewSwClusterInfo {SWParser_instance.GetSwClusterInfo(SWPackagePath)};
+
+    ActionType action { SWParser_instance.GetActionType() };
+
+    /* OVERRIDE CLASS */
+    shared_ptr<storage::ReversibleAction> actionPtr;
+
+    /* CHECK ACTION TYPE AND ACT ACCORDING TO IT */
+    if ( action == ActionType::kUpdate )
+    {
+        actionPtr = make_shared<storage::UpdateAction> (SWPackagePath,NewSwClusterInfo) ;   
+    }
+
+    else if ( action == ActionType::kInstall )
+    {
+        actionPtr = make_shared<storage::InstallAction> (SWPackagePath,NewSwClusterInfo) ;   
+    }
+    
+    else if ( action == ActionType::kRemove )
+    {    
+        actionPtr = make_shared<storage::RemoveAction> (SWPackagePath,NewSwClusterInfo) ;   
+    }
+
+    else
+    {
+        // WRONG ACTION TYPE
+    }
+
+    actionPtr->Execute();
+    ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo , actionPtr);
+
+    (*CurrentStatus) = PackageManagerStatusType::kReady; 
+    
+    return ara::ucm::OperationResultType::kSuccess;
 }
+
+
+
 void PackageManagerState::RevertProcessedSwPackages()
 {
+
 }
+
 void PackageManagerState::Rollback()
 {
 
 
-    if (PackageManagerState::CurrentStatus != PackageManagerStatusType::kActivated || PackageManagerState::CurrentStatus != PackageManagerStatusType::kVerifying)
+    if ((*CurrentStatus) != PackageManagerStatusType::kActivated || (*CurrentStatus) != PackageManagerStatusType::kVerifying)
     {
         /* PKG not in Acitvited or Verifing state */
         /*Operation Not Permitted*/
         return;
     }
 
-    PackageManagerState::CurrentStatus = PackageManagerStatusType::kRollingBack;
+    (*CurrentStatus) = PackageManagerStatusType::kRollingBack;
 
     /* Remove New Process List */
 
@@ -153,7 +235,7 @@ void PackageManagerState::Rollback()
 
         if(RollbackState == SM_ReceivedStates::kRollbackFailed)
         {
-            PackageManagerState::CurrentStatus = PackageManagerStatusType::kReady;
+            (*CurrentStatus) = PackageManagerStatusType::kReady;
 
             NotAbleToRollback
 
@@ -162,7 +244,7 @@ void PackageManagerState::Rollback()
         }
         else if (RollbackState == SM_ReceivedStates::kRejected)
         {
-            PackageManagerState::CurrentStatus = PackageManagerStatusType::kReady;
+            (*CurrentStatus) = PackageManagerStatusType::kReady;
 
             NotAbleToRollback
 
@@ -172,5 +254,5 @@ void PackageManagerState::Rollback()
     
     */
 
-       PackageManagerState::CurrentStatus = PackageManagerStatusType::kRolledBack;
+       (*CurrentStatus) = PackageManagerStatusType::kRolledBack;
 }

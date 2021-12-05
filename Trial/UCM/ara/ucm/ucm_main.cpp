@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cmath>
 #include <vector>
-#include "includes/Transfer.hpp"
+#include "includes/Packagemanager.hpp"
 
 using namespace std;
 using namespace ara::ucm;
@@ -12,8 +12,8 @@ ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath);
 int main (void)
 {
 
-    string path =  "Shams/home/desktop/Test.zip";
-
+    ara::ucm::pkgmgr::PackageManagerImpl PackageManagerInstance;
+    string path =  ZIP_PackagesPath + "/PackageTest.zip";
 
     ifstream ifs(path, ios::binary | ios::ate);
     ifstream::pos_type pos = ifs.tellg();
@@ -22,9 +22,9 @@ int main (void)
     ifs.read(&result[0], pos);
 
     ara::ucm::ByteVectorType ByteData, TotalByteData;
-    ara::ucm::transfer::SoftwarePackage SWPKG;
 
-    ara::ucm::TransferStartReturnType StartReturn = SWPKG.TransferStart(result.size());
+
+    ara::ucm::TransferStartReturnType StartReturn = PackageManagerInstance.TransferStart(result.size());
     uint32_t BlockNumber = ceil((float) result.size() / (float) StartReturn.BlockSize);
     uint32_t BlockCounter = 0;
     uint64_t BlockSize = StartReturn.BlockSize;
@@ -39,16 +39,20 @@ int main (void)
             ByteData.push_back(result[i+j]);
         }
 
-        SWPKG.TransferData(StartReturn.id , ByteData, BlockCounter);
+        PackageManagerInstance.TransferData(StartReturn.id , ByteData, BlockCounter);
         BlockCounter++;
         ByteData.clear();
         i+=BlockSize;
     }
 
+    cout <<"FINALLY WORKING \n";
 
-    cout <<"FINALLY WORKING";
 
-    SWPKG.TransferExit(StartReturn.id);    
+    PackageManagerInstance.TransferExit(StartReturn.id);
+
+    PackageManagerInstance.ProcessSwPackage(StartReturn.id);
+
+    
 
 }
 
