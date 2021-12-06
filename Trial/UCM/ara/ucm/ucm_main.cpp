@@ -51,9 +51,6 @@ int main (void)
     PackageManagerInstance.TransferExit(StartReturn.id);
 
     PackageManagerInstance.ProcessSwPackage(StartReturn.id);
-
-    
-
 }
 
 ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath)

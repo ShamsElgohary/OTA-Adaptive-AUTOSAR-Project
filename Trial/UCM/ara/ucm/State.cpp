@@ -1,5 +1,5 @@
 #include "includes/State.hpp"
-
+#include "includes/Storage.hpp"
 using namespace ara::ucm::storage;
 using namespace ara::ucm::state;
 
@@ -20,7 +20,7 @@ void PackageManagerState::dependencyCheck(void)
 {
 
 }
-
+/*we must write processes in process list*/
 void PackageManagerState::Activate()
 {
 
@@ -125,13 +125,64 @@ void PackageManagerState::Activate()
 
 
 }
-void PackageManagerState::Cancel(ara::ucm::TransferIdType id)
+
+/*no idea how to impelement*/
+ara::ucm::OperationResultType PackageManagerState::Cancel(ara::ucm::TransferIdType id)
 {
+
+    if ((*CurrentStatus) != PackageManagerStatusType::kProcessing)
+    {
+        return ara::ucm::OperationResultType::kOperationNotPermitted;
+    }
+
+    SWPackagesCounter--;
+
+    if (SWPackagesCounter == 0)
+    {
+        (*CurrentStatus) != PackageManagerStatusType::kIdle;
+    }
+    else 
+    {
+        (*CurrentStatus) != PackageManagerStatusType::kReady;
+    }
+
+    return ara::ucm::OperationResultType::kSuccess;
+
 }
 
-void PackageManagerState::Finish()
+
+/*remove process list*/
+ara::ucm::OperationResultType PackageManagerState::Finish()
 {
+    if (((*CurrentStatus) != PackageManagerStatusType::kRolledBack) && ((*CurrentStatus) != PackageManagerStatusType::kActivated))
+    {
+       return ara::ucm::OperationResultType::kOperationNotPermitted;
+    }
+
+    (*CurrentStatus) == PackageManagerStatusType::kCleaningUp;
+
+    /*if UCM status is activated finish method commit changes*/
+    if ( (*CurrentStatus) == PackageManagerStatusType::kActivated)
+    {
+        ara::ucm::storage::SWCLManager::CommitChanges();
+    }
+
+    /*if UCM status is krolledback finish method revert changes*/
+    if ( (*CurrentStatus) == PackageManagerStatusType::kRolledBack)
+    {
+        ara::ucm::storage::SWCLManager::RevertChanges();
+    }
+
+    /*change UCM status into Kcleaningup*/
+    (*CurrentStatus) == PackageManagerStatusType::kIdle;
+    SWPackagesCounter=0;
+    return ara::ucm::OperationResultType::kSuccess;
+
 }
+
+
+
+
 void PackageManagerState::GetStatus()
 {
 }
@@ -139,11 +190,11 @@ void PackageManagerState::GetStatus()
 ara::ucm::OperationResultType PackageManagerState::ProcessSwPackage(TransferIdType &id)
 {
     /* ONLY ONE PACKAGE CAN BE PROCESSED AT A TIME AND UCM STATE MUST BE IDLE */
-    if ( (*CurrentStatus) != PackageManagerStatusType::kIdle )
+    if ( (*CurrentStatus) != PackageManagerStatusType::kIdle && ((*CurrentStatus) != PackageManagerStatusType::kReady))
     {
        return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
-
+    SWPackagesCounter++;
     /* CURRENT STATUS OF UCM = START PROCESSING */
     (*CurrentStatus) = PackageManagerStatusType::kProcessing;
 
@@ -199,16 +250,33 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackage(TransferIdTy
     ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo , actionPtr);
 
     (*CurrentStatus) = PackageManagerStatusType::kReady; 
-    
+     
+    return ara::ucm::OperationResultType::kSuccess;
+   
+}
+
+
+ /* missing KProcessing*/
+ara::ucm::OperationResultType PackageManagerState::RevertProcessedSwPackages()
+{   
+    if ((*CurrentStatus) != PackageManagerStatusType::kReady || (*CurrentStatus) != PackageManagerStatusType::kProcessing)
+    {
+        return ara::ucm::OperationResultType::kOperationNotPermitted;
+    }
+   
+    if ((*CurrentStatus) == PackageManagerStatusType::kReady)
+    {
+        (*CurrentStatus) == PackageManagerStatusType::kCleaningUp;
+
+        ara::ucm::storage::SWCLManager::RevertChanges();
+
+        (*CurrentStatus) == PackageManagerStatusType::kIdle;
+        SWPackagesCounter=0;
+
+    }
     return ara::ucm::OperationResultType::kSuccess;
 }
 
-
-
-void PackageManagerState::RevertProcessedSwPackages()
-{
-
-}
 
 void PackageManagerState::Rollback()
 {

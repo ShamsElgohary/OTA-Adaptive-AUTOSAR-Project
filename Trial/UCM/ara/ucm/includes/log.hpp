@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "UCM_Common.hpp"
 
 using namespace std;
 

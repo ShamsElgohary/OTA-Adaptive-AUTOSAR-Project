@@ -19,7 +19,7 @@ namespace ara
 
                 /* State of The Entire UCM PKG */ 
                 PackageManagerStatusType *CurrentStatus;
-
+                uint8_t SWPackagesCounter=0;
                 //inline static uint8_t ProcessListVersion = 0;
 
                 enum class SM_ReceivedStates : uint8_t
@@ -34,11 +34,11 @@ namespace ara
                 PackageManagerState(PackageManagerStatusType &pkgmgr_CurrentStatus);
                 PackageManagerState();
                 void Activate();
-                void Cancel(ara::ucm::TransferIdType);
-                void Finish();
+                ara::ucm::OperationResultType Cancel(ara::ucm::TransferIdType);
+                ara::ucm::OperationResultType Finish();
                 void GetStatus();
                 ara::ucm::OperationResultType ProcessSwPackage(TransferIdType &id);
-                void RevertProcessedSwPackages();
+                ara::ucm::OperationResultType RevertProcessedSwPackages();
                 void Rollback();
                 void dependencyCheck(void);
             };

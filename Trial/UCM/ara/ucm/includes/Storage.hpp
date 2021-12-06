@@ -65,9 +65,10 @@ namespace ara
 			class SWCLManager
 			{
 				private:
-					static map < shared_ptr<ara::ucm::storage::ReversibleAction > , ara::ucm::SwClusterInfoType> SWClustersData;
+					//static map < shared_ptr<ara::ucm::storage::ReversibleAction > , ara::ucm::SwClusterInfoType> SWClustersData;
 
 				public:
+				    static map < shared_ptr<ara::ucm::storage::ReversibleAction > , ara::ucm::SwClusterInfoType> SWClustersData;
 					static void AddSWCLChangeInfo(ara::ucm::SwClusterInfoType NewSWClusterInfo,shared_ptr<ara::ucm::storage::ReversibleAction> ReversibleAct);
 					static void CommitChanges();
 					static vector <ara::ucm::SwClusterInfoType> GetPresentSWCLs();
