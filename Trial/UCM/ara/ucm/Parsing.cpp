@@ -88,6 +88,9 @@ string SoftwarePackageParser::UnzipPackage(string SoftwarePackage)
     command = "rm -r " + SoftwarePackage;
     system(command.c_str());
 
+    /* RETURN TO THE PARENT PROCESS */
+    chdir(UCM_Path.c_str());
+
     return UnzippedPath;
 }
 

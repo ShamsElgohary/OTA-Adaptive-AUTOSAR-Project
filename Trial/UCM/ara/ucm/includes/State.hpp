@@ -33,13 +33,13 @@ namespace ara
             public:
                 PackageManagerState(PackageManagerStatusType &pkgmgr_CurrentStatus);
                 PackageManagerState();
-                void Activate();
+                ara::ucm::OperationResultType Activate();
                 ara::ucm::OperationResultType Cancel(ara::ucm::TransferIdType);
                 ara::ucm::OperationResultType Finish();
-                void GetStatus();
+                PackageManagerStatusType GetStatus();
                 ara::ucm::OperationResultType ProcessSwPackage(TransferIdType &id);
                 ara::ucm::OperationResultType RevertProcessedSwPackages();
-                void Rollback();
+                ara::ucm::OperationResultType Rollback();
                 void dependencyCheck(void);
             };
         }

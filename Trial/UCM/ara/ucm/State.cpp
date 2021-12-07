@@ -20,15 +20,18 @@ void PackageManagerState::dependencyCheck(void)
 {
 
 }
+
+
 /*we must write processes in process list*/
-void PackageManagerState::Activate()
+
+ara::ucm::OperationResultType PackageManagerState::Activate()
 {
 
     if ((*CurrentStatus) != PackageManagerStatusType::kReady)
     {
         /* PKG not in ready state */
         /*Operation Not Permitted*/
-        return;
+        return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
 
     (*CurrentStatus) = PackageManagerStatusType::kActivating;
@@ -123,6 +126,7 @@ void PackageManagerState::Activate()
     */
     (*CurrentStatus) = PackageManagerStatusType::kActivated;
 
+    return ara::ucm::OperationResultType::kSuccess;
 
 }
 
@@ -130,7 +134,7 @@ void PackageManagerState::Activate()
 ara::ucm::OperationResultType PackageManagerState::Cancel(ara::ucm::TransferIdType id)
 {
 
-    if ((*CurrentStatus) != PackageManagerStatusType::kProcessing)
+    if ( (*CurrentStatus) != PackageManagerStatusType::kProcessing)
     {
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
@@ -181,19 +185,20 @@ ara::ucm::OperationResultType PackageManagerState::Finish()
 }
 
 
-
-
-void PackageManagerState::GetStatus()
+PackageManagerStatusType PackageManagerState::GetStatus()
 {
+    return (*CurrentStatus);
 }
+
 
 ara::ucm::OperationResultType PackageManagerState::ProcessSwPackage(TransferIdType &id)
 {
-    /* ONLY ONE PACKAGE CAN BE PROCESSED AT A TIME AND UCM STATE MUST BE IDLE */
+    /* ONLY ONE PACKAGE CAN BE PROCESSED AT A TIME AND UCM STATE MUST BE IDLE AND KREADY */
     if ( (*CurrentStatus) != PackageManagerStatusType::kIdle && ((*CurrentStatus) != PackageManagerStatusType::kReady))
     {
        return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
+
     SWPackagesCounter++;
     /* CURRENT STATUS OF UCM = START PROCESSING */
     (*CurrentStatus) = PackageManagerStatusType::kProcessing;
@@ -247,12 +252,15 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackage(TransferIdTy
     }
 
     actionPtr->Execute();
+    
     ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo , actionPtr);
 
-    (*CurrentStatus) = PackageManagerStatusType::kReady; 
-     
+    (*CurrentStatus) = PackageManagerStatusType::kReady;
+
+    ara::ucm::SynchronizedStorage::DeleteItem(id);      
+    
     return ara::ucm::OperationResultType::kSuccess;
-   
+
 }
 
 
@@ -278,15 +286,14 @@ ara::ucm::OperationResultType PackageManagerState::RevertProcessedSwPackages()
 }
 
 
-void PackageManagerState::Rollback()
+ara::ucm::OperationResultType PackageManagerState::Rollback()
 {
 
-
-    if ((*CurrentStatus) != PackageManagerStatusType::kActivated || (*CurrentStatus) != PackageManagerStatusType::kVerifying)
+    if ( (*CurrentStatus) != PackageManagerStatusType::kActivated && (*CurrentStatus) != PackageManagerStatusType::kVerifying)
     {
         /* PKG not in Acitvited or Verifing state */
         /*Operation Not Permitted*/
-        return;
+        return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
 
     (*CurrentStatus) = PackageManagerStatusType::kRollingBack;
@@ -322,5 +329,7 @@ void PackageManagerState::Rollback()
     
     */
 
-       (*CurrentStatus) = PackageManagerStatusType::kRolledBack;
+    (*CurrentStatus) = PackageManagerStatusType::kRolledBack;
+
+    return ara::ucm::OperationResultType::kSuccess;
 }

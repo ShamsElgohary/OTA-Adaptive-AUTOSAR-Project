@@ -11,9 +11,7 @@ void log::ReportError( string Error )
 
 void log::ActionsLog( string Action, unsigned char Result )
 {
-    string currentpath = GetCurrentDirectory();
-
-    ofstream ReportAction(UCM_Path +"/ActionsLog.txt", ios_base::out | ios_base::app);
+    ofstream ReportAction("ActionsLog.txt", ios_base::out | ios_base::app);
     /* WRITE THE ACTION AND THE RESULT OF THIS ACTION */
     ReportAction << Action << UCM_Operation_str[ Result ] << '\n';
 }
