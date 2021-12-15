@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cmath>
 #include <vector>
-#include "includes/Packagemanager.hpp"
+#include "includes/PackageManager.hpp"
 
 using namespace std;
 using namespace ara::ucm;
@@ -11,7 +11,6 @@ ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath);
 
 int main (void)
 {
-
     ara::ucm::pkgmgr::PackageManagerImpl PackageManagerInstance;
     string path =  ZIP_PackagesPath + "/PackageTest.zip";
 
@@ -22,7 +21,6 @@ int main (void)
     ifs.read(&result[0], pos);
 
     ara::ucm::ByteVectorType ByteData, TotalByteData;
-
 
     ara::ucm::TransferStartReturnType StartReturn = PackageManagerInstance.TransferStart(result.size());
     uint32_t BlockNumber = ceil((float) result.size() / (float) StartReturn.BlockSize);
@@ -46,7 +44,6 @@ int main (void)
     }
 
     cout <<"FINALLY WORKING \n";
-
 
     PackageManagerInstance.TransferExit(StartReturn.id);
 

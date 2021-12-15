@@ -7,7 +7,6 @@
 #include "UCM_Common.hpp"
 #include "State.hpp"
 
-
 namespace ara
 {
 	namespace ucm
@@ -15,7 +14,7 @@ namespace ara
 		namespace pkgmgr
 		{
 
-			class PackageManager
+			class PackageManager 
 			{
 			public:
 
@@ -77,8 +76,8 @@ namespace ara
 			
 			/* The current status of UCM */
 			static PackageManagerStatusType CurrentStatus;
-			/* COMPOSITIONS */
 			
+			/* COMPOSITIONS */
 			ara::ucm::transfer::SoftwarePackage SWPackageinstance;
 
 			/* CURRENT STATUS IS REFERENCED BY THE PACKAGE MANAGER STATE CLASS */
