@@ -16,6 +16,18 @@ PackageManagerState::PackageManagerState(PackageManagerStatusType &pkgmgr_Curren
     {
         JsonInStream >> CurrentProcessList;
         PackageManagerState::ProcessListVersion = CurrentProcessList["Process List Version"];
+        json::iterator it = CurrentProcessList.begin();
+        ++it;
+        for ( ;it != CurrentProcessList.end(); ++it) 
+        {
+            ara::ucm::SwClusterInfoType SWCluster;
+            SWCluster.Name = it.key();
+            SWCluster.Version = CurrentProcessList[it.key()]["Version"];
+            SWCluster.State = ara::ucm::SwClusterStateType::kPresent;
+
+            SWCLManager::PushInSWCLusters(SWCluster);
+        }
+
     }
     catch(const std::exception& e)
     {
