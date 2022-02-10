@@ -20,7 +20,7 @@ namespace ara
                 /* State of The Entire UCM PKG */ 
                 PackageManagerStatusType *CurrentStatus;
                 uint8_t SWPackagesCounter=0;
-                //inline static uint8_t ProcessListVersion = 0;
+                static uint16_t ProcessListVersion;
 
                 enum class SM_ReceivedStates : uint8_t
                 {

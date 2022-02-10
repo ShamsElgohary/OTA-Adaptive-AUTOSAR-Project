@@ -67,11 +67,10 @@ namespace ara
 			class SWCLManager
 			{
 				private:
-					
-
-				public:
 					static vector<ara::ucm::SwClusterInfoType> SWClusters;
 					static map < shared_ptr<ara::ucm::storage::ReversibleAction > , ara::ucm::SwClusterInfoType> NewSWClusters;
+
+				public:
 					static shared_ptr<ara::ucm::storage::ReversibleAction > AddSWCLChangeInfo(ara::ucm::SwClusterInfoType NewSWClusterInfo, ActionType ActType, std::string SWPath);
 					static void CommitChanges();
 					static void RevertChanges();
@@ -82,6 +81,7 @@ namespace ara
 					
 					static void SetSWCLState(ara::ucm::SwClusterInfoType ChangedSWCluster, ara::ucm::SwClusterStateType State);
 					static void RemoveSWCL(ara::ucm::SwClusterInfoType ChangedSWCluster);
+					static void PushInSWCLusters(ara::ucm::SwClusterInfoType ChangedSWCluster);
 			};
 
 		}

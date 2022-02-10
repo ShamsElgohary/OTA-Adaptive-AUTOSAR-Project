@@ -3,10 +3,24 @@
 using namespace ara::ucm::storage;
 using namespace ara::ucm::state;
 
+uint16_t PackageManagerState::ProcessListVersion = 0;
+
 PackageManagerState::PackageManagerState(PackageManagerStatusType &pkgmgr_CurrentStatus)
 {
     /* CURRENT STATUS IS REFERENCED TO THE STATUS IN THE INTERFACE PACKAGEMANAGER */
     this->CurrentStatus = &pkgmgr_CurrentStatus;
+
+    json CurrentProcessList;
+    std::ifstream JsonInStream (fileSystemPath + "/" + "Process_List.json");
+    try
+    {
+        JsonInStream >> CurrentProcessList;
+        PackageManagerState::ProcessListVersion = CurrentProcessList["Process List Version"];
+    }
+    catch(const std::exception& e)
+    {
+        PackageManagerState::ProcessListVersion = 0;
+    }
 }
 
 /* DEFAULT CONSTRUCTOR */
@@ -41,8 +55,47 @@ ara::ucm::OperationResultType PackageManagerState::Activate()
     /* Get all Clusters with kAdded/kRemoved/kUpdated State */
     vector<ara::ucm::SwClusterInfoType> ChangedSWCls = SWCLManager::GetSWCLsChangeInfo();
 
-    /*Create ProcessList*/
+    /* PROCESSES IN NEW PROCESS LIST */
+    vector<ara::ucm::SwClusterInfoType> NewProListSwClusters;
+
+    /* GET UNCHANGED SW CLUSTERS INFORMATION */
+    NewProListSwClusters = SWCLManager::GetPresentSWCLs();
+
+    /* ALL CHANGED PROCESSES */
+    vector<ara::ucm::SwClusterInfoType> SwChangedClusters;
+
+    /* GET ALL CHANGED PROCESSES */
+    SwChangedClusters = SWCLManager::GetSWCLsChangeInfo();
+
+    /* SELECT UPDATED OR INSTALLED SW CLUSTERS ONLY */
+    for(auto itr = SwChangedClusters.begin(); itr != SwChangedClusters.end(); ++itr)
+    {
+        if (((itr->State) == ara::ucm::SwClusterStateType::kUpdated) || ((itr->State) == ara::ucm::SwClusterStateType::kAdded) )
+        {
+            NewProListSwClusters.push_back(*itr);
+        }
+    }
+
+    /* CREATE JSON OBJECT FOR PROCESS LIST */
     json processList;
+
+    PackageManagerState::ProcessListVersion = PackageManagerState::ProcessListVersion + 1;
+
+    processList["Process List Version"] =  PackageManagerState::ProcessListVersion;
+
+    for(auto itr = NewProListSwClusters.begin(); itr != NewProListSwClusters.end(); ++itr)
+    {
+        std::string Path {fileSystemPath + "/" + itr->Name + "/" + itr->Version + "/"};
+        processList[itr->Name] = { {"Version", itr->Version}, {"Path", Path} };
+    }
+
+    /* MOVE OLD PROCESS LIST TO BACKUP FOLDER */
+    command = "mv "+ fileSystemPath + "/" + "Process_List.json" + " " + fileSystemPath + "/" + "Backup/";   
+    system(command.c_str());
+
+    /* GENERATE THE NEW PROCESS LIST FILE */
+    std::ofstream JsonOutStream(fileSystemPath + "/" + "Process_List.json");
+    JsonOutStream << std::setw(4) << processList << std::endl;
 
     /*Depenency Missing Error Check*/
     dependencyCheck();
@@ -177,6 +230,9 @@ ara::ucm::OperationResultType PackageManagerState::Finish()
         ara::ucm::storage::SWCLManager::RevertChanges();
     }
 
+    command = "rm "+ fileSystemPath + "/" + "Backup/*";   
+    system(command.c_str());
+
     /*change UCM status into Kcleaningup*/
     (*CurrentStatus) == PackageManagerStatusType::kIdle;
     SWPackagesCounter=0;
@@ -283,7 +339,14 @@ ara::ucm::OperationResultType PackageManagerState::Rollback()
 
     (*CurrentStatus) = PackageManagerStatusType::kRollingBack;
 
-    /* Remove New Process List */
+    /* REMOVE NEW PROCESS LIST */
+    command = "rm "+ fileSystemPath + "/" + "Process_List.json";   
+    system(command.c_str());
+
+    /* RETURN OLD PROCESS LIST FROM BACKUP */
+    command = "mv "+ fileSystemPath + "/Backup/Process_List.json" + " " + fileSystemPath + "/";   
+    system(command.c_str());
+
 
     /*
 
@@ -313,6 +376,7 @@ ara::ucm::OperationResultType PackageManagerState::Rollback()
     }while(RollbackState != kPrepared); msh 3arfen hn5rog azay
     
     */
+
 
     (*CurrentStatus) = PackageManagerStatusType::kRolledBack;
 

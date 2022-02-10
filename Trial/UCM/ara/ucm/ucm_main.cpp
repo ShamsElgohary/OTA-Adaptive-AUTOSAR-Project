@@ -42,12 +42,14 @@ int main (void)
         ByteData.clear();
         i+=BlockSize;
     }
-
-    cout <<"FINALLY WORKING \n";
-
+    
     PackageManagerInstance.TransferExit(StartReturn.id);
 
     PackageManagerInstance.ProcessSwPackage(StartReturn.id);
+
+    PackageManagerInstance.Activate();
+
+    PackageManagerInstance.Rollback();
 }
 
 ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath)

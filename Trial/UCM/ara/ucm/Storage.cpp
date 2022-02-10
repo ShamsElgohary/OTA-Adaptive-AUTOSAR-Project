@@ -133,6 +133,12 @@ void ara::ucm::storage::SWCLManager::RemoveSWCL(ara::ucm::SwClusterInfoType Chan
 }
 
 
+void ara::ucm::storage::SWCLManager::PushInSWCLusters(ara::ucm::SwClusterInfoType ChangedSWCluster)
+{
+    storage::SWCLManager::SWClusters.push_back(ChangedSWCluster);
+}
+
+
 
 /*////////////////////////////////////////////////////////////////////////////
 
@@ -324,5 +330,5 @@ void ara::ucm::storage::UpdateAction::RevertChanges()
     ara::ucm::storage::SWCLManager::RemoveSWCL(this->SwClusterInfo);
 
     /* ADD TO LIST OF PRESENT SWCLUSTERS */
-    storage::SWCLManager::SWClusters.push_back(OldSWCluster);
+    storage::SWCLManager::PushInSWCLusters(OldSWCluster);
 }
