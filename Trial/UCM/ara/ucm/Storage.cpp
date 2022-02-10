@@ -9,35 +9,72 @@ using namespace ara::ucm;
 ////////////////////////////////////////////////////////////////////////////*/
 
 
-map < shared_ptr<ara::ucm::storage::ReversibleAction > , ara::ucm::SwClusterInfoType> storage::SWCLManager::SWClustersData;
+map < shared_ptr<ara::ucm::storage::ReversibleAction > , ara::ucm::SwClusterInfoType> storage::SWCLManager::NewSWClusters;
+vector<ara::ucm::SwClusterInfoType>  storage::SWCLManager::SWClusters;
 
 
-void ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(SwClusterInfoType NewSWClusterInfo, shared_ptr<storage::ReversibleAction> ReversibleAct)
+shared_ptr<ara::ucm::storage::ReversibleAction > ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(ara::ucm::SwClusterInfoType NewSWClusterInfo, ActionType ActType, std::string SWPath)
 {
-    SWClustersData.emplace(ReversibleAct, NewSWClusterInfo);
+    shared_ptr<ara::ucm::storage::ReversibleAction > ReversibleAct;
+    switch(ActType)
+    {
+        case ActionType::kInstall:
+            ReversibleAct = make_shared<storage::InstallAction> (SWPath, NewSWClusterInfo);
+            break;
+
+        case ActionType::kRemove:
+
+            for(auto itr = storage::SWCLManager::SWClusters.begin(); itr != storage::SWCLManager::SWClusters.end(); ++itr)
+            {
+                if (((itr->Name) == NewSWClusterInfo.Name) && ((itr->Version) == NewSWClusterInfo.Version))
+                {
+                    storage::SWCLManager::SWClusters.erase(itr);
+                }
+            }
+
+            ReversibleAct = make_shared<storage::RemoveAction> (SWPath, NewSWClusterInfo);
+            break;
+
+        case ActionType::kUpdate:
+
+            StrongRevisionLabelString O_Version;
+            for(auto itr = storage::SWCLManager::SWClusters.begin(); itr != storage::SWCLManager::SWClusters.end(); ++itr)
+            {
+                if ((itr->Name) == NewSWClusterInfo.Name)
+                {
+                    O_Version = itr->Version;
+                    storage::SWCLManager::SWClusters.erase(itr);
+                }
+            }
+
+            ReversibleAct = make_shared<storage::UpdateAction> (SWPath, NewSWClusterInfo);
+            ReversibleAct -> OldVersion = O_Version;
+            break;
+    }
+    storage::SWCLManager::NewSWClusters.emplace(ReversibleAct, NewSWClusterInfo);
+    ReversibleAct -> Execute();
+    return ReversibleAct;
 }
 
 void ara::ucm::storage::SWCLManager::CommitChanges()
 {
-    for(auto itr = SWClustersData.begin(); itr != SWClustersData.end(); ++itr)
+    for(auto itr = NewSWClusters.begin(); itr != NewSWClusters.end(); ++itr)
     {
-        if ((itr->second).State!= ara::ucm::SwClusterStateType::kPresent)
-        {
-            shared_ptr<ara::ucm::storage::ReversibleAction>  Act = itr -> first;
-            Act -> CommitChanges();
-        }
+        shared_ptr<ara::ucm::storage::ReversibleAction>  Act = itr -> first;
+        Act -> CommitChanges();
     }
+    return;
 }
 
 vector <ara::ucm::SwClusterInfoType> ara::ucm::storage::SWCLManager::GetPresentSWCLs()
 {
     // Returns all the Clusters that are in Present State (kPresent)
     vector <ara::ucm::SwClusterInfoType> PresentSWClusters;
-    for(auto itr = SWClustersData.begin(); itr != SWClustersData.end(); ++itr)
+    for(auto itr = SWClusters.begin(); itr != SWClusters.end(); ++itr)
     {
-        if ((itr->second).State == ara::ucm::SwClusterStateType::kPresent)
+        if ((itr->State) == ara::ucm::SwClusterStateType::kPresent)
         {
-            PresentSWClusters.push_back(itr->second);
+            PresentSWClusters.push_back(*itr);
         }
     }
     return PresentSWClusters;
@@ -47,61 +84,50 @@ vector <ara::ucm::SwClusterInfoType> ara::ucm::storage::SWCLManager::GetSWCLsCha
 {
     // Returns all the Clusters that has any changes (kAdded/kRemoved/kUpdated)
     vector <ara::ucm::SwClusterInfoType> ChangeSWClusters;
-    for(auto itr = SWClustersData.begin(); itr != SWClustersData.end(); ++itr)
+    for(auto itr = NewSWClusters.begin(); itr != NewSWClusters.end(); ++itr)
     {
-        if ((itr->second).State != ara::ucm::SwClusterStateType::kPresent)
-        {
-            ChangeSWClusters.push_back(itr->second);
-        }
+        ChangeSWClusters.push_back(itr->second);
     }
     return ChangeSWClusters;
 }
 
 void ara::ucm::storage::SWCLManager::ResetSWCLChangeInfo()
 {
-    for(auto itr = SWClustersData.begin(); itr != SWClustersData.end(); ++itr)
-    {
-        if ((itr->second).State == ara::ucm::SwClusterStateType::kAdded)
-        {
-            SWClustersData.erase(itr);
-        }
-        else if (((itr->second).State == ara::ucm::SwClusterStateType::kRemoved) || ((itr->second).State  == ara::ucm::SwClusterStateType::kUpdated))
-        {
-            (itr -> second).State = ara::ucm::SwClusterStateType::kPresent;
-        }
-    }
+    NewSWClusters.clear();
 }
 
 void ara::ucm::storage::SWCLManager::RevertChanges()
 {
-    for(auto itr = SWClustersData.begin(); itr != SWClustersData.end(); ++itr)
+    for(auto itr = NewSWClusters.begin(); itr != NewSWClusters.end(); ++itr)
     {
-        if ((itr->second).State  != ara::ucm::SwClusterStateType::kPresent)
-        {
-            shared_ptr<ara::ucm::storage::ReversibleAction> Act = itr ->first;
-            Act -> RevertChanges();
-        }
+        shared_ptr<ara::ucm::storage::ReversibleAction> Act = itr ->first;
+        Act -> RevertChanges();
     }
 }
 
 void ara::ucm::storage::SWCLManager::SetSWCLState(ara::ucm::SwClusterInfoType ChangedSWCluster, ara::ucm::SwClusterStateType NewState)
 {
-    for(auto itr = SWClustersData.begin(); itr != SWClustersData.end(); ++itr)
+    for(auto itr = NewSWClusters.begin(); itr != NewSWClusters.end(); ++itr)
     {
         if (((itr->second).Name == ChangedSWCluster.Name) && ((itr->second).Version == ChangedSWCluster.Version))
         {
             (itr->second).State = NewState;
+            if(NewState == ara::ucm::SwClusterStateType::kPresent)
+            {
+                NewSWClusters.erase(itr);
+                SWClusters.push_back(ChangedSWCluster);
+            }
         }
     }
 }
 
 void ara::ucm::storage::SWCLManager::RemoveSWCL(ara::ucm::SwClusterInfoType ChangedSWCluster)
 {
-    for(auto itr = SWClustersData.begin(); itr != SWClustersData.end(); ++itr)
+    for(auto itr = NewSWClusters.begin(); itr != NewSWClusters.end(); ++itr)
     {
-        if (((itr->second).Name == ChangedSWCluster.Name) && ((itr->second).Version == ChangedSWCluster.Version))
+        if ((((itr->second).Name) == ChangedSWCluster.Name) && (((itr->second).Version) == ChangedSWCluster.Version))
         {
-            SWClustersData.erase(itr);
+            NewSWClusters.erase(itr);
         }
     }
 }
@@ -172,7 +198,7 @@ void ara::ucm::storage::InstallAction::RevertChanges()
         command = "rm -r " + clusterInFileSystem;
         system(command.c_str());
     }
-
+    SWCLManager::RemoveSWCL(this->SwClusterInfo);
 }
 
 
@@ -203,6 +229,7 @@ void ara::ucm::storage::RemoveAction::CommitChanges()
         command = "rm -r " + clusterInFileSystem;
         system(command.c_str());
     }
+    ara::ucm::storage::SWCLManager::RemoveSWCL(this->SwClusterInfo);
 }
 
 void ara::ucm::storage::RemoveAction::RevertChanges()
@@ -287,6 +314,15 @@ void ara::ucm::storage::UpdateAction::RevertChanges()
     command = "mv "+ clusterInBackup + " " + fileSystemPath;   
     system(command.c_str());
 
-    ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kPresent);
-}
+    /* CREATE THE OLD VERSION OF THE SWCL INFO */
+    ara::ucm::SwClusterInfoType OldSWCluster;
+    OldSWCluster.Name = this->SwClusterInfo.Name;
+    OldSWCluster.Version = this ->OldVersion;
+    OldSWCluster.State = ara::ucm::SwClusterStateType::kPresent;
 
+    /* REMOVE IT FROM EDITED SWCLUSTERS */
+    ara::ucm::storage::SWCLManager::RemoveSWCL(this->SwClusterInfo);
+
+    /* ADD TO LIST OF PRESENT SWCLUSTERS */
+    storage::SWCLManager::SWClusters.push_back(OldSWCluster);
+}

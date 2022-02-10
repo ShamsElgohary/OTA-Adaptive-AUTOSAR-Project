@@ -215,7 +215,7 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackage(TransferIdTy
     ptrToSwPkg -> SetPackageState(SwPackageStateType::kProcessing);
 
     /* GET PACKAGE */
-    string SWPackagePath{ptrToSwPkg->GetPackagePath()} ;
+    std::string SWPackagePath{ptrToSwPkg->GetPackagePath()} ;
 
     /* USED TO PARSE */
     ara::ucm::parsing::SoftwarePackageParser SWParser_instance;
@@ -225,44 +225,23 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackage(TransferIdTy
     
     SWParser_instance.SwPackageManifestParser(SWPackagePath);
 
+    /* GET SW CLUSTER INFORMATION FROM PARSING */
     SwClusterInfoType NewSwClusterInfo {SWParser_instance.GetSwClusterInfo(SWPackagePath)};
 
+    /* GET SW ACTION TYPE FROM PARSING */
     ActionType action { SWParser_instance.GetActionType() };
 
-    /* OVERRIDE CLASS */
-    shared_ptr<storage::ReversibleAction> actionPtr;
-
-    /* CHECK ACTION TYPE AND ACT ACCORDING TO IT */
-    if ( action == ActionType::kUpdate )
-    {
-        actionPtr = make_shared<storage::UpdateAction> (SWPackagePath,NewSwClusterInfo) ;   
-    }
-
-    else if ( action == ActionType::kInstall )
-    {
-        actionPtr = make_shared<storage::InstallAction> (SWPackagePath,NewSwClusterInfo) ;   
-    }
+    shared_ptr<ara::ucm::storage::ReversibleAction > actionPtr;
     
-    else if ( action == ActionType::kRemove )
-    {    
-        actionPtr = make_shared<storage::RemoveAction> (SWPackagePath,NewSwClusterInfo) ;   
-    }
-
-    else
-    {
-        // WRONG ACTION TYPE
-    }
-
-    actionPtr->Execute();
-    
-    ara::ucm::storage::SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo , actionPtr);
+    /* ADD SWCLUSTER & EXECUTE */
+    actionPtr = SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo, action, SWPackagePath);
 
     (*CurrentStatus) = PackageManagerStatusType::kReady;
 
     /* CHANGE STATE TO KPROCESSING */
     ptrToSwPkg -> SetPackageState(SwPackageStateType::kProcessed);
 
-    
+
     ara::ucm::SynchronizedStorage::DeleteItem(id);      
     
     return ara::ucm::OperationResultType::kSuccess;

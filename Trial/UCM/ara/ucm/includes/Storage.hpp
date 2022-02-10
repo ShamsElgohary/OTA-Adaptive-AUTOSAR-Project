@@ -19,8 +19,10 @@ namespace ara
 					string swPackagePath;
 					ara::ucm::SwClusterInfoType SwClusterInfo;
 					
+					
 				public:
 					ReversibleAction(string swPackagePath, ara::ucm::SwClusterInfoType SwClusterInfo);
+					StrongRevisionLabelString OldVersion = "";
 					virtual void CommitChanges() = 0;
 					virtual void Execute() = 0;
 					virtual void RevertChanges() = 0;
@@ -65,17 +67,19 @@ namespace ara
 			class SWCLManager
 			{
 				private:
-					//static map < shared_ptr<ara::ucm::storage::ReversibleAction > , ara::ucm::SwClusterInfoType> SWClustersData;
+					
 
 				public:
-				    static map < shared_ptr<ara::ucm::storage::ReversibleAction > , ara::ucm::SwClusterInfoType> SWClustersData;
-					static void AddSWCLChangeInfo(ara::ucm::SwClusterInfoType NewSWClusterInfo,shared_ptr<ara::ucm::storage::ReversibleAction> ReversibleAct);
+					static vector<ara::ucm::SwClusterInfoType> SWClusters;
+					static map < shared_ptr<ara::ucm::storage::ReversibleAction > , ara::ucm::SwClusterInfoType> NewSWClusters;
+					static shared_ptr<ara::ucm::storage::ReversibleAction > AddSWCLChangeInfo(ara::ucm::SwClusterInfoType NewSWClusterInfo, ActionType ActType, std::string SWPath);
 					static void CommitChanges();
+					static void RevertChanges();
 					static vector <ara::ucm::SwClusterInfoType> GetPresentSWCLs();
 					static vector <ara::ucm::SwClusterInfoType> GetSWCLsChangeInfo();
 					static void IndexActionsAndSWCLs();
 					static void ResetSWCLChangeInfo();
-					static void RevertChanges();
+					
 					static void SetSWCLState(ara::ucm::SwClusterInfoType ChangedSWCluster, ara::ucm::SwClusterStateType State);
 					static void RemoveSWCL(ara::ucm::SwClusterInfoType ChangedSWCluster);
 			};
