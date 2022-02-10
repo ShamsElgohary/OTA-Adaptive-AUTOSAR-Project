@@ -211,6 +211,8 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackage(TransferIdTy
 	{
        return ara::ucm::OperationResultType::kInvalidTransferId;
     }
+    /* CHANGE STATE TO KPROCESSING */
+    ptrToSwPkg -> SetPackageState(SwPackageStateType::kProcessing);
 
     /* GET PACKAGE */
     string SWPackagePath{ptrToSwPkg->GetPackagePath()} ;
@@ -257,6 +259,10 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackage(TransferIdTy
 
     (*CurrentStatus) = PackageManagerStatusType::kReady;
 
+    /* CHANGE STATE TO KPROCESSING */
+    ptrToSwPkg -> SetPackageState(SwPackageStateType::kProcessed);
+
+    
     ara::ucm::SynchronizedStorage::DeleteItem(id);      
     
     return ara::ucm::OperationResultType::kSuccess;

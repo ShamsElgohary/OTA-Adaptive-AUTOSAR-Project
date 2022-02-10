@@ -129,6 +129,8 @@ ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(
 
     //4- Manifest checking
 
+    SwPkg ->SetPackageState(SwPackageStateType::kTransferred);
+
     return ara::ucm::OperationResultType::kSuccess;
 }
 
