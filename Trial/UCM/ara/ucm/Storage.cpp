@@ -214,6 +214,10 @@ void ara::ucm::storage::InstallAction::Execute()
     system(command.c_str());
 
     ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kAdded);
+
+    /* REMOVE FOLDER FROM ZIP_PACKAGES FOLDER */
+    command = "rm -r "+ this->swPackagePath;   
+    system(command.c_str());
 }
 
 void ara::ucm::storage::InstallAction::CommitChanges()
@@ -250,6 +254,11 @@ ara::ucm::storage::RemoveAction::RemoveAction(string swPackagePath, SwClusterInf
 void ara::ucm::storage::RemoveAction::Execute()
 {
     ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kRemoved);
+
+
+    /* REMOVE FOLDER FROM ZIP_PACKAGES FOLDER */
+    command = "rm -r "+ this->swPackagePath;   
+    system(command.c_str());
 }
 
 void ara::ucm::storage::RemoveAction::CommitChanges()
@@ -313,6 +322,10 @@ void ara::ucm::storage::UpdateAction::Execute()
     system(command.c_str());
     
     ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kUpdated);
+
+    /* REMOVE FOLDER FROM ZIP_PACKAGES FOLDER */
+    command = "rm -r "+ this->swPackagePath;   
+    system(command.c_str());
 }
 
 
