@@ -50,6 +50,10 @@ int main (void)
     PackageManagerInstance.Activate();
 
     PackageManagerInstance.Rollback();
+
+    PackageManagerInstance.Finish();
+
+    return 0;
 }
 
 ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath)

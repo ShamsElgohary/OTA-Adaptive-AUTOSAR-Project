@@ -72,6 +72,8 @@ namespace ara
 
 			PackageManagerStatusType GetCurrentStatus();
 
+			ara::ucm::OperationResultType Finish();
+
 			private:
 			
 			/* The current status of UCM */

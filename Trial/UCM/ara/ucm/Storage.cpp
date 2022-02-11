@@ -29,6 +29,7 @@ shared_ptr<ara::ucm::storage::ReversibleAction > ara::ucm::storage::SWCLManager:
                 if (((itr->Name) == NewSWClusterInfo.Name) && ((itr->Version) == NewSWClusterInfo.Version))
                 {
                     storage::SWCLManager::SWClusters.erase(itr);
+                    break;
                 }
             }
 
@@ -44,6 +45,7 @@ shared_ptr<ara::ucm::storage::ReversibleAction > ara::ucm::storage::SWCLManager:
                 {
                     O_Version = itr->Version;
                     storage::SWCLManager::SWClusters.erase(itr);
+                    break;
                 }
             }
 
@@ -63,21 +65,29 @@ void ara::ucm::storage::SWCLManager::CommitChanges()
         shared_ptr<ara::ucm::storage::ReversibleAction>  Act = itr -> first;
         Act -> CommitChanges();
     }
+
+    auto itr = NewSWClusters.begin();
+    while (itr != NewSWClusters.end())
+    {
+        /* REMOVE CLUSTERS THAT ARE IN KPRESENT OR KREMOVED FROM CHANGE LIST */
+        if (((itr->second).State == ara::ucm::SwClusterStateType::kPresent) || 
+            ((itr->second).State == ara::ucm::SwClusterStateType::kRemoved))
+        {
+            // `erase()` invalidates the iterator, use returned iterator
+            itr = NewSWClusters.erase(itr);
+        }
+        else 
+        {
+            ++itr;
+        }
+    }
     return;
 }
 
 vector <ara::ucm::SwClusterInfoType> ara::ucm::storage::SWCLManager::GetPresentSWCLs()
 {
     // Returns all the Clusters that are in Present State (kPresent)
-    vector <ara::ucm::SwClusterInfoType> PresentSWClusters;
-    for(auto itr = SWClusters.begin(); itr != SWClusters.end(); ++itr)
-    {
-        if ((itr->State) == ara::ucm::SwClusterStateType::kPresent)
-        {
-            PresentSWClusters.push_back(*itr);
-        }
-    }
-    return PresentSWClusters;
+    return SWCLManager::SWClusters;
 }
 
 vector <ara::ucm::SwClusterInfoType> ara::ucm::storage::SWCLManager::GetSWCLsChangeInfo()
@@ -103,6 +113,23 @@ void ara::ucm::storage::SWCLManager::RevertChanges()
         shared_ptr<ara::ucm::storage::ReversibleAction> Act = itr ->first;
         Act -> RevertChanges();
     }
+
+    auto itr = NewSWClusters.begin();
+    while (itr != NewSWClusters.end())
+    {
+        /* REMOVE CLUSTERS THAT ARE IN KPRESENT OR KREMOVED FROM CHANGE LIST */
+        if (((itr->second).State == ara::ucm::SwClusterStateType::kPresent) || 
+            ((itr->second).State == ara::ucm::SwClusterStateType::kRemoved))
+        {
+            // `erase()` invalidates the iterator, use returned iterator
+            itr = NewSWClusters.erase(itr);
+        }
+        else 
+        {
+            ++itr;
+        }
+    }
+    return;
 }
 
 void ara::ucm::storage::SWCLManager::SetSWCLState(ara::ucm::SwClusterInfoType ChangedSWCluster, ara::ucm::SwClusterStateType NewState)
@@ -114,9 +141,9 @@ void ara::ucm::storage::SWCLManager::SetSWCLState(ara::ucm::SwClusterInfoType Ch
             (itr->second).State = NewState;
             if(NewState == ara::ucm::SwClusterStateType::kPresent)
             {
-                NewSWClusters.erase(itr);
                 SWClusters.push_back(ChangedSWCluster);
             }
+            break;
         }
     }
 }
@@ -128,6 +155,7 @@ void ara::ucm::storage::SWCLManager::RemoveSWCL(ara::ucm::SwClusterInfoType Chan
         if ((((itr->second).Name) == ChangedSWCluster.Name) && (((itr->second).Version) == ChangedSWCluster.Version))
         {
             NewSWClusters.erase(itr);
+            break;
         }
     }
 }
@@ -196,7 +224,7 @@ void ara::ucm::storage::InstallAction::CommitChanges()
 void ara::ucm::storage::InstallAction::RevertChanges()
 {
     /* GET THE PATH TO THE FILE SYSTEM DIRECTORY ( VERSION NEEDED ) */
-    string clusterInFileSystem { fileSystemPath + "/" + this->SwClusterInfo.Name + "/" + this->SwClusterInfo.Version }; 
+    string clusterInFileSystem { fileSystemPath + "/" + this->SwClusterInfo.Name }; 
 
     if (IsPathExist(clusterInFileSystem.c_str()))
     {
@@ -204,7 +232,7 @@ void ara::ucm::storage::InstallAction::RevertChanges()
         command = "rm -r " + clusterInFileSystem;
         system(command.c_str());
     }
-    SWCLManager::RemoveSWCL(this->SwClusterInfo);
+    ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kRemoved);
 }
 
 
@@ -227,7 +255,7 @@ void ara::ucm::storage::RemoveAction::Execute()
 void ara::ucm::storage::RemoveAction::CommitChanges()
 {
     /* GET THE PATH TO THE FILE SYSTEM DIRECTORY ( VERSION NEEDED ) */
-    string clusterInFileSystem { fileSystemPath + "/" + this->SwClusterInfo.Name + "/" + this->SwClusterInfo.Version }; 
+    string clusterInFileSystem { fileSystemPath + "/" + this->SwClusterInfo.Name }; 
 
     if (IsPathExist(clusterInFileSystem.c_str()))
     {
@@ -235,7 +263,7 @@ void ara::ucm::storage::RemoveAction::CommitChanges()
         command = "rm -r " + clusterInFileSystem;
         system(command.c_str());
     }
-    ara::ucm::storage::SWCLManager::RemoveSWCL(this->SwClusterInfo);
+    ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kRemoved);
 }
 
 void ara::ucm::storage::RemoveAction::RevertChanges()
@@ -295,8 +323,8 @@ void ara::ucm::storage::UpdateAction::CommitChanges()
     /* REMOVE THE OLD VERSION OF THE SW CLUSTER IN BACKUP */
     if ( IsPathExist(clusterInBackup.c_str()) )
     {
-    command = "rm -r " + clusterInBackup;
-    system(command.c_str());
+        command = "rm -r " + clusterInBackup;
+        system(command.c_str());
     }
 
     ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kPresent);
@@ -327,7 +355,7 @@ void ara::ucm::storage::UpdateAction::RevertChanges()
     OldSWCluster.State = ara::ucm::SwClusterStateType::kPresent;
 
     /* REMOVE IT FROM EDITED SWCLUSTERS */
-    ara::ucm::storage::SWCLManager::RemoveSWCL(this->SwClusterInfo);
+    ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kRemoved);
 
     /* ADD TO LIST OF PRESENT SWCLUSTERS */
     storage::SWCLManager::PushInSWCLusters(OldSWCluster);

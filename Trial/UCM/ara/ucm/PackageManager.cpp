@@ -120,4 +120,11 @@ PackageManagerStatusType PackageManagerImpl::GetCurrentStatus()
 
 
 
+ara::ucm::OperationResultType PackageManagerImpl::Finish()
+{
+    ara::ucm::OperationResultType FinishReturn = PackageManagerStateinstance->Finish();
 
+    logger.ActionsLog("[Activate] \t\t Result : ", static_cast<unsigned char>(FinishReturn) );
+
+    return FinishReturn;
+}
