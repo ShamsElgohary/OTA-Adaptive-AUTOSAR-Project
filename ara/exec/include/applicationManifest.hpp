@@ -18,7 +18,7 @@ namespace ara
                     string scheduling_policy ;
                     string scheduling_priority ;
                     map<string,vector<string>>function_group_states ;
-                    vector<string> machine_states ;
+                    vector<string> machine_states ; 
             }startUpConfiguration; 
 
             string name;
