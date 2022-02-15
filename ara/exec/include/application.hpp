@@ -10,7 +10,7 @@ namespace ara
     namespace exec 
     {
        
-        class Application
+        class Application //process         
         {            
             public:
             enum class ProcessState : uint8_t 

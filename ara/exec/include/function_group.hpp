@@ -16,7 +16,7 @@ namespace ara {
             const string name_;
             const vector <string> allStates_ ;
             const string* currentState_;
-            map<string,set<Application*>> startupConfigurations_;
+            //map<string,set<Application*>> startupConfigurations_;
 
             typedef struct {
                 int fg_index ; 

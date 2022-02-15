@@ -22,7 +22,7 @@ int Application::start()
     // this->id =fork();
     // if(this->id ==0)
     // {
-    //     execl(executable_path.c_str(),to_string(id).c_str(),*configuration_.arguments[0].c_str(),nullptr);
+    //     execl(executable_path.c_str(),nullptr);
     // }
     // mkfifo(name.c_str(), 0666);
     // return id ;

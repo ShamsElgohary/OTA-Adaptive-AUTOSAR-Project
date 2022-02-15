@@ -111,22 +111,26 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 
 void ApplicationExecutionMgr::initialize()
 {
-    FunctionGroupState::Preconstruct("MachineFG", "startup")
-        FunctionGroupState FGS(FunctionGroupState::Preconstruct("MachineFG", "startup"));
-    bool ret = setState(FGS);
+    loadMachineConfigrations();
+    loadExecutablesConfigrations();
+    FunctionGroupState::Preconstruct("MachineFG", "startup");
+    FunctionGroupState FGS(FunctionGroupState::Preconstruct("MachineFG", "startup"));
+    setState(FGS);
 }
 
 ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath)
 {
     //sets the value of rootPath (member variable in the class) to the value of the input rootPath
     rootPath = rootPath;
-    bool ret_value = loadMachineConfigrations();
-    ret_value = loadExecutablesConfigrations();
+    
 }
 
-bool ApplicationExecutionMgr::run(FunctionGroupState fgs)
+bool ApplicationExecutionMgr::run()
 {
     //while
 }
 
 void Terminate(startupConfigurations_)
+{
+    
+}

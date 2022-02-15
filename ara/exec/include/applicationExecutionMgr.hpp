@@ -4,7 +4,8 @@
 #include "applicationManifest.hpp"
 #include "machineManifest.hpp"
 #include "function_group_state.hpp"
-#include"applicationDependencyOrdering.hpp"
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 using namespace std;
 namespace ara {
     namespace exec
@@ -38,15 +39,18 @@ namespace ara {
                 TransationChanges transitionChanges_;
                 //ApplicationExecutionMgr();
                 ApplicationExecutionMgr(string rootPath); //highlevel : calls functions only
-                void initialize();//done
-                bool run();
-                bool setState(FunctionGroupState);
+                void initialize();
+                bool run();//TODO
+                bool setState(FunctionGroupState);//TODO
                 bool loadMachineConfigrations(); //done
                 bool loadExecutablesConfigrations();//done
-                bool ProcessExecutionStateResponce();
-                bool ProcessStateClientRequest();
-                TransationChanges calculateTransition();
-                bool removeTerminatedProcesses();
+                bool ProcessExecutionStateResponce();//TODO
+                bool ProcessStateClientRequest();//TODO
+                TransationChanges calculateTransition();//TODO
+                bool removeTerminatedProcesses();//TODO
+                void Terminate(startupConfigurations_)//TODO
+                void Execute(startupConfigurations_)//TODO
+
                 ~ApplicationExecutionMgr();
         };
     }
