@@ -1,8 +1,7 @@
-#include "em.h"
-#include "function_group.h"
-#include "function_group_state.h"
-#include "executable.h"
-#include "process.h"
+#include "../include/function_group.hpp"
+#include "../include/function_group_state.hpp"
+#include "../include/applicationManifest.hpp"
+#include "../include/application.hpp"
 #include <thread>
 #include <future>
 #include <stdint.h> 
@@ -13,36 +12,36 @@
 #include <errno.h>
 #include <sys/wait.h>
 #include <boost/filesystem.hpp>
+#include <bits/stdc++.h>
+#include "../include/applicationExecutionMgr.hpp"
 
 using namespace ara::exec;
 using namespace std;
 using namespace boost::filesystem;
 
+#define ARA_ROOT "/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/ara"
+
 vector <FunctionGroup>  function_groups;
-
-vector <Executable>  executables;
-
-map<string,vector<Process>> current_processes; 
+vector <ApplicationManifest>  executables;
+map<string,vector<Application>> current_processes; 
 
 
+// void getFunctionGroups()
+// {
+//     FunctionGroup::CtorToken t= FunctionGroup::Preconstruct(string(ARA_ROOT)+"/etc/system/machine_manifest.json");
+//     for(;t.fg_index<t.size ;t.fg_index++)
+//     {
+//         function_groups.push_back( 
+//             FunctionGroup(move(t))
+//             );
+//     }
 
-void getFunctionGroups()
-{
-    FunctionGroup::CtorToken t= FunctionGroup::Preconstruct("");
-
-    for(;t.fg_index<t.size ;t.fg_index++)
-    {
-        function_groups.push_back( 
-            FunctionGroup(move(t))
-            );
-    }
-
-}
+// }
 
 
 void getExcutables()
 {
-    path p("/home/loay/Documents/graduation project/executables");
+    path p(string(ARA_ROOT)+"/executables");
     try
     {
         if (exists(p))
@@ -53,8 +52,10 @@ void getExcutables()
                     
                 for (directory_entry& x : directory_iterator(p))
                 {
-                    string p = x.path().string() +"/" + x.path().filename().string()+".json";
-                    executables.push_back(Executable(p));
+                    string p = x.path().string() +"/etc" + x.path().filename().string()+".json";
+                    Executable E = {ApplicationManifest(p)};
+                    executables_.push_back(E);
+
                 }
             }
             else
@@ -84,18 +85,23 @@ for(auto& index: current_processes[fn_name]){
 
 void getprocesses(string fg_name , string fg_newState)
 {
-    for(auto &exe: executables )
+    for(auto &exe: executables_ )
     {   
        if(exe.configration.find(pair<string,string>(fg_name,fg_newState)) != exe.configration.end() )
        {
-            Process::CtorToken token= Process::preconstruct(exe, fg_name, fg_newState);
-            current_processes[fg_name].push_back(Process(move(token))) ;
+            Application::CtorToken application= Application::preconstruct(exe, fg_name, fg_newState);
+            current_processes[fg_name].push_back(Application(move(application))) ;
+       }
+       if(exe.manifest_.fu != exe.configration.end() )
+       {
+            Application::CtorToken application= Application::preconstruct(exe, fg_name, fg_newState);
+            current_processes[fg_name].push_back(Application(move(application))) ;
        }
     }
 }
 
 
-void process_handel(Process &process)
+void process_handel(Application &process)
 {
     for (auto &x : process.configration.dependency)
     {
@@ -103,7 +109,7 @@ void process_handel(Process &process)
       {
          if(y.name==x)
          {
-             y.check_for_state(Process::processState::Kidel);
+             y.check_for_state(Application::processState::Kidel);
          }
       } 
     }
@@ -125,9 +131,6 @@ void run_processes(string fg_name)
         t.wait();
     }
 }
-
-
-//a => machinefg  ,, a=> fg1 
 
 void print_fng()
 {
@@ -156,20 +159,24 @@ void print_exe()
 int main ()
 {
 
-    getFunctionGroups();
-    print_fng();
+    // getFunctionGroups();
+    // print_fng();
 
     getExcutables();
     print_exe();
 
+
+    ApplicationExecutionMgr app(ARA_ROOT);
     ////////////////////open sm///////////////////////////////
 
-    for(auto exe: executables)
+
+
+    for(auto exe: executables_)
     {
-        if(exe.name=="sm")
+        if(exe.manifest_=="sm")
         {
-            Process::CtorToken token= Process::preconstruct(exe, "machineFG", "startup");
-            Process sm =Process(move(token));
+            Application::CtorToken token= Application::preconstruct(exe, "machineFG", "startup");
+            Application sm =Application(move(token));
             sm.run();
             sm.update_state();
         }
@@ -191,8 +198,7 @@ int main ()
 
         read(fd, &size, sizeof(int));
         read(fd, &fg_newState, size*sizeof(char));
-        //machinfg =>strartup 
-        //fng1 =>runing 
+    
         terminate_all_process(fg_name);
         getprocesses(fg_name,fg_newState);
         run_processes(fg_name);

@@ -1,4 +1,4 @@
-#include "execution_client.h"
+#include "../include/execution_client.hpp"
 #include <boost/filesystem.hpp>
 
 using namespace std ;
@@ -15,6 +15,5 @@ void ExecutionClient::ReportExecutionStaste(ExecutionState state)
 {
     write(fd, &state, sizeof(state));
     close(this->fd);
-
 }
 

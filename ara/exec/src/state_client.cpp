@@ -1,4 +1,4 @@
-#include "state_client.h"
+#include "../include/state_client.hpp"
 
 using namespace std ;
 using namespace ara::exec ;
@@ -23,8 +23,11 @@ bool StateClient::setState(const FunctionGroupState &state){
 }
 
 
-StateClient::StateClient(){
-        this->fd = open("smFifo", O_RDWR);  //mkfifo??
+StateClient::StateClient()
+{
+        this->fd = open("smFifo", O_RDWR); 
 }
 StateClient::~StateClient()
-{}
+{
+
+}

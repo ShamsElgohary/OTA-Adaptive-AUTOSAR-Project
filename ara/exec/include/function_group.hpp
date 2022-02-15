@@ -2,6 +2,8 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <bits/stdc++.h>
+#include "../include/application.hpp"
+
 using namespace std;
 
 namespace ara {
@@ -11,9 +13,10 @@ namespace ara {
         {
             public:
             
-            string name ;
-            vector <string> states ;
-            string current_state;
+            const string name_;
+            const vector <string> allStates_ ;
+            const string* currentState_;
+            map<string,set<Application*>> startupConfigurations_;
 
             typedef struct {
                 int fg_index ; 

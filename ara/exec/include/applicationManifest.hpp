@@ -7,8 +7,7 @@ namespace ara
 {
     namespace exec
     {
-      
-        class Executable 
+        class ApplicationManifest 
         {
 
             public:
@@ -18,14 +17,17 @@ namespace ara
                     vector<string> environments ;
                     string scheduling_policy ;
                     string scheduling_priority ;
-            }startUpConfigration; 
+                    map<string,vector<string>>function_group_states ;
+                    vector<string> machine_states ;
+            }startUpConfiguration; 
 
             string name;
             string executable_path;
             bool platform_application;
-            
-            map<pair<string,string>,startUpConfigration> configration  ;
-            Executable(string manifestPath);
+            vector<string> applicationStates;
+            vector<startUpConfiguration> startUpConfigurations;
+            //map<pair<string,string>,startUpConfigration> configration ;
+            ApplicationManifest(string manifestPath);
         };
     }
 }
