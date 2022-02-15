@@ -49,7 +49,7 @@ namespace ara {
                 TransationChanges calculateTransition();//TODO
                 bool removeTerminatedProcesses();//TODO
                 void Terminate(startupConfigurations_)//TODO
-                void Execute(startupConfigurations_)//TODO
+                void Execute(startupConfigurations_)
 
                 ~ApplicationExecutionMgr();
         };
