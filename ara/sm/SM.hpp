@@ -3,17 +3,17 @@
 #include <vector>
 #include <string.h>
 #include <bits/stdc++.h>
-using Functiongroup=std::string;
+using Functiongroup = std::string;
 namespace ara
 {
     namespace sm
     {
         class UpdateRequest
         {
-            public :
+        public:
             bool StartUpdateSession();
-            bool PrepareUpdate(std::vector<Functiongroup>FunctionGroups); // type from em
-            bool VerifyUpdate(std::vector<Functiongroup>FunctionGroups); // type from em
+            bool PrepareUpdate(std::vector<Functiongroup> FunctionGroups); // type from em
+            bool VerifyUpdate(std::vector<Functiongroup> FunctionGroups);  // type from em
             bool StopUpdateSession();
         };
     }

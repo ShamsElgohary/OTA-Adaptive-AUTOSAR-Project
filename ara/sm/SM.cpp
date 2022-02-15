@@ -6,23 +6,23 @@ using namespace std;
 
 bool UpdateRequest::StartUpdateSession()
 {
-    StateClient client{};                                         
-    bool success = client.setState(FunctionGroupState({"MachineState", "Updating"})); 
+    StateClient client{};
+    bool success = client.setState(FunctionGroupState({"MachineState", "Updating"}));
     return success;
 }
 bool UpdateRequest::StopUpdateSession()
 {
-    StateClient client{};                                       
-    bool success = client.setState(FunctionGroupState({"MachineState", "Running"})); 
+    StateClient client{};
+    bool success = client.setState(FunctionGroupState({"MachineState", "Running"}));
     return success;
 }
-bool UpdateRequest::PrepareUpdate(vector<Functiongroup>FunctionGroups)
+bool UpdateRequest::PrepareUpdate(vector<Functiongroup> FunctionGroups)
 {
     bool success;
-    StateClient client{}; 
+    StateClient client{};
     for (auto fg : FunctionGroups)
-    {                                  
-        success = client.setState(FunctionGroupState({fg, "Preparing"})); 
+    {
+        success = client.setState(FunctionGroupState({fg, "Preparing"}));
         if (!success)
             return 0;
     }
@@ -31,10 +31,10 @@ bool UpdateRequest::PrepareUpdate(vector<Functiongroup>FunctionGroups)
 bool UpdateRequest::VerifyUpdate(vector<Functiongroup> FunctionGroups)
 {
     bool success;
-    StateClient client{};  
+    StateClient client{};
     for (auto fg : FunctionGroups)
-    {                               
-        success = client.setState(FunctionGroupState({fg, "Verifying"})); 
+    {
+        success = client.setState(FunctionGroupState({fg, "Verifying"}));
         if (!success)
             return 0;
     }
