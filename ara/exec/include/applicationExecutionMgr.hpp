@@ -37,7 +37,7 @@ namespace ara {
         typedef struct{
             vector<Application*> toStart_;
             vector<Application*> toTerminate_;
-        }TransationChanges;
+        }TransitionChanges;
 
         class ApplicationExecutionMgr final
         {
@@ -48,7 +48,7 @@ namespace ara {
                 const string rootPath ;
                 map<string,FunctionGroup> functionGroups_;
                 PlatformStates platformState_ {PlatformStates::kRunning};
-                TransationChanges transitionChanges_;
+                TransitionChanges transitionChanges_;
                 //ApplicationExecutionMgr();
                 ApplicationExecutionMgr(string rootPath); //highlevel : calls functions only
                 void initialize();//done

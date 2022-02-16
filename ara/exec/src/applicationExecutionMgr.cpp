@@ -1,4 +1,5 @@
 #include "../include/applicationExecutionMgr.hpp"
+#include "../include/function_group_state.hpp"
 
 using namespace std;
 using namespace ara::exec;
@@ -24,7 +25,7 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
                     Executable E = {ApplicationManifest(p)};
                     for (auto &c : E.manifest_.startUpConfigurations)
                     {
-                        E.startupConfigurations_.push_back(Application(c,E.manifest_.name,E.manifest_.executable_path));
+                        E.startupConfigurations_.push_back(Application(c, E.manifest_.name, E.manifest_.executable_path));
                     }
                     executables_.push_back(E);
                 }
@@ -55,6 +56,16 @@ bool ApplicationExecutionMgr::loadMachineConfigrations()
     return true;
 }
 
+bool ApplicationExecutionMgr::ProcessExecutionStateReport()
+{
+    for(auto p : transitionChanges_.toStart_)
+    {
+        if(p->current_state != Krunning)
+            return false;
+    }
+    return true;
+}
+
 bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 {
     for (auto &ex : executables_)
@@ -69,7 +80,6 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
                     {
                         transitionChanges_.toStart_.push_back(&app);
                         break;
-
                     }
                 }
             }
@@ -86,14 +96,14 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
             }
             if (app.current_state == Application::ProcessState::Krunning)
             {
-                bool flag =false;
+                bool flag = false;
                 if (fgs.fg_name != "machineState")
                 {
                     for (auto &state : app.configuration_->function_group_states[fgs.fg_name])
                     {
                         if (state == fgs.fg_newState)
                         {
-                            flag=true;
+                            flag = true;
                             break;
                         }
                     }
@@ -104,12 +114,12 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
                     {
                         if (state == fgs.fg_newState)
                         {
-                            flag=true;
+                            flag = true;
                             break;
                         }
                     }
                 }
-                if(flag)
+                if (flag)
                     transitionChanges_.toTerminate_.push_back(&app);
             }
         }
@@ -132,26 +142,50 @@ ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath)
 {
     //sets the value of rootPath (member variable in the class) to the value of the input rootPath
     rootPath = rootPath;
-    
 }
 
 bool ApplicationExecutionMgr::run()
 {
-    //while
+    mkfifo("smFifo", 0666);
+    int fd = open("smFifo", O_RDWR);
+
+    string functionGroup_Name;
+    string functionGroup_NewState;
+    int size;
+
+    while (true)
+    {
+
+        read(fd, &size, sizeof(int));
+        read(fd, &functionGroup_Name, size * sizeof(char));
+
+        read(fd, &size, sizeof(int));
+        read(fd, &functionGroup_NewState, size * sizeof(char));
+
+       FunctionGroupState::CtorToken token = Preconstruct(functionGroup_Name,functionGroup_NewState);
+       FunctionGroupState FunctionGroup(move(token));
+       bool b = setState(FunctionGroup);
+       Terminate();
+       Execute();
+       /* terminate_all_process(functionGroup_Name);
+        getprocesses(functionGroup_Name, functionGroup_NewState);
+        run_processes(functionGroup_Name);*/
+    }
+    close(fd);
+    unlink("smFifo");
 }
 
 void ApplicationExecutionMgr::Terminate()
 {
-    for(auto app : transitionChanges_.toTerminate_)
+    for (auto app : transitionChanges_.toTerminate_)
     {
-        app->terminate() ;
+        app->terminate();
     }
 }
 void ApplicationExecutionMgr::Execute()
 {
-    for(auto app : transitionChanges_.toStart_)
+    for (auto app : transitionChanges_.toStart_)
     {
-        app->start() ;
+        app->start();
     }
 }
-
