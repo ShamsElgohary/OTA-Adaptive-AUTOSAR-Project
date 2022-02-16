@@ -6,6 +6,18 @@
 #include "function_group_state.hpp"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include "function_group.hpp"
+#include <thread>
+#include <future>
+#include <stdint.h> 
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/wait.h>
+#include <boost/filesystem.hpp>
+#include <bits/stdc++.h>
 using namespace std;
 namespace ara {
     namespace exec
@@ -31,25 +43,24 @@ namespace ara {
         {
             public:
                 vector<Executable> executables_;
-                set<Application*> executedStartupConfigurations_;
+                //set<Application*> executedStartupConfigurations_;
                 unique_ptr<MachineManifest> manifest_ ;
                 const string rootPath ;
                 map<string,FunctionGroup> functionGroups_;
-                PlatformStates platformState_;
+                PlatformStates platformState_ {PlatformStates::kRunning};
                 TransationChanges transitionChanges_;
                 //ApplicationExecutionMgr();
                 ApplicationExecutionMgr(string rootPath); //highlevel : calls functions only
-                void initialize();
+                void initialize();//done
                 bool run();//TODO
-                bool setState(FunctionGroupState);//TODO
+                bool setState(FunctionGroupState);//done
                 bool loadMachineConfigrations(); //done
                 bool loadExecutablesConfigrations();//done
-                bool ProcessExecutionStateResponce();//TODO
+                bool ProcessExecutionStateReport();//TODO
                 bool ProcessStateClientRequest();//TODO
-                TransationChanges calculateTransition();//TODO
-                bool removeTerminatedProcesses();//TODO
-                void Terminate(startupConfigurations_)//TODO
-                void Execute(startupConfigurations_)
+                //bool removeTerminatedProcesses();//TODO
+                void Terminate();//done
+                void Execute();//done
 
                 ~ApplicationExecutionMgr();
         };

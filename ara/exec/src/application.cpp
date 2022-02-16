@@ -77,3 +77,10 @@ Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string 
             }
 }
 
+Application::Application(ApplicationManifest::startUpConfiguration &configration ,string nama ,string path)
+{
+    this->current_state = ProcessState::Kidle;
+    configuration_ = &configration;
+    name  = name;
+    executable_path =executable_path;
+}

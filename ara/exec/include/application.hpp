@@ -35,6 +35,7 @@ namespace ara
             ApplicationManifest::startUpConfiguration *configuration_;
             static Application::CtorToken preconstruct(ApplicationManifest &ex,string fg_name,string fg_state);
             Application(Application::CtorToken && token);
+            Application(ApplicationManifest::startUpConfiguration &configration ,string nama ,string path);
             int start();
             void terminate();
         };
