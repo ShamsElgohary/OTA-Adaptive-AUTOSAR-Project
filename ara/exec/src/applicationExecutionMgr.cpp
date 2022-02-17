@@ -60,7 +60,7 @@ bool ApplicationExecutionMgr::ProcessExecutionStateReport()
 {
     for(auto p : transitionChanges_.toStart_)
     {
-        if(p->current_state != Krunning)
+        if(p->current_state != Application::ProcessState::Krunning)
             return false;
     }
     return true;
@@ -162,7 +162,7 @@ bool ApplicationExecutionMgr::run()
         read(fd, &size, sizeof(int));
         read(fd, &functionGroup_NewState, size * sizeof(char));
 
-       FunctionGroupState::CtorToken token = Preconstruct(functionGroup_Name,functionGroup_NewState);
+       FunctionGroupState::CtorToken token = FunctionGroupState::Preconstruct(functionGroup_Name,functionGroup_NewState);
        FunctionGroupState FunctionGroup(move(token));
        bool b = setState(FunctionGroup);
        Terminate();
