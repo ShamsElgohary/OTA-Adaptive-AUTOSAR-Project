@@ -14,7 +14,13 @@ int main()
     /********Test*************/
     UpdateRequest updaterequest{};
     FunctionGroupList function_groups = {"fg1", "fg2"};
+    try{
     updaterequest.StartUpdateSession();
+    updaterequest.PrepareUpdate(function_groups);
     updaterequest.VerifyUpdate(function_groups);
     updaterequest.StopUpdateSession();
+    }
+    catch(std::string e){
+        printf(e.c_str());
+    }
 }

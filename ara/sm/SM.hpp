@@ -4,6 +4,7 @@
 #include <string.h>
 #include <bits/stdc++.h>
 #include <stdexcept>
+#include <map>
 namespace ara
 {
     namespace sm
@@ -24,6 +25,8 @@ namespace ara
             uint8_t PrepareUpdate(FunctionGroupList FunctionGroups); 
             uint8_t VerifyUpdate(FunctionGroupList FunctionGroups);  
             void StopUpdateSession();
+        private:
+        std::map<Functiongroup,std::string>FunctionGroupStates;
         };
     }
 }
