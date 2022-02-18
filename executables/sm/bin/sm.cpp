@@ -1,16 +1,16 @@
 #include <iostream>
-#include "execution_client.h"
-#include "state_client.h"
+// #include "../../ara/exec/include/execution_client.hpp"
+// #include "../../ara/exec/include/state_client.hpp"
 
-using namespace ara::exec ;
+// using namespace ara::exec ;
 int main ()
 {
-    ExecutionClient exec;
-    exec.ReportExecutionStaste(ExecutionState::KRunning);
-    StateClient x ;
-    FunctionGroupState fgs(FunctionGroupState::Preconstruct("fn1", "play"));
+    // ExecutionClient exec;
+    // exec.ReportExecutionStaste(ExecutionState::KRunning);
+    // StateClient x ;
+    // FunctionGroupState fgs(FunctionGroupState::Preconstruct("fn1", "play"));
     
-    x.setState(fgs);
+    // x.setState(fgs);
 
     std::cout<<"hello from excutable" ;
 }

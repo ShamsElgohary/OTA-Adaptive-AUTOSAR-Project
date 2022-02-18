@@ -3,7 +3,7 @@
 using namespace ara::exec ;
 
 
-FunctionGroupState::CtorToken Preconstruct(string functionGroup, string newState)
+FunctionGroupState::CtorToken FunctionGroupState::Preconstruct(string functionGroup, string newState)
 {
 	FunctionGroupState::CtorToken token ;
 	token.fng_name =functionGroup;

@@ -23,5 +23,3 @@ FunctionGroup::FunctionGroup(FunctionGroup::CtorToken&& token):name_{token.fg_na
 {
     //TODO  map<string,set<Application*>> startupConfigurations_;
 }
-FunctionGroup::~FunctionGroup()
-{}

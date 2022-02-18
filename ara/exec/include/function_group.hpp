@@ -28,7 +28,6 @@ namespace ara {
 
             static FunctionGroup::CtorToken Preconstruct(string machine_manifest_path);
             FunctionGroup(FunctionGroup::CtorToken &&token);
-            ~FunctionGroup();
         };
     }
 }

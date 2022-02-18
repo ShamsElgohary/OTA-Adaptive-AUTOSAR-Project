@@ -1,7 +1,4 @@
 #include "../include/applicationExecutionMgr.hpp"
-#include "../include/function_group_state.hpp"
-#include "../include/function_group_state.hpp"
-
 using namespace std;
 using namespace ara::exec;
 using namespace boost::filesystem;
@@ -11,7 +8,7 @@ using namespace boost::filesystem;
 //3-push executable objects to executables_ vector
 bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 {
-    path p(string(rootPath) + "/executables");
+    path p("../../../executables");
     try
     {
         if (exists(p))
@@ -22,11 +19,15 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 
                 for (directory_entry &x : directory_iterator(p))
                 {
-                    string p = x.path().string() + "/etc" + x.path().filename().string() + ".json";
+                    string p = x.path().string() + "/etc/" + x.path().filename().string() + ".json";
                     Executable E = {ApplicationManifest(p)};
                     for (auto &c : E.manifest_.startUpConfigurations)
                     {
-                        E.startupConfigurations_.push_back(Application(c, E.manifest_.name, E.manifest_.executable_path));
+                        E.startupConfigurations_.push_back(Application(&c, E.manifest_.name, E.manifest_.executable_path));
+                        if(E.manifest_.name =="sm")
+                        {
+                            smFifo = E.manifest_.executable_path +E.manifest_.name ;
+                        }
                     }
                     executables_.push_back(E);
                 }
@@ -53,35 +54,35 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 //2-sets the unique ptr to this object
 bool ApplicationExecutionMgr::loadMachineConfigrations()
 {
-    manifest_ = make_unique<MachineManifest>(string(rootPath) + "/etc/system/machine_manifest.json");
+    manifest_ = make_unique<MachineManifest>(string(rootPath) + "../../etc/system/machine_manifest.json");
     return true;
 }
 
 bool ApplicationExecutionMgr::ProcessExecutionStateReport()
 {
-    for (auto p : transitionChanges_.toStart_)
+    for (auto &p : transitionChanges_.toStart_)
     {
-        ExecutionState state;
-        int fd = open(p->executable_path.stem().c_str(), O_RDONLY);
-        read(fd, &state, sizeof(state));
-        close(fd);
-        if (state != Krunning)
+        p->Update_status();
+        if (p->current_state != Application::ProcessState::Krunning)
             return false;
     }
     return true;
 }
 
-bool ProcessStateClientRequest(int fd , string &functionGroup_Name , string &functionGroup_NewState)
+bool ApplicationExecutionMgr::ProcessStateClientRequest()
 {
+    int size ;
+    string functionGroup_Name , functionGroup_NewState;
+    int fd = open(smFifo.c_str(),O_RDONLY);
     read(fd, &size, sizeof(int));
     read(fd, &functionGroup_Name, size * sizeof(char));
 
     read(fd, &size, sizeof(int));
     read(fd, &functionGroup_NewState, size * sizeof(char));
 
-    FunctionGroupState::CtorToken token = Preconstruct(functionGroup_Name, functionGroup_NewState);
-    FunctionGroupState FunctionGroup(move(token));
-    bool b = setState(FunctionGroup);
+    FunctionGroupState::CtorToken token = FunctionGroupState::Preconstruct(functionGroup_Name, functionGroup_NewState);
+    FunctionGroupState functionGroup(move(token));
+    return setState(functionGroup);
 }
 
 bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
@@ -142,15 +143,20 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
             }
         }
     }
+    return true;
 }
 
 void ApplicationExecutionMgr::initialize()
 {
     loadMachineConfigrations();
     loadExecutablesConfigrations();
-    FunctionGroupState::Preconstruct("MachineFG", "startup");
-    FunctionGroupState FGS(FunctionGroupState::Preconstruct("MachineFG", "startup"));
+    FunctionGroupState::Preconstruct("machineState", "startup");
+    FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineState", "startup"));
     setState(FGS);
+    Execute();
+    ProcessExecutionStateReport();
+    transitionChanges_.toStart_.clear();
+    transitionChanges_.toTerminate_.clear();    
 }
 
 ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath)
@@ -161,9 +167,6 @@ ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath)
 
 bool ApplicationExecutionMgr::run()
 {
-    mkfifo("smFifo", 0666);
-    int fd = open("smFifo", O_RDWR);
-
     string functionGroup_Name;
     string functionGroup_NewState;
     int size;
@@ -176,12 +179,7 @@ bool ApplicationExecutionMgr::run()
         ProcessExecutionStateReport();
         transitionChanges_.toStart_.clear();
         transitionChanges_.toTerminate_.clear();
-        /* terminate_all_process(functionGroup_Name);
-        getprocesses(functionGroup_Name, functionGroup_NewState);
-        run_processes(functionGroup_Name);*/
     }
-    close(fd);
-    unlink("smFifo");
 }
 
 void ApplicationExecutionMgr::Terminate()
@@ -196,6 +194,5 @@ void ApplicationExecutionMgr::Execute()
     for (auto app : transitionChanges_.toStart_)
     {
         app->start();
-        app->current_state = Krunning;
     }
 }

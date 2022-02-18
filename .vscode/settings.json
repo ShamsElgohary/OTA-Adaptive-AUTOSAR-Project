@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "string": "cpp"
+        "string": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp",
+        "iostream": "cpp"
     }
 }

@@ -23,12 +23,12 @@ int Application::start()
     this->id =fork();
      if(this->id ==0)
      {
-        execl(executable_path.c_str(),NULL);
+        execl(executable_path.c_str(),nullptr);
      }
      
      if(mkfifo(fifo_path_name.c_str(), 0666)==-1)
      {
-        cout<<"couldn't creat fifo for excutable "<< this->name;
+        cout<<"couldn't create fifo for excutable "<< this->name;
         return 1;
      }
      return id ;
@@ -36,6 +36,7 @@ int Application::start()
 
 void Application::terminate()
 {
+
     kill(id,SIGTERM);
     Update_status();
     if(this->current_state!=ProcessState::Kterminate){
@@ -43,6 +44,8 @@ void Application::terminate()
         usleep(100000);
         kill(id,SIGKILL);
     }
+    unlink(this->fifo_path_name.c_str());
+
 }
 
 Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string fg_name,string fg_state)
@@ -50,19 +53,18 @@ Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string 
     Application::CtorToken token;
          for (auto &x : ex.startUpConfigurations)
             {
-                if(fg_name=="Machine_fg")
+                if(fg_name=="machineState")
                 {
                    for (auto &y:x.machine_states)
                         {
                             if(y==fg_state)
                             {
-                            token.name = ex.name ;
-                            token.executable_path = ex.executable_path ;
-                            token.configration=x;
-                            return token;
+                                token.name = ex.name ;
+                                token.executable_path = ex.executable_path ;
+                                token.configration=x;
+                                return token;
                             }
                         }
-                       
                 }
                else{ 
                     auto it = x.function_group_states.find(fg_name);
@@ -81,8 +83,6 @@ Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string 
 
                             }
                         }
-                       
-
                     }
                }
             }
@@ -93,4 +93,12 @@ void Application::Update_status()
 {   
     int fd = open(this->fifo_path_name.c_str(),O_RDONLY);
     read(fd,&this->current_state,sizeof(ProcessState));
+    close(fd);
+}
+Application::Application(ApplicationManifest::startUpConfiguration *con, string name , string path)
+{
+    configuration_ = con ;
+    name = name ;
+    executable_path = path ;
+    current_state = ProcessState::Kidle;
 }

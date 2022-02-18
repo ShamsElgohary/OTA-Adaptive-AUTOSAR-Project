@@ -19,7 +19,6 @@ namespace ara {
 
         static FunctionGroupState::CtorToken Preconstruct(string functionGroup, string newState);
         FunctionGroupState(FunctionGroupState::CtorToken &&token);
-        ~FunctionGroupState();
        };
 
    }

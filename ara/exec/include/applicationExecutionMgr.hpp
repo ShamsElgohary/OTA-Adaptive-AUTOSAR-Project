@@ -18,6 +18,7 @@
 #include <sys/wait.h>
 #include <boost/filesystem.hpp>
 #include <bits/stdc++.h>
+#include "execution_client.hpp"
 using namespace std;
 namespace ara {
     namespace exec
@@ -41,6 +42,7 @@ namespace ara {
 
         class ApplicationExecutionMgr final
         {
+                string smFifo;
             public:
                 vector<Executable> executables_;
                 //set<Application*> executedStartupConfigurations_;
@@ -58,11 +60,9 @@ namespace ara {
                 bool loadExecutablesConfigrations();//done
                 bool ProcessExecutionStateReport();//done
                 bool ProcessStateClientRequest();//done
-                //bool removeTerminatedProcesses();//TODO
                 void Terminate();//done
                 void Execute();//done
 
-                ~ApplicationExecutionMgr();
         };
     }
 }

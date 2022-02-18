@@ -28,6 +28,7 @@ namespace ara
             vector<startUpConfiguration> startUpConfigurations;
             //map<pair<string,string>,startUpConfigration> configration ;
             ApplicationManifest(string manifestPath);
+            
         };
     }
 }
