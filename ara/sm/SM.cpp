@@ -20,8 +20,7 @@ uint8_t UpdateRequest::PrepareUpdate(FunctionGroupList FunctionGroups)
 {
     bool success;
     StateClient client{};
-    //if(client.getmachinestate()=="Updating")
-    //{
+    
     for (auto fg : FunctionGroups)
     {
         success = client.setState(FunctionGroupState({fg, "Preparing"}));
@@ -29,12 +28,7 @@ uint8_t UpdateRequest::PrepareUpdate(FunctionGroupList FunctionGroups)
             return uint8_t(SM_ApplicationError::kPrepareFailed);
     }
     return success;
-    //}
-    //else
-    //{
-      //  throw ("StartUpdateSession must be called before");
-        //return (uint8_t)SM_ApplicationError::kRejected;
-    //}
+    
 }
 uint8_t UpdateRequest::VerifyUpdate(FunctionGroupList FunctionGroups)
 {
