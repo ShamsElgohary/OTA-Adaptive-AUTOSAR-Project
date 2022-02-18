@@ -1,34 +1,42 @@
 #include "SM.hpp"
-#include "state_client.h"
+#include "../exec/include/state_client.hpp"
 using namespace ara::sm;
 using namespace ara::exec;
 using namespace std;
 
-bool UpdateRequest::StartUpdateSession()
+uint8_t UpdateRequest::StartUpdateSession()
 {
     StateClient client{};
     bool success = client.setState(FunctionGroupState({"MachineState", "Updating"}));
-    return success;
+    if(success) return success;
+    else return uint8_t(SM_ApplicationError::kRejected);
 }
-bool UpdateRequest::StopUpdateSession()
+void UpdateRequest::StopUpdateSession()
 {
     StateClient client{};
     bool success = client.setState(FunctionGroupState({"MachineState", "Running"}));
-    return success;
 }
-bool UpdateRequest::PrepareUpdate(vector<Functiongroup> FunctionGroups)
+uint8_t UpdateRequest::PrepareUpdate(FunctionGroupList FunctionGroups)
 {
     bool success;
     StateClient client{};
+    //if(client.getmachinestate()=="Updating")
+    //{
     for (auto fg : FunctionGroups)
     {
         success = client.setState(FunctionGroupState({fg, "Preparing"}));
         if (!success)
-            return 0;
+            return uint8_t(SM_ApplicationError::kPrepareFailed);
     }
     return success;
+    //}
+    //else
+    //{
+      //  throw ("StartUpdateSession must be called before");
+        //return (uint8_t)SM_ApplicationError::kRejected;
+    //}
 }
-bool UpdateRequest::VerifyUpdate(vector<Functiongroup> FunctionGroups)
+uint8_t UpdateRequest::VerifyUpdate(FunctionGroupList FunctionGroups)
 {
     bool success;
     StateClient client{};
@@ -36,7 +44,7 @@ bool UpdateRequest::VerifyUpdate(vector<Functiongroup> FunctionGroups)
     {
         success = client.setState(FunctionGroupState({fg, "Verifying"}));
         if (!success)
-            return 0;
+            return  uint8_t(SM_ApplicationError::kVerifyFailed);
     }
     return success;
 }
