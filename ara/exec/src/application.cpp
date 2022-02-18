@@ -23,15 +23,21 @@ int Application::start()
     this->id =fork();
      if(this->id ==0)
      {
-         execl(executable_path.c_str(),NULL);
+        execl(executable_path.c_str(),NULL);
      }
-     mkfifo(name.c_str(), 0666);
+     
+     if(mkfifo(fifo_path_name.c_str(), 0666)==-1)
+     {
+        cout<<"couldn't creat fifo for excutable "<< this->name;
+        return 1;
+     }
      return id ;
 }
 
 void Application::terminate()
 {
     kill(id,SIGTERM);
+    Update_status();
     if(this->current_state!=ProcessState::Kterminate){
        //wait time in microseconds
         usleep(100000);
@@ -82,10 +88,9 @@ Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string 
             }
 }
 
-Application::Application(ApplicationManifest::startUpConfiguration &configration ,string nama ,string path)
-{
-    this->current_state = ProcessState::Kidle;
-    configuration_ = &configration;
-    name  = name;
-    executable_path =executable_path;
+
+void Application::Update_status()
+{   
+    int fd = open(this->fifo_path_name.c_str(),O_RDONLY);
+    read(fd,&this->current_state,sizeof(ProcessState));
 }
