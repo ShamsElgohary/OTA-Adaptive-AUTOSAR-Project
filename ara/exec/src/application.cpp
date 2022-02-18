@@ -20,18 +20,23 @@ Application::Application(Application::CtorToken && token)
 
 int Application::start()
 {
-    // this->id =fork();
-    // if(this->id ==0)
-    // {
-    //     execl(executable_path.c_str(),nullptr);
-    // }
-    // mkfifo(name.c_str(), 0666);
-    // return id ;
+    this->id =fork();
+     if(this->id ==0)
+     {
+         execl(executable_path.c_str(),NULL);
+     }
+     mkfifo(name.c_str(), 0666);
+     return id ;
 }
 
 void Application::terminate()
 {
-
+    kill(id,SIGTERM);
+    if(this->current_state!=ProcessState::Kterminate){
+       //wait time in microseconds
+        usleep(100000);
+        kill(id,SIGKILL);
+    }
 }
 
 Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string fg_name,string fg_state)
