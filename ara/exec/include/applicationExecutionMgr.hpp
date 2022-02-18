@@ -52,12 +52,12 @@ namespace ara {
                 //ApplicationExecutionMgr();
                 ApplicationExecutionMgr(string rootPath); //highlevel : calls functions only
                 void initialize();//done
-                bool run();//TODO
+                bool run();//done
                 bool setState(FunctionGroupState);//done
                 bool loadMachineConfigrations(); //done
                 bool loadExecutablesConfigrations();//done
-                bool ProcessExecutionStateReport();//TODO
-                bool ProcessStateClientRequest();//TODO
+                bool ProcessExecutionStateReport();//done
+                bool ProcessStateClientRequest();//done
                 //bool removeTerminatedProcesses();//TODO
                 void Terminate();//done
                 void Execute();//done

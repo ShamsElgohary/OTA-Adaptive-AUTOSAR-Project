@@ -1,5 +1,6 @@
 #include "../include/applicationExecutionMgr.hpp"
 #include "../include/function_group_state.hpp"
+#include "../include/function_group_state.hpp"
 
 using namespace std;
 using namespace ara::exec;
@@ -58,12 +59,29 @@ bool ApplicationExecutionMgr::loadMachineConfigrations()
 
 bool ApplicationExecutionMgr::ProcessExecutionStateReport()
 {
-    for(auto p : transitionChanges_.toStart_)
+    for (auto p : transitionChanges_.toStart_)
     {
-        if(p->current_state != Krunning)
+        ExecutionState state;
+        int fd = open(p->executable_path.stem().c_str(), O_RDONLY);
+        read(fd, &state, sizeof(state));
+        close(fd);
+        if (state != Krunning)
             return false;
     }
     return true;
+}
+
+bool ProcessStateClientRequest(int fd , string &functionGroup_Name , string &functionGroup_NewState)
+{
+    read(fd, &size, sizeof(int));
+    read(fd, &functionGroup_Name, size * sizeof(char));
+
+    read(fd, &size, sizeof(int));
+    read(fd, &functionGroup_NewState, size * sizeof(char));
+
+    FunctionGroupState::CtorToken token = Preconstruct(functionGroup_Name, functionGroup_NewState);
+    FunctionGroupState FunctionGroup(move(token));
+    bool b = setState(FunctionGroup);
 }
 
 bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
@@ -124,9 +142,6 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
             }
         }
     }
-    Terminate();
-    Execute();
-    ProcessExecutionStateReport();
 }
 
 void ApplicationExecutionMgr::initialize()
@@ -155,19 +170,13 @@ bool ApplicationExecutionMgr::run()
 
     while (true)
     {
-
-        read(fd, &size, sizeof(int));
-        read(fd, &functionGroup_Name, size * sizeof(char));
-
-        read(fd, &size, sizeof(int));
-        read(fd, &functionGroup_NewState, size * sizeof(char));
-
-       FunctionGroupState::CtorToken token = Preconstruct(functionGroup_Name,functionGroup_NewState);
-       FunctionGroupState FunctionGroup(move(token));
-       bool b = setState(FunctionGroup);
-       Terminate();
-       Execute();
-       /* terminate_all_process(functionGroup_Name);
+        ProcessStateClientRequest();
+        Terminate();
+        Execute();
+        ProcessExecutionStateReport();
+        transitionChanges_.toStart_.clear();
+        transitionChanges_.toTerminate_.clear();
+        /* terminate_all_process(functionGroup_Name);
         getprocesses(functionGroup_Name, functionGroup_NewState);
         run_processes(functionGroup_Name);*/
     }
@@ -187,5 +196,6 @@ void ApplicationExecutionMgr::Execute()
     for (auto app : transitionChanges_.toStart_)
     {
         app->start();
+        app->current_state = Krunning;
     }
 }
