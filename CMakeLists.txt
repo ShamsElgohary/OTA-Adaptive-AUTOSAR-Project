@@ -85,6 +85,9 @@ set (CMAKE_CXX_STANDARD 14)
 
 #####################################################
 
+
+
+
 project(em)
 
 set(source_ara_exec_dir
@@ -113,3 +116,39 @@ endif()
   em
   Boost::filesystem
   )
+
+
+project(ex1)
+
+set(
+  source_excutables_ex1_dir
+   "${CMAKE_SOURCE_DIR}/executables/ex1/bin")
+
+  add_executable(ex1 ${source_excutables_ex1_dir}/ex1.cpp) 
+  add_library(execution_lib STATIC ${source_ara_exec_dir}/src/execution_client.cpp)
+  target_include_directories(execution_lib PUBLIC  ${source_ara_exec_dir}/include)
+  target_include_directories(ex1 PUBLIC  ${source_ara_exec_dir}/include)
+  target_link_libraries( ex1 execution_lib Boost::filesystem)
+
+
+project(ex2)
+
+set(source_excutables_ex2_dir   "${CMAKE_SOURCE_DIR}/executables/ex2/bin")
+
+  add_executable(ex2 ${source_excutables_ex2_dir}/ex2.cpp) 
+  add_library(execution_lib2 STATIC ${source_ara_exec_dir}/src/execution_client.cpp)
+  target_include_directories(execution_lib2 PUBLIC  ${source_ara_exec_dir}/include)
+  target_include_directories(ex2 PUBLIC  ${source_ara_exec_dir}/include)
+  target_link_libraries( ex2 execution_lib2 Boost::filesystem)
+
+
+
+project(sm)
+
+set(source_excutables_sm_dir   "${CMAKE_SOURCE_DIR}/executables/sm/bin")
+
+  add_executable(sm ${source_excutables_sm_dir}/sm.cpp) 
+  add_library(execution_lib4 STATIC ${source_ara_exec_dir}/src/state_client.cpp ${source_ara_exec_dir}/src/function_group_state.cpp)
+  target_include_directories(execution_lib4 PUBLIC  ${source_ara_exec_dir}/include)
+  target_include_directories(sm PUBLIC  ${source_ara_exec_dir}/include)
+  target_link_libraries( sm execution_lib2 execution_lib4 Boost::filesystem)

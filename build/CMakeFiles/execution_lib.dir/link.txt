@@ -1,0 +1,2 @@
+/usr/bin/ar qc libexecution_lib.a  CMakeFiles/execution_lib.dir/ara/exec/src/execution_client.cpp.o
+/usr/bin/ranlib libexecution_lib.a

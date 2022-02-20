@@ -1,0 +1,9 @@
+/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build/CMakeFiles/edit_cache.dir
+/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build/CMakeFiles/execution_lib2.dir
+/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build/CMakeFiles/execution_lib4.dir
+/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build/CMakeFiles/sm.dir
+/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build/CMakeFiles/execution_lib.dir
+/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build/CMakeFiles/ex2.dir
+/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build/CMakeFiles/ex1.dir
+/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build/CMakeFiles/rebuild_cache.dir
+/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build/CMakeFiles/em.dir

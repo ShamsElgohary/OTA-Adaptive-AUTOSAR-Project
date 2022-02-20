@@ -17,3 +17,5 @@ void ExecutionClient::ReportExecutionStaste(ExecutionState state)
     close(this->fd);
 }
 
+ExecutionClient::~ExecutionClient(){}
+

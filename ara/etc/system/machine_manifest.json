@@ -8,12 +8,12 @@
     
     "fn1": 
     {
-      "states": ["stop","play"]
+      "states": ["idle","play","terminate"]
     },
     
     "fn2": 
     {
-      "states": ["turnOff","turnOn"]
+      "states": ["idle","run","end"]
     }
   }
 
