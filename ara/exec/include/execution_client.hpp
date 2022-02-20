@@ -13,9 +13,11 @@
 namespace ara {
     namespace exec
     {
-        enum class ExecutionState : uint8_t 
+        enum class ExecutionState : char 
         {
-            KRunning =0,
+            Kidle=0,
+            Krunning=1,
+            Kterminate=2
         };
         
         class ExecutionClient final

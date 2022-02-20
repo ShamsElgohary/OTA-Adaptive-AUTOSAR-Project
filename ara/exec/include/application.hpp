@@ -13,11 +13,11 @@ namespace ara
         class Application //process         
         {            
             public:
-            enum class ProcessState : uint8_t 
+            enum class ProcessState : char 
             {
-                Kidle,
-                Krunning,
-                Kterminate
+                Kidle=0,
+                Krunning=1,
+                Kterminate=2
             };
 
             typedef map<string,ProcessState> DependencyCollectionType;

@@ -5,10 +5,9 @@
 using namespace ara::exec ;
 int main ()
 {
-
+    std::cout<<"hello from SM\n" ;
     ExecutionClient y;
-    y.ReportExecutionStaste(ExecutionState::KRunning);
-    std::cout<<"hello from SM" ;
+    y.ReportExecutionStaste(ExecutionState::Krunning);
     StateClient x ;
     FunctionGroupState fgs1(FunctionGroupState::Preconstruct("fn1", "play"));
     x.setState(fgs1);

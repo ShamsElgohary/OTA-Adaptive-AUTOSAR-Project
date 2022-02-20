@@ -45,12 +45,12 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 //2-sets the unique ptr to this object
 bool ApplicationExecutionMgr::loadMachineConfigrations()
 {
-    manifest_ = make_unique<MachineManifest>(string(rootPath) + "../../etc/system/machine_manifest.json");
+    manifest_ = make_unique<MachineManifest>("../../etc/system/machine_manifest.json");
     for(auto &fn : manifest_->function_groups)
     {
         for(auto &state :fn.allStates_)
-            fn.startupConfigurations_.insert(pair(state ,vector<ara::exec::Application *>{})) ;
-        function_groups_.insert(pair(fn.name_ , fn));
+            fn.startupConfigurations_.insert({state ,vector<ara::exec::Application *>{}}) ;
+        function_groups_.insert({fn.name_ , fn});
     }
     return true;
 }
@@ -69,8 +69,8 @@ bool ApplicationExecutionMgr::ProcessExecutionStateReport()
 bool ApplicationExecutionMgr::ProcessStateClientRequest()
 {
     int size ;
-    string functionGroup_Name , functionGroup_NewState;
-    int fd = open("../../../executables/sm/bin",O_RDONLY);
+    char functionGroup_Name [10] , functionGroup_NewState[10];
+    int fd = open(smfifo.c_str(),O_RDONLY);
     read(fd, &size, sizeof(int));
     read(fd, &functionGroup_Name, size * sizeof(char));
 
@@ -182,5 +182,9 @@ void ApplicationExecutionMgr::Execute()
     for (auto app : transitionChanges_.toStart_)
     {
         app->start();
+        if(app->name=="sm")
+        {
+            smfifo =to_string(app->id);
+        }
     }
 }

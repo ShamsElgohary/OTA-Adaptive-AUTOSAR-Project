@@ -5,7 +5,7 @@
 		"Config 1": 
 		{
 			"depends": {},
-			"machine_states": ["running"],
+			"machine_states": ["startup","running"],
 			"function_group_states": {},
 			"scheduling_policy": "Round Robin",
 			"scheduling_priority": "1",

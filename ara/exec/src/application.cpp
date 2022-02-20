@@ -21,16 +21,14 @@ Application::Application(Application::CtorToken && token)
 int Application::start()
 {
     this->id =fork();
-     if(this->id ==0)
-     {
-        execl(executable_path.c_str(),nullptr);
-     }
-     
-     if(mkfifo(fifo_path_name.c_str(), 0666)==-1)
-     {
+    if(id !=0 && mkfifo(to_string(id).c_str(), 0666)==-1)
+    {
         cout<<"couldn't create fifo for excutable "<< this->name;
-        return 1;
-     }
+    }
+    if(this->id ==0)
+    {
+        execl(executable_path.c_str(),nullptr);
+    }
      return id ;
 }
 
@@ -91,15 +89,16 @@ Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string 
 
 void Application::Update_status()
 {   
-    int fd = open(this->fifo_path_name.c_str(),O_RDONLY);
-    read(fd,&this->current_state,sizeof(ProcessState));
+    int fd = open(to_string(id).c_str(),O_RDONLY);
+    char state ;
+    read(fd,&state,sizeof(state));
+    current_state = Application::ProcessState(state) ;
     close(fd);
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name , string path)
 {
     configuration_ = con ;
     this->name = name ;
-    executable_path = path+"/"+name+".out" ;
+    executable_path = path+"/"+name ;
     current_state = ProcessState::Kidle;
-    fifo_path_name=path+name;
 }

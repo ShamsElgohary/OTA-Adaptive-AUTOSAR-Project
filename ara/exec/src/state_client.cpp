@@ -8,24 +8,21 @@ bool StateClient::setState(const FunctionGroupState &state){
     int size_fg_name =state.fg_name.size();
     int size_newState =state.fg_newState.size();
 
-    write(fd, &size_fg_name, sizeof(size_fg_name));
-    write(fd, &state.fg_name, sizeof(state.fg_name));
+    write(fd, &size_fg_name, sizeof(int));
+    write(fd, &state.fg_name, size_fg_name);
 
-    write(fd, &size_newState, sizeof(size_newState));
-    write(fd, &state.fg_newState, sizeof(state.fg_newState));
+    write(fd, &size_newState, sizeof(int));
+    write(fd, &state.fg_newState, size_newState);
 
-    int reply;
-    read(fd, &reply, sizeof(int));
-
-    close(this->fd);
-    return reply;
-       
+    close(this->fd);       
 }
 
 
 StateClient::StateClient()
 {
-        this->fd = open("smFifo", O_RDWR); 
+    int id =getpid();
+    string  s = to_string(id) ;
+    this->fd = open(s.c_str(), O_WRONLY);
 }
 StateClient::~StateClient()
 {

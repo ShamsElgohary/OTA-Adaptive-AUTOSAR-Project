@@ -7,8 +7,9 @@ using namespace ara::exec ;
 
 ExecutionClient::ExecutionClient()
 {
-    path pro (current_path());    
-    this->fd = open(pro.stem().c_str(), O_WRONLY);
+    int id =getpid();
+    string  s = to_string(id) ;
+    this->fd = open(s.c_str(), O_WRONLY);
 }
 
 void ExecutionClient::ReportExecutionStaste(ExecutionState state)

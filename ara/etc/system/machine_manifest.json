@@ -3,7 +3,7 @@
   {
     "machineState": 
     {
-      "states": ["off","running","sleep"] 
+      "states": ["off","startup","running","sleep"] 
     },
     
     "fn1": 

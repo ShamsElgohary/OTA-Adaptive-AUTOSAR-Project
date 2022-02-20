@@ -1,2 +1,0 @@
-/usr/bin/ar qc libexecution_lib4.a  CMakeFiles/execution_lib4.dir/ara/exec/src/state_client.cpp.o CMakeFiles/execution_lib4.dir/ara/exec/src/function_group_state.cpp.o
-/usr/bin/ranlib libexecution_lib4.a
