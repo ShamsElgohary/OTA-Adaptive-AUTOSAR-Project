@@ -15,8 +15,8 @@ namespace ara {
             
             const string name_;
             const vector <string> allStates_ ;
-            const string* currentState_;
-            //map<string,set<Application*>> startupConfigurations_;
+            string currentState_;
+            map<string,vector<Application*>> startupConfigurations_;
 
             typedef struct {
                 int fg_index ; 
@@ -28,6 +28,8 @@ namespace ara {
 
             static FunctionGroup::CtorToken Preconstruct(string machine_manifest_path);
             FunctionGroup(FunctionGroup::CtorToken &&token);
+            FunctionGroup();
+            ~FunctionGroup();
         };
     }
 }

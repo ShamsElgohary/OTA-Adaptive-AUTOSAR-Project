@@ -42,16 +42,13 @@ namespace ara {
 
         class ApplicationExecutionMgr final
         {
-                string smFifo;
             public:
                 vector<Executable> executables_;
-                //set<Application*> executedStartupConfigurations_;
                 unique_ptr<MachineManifest> manifest_ ;
+                map<string,FunctionGroup> function_groups_;
                 const string rootPath ;
-                map<string,FunctionGroup> functionGroups_;
                 PlatformStates platformState_ {PlatformStates::kRunning};
                 TransitionChanges transitionChanges_;
-                //ApplicationExecutionMgr();
                 ApplicationExecutionMgr(string rootPath); //highlevel : calls functions only
                 void initialize();//done
                 bool run();//done

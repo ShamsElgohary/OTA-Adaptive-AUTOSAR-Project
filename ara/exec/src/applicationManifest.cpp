@@ -9,7 +9,7 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
 {   
     path p {executionManifestPath};
     name = p.parent_path().parent_path().filename().string() ;
-    executable_path = p.parent_path().parent_path().string()+"/bin/"+name+".out";
+    executable_path = p.parent_path().parent_path().string()+"/bin/";
 
     pt::ptree executionTree;
     pt::read_json(executionManifestPath, executionTree);
@@ -33,9 +33,6 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
         {   
             con.machine_states.push_back(machine_states.second.data());
             applicationStates.push_back(machine_states.second.data());
-            // pair <string ,string> p ;
-            // p = {"machineFg",machine_states.second.data()};
-            // configration[p] = con;
         }
         bool flag = true ;
         for(auto &function_group_states :confg.second.get_child("function_group_states"))
@@ -47,10 +44,6 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
             }
             con.function_group_states[function_group_states.first.data()].push_back(function_group_states.second.data());
             applicationStates.push_back(function_group_states.second.data());
-         
-            // pair <string ,string> p ;
-            // p = {function_group_states.first,function_group_states.second.data()};
-            // configration[p] = con;
         }
         startUpConfigurations.push_back(con);
     }

@@ -4,5 +4,6 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "iostream": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": true
 }

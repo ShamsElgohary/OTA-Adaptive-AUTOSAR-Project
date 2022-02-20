@@ -31,12 +31,11 @@ namespace ara
             string name;
             string executable_path;
             ProcessState current_state ;
-            //DependencyCollectionType depends_;
-            string fifo_path_name=executable_path+name;
-            ApplicationManifest::startUpConfiguration *configuration_;
+            string fifo_path_name;
+            ApplicationManifest::startUpConfiguration configuration_;
             static Application::CtorToken preconstruct(ApplicationManifest &ex,string fg_name,string fg_state);
             Application(Application::CtorToken && token);
-            Application(ApplicationManifest::startUpConfiguration *con, string name , string path);
+            Application(ApplicationManifest::startUpConfiguration con, string name , string path);
             int start();
             void terminate();
             void Update_status();

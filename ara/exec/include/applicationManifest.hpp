@@ -26,7 +26,6 @@ namespace ara
             bool platform_application;
             vector<string> applicationStates;
             vector<startUpConfiguration> startUpConfigurations;
-            //map<pair<string,string>,startUpConfigration> configration ;
             ApplicationManifest(string manifestPath);
             
         };

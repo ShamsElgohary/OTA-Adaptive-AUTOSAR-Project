@@ -13,7 +13,7 @@ using namespace ara::exec ;
 Application::Application(Application::CtorToken && token)
 {
     this->current_state = ProcessState::Kidle;
-    configuration_ = &token.configration;
+    configuration_ = token.configration;
     name  = token.name;
     executable_path =token.executable_path;
 }
@@ -95,10 +95,11 @@ void Application::Update_status()
     read(fd,&this->current_state,sizeof(ProcessState));
     close(fd);
 }
-Application::Application(ApplicationManifest::startUpConfiguration *con, string name , string path)
+Application::Application(ApplicationManifest::startUpConfiguration con, string name , string path)
 {
     configuration_ = con ;
-    name = name ;
-    executable_path = path ;
+    this->name = name ;
+    executable_path = path+"/"+name+".out" ;
     current_state = ProcessState::Kidle;
+    fifo_path_name=path+name;
 }

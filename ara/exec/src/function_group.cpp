@@ -19,7 +19,7 @@ FunctionGroup::CtorToken FunctionGroup::Preconstruct(string machine_manifest_pat
         token.size = token.fg_names.size();
         return token;
 }
-FunctionGroup::FunctionGroup(FunctionGroup::CtorToken&& token):name_{token.fg_names[token.fg_index]},allStates_{token.fg_states[name_]},currentState_{&allStates_[0]}
-{
-    //TODO  map<string,set<Application*>> startupConfigurations_;
-}
+FunctionGroup::FunctionGroup(FunctionGroup::CtorToken&& token):name_{token.fg_names[token.fg_index]},allStates_{token.fg_states[name_]},currentState_{allStates_[0]}
+{}
+FunctionGroup::~FunctionGroup(){}
+FunctionGroup::FunctionGroup(){}
