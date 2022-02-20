@@ -1,3 +1,7 @@
 {
-    "Process List Version": 0
+    "Process List Version": 0,
+    "UCM": {
+        "Path": "/home/yasmin/Desktop/Graduation_Project/02-OurImpement/UCM-GIT/OTA-Adaptive-AUTOSAR-Project/Trial/UCM/executables/UCM/0.0/",
+        "Version": "0.0"
+    }
 }

@@ -7,8 +7,6 @@
 using namespace std;
 using namespace ara::ucm;
 
-ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath);
-
 int main (void)
 {
     ara::ucm::pkgmgr::PackageManagerImpl PackageManagerInstance;
@@ -20,7 +18,7 @@ int main (void)
     ifs.seekg(0, ios::beg);
     ifs.read(&result[0], pos);
 
-    ara::ucm::ByteVectorType ByteData, TotalByteData;
+    ara::ucm::ByteVectorType ByteData;
 
     ara::ucm::TransferStartReturnType StartReturn = PackageManagerInstance.TransferStart(result.size());
     uint32_t BlockNumber = ceil((float) result.size() / (float) StartReturn.BlockSize);
@@ -32,7 +30,7 @@ int main (void)
     {
 
    
-    for(uint8_t j = 0; (j< BlockSize)&&((i+j)< result.size()) ;j++)
+    for(uint32_t j = 0; (j< BlockSize)&&((i+j)< result.size()) ;j++)
         {
             ByteData.push_back(result[i+j]);
         }
@@ -49,27 +47,13 @@ int main (void)
 
     PackageManagerInstance.Activate();
 
-    PackageManagerInstance.Rollback();
+    //PackageManagerInstance.Rollback();
 
     PackageManagerInstance.Finish();
 
     return 0;
 }
 
-ara::ucm::ByteVectorType  ReadZipInBytes(const char * ZipPath)
-{
-    ifstream ifs(ZipPath, ios::binary | ios::ate);
-    ifstream::pos_type pos = ifs.tellg();
-    vector<char> result(pos);
-    ifs.seekg(0, ios::beg);
-    ifs.read(&result[0], pos);
-    ara::ucm::ByteVectorType resultByte;
-    for (uint8_t i=0; i<result.size(); i++)
-    {
-        resultByte.push_back(result[i]);
-    }
-    return resultByte;
-}
 
 
 

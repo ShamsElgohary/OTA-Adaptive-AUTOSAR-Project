@@ -40,6 +40,8 @@ namespace ara
 
 			virtual PackageManagerStatusType GetCurrentStatus() = 0;
 
+			virtual ara::ucm::OperationResultType Finish() = 0;
+
 			private:
 
 
