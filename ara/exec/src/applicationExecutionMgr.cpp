@@ -60,7 +60,7 @@ bool ApplicationExecutionMgr::ProcessExecutionStateReport()
     for (auto &p : transitionChanges_.toStart_)
     {
         p->Update_status();
-        if (p->current_state != Application::ProcessState::Krunning)
+        if (p->current_state != ExecutionState::Krunning)
             return false;
     }
     return true;
@@ -70,13 +70,20 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
 {
     int size ;
     char functionGroup_Name [10] , functionGroup_NewState[10];
-    int fd = open(smfifo.c_str(),O_RDONLY);
+    cout<<"trying to open pipe from em \n";
+    cout<<"pipe opened \n";
+    if(fd==-1)
+        fd = open("smFifo",O_RDONLY);
     read(fd, &size, sizeof(int));
-    read(fd, &functionGroup_Name, size * sizeof(char));
-
+    for(int i =0 ;i<=size ;i++)
+    {
+        read(fd, &functionGroup_Name[i], sizeof(char));
+    }
     read(fd, &size, sizeof(int));
-    read(fd, &functionGroup_NewState, size * sizeof(char));
-
+     for(int i =0 ;i<=size ;i++)
+    {
+        read(fd, &functionGroup_NewState[i], sizeof(char));
+    }
     FunctionGroupState::CtorToken token = FunctionGroupState::Preconstruct(functionGroup_Name, functionGroup_NewState);
     FunctionGroupState functionGroup(move(token));
     return setState(functionGroup);
@@ -141,7 +148,6 @@ void ApplicationExecutionMgr::initialize()
 
 ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath)
 {
-    //sets the value of rootPath (member variable in the class) to the value of the input rootPath
     rootPath = rootPath;
 }
 
@@ -182,9 +188,5 @@ void ApplicationExecutionMgr::Execute()
     for (auto app : transitionChanges_.toStart_)
     {
         app->start();
-        if(app->name=="sm")
-        {
-            smfifo =to_string(app->id);
-        }
     }
 }

@@ -1,8 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
-#include "../include/applicationManifest.hpp"
-#include <mutex>
-#include <condition_variable>
+#include "applicationManifest.hpp"
+#include "execution_client.hpp"
 
 using namespace std;
 namespace ara 
@@ -10,35 +9,26 @@ namespace ara
     namespace exec 
     {
        
-        class Application //process         
+        class Application       
         {            
-            public:
-            enum class ProcessState : char 
-            {
-                Kidle=0,
-                Krunning=1,
-                Kterminate=2
-            };
-
-            typedef map<string,ProcessState> DependencyCollectionType;
-
             typedef struct{
                     ApplicationManifest::startUpConfiguration configration;
                     string name;
                     string executable_path; 
             }CtorToken; 
-            int id;
-            string name;
-            string executable_path;
-            ProcessState current_state ;
-            string fifo_path_name;
-            ApplicationManifest::startUpConfiguration configuration_;
-            static Application::CtorToken preconstruct(ApplicationManifest &ex,string fg_name,string fg_state);
-            Application(Application::CtorToken && token);
-            Application(ApplicationManifest::startUpConfiguration con, string name , string path);
-            int start();
-            void terminate();
-            void Update_status();
+            public:
+                int id;
+                int fd;
+                string name;
+                string executable_path;
+                ExecutionState current_state ;
+                ApplicationManifest::startUpConfiguration configuration_;
+                static Application::CtorToken preconstruct(ApplicationManifest &ex,string fg_name,string fg_state);
+                Application(Application::CtorToken && token);
+                Application(ApplicationManifest::startUpConfiguration con, string name , string path);
+                int start();
+                void terminate();
+                void Update_status();
         };
     }
 }

@@ -12,38 +12,40 @@ using namespace ara::exec ;
 
 Application::Application(Application::CtorToken && token)
 {
-    this->current_state = ProcessState::Kidle;
+    current_state = ExecutionState::Kidle;
     configuration_ = token.configration;
     name  = token.name;
     executable_path =token.executable_path;
 }
-
 int Application::start()
 {
     this->id =fork();
-    if(id !=0 && mkfifo(to_string(id).c_str(), 0666)==-1)
+    if(id !=0)
     {
-        cout<<"couldn't create fifo for excutable "<< this->name;
+        mkfifo(to_string(id).c_str(), 0666);
+        this->fd = open(to_string(id).c_str(),O_RDONLY);
+    }
+    if(name =="sm")
+    {
+        if(id !=0 && mkfifo("smFifo", 0666)==-1);
     }
     if(this->id ==0)
     {
         execl(executable_path.c_str(),nullptr);
     }
-     return id ;
+    return id ;
 }
-
 void Application::terminate()
 {
 
     kill(id,SIGTERM);
     Update_status();
-    if(this->current_state!=ProcessState::Kterminate){
+    if(this->current_state!=ExecutionState::Kterminate){
        //wait time in microseconds
         usleep(100000);
         kill(id,SIGKILL);
     }
-    unlink(this->fifo_path_name.c_str());
-
+    unlink(to_string(id).c_str());
 }
 
 Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string fg_name,string fg_state)
@@ -89,10 +91,7 @@ Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string 
 
 void Application::Update_status()
 {   
-    int fd = open(to_string(id).c_str(),O_RDONLY);
-    char state ;
-    read(fd,&state,sizeof(state));
-    current_state = Application::ProcessState(state) ;
+    read(fd,&current_state,sizeof(current_state));
     close(fd);
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name , string path)
@@ -100,5 +99,5 @@ Application::Application(ApplicationManifest::startUpConfiguration con, string n
     configuration_ = con ;
     this->name = name ;
     executable_path = path+"/"+name ;
-    current_state = ProcessState::Kidle;
+    current_state = ExecutionState::Kidle;
 }

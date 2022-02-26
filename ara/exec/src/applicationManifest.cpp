@@ -37,13 +37,20 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
         bool flag = true ;
         for(auto &function_group_states :confg.second.get_child("function_group_states"))
         {    
-            if(flag)
+            
+            for(auto &function_group :function_group_states.second)
             {
-                con.function_group_states[function_group_states.first.data()] = vector<string>();
-                flag =false ;
+                if(flag)
+                {
+                    con.function_group_states[function_group.first.data()] = vector<string>();
+                    flag =false ;
+                }
+                for(auto &states :function_group.second)
+                {
+                    con.function_group_states[function_group.first.data()].push_back(states.second.data());
+                    applicationStates.push_back(states.second.data());
+                }
             }
-            con.function_group_states[function_group_states.first.data()].push_back(function_group_states.second.data());
-            applicationStates.push_back(function_group_states.second.data());
         }
         startUpConfigurations.push_back(con);
     }

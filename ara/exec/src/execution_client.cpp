@@ -9,14 +9,19 @@ ExecutionClient::ExecutionClient()
 {
     int id =getpid();
     string  s = to_string(id) ;
+    cout<<"trying to open pipe from exuctable\n" ;
     this->fd = open(s.c_str(), O_WRONLY);
+    cout<<"opened pipe from exuctable\n" ;
+
 }
 
 void ExecutionClient::ReportExecutionStaste(ExecutionState state)
 {
+    cout<<"writing to pipe from exuctable\n" ;
     write(fd, &state, sizeof(state));
-    close(this->fd);
 }
 
-ExecutionClient::~ExecutionClient(){}
+ExecutionClient::~ExecutionClient(){
+        close(this->fd);
+}
 
