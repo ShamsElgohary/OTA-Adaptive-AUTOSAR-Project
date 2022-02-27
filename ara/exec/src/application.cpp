@@ -20,15 +20,6 @@ Application::Application(Application::CtorToken && token)
 int Application::start()
 {
     this->id =fork();
-    if(id !=0)
-    {
-        mkfifo(to_string(id).c_str(), 0666);
-        this->fd = open(to_string(id).c_str(),O_RDONLY);
-    }
-    if(name =="sm")
-    {
-        if(id !=0 && mkfifo("smFifo", 0666)==-1);
-    }
     if(this->id ==0)
     {
         execl(executable_path.c_str(),nullptr);
@@ -45,7 +36,6 @@ void Application::terminate()
         usleep(100000);
         kill(id,SIGKILL);
     }
-    unlink(to_string(id).c_str());
 }
 
 Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string fg_name,string fg_state)
@@ -91,6 +81,7 @@ Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string 
 
 void Application::Update_status()
 {   
+    int fd = open("executablesFifo", O_RDONLY);
     read(fd,&current_state,sizeof(current_state));
     close(fd);
 }

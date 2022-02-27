@@ -42,6 +42,7 @@ namespace ara {
 
         class ApplicationExecutionMgr final
         {
+            int smpipe{-1};
             public:
                 vector<Executable> executables_;
                 unique_ptr<MachineManifest> manifest_ ;
@@ -50,16 +51,14 @@ namespace ara {
                 PlatformStates platformState_ {PlatformStates::kRunning};
                 TransitionChanges transitionChanges_;
                 ApplicationExecutionMgr(string rootPath); //highlevel : calls functions only
-                int fd{-1};
                 void initialize();//done
                 bool run();//done
                 bool setState(FunctionGroupState);//done
                 bool loadMachineConfigrations(); //done
                 bool loadExecutablesConfigrations();//done
-                bool ProcessExecutionStateReport();//done
                 bool ProcessStateClientRequest();//done
-                void Terminate();//done
-                void Execute();//done
+                bool Terminate();//done
+                bool Execute();//done
 
         };
     }

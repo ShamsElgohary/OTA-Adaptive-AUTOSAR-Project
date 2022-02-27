@@ -55,16 +55,6 @@ bool ApplicationExecutionMgr::loadMachineConfigrations()
     return true;
 }
 
-bool ApplicationExecutionMgr::ProcessExecutionStateReport()
-{
-    for (auto &p : transitionChanges_.toStart_)
-    {
-        p->Update_status();
-        if (p->current_state != ExecutionState::Krunning)
-            return false;
-    }
-    return true;
-}
 
 bool ApplicationExecutionMgr::ProcessStateClientRequest()
 {
@@ -72,17 +62,17 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
     char functionGroup_Name [10] , functionGroup_NewState[10];
     cout<<"trying to open pipe from em \n";
     cout<<"pipe opened \n";
-    if(fd==-1)
-        fd = open("smFifo",O_RDONLY);
-    read(fd, &size, sizeof(int));
+    if(smpipe==-1)
+        smpipe = open("smFifo",O_RDONLY);
+    read(smpipe, &size, sizeof(int));
     for(int i =0 ;i<=size ;i++)
     {
-        read(fd, &functionGroup_Name[i], sizeof(char));
+        read(smpipe, &functionGroup_Name[i], sizeof(char));
     }
-    read(fd, &size, sizeof(int));
+    read(smpipe, &size, sizeof(int));
      for(int i =0 ;i<=size ;i++)
     {
-        read(fd, &functionGroup_NewState[i], sizeof(char));
+        read(smpipe, &functionGroup_NewState[i], sizeof(char));
     }
     FunctionGroupState::CtorToken token = FunctionGroupState::Preconstruct(functionGroup_Name, functionGroup_NewState);
     FunctionGroupState functionGroup(move(token));
@@ -135,13 +125,14 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 
 void ApplicationExecutionMgr::initialize()
 {
+    mkfifo("executablesFifo", 0777);
+    mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
     FunctionGroupState::Preconstruct("machineState", "startup");
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineState", "startup"));
     setState(FGS);
     Execute();
-    ProcessExecutionStateReport();
     transitionChanges_.toStart_.clear();
     transitionChanges_.toTerminate_.clear();    
 }
@@ -162,13 +153,12 @@ bool ApplicationExecutionMgr::run()
         ProcessStateClientRequest();
         Terminate();
         Execute();
-        ProcessExecutionStateReport();
         transitionChanges_.toStart_.clear();
         transitionChanges_.toTerminate_.clear();
     }
 }
 
-void ApplicationExecutionMgr::Terminate()
+bool ApplicationExecutionMgr::Terminate()
 {
     for (auto app : transitionChanges_.toTerminate_)
     {
@@ -183,10 +173,13 @@ void ApplicationExecutionMgr::Terminate()
         }
     }
 }
-void ApplicationExecutionMgr::Execute()
+bool ApplicationExecutionMgr::Execute()
 {
     for (auto app : transitionChanges_.toStart_)
     {
         app->start();
+        app->Update_status();
+        if (app->current_state != ExecutionState::Krunning)
+            return false;
     }
 }
