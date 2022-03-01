@@ -4,6 +4,8 @@
 #include "COM_Types.hpp"
 #include "CORE_Types.hpp"
 
+/* GENERIC */
+
 namespace ara
 {
     namespace com
