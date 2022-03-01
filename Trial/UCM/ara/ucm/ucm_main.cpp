@@ -28,8 +28,6 @@ int main (void)
 
     while (BlockCounter < BlockNumber)
     {
-
-   
     for(uint32_t j = 0; (j< BlockSize)&&((i+j)< result.size()) ;j++)
         {
             ByteData.push_back(result[i+j]);
