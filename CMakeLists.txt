@@ -1,41 +1,40 @@
 cmake_minimum_required(VERSION 3.0)
 cmake_policy(SET CMP0037 OLD)
+# use 17 insted of 14
+set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+
 project(sm)
-set (CMAKE_CXX_STANDARD 14)
+
 
 set(source_ara_exec_dir
    "${CMAKE_SOURCE_DIR}/ara/exec")
 
- set(source_ara_sm_dir
+set(source_ara_sm_dir
    "${CMAKE_SOURCE_DIR}/ara/sm")
+
+file(GLOB_RECURSE SRC_FILES_ara_exec_C ${source_ara_exec_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
+file(GLOB_RECURSE SRC_FILES_ara_exec_h ${source_ara_exec_dir}/include/*.hpp CMAKE_CONFIGURE_DEPENDS)
+file(GLOB_RECURSE SRC_FILES_ara_sm_C ${source_ara_sm_dir}/*.cpp CMAKE_CONFIGURE_DEPENDS)
+file(GLOB_RECURSE SRC_FILES_ara_sm_h ${source_ara_sm_dir}/*.hpp CMAKE_CONFIGURE_DEPENDS)
+
+
 add_library(
      ara_exec
-     ${source_ara_exec_dir}/include/application.hpp
-     ${source_ara_exec_dir}/include/applicationDependencyOrdering.hpp
-     ${source_ara_exec_dir}/include/applicationExecutionMgr.hpp
-     ${source_ara_exec_dir}/include/applicationManifest.hpp
-     ${source_ara_exec_dir}/include/execution_client.hpp
-     ${source_ara_exec_dir}/include/function_group.hpp
-     ${source_ara_exec_dir}/include/function_group_state.hpp
-     ${source_ara_exec_dir}/include/machineManifest.hpp
-     ${source_ara_exec_dir}/include/state_client.hpp
-     ${source_ara_exec_dir}/src/application.cpp
-     ${source_ara_exec_dir}/src/applicationDependencyOrdering.cpp
-     ${source_ara_exec_dir}/src/applicationExecutionMgr.cpp
-     ${source_ara_exec_dir}/src/applicationManifest.cpp
-     ${source_ara_exec_dir}/src/execution_client.cpp
-     ${source_ara_exec_dir}/src/function_group.cpp
-     ${source_ara_exec_dir}/src/function_group_state.cpp
-     ${source_ara_exec_dir}/src/machineManifest.cpp
-     ${source_ara_exec_dir}/src/state_client.cpp
-     
+     ${SRC_FILES_ara_exec_C}
+     ${SRC_FILES_ara_exec_h} 
    )
-   add_library(
+
+# use SRC_FILES_ara_sm_C and SRC_FILES_ara_sm_h becouse we do not need main.c in add library
+add_library(
      ara_sm
      ${source_ara_sm_dir}/SM.hpp
      ${source_ara_sm_dir}/SM.cpp
    )
- include_directories("${CMAKE_SOURCE_DIR}/ara/exec/include" "${CMAKE_SOURCE_DIR}/ara/sm")
+
+# named it from include_directories to target_include_directories also made it public 
+ target_include_directories(ara_exec PUBLIC ${source_ara_exec_dir}/include )
+ target_include_directories(ara_sm PUBLIC ${source_ara_sm_dir})
 
  ## for boost::filesystem at ara/exec
 set(Boost_USE_STATIC_LIBS OFF)
@@ -53,28 +52,12 @@ if(NOT TARGET Boost::filesystem)
         INTERFACE_LINK_LIBRARIES ${Boost_LIBRARIES})
 endif()
 ## generate exe
- add_executable(sm
-     ${source_ara_sm_dir}/main.cpp
-     ${source_ara_exec_dir}/include/application.hpp
-     ${source_ara_exec_dir}/include/applicationDependencyOrdering.hpp
-     ${source_ara_exec_dir}/include/applicationExecutionMgr.hpp
-     ${source_ara_exec_dir}/include/applicationManifest.hpp
-     ${source_ara_exec_dir}/include/execution_client.hpp
-     ${source_ara_exec_dir}/include/function_group.hpp
-     ${source_ara_exec_dir}/include/function_group_state.hpp
-     ${source_ara_exec_dir}/include/machineManifest.hpp
-     ${source_ara_exec_dir}/include/state_client.hpp
-     ${source_ara_exec_dir}/src/application.cpp
-     ${source_ara_exec_dir}/src/applicationDependencyOrdering.cpp
-     ${source_ara_exec_dir}/src/applicationExecutionMgr.cpp
-     ${source_ara_exec_dir}/src/applicationManifest.cpp
-     ${source_ara_exec_dir}/src/execution_client.cpp
-     ${source_ara_exec_dir}/src/function_group.cpp
-     ${source_ara_exec_dir}/src/function_group_state.cpp
-     ${source_ara_exec_dir}/src/machineManifest.cpp
-     ${source_ara_exec_dir}/src/state_client.cpp
-     ${source_ara_sm_dir}/SM.hpp
-     ${source_ara_sm_dir}/SM.cpp
+
+add_executable(sm
+     ${SRC_FILES_ara_sm_C}
+     ${SRC_FILES_ara_sm_h}
+     ${SRC_FILES_ara_exec_C}
+     ${SRC_FILES_ara_exec_h}
  )
  target_link_libraries(
   sm
@@ -83,14 +66,3 @@ endif()
   Boost::filesystem
   )
   
-
-
-
-
-
-
-
-
-
-
-
