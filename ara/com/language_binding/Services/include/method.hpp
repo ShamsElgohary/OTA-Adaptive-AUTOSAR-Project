@@ -1,5 +1,6 @@
 #pragma once 
 #include <iostream>
+#include "../../../language_binding/Services/include/serviceProxy.hpp"
 using namespace std ;
 
 namespace ara 
@@ -8,28 +9,39 @@ namespace ara
     {
         namespace proxy 
         {
-            namespace method
+            namespace methods
             {
                 class MethodBase{
                     public:
                     int id ;
-                    MethodBase(ServiceProxy::handle h) 
+                    ServiceProxy::HandleType handle;
+                    MethodBase(ServiceProxy::HandleType&h) 
                     {
-                        h = h ;
+                        handle = h ;
                     }
-                    ServiceProxy::handle h ;
+                    // operator overloading for regular functions
                     template<type T ,typename... Args>
-                    future<T> operator(Args&&... args)
+                    future<T> operator()(Args&&... args)
                     {
-                        return h.network_binding.SendRequest(args) ;
+                        return handle.network_binding.SendRequest(args) ;
                     }
+                    // operator overloading for fire and forget functions 
                     template<typename... Args>
-                    void operator(Args&&... args)
+                    void operator()(Args&&... args)
                     {
-                        return h.network_binding.SendRequest(args) ;
+                        return handle.network_binding.SendRequest(args) ;
                     }
                 }
-                class calibrate : public MethodBase{};
+               class calibrate : public MethodBase
+               {
+                   //use base class constructor
+                   calibrate(handle h):MethodBase(h){};
+               };
+               class adjust    : public MethodBase{}
+               {
+                   //use base class constructor
+                   adjust(handle h):MethodBase(h){};
+               }
             }
         }
     }

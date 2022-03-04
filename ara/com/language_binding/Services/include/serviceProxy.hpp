@@ -3,6 +3,7 @@
 #include <memory>
 #include "../../../network_binding/network_binding_base.hpp"
 #include "../../../include/types.hpp"
+#include "../../../language_binding/Services/include/method.hpp"
 using namespace std ;
 
 namespace ara 
@@ -14,23 +15,21 @@ namespace ara
             class ServiceProxy
             {
             public:
-                class handle
+                class HandleType
                 {
                     public:
+                    handle();
                     shared_ptr<NetworkBase> network_binding ;
                     InstanceIdentifier id ;
-                    handle();
                 };
-                handle h ;
-                method::calibrate ;
-                ServiceProxy(handle){
-                    calibrate(handle) ;
-                }
-                MethodBase calibrate;
+                //methods
+                methods::calibrate Calibrate;
+                methods::adjust Adjust;
+                //constructor
+                //each function takes handle in each constructor
+                explicit ServiceProxy(HandleType&handle):Calibrate(handle),Adjust(handle);
+                
             };
         }
     }
 }
-
-
-ServiceProxy.calibrate() 
