@@ -76,7 +76,7 @@ namespace ara
                 // All methods are pure virtual and have to be implemented
 
                 virtual std::future<StartUpdateSessionOutput> StartUpdateSession() = 0;
-                virtual std::future<void> StopUpdateSession() = 0;
+                virtual void StopUpdateSession() = 0;
                 virtual std::future<VerifyUpdateOutput> VerifyUpdate(ara::sm::FunctionGroupList Functiongroups) = 0;
                 virtual std::future<PrepareUpdateOutput> PrepareUpdate(ara::sm::FunctionGroupList Functiongroups) = 0;
             };

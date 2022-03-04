@@ -1,11 +1,54 @@
-#include "ara/com/proxymethods.hpp"
 #include "ara/com/types.hpp"
+#include "ara/sm/SM.hpp"
+#include<future>
 namespace ara
 {
     namespace com
     {
         namespace proxy
         {
+            namespace methods
+            {
+                class StartUpdateSession
+                {
+                    struct output
+                    {
+                        uint8_t success;
+                    };
+                    std::future<output> operator()(void);
+                };
+                class StopUpdateSession
+                {
+                    struct output
+                    {
+                    };
+                    std::future<void> operator()(void);
+                };
+                class StartUpdateSession
+                {
+                    struct output
+                    {
+                        uint8_t success;
+                    };
+                    std::future<output> operator()(const uint64_t size);
+                };
+                class PrepareUpdate
+                {
+                    struct output
+                    {
+                        uint8_t success;
+                    };
+                    std::future<output> operator()(ara::sm::FunctionGroupList functiongroups);
+                };
+                class VerifyUpdate
+                {
+                    struct output
+                    {
+                        uint8_t success;
+                    };
+                    std::future<output> operator()(ara::sm::FunctionGroupList functiongroups);
+                };
+            }
             class UpdateRequestProxy
             {
             public:

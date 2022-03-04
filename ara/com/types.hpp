@@ -23,6 +23,9 @@ namespace ara
 
         private:
         };
+        
+        template <typename T>
+        using ServiceHandleContainer = std::vector<T>;
         struct FindServiceHandle
         {
             uint16_t serviceIdentifier;
@@ -35,9 +38,7 @@ namespace ara
         };
 
         template <typename T>
-        using ServiceHandleContainer = std::vector<T>;
-
-        template <typename T>
         using FindServiceHandler = std::function<void(ServiceHandleContainer<T>, FindServiceHandle)>;
+        
     }
 }
