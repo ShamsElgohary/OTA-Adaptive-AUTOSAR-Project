@@ -10,7 +10,12 @@ namespace ara
         {
             class ServiceProxy
             {
+                class handle
+                {
+
+                };
                 
+
             };
         }
     }
