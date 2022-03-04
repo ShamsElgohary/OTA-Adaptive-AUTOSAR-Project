@@ -1,6 +1,6 @@
 #include "ara/com/types.hpp"
 #include "ara/sm/SM.hpp"
-#include<future>
+#include <future>
 namespace ara
 {
     namespace com
