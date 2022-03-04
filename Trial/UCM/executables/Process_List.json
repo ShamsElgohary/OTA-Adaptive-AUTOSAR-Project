@@ -1,5 +1,5 @@
 {
-    "Process List Version": 2,
+    "Process List Version": 5,
     "SWCL_TEST1_VENDOR_A": {
         "Path": "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/Trial/UCM/executables/SWCL_TEST1_VENDOR_A/0.1.0/",
         "Version": "0.1.0"

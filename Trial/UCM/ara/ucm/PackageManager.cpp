@@ -1,130 +1,203 @@
 #include "includes/PackageManager.hpp"
 
 
-using namespace ara::ucm::pkgmgr;
 using namespace std;
 
 ara::log logger;
+
+namespace ara::ucm::pkgmgr
+{
+
 
 /* INITIALIZE CURRENT STATUS */
 PackageManagerStatusType PackageManagerImpl::CurrentStatus = PackageManagerStatusType::kIdle;
 
 
-ara::ucm::TransferStartReturnType PackageManagerImpl::TransferStart(uint64_t Size)
+
+std::future<ara::com::skeleton::PackageManagerSkeleton::TransferStartOutput>  PackageManagerImpl::TransferStart(uint64_t Size)
 {
-    ara::ucm::TransferStartReturnType StartReturn =  ara::ucm::transfer::SoftwarePackage::TransferStart(Size);
+    std::promise<TransferStartOutput> promise;
+
+    ara::ucm::TransferStartReturnType initialReturn = ara::ucm::transfer::SoftwarePackage::TransferStart(Size);
+
+    //TransferStartOutput StartReturn{*initialReturn.id, initialReturn.BlockSize, (uint8_t)initialReturn.TransferStartResult};
+    TransferStartOutput StartReturn;
+
+    StartReturn.BlockSize = initialReturn.BlockSize;
+    StartReturn.TransferStartResult = initialReturn.TransferStartResult;
+    
+    for( uint8_t i = 0 ; i < 16 ; i++)
+    {
+        StartReturn.id[i] = initialReturn.id[i];
+    }
+    
+
+    promise.set_value(StartReturn);
     
     logger.ActionsLog("[Transfer Start] \t\t Result : ", static_cast<unsigned char>(StartReturn.TransferStartResult) ); 
 
-    return StartReturn;
+    return promise.get_future();
 }
 
 
-ara::ucm::OperationResultType  PackageManagerImpl::TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter)
-{
-    ara::ucm::OperationResultType DataReturn =  ara::ucm::transfer::SoftwarePackage::TransferData(id, data, blockCounter);
 
-    logger.ActionsLog("[Transfer Data] \t\t Result : ", static_cast<unsigned char>(DataReturn) );
+std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> 
+    PackageManagerImpl::TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter)
+{
+    std::promise<OperationResultOutput> promise;
+
+    OperationResultOutput DataReturn{ ara::ucm::transfer::SoftwarePackage::TransferData(id, data, blockCounter) };
+
+    promise.set_value(DataReturn);
     
-    return DataReturn;
+    logger.ActionsLog("[Transfer Data] \t\t Result : ", static_cast<unsigned char>(DataReturn.OperationReturn) );
+    
+    return promise.get_future();
 }
 
 
-ara::ucm::OperationResultType PackageManagerImpl::TransferExit(TransferIdType &id)
+
+std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput>  PackageManagerImpl::TransferExit(TransferIdType &id)
 {
-    ara::ucm::OperationResultType ExitReturn =  ara::ucm::transfer::SoftwarePackage::TransferExit(id);
+    std::promise<OperationResultOutput> promise;
 
-    logger.ActionsLog("[Transfer Exit] \t\t Result : ", static_cast<unsigned char>(ExitReturn) );
+    OperationResultOutput ExitReturn{ ara::ucm::transfer::SoftwarePackage::TransferExit(id) };
 
-    return ExitReturn;
+    promise.set_value(ExitReturn);
+
+    logger.ActionsLog("[Transfer Exit] \t\t Result : ", static_cast<unsigned char>(ExitReturn.OperationReturn) );
+
+    return promise.get_future();
 }
 
 
-ara::ucm::OperationResultType PackageManagerImpl::TransferDelete(TransferIdType &id)
+std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::TransferDelete(TransferIdType &id)
 {
-    ara::ucm::OperationResultType DeleteReturn =  ara::ucm::transfer::SoftwarePackage::TransferDelete(id);
+    std::promise<OperationResultOutput> promise;
 
-    logger.ActionsLog("[Transfer Delete] \t\t Result : ", static_cast<unsigned char>(DeleteReturn) );
+    OperationResultOutput DeleteReturn{ ara::ucm::transfer::SoftwarePackage::TransferDelete(id) };
 
-    return DeleteReturn;
+    promise.set_value(DeleteReturn);
+
+    logger.ActionsLog("[Transfer Delete] \t\t Result : ", static_cast<unsigned char>(DeleteReturn.OperationReturn) );
+
+    return promise.get_future();
 }
 
 
-ara::ucm::OperationResultType PackageManagerImpl::ProcessSwPackage(TransferIdType &id)
+std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::ProcessSwPackage(TransferIdType &id)
 {
-    ara::ucm::OperationResultType ProcessReturn;  
+    
+    std::promise<OperationResultOutput> promise;
+
+    OperationResultOutput ProcessReturn;  
     
     try
     {
-        ProcessReturn == PackageManagerStateinstance->ProcessSwPackage(id);
+        ProcessReturn.OperationReturn = PackageManagerStateinstance->ProcessSwPackage(id);
     }
 
     catch(...)
     {
-        ProcessReturn = ara::ucm::OperationResultType::kOperationNotPermitted;
+        ProcessReturn.OperationReturn = ara::ucm::OperationResultType::kOperationNotPermitted;
     }
 
-    logger.ActionsLog("[Process SwPackage] \t\t Result : ", static_cast<unsigned char>(ProcessReturn) );
+    promise.set_value(ProcessReturn);
 
-    return ProcessReturn;
+    logger.ActionsLog("[Process SwPackage] \t\t Result : ", static_cast<unsigned char>(ProcessReturn.OperationReturn) );
+
+    return promise.get_future();
 }
 
 
-ara::ucm::OperationResultType PackageManagerImpl::Activate()
+std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::Activate()
 {
-    ara::ucm::OperationResultType ActivateReturn = PackageManagerStateinstance->Activate();
+    std::promise<OperationResultOutput> promise;
 
-    logger.ActionsLog("[Activate] \t\t Result : ", static_cast<unsigned char>(ActivateReturn) );
+    OperationResultOutput ActivateReturn{ PackageManagerStateinstance->Activate() };
 
-    return ActivateReturn;
+    promise.set_value(ActivateReturn);
+
+    logger.ActionsLog("[Activate] \t\t Result : ", static_cast<unsigned char>(ActivateReturn.OperationReturn) );
+
+    return promise.get_future();
 }
 
 
-vector <ara::ucm::SwClusterInfoType> PackageManagerImpl::GetSwClusterInfo()
+std::future<ara::com::skeleton::PackageManagerSkeleton::GetSWClusterInfoOutput> PackageManagerImpl::GetSwClusterInfo()
 {
-   vector <ara::ucm::SwClusterInfoType> getSwCLuserReturn = ara::ucm::storage::SWCLManager::GetPresentSWCLs();
+   std::promise<GetSWClusterInfoOutput> promise;
+    
+   GetSWClusterInfoOutput getSwCLuserReturn{ ara::ucm::storage::SWCLManager::GetPresentSWCLs() };
+
+   promise.set_value(getSwCLuserReturn);
    
    logger.ActionsLog("[GetSwClusterInfo] \t\t Result : ", 0 );
    
-   return getSwCLuserReturn; 
+   return promise.get_future(); 
 }
 
 
-ara::ucm::OperationResultType PackageManagerImpl::Rollback()
+std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::Rollback()
 {
-    ara::ucm::OperationResultType RollbackResult = PackageManagerStateinstance->Rollback();
+    std::promise<OperationResultOutput> promise;
+    
+    OperationResultOutput RollbackResult{ PackageManagerStateinstance->Rollback() };
 
-    logger.ActionsLog("[Rollback] \t\t Result : ", static_cast<unsigned char>(RollbackResult) );
+    promise.set_value(RollbackResult);
 
-    return RollbackResult;
+    logger.ActionsLog("[Rollback] \t\t Result : ", static_cast<unsigned char>(RollbackResult.OperationReturn) );
+
+    return promise.get_future();
 }	
 
 
-ara::ucm::OperationResultType PackageManagerImpl::RevertProcessedSwPackages()
+std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::RevertProcessedSwPackages()
 {
-    ara::ucm::OperationResultType RevertResult = PackageManagerStateinstance->Rollback();
+    std::promise<OperationResultOutput> promise;
+    
+    OperationResultOutput RevertResult{ PackageManagerStateinstance->Rollback() };
 
-    logger.ActionsLog("[RevertProcessedSwPackages] \t\t Result : ", static_cast<unsigned char>(RevertResult) );
+    promise.set_value(RevertResult);
 
-    return RevertResult;
+    logger.ActionsLog("[RevertProcessedSwPackages] \t\t Result : ", static_cast<unsigned char>(RevertResult.OperationReturn) );
+
+    return promise.get_future();
 }	
 
 
 
-PackageManagerStatusType PackageManagerImpl::GetCurrentStatus()
+std::future<ara::com::skeleton::PackageManagerSkeleton::GetCurrentStatusOutput> PackageManagerImpl::GetCurrentStatus()
 {
+    std::promise<GetCurrentStatusOutput> promise;
+
+    GetCurrentStatusOutput StatusResult{ PackageManagerStateinstance->GetStatus() };
+
+    promise.set_value(StatusResult);
+
     logger.ActionsLog("[GetCurrentStatus] \t\t Result : ", 0 );
 
-    return PackageManagerStateinstance->GetStatus();
+    return promise.get_future();
 }	
 
 
-
-ara::ucm::OperationResultType PackageManagerImpl::Finish()
+std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::Finish()
 {
-    ara::ucm::OperationResultType FinishReturn = PackageManagerStateinstance->Finish();
+    std::promise<OperationResultOutput> promise;
+    
+    OperationResultOutput FinishResult{ PackageManagerStateinstance->Finish() };
 
-    logger.ActionsLog("[Activate] \t\t Result : ", static_cast<unsigned char>(FinishReturn) );
+    promise.set_value(FinishResult);
 
-    return FinishReturn;
+    logger.ActionsLog("[Activate] \t\t Result : ", static_cast<unsigned char>(FinishResult.OperationReturn) );
+
+    return promise.get_future();
 }
+
+PackageManagerImpl::PackageManagerImpl()
+{
+    
+}
+
+
+}// end of namespace ara::ucm::pkgmgr

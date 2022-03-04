@@ -20,7 +20,10 @@ int main (void)
 
     ara::ucm::ByteVectorType ByteData;
 
-    ara::ucm::TransferStartReturnType StartReturn = PackageManagerInstance.TransferStart(result.size());
+    std::future<ara::com::skeleton::PackageManagerSkeleton::TransferStartOutput> FutureStart = PackageManagerInstance.TransferStart(result.size());
+    
+    ara::com::skeleton::PackageManagerSkeleton::TransferStartOutput StartReturn = FutureStart.get();
+
     uint32_t BlockNumber = ceil((float) result.size() / (float) StartReturn.BlockSize);
     uint32_t BlockCounter = 0;
     uint64_t BlockSize = StartReturn.BlockSize;

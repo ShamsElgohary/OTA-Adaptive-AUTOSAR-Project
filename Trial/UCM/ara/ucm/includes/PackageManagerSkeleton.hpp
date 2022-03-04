@@ -2,7 +2,7 @@
 
 #include "UCM_Common.hpp"
 #include "State.hpp"
-#include "com/COM_Types.hpp"
+//#include "../com/COM_Types.hpp"
 #include <future> 
 
 
@@ -17,11 +17,17 @@ namespace ara
                 {
                 public:
 
-                PackageManagerSkeleton(ara::com::InstanceIdentifier instanceId,
-                ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
+//                PackageManagerSkeleton(ara::com::InstanceIdentifier instanceId,
+  //              ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
+
+                    /* CONSTRUCTOR */
+                PackageManagerSkeleton() 
+                {}
+
 
                 /* DESTRUCTOR */
-                ~PackageManagerSkeleton();
+                ~PackageManagerSkeleton() 
+                {}
 
                 /*  NO COPY CONSTRUCTOR */
                 PackageManagerSkeleton(const PackageManagerSkeleton& other) = delete;
@@ -61,7 +67,7 @@ namespace ara
                 /* PACKAGE MANAGER METHODS */
                 virtual std::future<TransferStartOutput> TransferStart(uint64_t Size) = 0;
 
-                virtual ara::ucm::OperationResultType  TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter) = 0;
+                virtual std::future<OperationResultOutput>  TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter) = 0;
                 
                 virtual std::future<OperationResultOutput> TransferExit(TransferIdType &id) = 0;
 

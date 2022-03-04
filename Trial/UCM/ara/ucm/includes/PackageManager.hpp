@@ -16,14 +16,14 @@ namespace ara
 		namespace pkgmgr
 		{
 
-			class PackageManager : public ara::com::skeleton::PackageManagerSkeleton
+			class PackageManager: public ara::com::skeleton::PackageManagerSkeleton
 			{
 			public:
 
 			/* Transfer Operations */
 			virtual std::future<TransferStartOutput> TransferStart(uint64_t Size) = 0;
 
-			virtual ara::ucm::OperationResultType  TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter) = 0;
+			virtual std::future<OperationResultOutput> TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter) = 0;
 			
 			virtual std::future<OperationResultOutput> TransferExit(TransferIdType &id) = 0;
 
@@ -56,28 +56,32 @@ namespace ara
 			public:
 
 			/* Transfer Operations */
-			virtual std::future<TransferStartOutput> TransferStart(uint64_t Size);
+			std::future<TransferStartOutput> TransferStart(uint64_t Size);
 
-			virtual ara::ucm::OperationResultType  TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter);
+			std::future<OperationResultOutput> TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter);
 			
-			virtual std::future<OperationResultOutput> TransferExit(TransferIdType &id);
+			std::future<OperationResultOutput> TransferExit(TransferIdType &id);
 
-			virtual std::future<OperationResultOutput> TransferDelete(TransferIdType &id);
+			std::future<OperationResultOutput> TransferDelete(TransferIdType &id);
 
 			/* Process a previously transferred Software Package */
-			virtual std::future<OperationResultOutput> ProcessSwPackage(TransferIdType &id);
+			std::future<OperationResultOutput> ProcessSwPackage(TransferIdType &id);
 
-			virtual std::future<OperationResultOutput> Activate();
+			std::future<OperationResultOutput> Activate();
 
-			virtual std::future<GetSWClusterInfoOutput> GetSwClusterInfo();
+			std::future<GetSWClusterInfoOutput> GetSwClusterInfo();
 
-			virtual std::future<OperationResultOutput> Rollback();
+			std::future<OperationResultOutput> Rollback();
 
-			virtual std::future<OperationResultOutput> RevertProcessedSwPackages();
+			std::future<OperationResultOutput> RevertProcessedSwPackages();
 
-			virtual std::future<GetCurrentStatusOutput> GetCurrentStatus();
+			std::future<GetCurrentStatusOutput> GetCurrentStatus();
 
-			virtual std::future<OperationResultOutput> Finish();
+			std::future<OperationResultOutput> Finish();
+
+			PackageManagerImpl();
+
+			//~PackageManagerImpl();
 
 			private:
 			
