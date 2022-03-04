@@ -7,6 +7,8 @@
 #include "UCM_Common.hpp"
 #include "State.hpp"
 
+#include "PackageManagerSkeleton.hpp"
+
 namespace ara
 {
 	namespace ucm
@@ -14,33 +16,34 @@ namespace ara
 		namespace pkgmgr
 		{
 
-			class PackageManager 
+			class PackageManager : public ara::com::skeleton::PackageManagerSkeleton
 			{
 			public:
 
 			/* Transfer Operations */
-			virtual ara::ucm::TransferStartReturnType TransferStart(uint64_t Size) = 0;
+			virtual std::future<TransferStartOutput> TransferStart(uint64_t Size) = 0;
 
 			virtual ara::ucm::OperationResultType  TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter) = 0;
 			
-			virtual ara::ucm::OperationResultType TransferExit(TransferIdType &id) = 0;
+			virtual std::future<OperationResultOutput> TransferExit(TransferIdType &id) = 0;
 
-			virtual ara::ucm::OperationResultType TransferDelete(TransferIdType &id) = 0;
+			virtual std::future<OperationResultOutput> TransferDelete(TransferIdType &id) = 0;
 
 			/* Process a previously transferred Software Package */
-			virtual ara::ucm::OperationResultType ProcessSwPackage(TransferIdType &id) = 0;
+			virtual std::future<OperationResultOutput> ProcessSwPackage(TransferIdType &id) = 0;
 
-			virtual ara::ucm::OperationResultType Activate() = 0;
+			virtual std::future<OperationResultOutput> Activate() = 0;
 
-			virtual vector<ara::ucm::SwClusterInfoType> GetSwClusterInfo() = 0;
+			virtual std::future<GetSWClusterInfoOutput> GetSwClusterInfo() = 0;
 
-			virtual ara::ucm::OperationResultType Rollback() = 0;
+			virtual std::future<OperationResultOutput> Rollback() = 0;
 
-			virtual ara::ucm::OperationResultType RevertProcessedSwPackages() = 0;
+			virtual std::future<OperationResultOutput> RevertProcessedSwPackages() = 0;
 
-			virtual PackageManagerStatusType GetCurrentStatus() = 0;
+			virtual std::future<GetCurrentStatusOutput> GetCurrentStatus() = 0;
 
-			virtual ara::ucm::OperationResultType Finish() = 0;
+			virtual std::future<OperationResultOutput> Finish() = 0;
+
 
 			private:
 
@@ -53,28 +56,28 @@ namespace ara
 			public:
 
 			/* Transfer Operations */
-			ara::ucm::TransferStartReturnType TransferStart(uint64_t Size);
+			virtual std::future<TransferStartOutput> TransferStart(uint64_t Size);
 
-			ara::ucm::OperationResultType  TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter);
+			virtual ara::ucm::OperationResultType  TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter);
 			
-			ara::ucm::OperationResultType TransferExit(TransferIdType &id);
+			virtual std::future<OperationResultOutput> TransferExit(TransferIdType &id);
 
-			ara::ucm::OperationResultType TransferDelete(TransferIdType &id);
+			virtual std::future<OperationResultOutput> TransferDelete(TransferIdType &id);
 
 			/* Process a previously transferred Software Package */
-			ara::ucm::OperationResultType ProcessSwPackage(TransferIdType &id);
+			virtual std::future<OperationResultOutput> ProcessSwPackage(TransferIdType &id);
 
-			ara::ucm::OperationResultType Activate();
+			virtual std::future<OperationResultOutput> Activate();
 
-			vector<ara::ucm::SwClusterInfoType> GetSwClusterInfo();
+			virtual std::future<GetSWClusterInfoOutput> GetSwClusterInfo();
 
-			ara::ucm::OperationResultType Rollback();
+			virtual std::future<OperationResultOutput> Rollback();
 
-			ara::ucm::OperationResultType RevertProcessedSwPackages();
+			virtual std::future<OperationResultOutput> RevertProcessedSwPackages();
 
-			PackageManagerStatusType GetCurrentStatus();
+			virtual std::future<GetCurrentStatusOutput> GetCurrentStatus();
 
-			ara::ucm::OperationResultType Finish();
+			virtual std::future<OperationResultOutput> Finish();
 
 			private:
 			

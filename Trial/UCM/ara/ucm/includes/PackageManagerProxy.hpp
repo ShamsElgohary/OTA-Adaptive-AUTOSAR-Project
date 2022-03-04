@@ -3,8 +3,8 @@
 #include "UCM_Common.hpp"
 #include "State.hpp"
 
-#include "com/comTypes.hpp"
-#include "core/Future.hpp"
+#include "com/COM_Types.hpp"
+
 
 namespace ara
 {

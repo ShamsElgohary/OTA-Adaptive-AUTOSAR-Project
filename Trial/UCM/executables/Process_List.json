@@ -1,7 +1,11 @@
 {
-    "Process List Version": 0,
+    "Process List Version": 2,
+    "SWCL_TEST1_VENDOR_A": {
+        "Path": "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/Trial/UCM/executables/SWCL_TEST1_VENDOR_A/0.1.0/",
+        "Version": "0.1.0"
+    },
     "UCM": {
-        "Path": "/home/yasmin/Desktop/Graduation_Project/02-OurImpement/UCM-GIT/OTA-Adaptive-AUTOSAR-Project/Trial/UCM/executables/UCM/0.0/",
+        "Path": "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/Trial/UCM/executables/UCM/0.0/",
         "Version": "0.0"
     }
 }

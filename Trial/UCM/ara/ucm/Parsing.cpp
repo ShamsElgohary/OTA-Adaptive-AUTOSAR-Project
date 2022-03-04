@@ -12,7 +12,7 @@ SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
     pt::ptree root;
     // Load the json file in this ptree
     pt::read_json(Path, root);
-    string version = root.get<std::string>("version");
+    string version = root.get<std::string>("version").substr(0,5);
     string name = root.get<std::string>("shortName");
 
     swClusterInfo.Version = version;
