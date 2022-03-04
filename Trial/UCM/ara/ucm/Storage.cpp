@@ -2,6 +2,7 @@
 
 using namespace ara::ucm;
 
+
 /*////////////////////////////////////////////////////////////////////////////
 
     SWCLManager Class Methods
@@ -167,6 +168,10 @@ void ara::ucm::storage::SWCLManager::PushInSWCLusters(ara::ucm::SwClusterInfoTyp
 }
 
 
+////////////////////////////////////////// END OF SWCLManager Class Methods ////////////////////////////////////////////////////////////////// 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+
 
 /*////////////////////////////////////////////////////////////////////////////
 
@@ -181,15 +186,18 @@ ara::ucm::storage::ReversibleAction::ReversibleAction(string swPackagePath, ara:
 }
 
 
+
 /*////////////////////////////////////////////////////////////////////////////
 
     InstallAction Class Methods
 
 ////////////////////////////////////////////////////////////////////////////*/
 
-/* CONSTRUCTOR */
+/* CONSTRUCTOR */////////////////////////////////////////
 ara::ucm::storage::InstallAction::InstallAction(string swPackagePath, SwClusterInfoType SwClusterInfo): ReversibleAction(swPackagePath,SwClusterInfo)
-{}
+{
+    // DEFAULT CONSTRUCTOR
+}
 
 
 void ara::ucm::storage::InstallAction::Execute()
@@ -249,7 +257,9 @@ void ara::ucm::storage::InstallAction::RevertChanges()
 
 /* CONSTRUCTOR */
 ara::ucm::storage::RemoveAction::RemoveAction(string swPackagePath, SwClusterInfoType SwClusterInfo): ReversibleAction(swPackagePath,SwClusterInfo)
-{}
+{    
+    // DEFAULT CONSTRUCTOR
+}
 
 void ara::ucm::storage::RemoveAction::Execute()
 {
@@ -290,7 +300,9 @@ void ara::ucm::storage::RemoveAction::RevertChanges()
 
 /* CONSTRUCTOR */
 ara::ucm::storage::UpdateAction::UpdateAction(string swPackagePath, SwClusterInfoType SwClusterInfo): ReversibleAction(swPackagePath,SwClusterInfo)
-{}
+{
+    // DEFAULT CONSTRUCTOR
+}
 
 void ara::ucm::storage::UpdateAction::Execute()
 {

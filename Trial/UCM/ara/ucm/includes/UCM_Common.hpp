@@ -22,7 +22,6 @@
 #include <sys/stat.h>
 #include "UCM_Types.hpp"
 #include "nlohmann/json.hpp"
-#include "log.hpp"
 
 using json = nlohmann::json;
 

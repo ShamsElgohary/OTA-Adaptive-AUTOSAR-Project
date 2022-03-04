@@ -1,4 +1,8 @@
 #include "includes/Parsing.hpp"
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
+namespace pt = boost::property_tree;
 
 using namespace ara::ucm::parsing;
 

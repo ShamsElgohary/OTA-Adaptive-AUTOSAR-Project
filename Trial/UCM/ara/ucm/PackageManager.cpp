@@ -1,4 +1,5 @@
 #include "includes/PackageManager.hpp"
+#include "../log/log.hpp"
 
 
 using namespace std;
@@ -8,29 +9,20 @@ ara::log logger;
 namespace ara::ucm::pkgmgr
 {
 
-
 /* INITIALIZE CURRENT STATUS */
 PackageManagerStatusType PackageManagerImpl::CurrentStatus = PackageManagerStatusType::kIdle;
 
 
-
-std::future<ara::com::skeleton::PackageManagerSkeleton::TransferStartOutput>  PackageManagerImpl::TransferStart(uint64_t Size)
+std::future<ara::com::skeleton::PackageManagerSkeleton::TransferStartOutput> PackageManagerImpl::TransferStart(uint64_t Size)
 {
     std::promise<TransferStartOutput> promise;
 
     ara::ucm::TransferStartReturnType initialReturn = ara::ucm::transfer::SoftwarePackage::TransferStart(Size);
 
-    //TransferStartOutput StartReturn{*initialReturn.id, initialReturn.BlockSize, (uint8_t)initialReturn.TransferStartResult};
     TransferStartOutput StartReturn;
-
     StartReturn.BlockSize = initialReturn.BlockSize;
     StartReturn.TransferStartResult = initialReturn.TransferStartResult;
-    
-    for( uint8_t i = 0 ; i < 16 ; i++)
-    {
-        StartReturn.id[i] = initialReturn.id[i];
-    }
-    
+    std::copy(initialReturn.id, initialReturn.id+16, StartReturn.id); //COPY 16 ELEMENTS OF ID FROM initialReturn TO StartReturn
 
     promise.set_value(StartReturn);
     
@@ -194,10 +186,16 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
     return promise.get_future();
 }
 
+
 PackageManagerImpl::PackageManagerImpl()
 {
-    
+    // DEFAULT CONSTRUCTOR
 }
+
+PackageManagerImpl::~PackageManagerImpl()
+{
+    // DEFAULT DESTRUCTOR
+}   
 
 
 }// end of namespace ara::ucm::pkgmgr

@@ -2,7 +2,7 @@
 
 #include "UCM_Common.hpp"
 #include "State.hpp"
-//#include "../com/COM_Types.hpp"
+#include "../../com/COM_Types.hpp"
 #include <future> 
 
 
@@ -17,8 +17,8 @@ namespace ara
                 {
                 public:
 
-//                PackageManagerSkeleton(ara::com::InstanceIdentifier instanceId,
-  //              ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
+                PackageManagerSkeleton(ara::com::InstanceIdentifier instanceId,
+                ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
 
                     /* CONSTRUCTOR */
                 PackageManagerSkeleton() 

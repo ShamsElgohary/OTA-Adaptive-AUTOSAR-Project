@@ -1,12 +1,11 @@
 #pragma once
 
+#include "UCM_Common.hpp"
+#include "State.hpp"
 #include "Transfer.hpp"
 #include "Parsing.hpp"
 #include "Storage.hpp"
 #include "SynchronizedStorage.hpp"
-#include "UCM_Common.hpp"
-#include "State.hpp"
-
 #include "PackageManagerSkeleton.hpp"
 
 namespace ara
@@ -81,7 +80,7 @@ namespace ara
 
 			PackageManagerImpl();
 
-			//~PackageManagerImpl();
+			~PackageManagerImpl();
 
 			private:
 			

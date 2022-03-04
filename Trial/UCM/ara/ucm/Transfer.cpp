@@ -1,9 +1,10 @@
 #include "includes/Transfer.hpp"
 #include "includes/SynchronizedStorage.hpp"
 
-using namespace ara::ucm::transfer;
+
 using namespace ara::ucm;
 
+namespace ara::ucm::transfer{
 
 /*////////////////////////////////////////////////////////////////////////////
 
@@ -12,7 +13,7 @@ using namespace ara::ucm;
 ////////////////////////////////////////////////////////////////////////////*/
 
 
-ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferStart(uint64_t Size)
+ara::ucm::TransferStartReturnType SoftwarePackage::TransferStart(uint64_t Size)
 {
 	/* This will hold the data that will be returned from this operation */
 	TransferStartReturnType StartTransferOutput;
@@ -54,10 +55,10 @@ ara::ucm::TransferStartReturnType ara::ucm::transfer::SoftwarePackage::TransferS
 
 
 
-ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData (ara::ucm::TransferIdType &id, ara::ucm::ByteVectorType data, uint64_t blockCounter)
+ara::ucm::OperationResultType  SoftwarePackage::TransferData (ara::ucm::TransferIdType &id, ara::ucm::ByteVectorType data, uint64_t blockCounter)
 {    
 	/* Check ID validity & Get SoftwarePackage  (CurrentSoftwarePackages > Vector of struct of SwPackageInfoType) */
-	shared_ptr<ara::ucm::transfer::SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
+	shared_ptr<SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
 	if (SwPkg == nullptr)
 	{
 		return ara::ucm::OperationResultType::kInvalidTransferId;
@@ -108,10 +109,10 @@ ara::ucm::OperationResultType  ara::ucm::transfer::SoftwarePackage::TransferData
 
 
 
-ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(ara::ucm::TransferIdType &id)
+ara::ucm::OperationResultType SoftwarePackage::TransferExit(ara::ucm::TransferIdType &id)
 {
 	/* Check ID validity & Get SoftwarePackage To Get Its Path */
-	shared_ptr<ara::ucm::transfer::SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
+	shared_ptr<SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
     if (SwPkg == nullptr)
 	{
         return ara::ucm::OperationResultType::kInvalidTransferId;
@@ -136,10 +137,10 @@ ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferExit(
 
 
 
-ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferDelete(TransferIdType &id)
+ara::ucm::OperationResultType SoftwarePackage::TransferDelete(TransferIdType &id)
 {
 	/* Check ID validity & Get SoftwarePackage To Get Its Path */
-    shared_ptr<ara::ucm::transfer::SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
+    shared_ptr<SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
     if (SwPkg == nullptr)
 	{
         return ara::ucm::OperationResultType::kInvalidTransferId;
@@ -163,7 +164,7 @@ ara::ucm::OperationResultType ara::ucm::transfer::SoftwarePackage::TransferDelet
 
 
 /* CONSTRUCTOR FOR TRANSFER INSTANCE */
-ara::ucm::transfer::SoftwarePackage::SoftwarePackage (uint64_t expectedBytes, string path, ara::ucm::SwPackageStateType TransferState, TransferIdType transferId)
+SoftwarePackage::SoftwarePackage (uint64_t expectedBytes, string path, ara::ucm::SwPackageStateType TransferState, TransferIdType transferId)
 {
     this->TransferInfo.SetExpectedBytes(expectedBytes);
     this->TransferInfo.SetTransferPath(path);
@@ -173,7 +174,7 @@ ara::ucm::transfer::SoftwarePackage::SoftwarePackage (uint64_t expectedBytes, st
 }
 
 /* DEFAULT CONSTRUCTOR */
-ara::ucm::transfer::SoftwarePackage::SoftwarePackage()
+SoftwarePackage::SoftwarePackage()
 {
 
 }
@@ -186,81 +187,81 @@ ara::ucm::transfer::SoftwarePackage::SoftwarePackage()
 ////////////////////////////////////////////////////////////////////////////*/
 
 
-void ara::ucm::transfer::SoftwarePackage::SetPackageExpectedBytes(uint64_t expectedBytes)
+void SoftwarePackage::SetPackageExpectedBytes(uint64_t expectedBytes)
 {
     TransferInfo.SetExpectedBytes(expectedBytes);
 }
 
-void ara::ucm::transfer::SoftwarePackage::SetPackageReceivedBytes(uint64_t receivedBytes)
+void SoftwarePackage::SetPackageReceivedBytes(uint64_t receivedBytes)
 {
     TransferInfo.SetReceivedBytes(receivedBytes);
 }
 
-void ara::ucm::transfer::SoftwarePackage::SetPackageExpectedBlocks(uint32_t expectedBlocks)
+void SoftwarePackage::SetPackageExpectedBlocks(uint32_t expectedBlocks)
 {
     TransferInfo.SetExpectedBlocks(expectedBlocks);
 }
 
-void ara::ucm::transfer::SoftwarePackage::SetPackageReceivedBlocks(uint32_t receivedBlocks)
+void SoftwarePackage::SetPackageReceivedBlocks(uint32_t receivedBlocks)
 {
     TransferInfo.SetReceivedBlocks(receivedBlocks);
 }
 
-void ara::ucm::transfer::SoftwarePackage::SetPackageBlockSize (uint32_t blockSize)
+void SoftwarePackage::SetPackageBlockSize (uint32_t blockSize)
 {
     TransferInfo.SetBlockSize(blockSize);
 }
 
-void ara::ucm::transfer::SoftwarePackage::SetPackagePath(string path)
+void SoftwarePackage::SetPackagePath(string path)
 {
     TransferInfo.SetTransferPath(path);
 }
 
-void ara::ucm::transfer::SoftwarePackage::SetPackageState(SwPackageStateType State)
+void SoftwarePackage::SetPackageState(SwPackageStateType State)
 {
     TransferInfo.SetTransferState(State);
 }
 
-void ara::ucm::transfer::SoftwarePackage::SetPackageId(TransferIdType Id)
+void SoftwarePackage::SetPackageId(TransferIdType Id)
 {
     TransferInfo.SetTransferId(Id);
 }
 
-uint64_t ara::ucm::transfer::SoftwarePackage::GetPackageExpectedBytes()
+uint64_t SoftwarePackage::GetPackageExpectedBytes()
 {
     return TransferInfo.GetExpectedBytes();
 }
 
-uint64_t ara::ucm::transfer::SoftwarePackage::GetPackageReceivedBytes()
+uint64_t SoftwarePackage::GetPackageReceivedBytes()
 {
    return TransferInfo.GetReceivedBytes();
 }
 
-uint32_t ara::ucm::transfer::SoftwarePackage::GetPackageExpectedBlocks()
+uint32_t SoftwarePackage::GetPackageExpectedBlocks()
 {
     return TransferInfo.GetExpectedBlocks();
 }
-uint32_t ara::ucm::transfer::SoftwarePackage::GetPackageReceivedBlocks()
+uint32_t SoftwarePackage::GetPackageReceivedBlocks()
 {
     return TransferInfo.GetReceivedBlocks();
 }
 
-uint32_t ara::ucm::transfer::SoftwarePackage::GetPackageBlockSize ()
+uint32_t SoftwarePackage::GetPackageBlockSize ()
 {
     return TransferInfo.GetBlockSize();
 }
 
-string ara::ucm::transfer::SoftwarePackage::GetPackagePath()
+string SoftwarePackage::GetPackagePath()
 {
     return TransferInfo.GetTransferPath();
 }
 
-SwPackageStateType ara::ucm::transfer::SoftwarePackage::GetPackageState()
+SwPackageStateType SoftwarePackage::GetPackageState()
 {
     return TransferInfo.GetTransferState();
 }
 
-void ara::ucm::transfer::SoftwarePackage::GetPackageId(ara::ucm::TransferIdType &TransferID)
+void SoftwarePackage::GetPackageId(ara::ucm::TransferIdType &TransferID)
 {
     TransferInfo.GetTransferId(TransferID);
 }
@@ -273,43 +274,43 @@ void ara::ucm::transfer::SoftwarePackage::GetPackageId(ara::ucm::TransferIdType 
 ////////////////////////////////////////////////////////////////////////////*/
 
 
-void ara::ucm::transfer::TransferInstance::SetExpectedBytes(uint64_t expectedBytes)
+void TransferInstance::SetExpectedBytes(uint64_t expectedBytes)
 {
     /* SET EXPECTED BYTES OF THIS OBJECT TO THE GIVEN EXPECTED BYTES */
     this->expectedBytes = expectedBytes;
 }
 
-void ara::ucm::transfer::TransferInstance::SetTransferPath(string path)
+void TransferInstance::SetTransferPath(string path)
 {  
     this->path = path;
 }
 
-void ara::ucm::transfer::TransferInstance::SetReceivedBytes(uint64_t receivedBytes)
+void TransferInstance::SetReceivedBytes(uint64_t receivedBytes)
 {
     this->receivedBytes = receivedBytes;
 }
 
-void ara::ucm::transfer::TransferInstance::SetExpectedBlocks(uint32_t expectedBlocks)
+void TransferInstance::SetExpectedBlocks(uint32_t expectedBlocks)
 {
     this->expectedBlocks = expectedBlocks;
 }
 
-void ara::ucm::transfer::TransferInstance::SetReceivedBlocks(uint32_t receivedBlocks)
+void TransferInstance::SetReceivedBlocks(uint32_t receivedBlocks)
 {
     this->receivedBlocks = receivedBlocks;
 }
 
-void ara::ucm::transfer::TransferInstance::SetBlockSize (uint32_t blockSize)
+void TransferInstance::SetBlockSize (uint32_t blockSize)
 {
     this->blockSize = blockSize;
 }
 
-void ara::ucm::transfer::TransferInstance::SetTransferState(SwPackageStateType TransferState)
+void TransferInstance::SetTransferState(SwPackageStateType TransferState)
 {
     this->TransferState = TransferState;
 }
 
-void ara::ucm::transfer::TransferInstance::SetTransferId(TransferIdType transferId)
+void TransferInstance::SetTransferId(TransferIdType transferId)
 {
     /* COPY GIVEN ID */
     for( uint8_t i = 0 ; i < 16 ; i++)
@@ -318,45 +319,48 @@ void ara::ucm::transfer::TransferInstance::SetTransferId(TransferIdType transfer
     }
 }
 
-uint64_t ara::ucm::transfer::TransferInstance::GetExpectedBytes()
+uint64_t TransferInstance::GetExpectedBytes()
 {
     return expectedBytes;
 }
 
-uint64_t ara::ucm::transfer::TransferInstance::GetReceivedBytes()
+uint64_t TransferInstance::GetReceivedBytes()
 {
     return receivedBytes;
 }
 
-uint32_t ara::ucm::transfer::TransferInstance::GetExpectedBlocks()
+uint32_t TransferInstance::GetExpectedBlocks()
 {
     return expectedBlocks;
 }
 
-uint32_t ara::ucm::transfer::TransferInstance::GetReceivedBlocks()
+uint32_t TransferInstance::GetReceivedBlocks()
 {
     return receivedBlocks;
 }
 
-uint32_t ara::ucm::transfer::TransferInstance::GetBlockSize ()
+uint32_t TransferInstance::GetBlockSize ()
 {
     return blockSize;
 }
 
-string ara::ucm::transfer::TransferInstance::GetTransferPath()
+string TransferInstance::GetTransferPath()
 {
     return path;
 }
 
-SwPackageStateType ara::ucm::transfer::TransferInstance::GetTransferState()
+SwPackageStateType TransferInstance::GetTransferState()
 {
     return TransferState;
 }
 
-void ara::ucm::transfer::TransferInstance::GetTransferId(ara::ucm::TransferIdType &TransferID)
+void TransferInstance::GetTransferId(ara::ucm::TransferIdType &TransferID)
 {
     for(uint8_t i = 0; i < 16; ++i)
     {
         TransferID[i] = transferId[i];
     }
 }
+
+
+} //End of namespace ara::ucm::transfer

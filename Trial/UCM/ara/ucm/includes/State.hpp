@@ -1,10 +1,6 @@
 #pragma once
 
 #include "UCM_Common.hpp"
-#include "Storage.hpp"
-#include "SynchronizedStorage.hpp"
-#include "Parsing.hpp"
-
 
 
 namespace ara
@@ -40,7 +36,7 @@ namespace ara
                 ara::ucm::OperationResultType ProcessSwPackage(TransferIdType &id);
                 ara::ucm::OperationResultType RevertProcessedSwPackages();
                 ara::ucm::OperationResultType Rollback();
-                void dependencyCheck(void);
+                void DependencyCheck(void);
             };
         }
     }

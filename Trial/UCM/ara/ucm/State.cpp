@@ -1,5 +1,8 @@
 #include "includes/State.hpp"
 #include "includes/Storage.hpp"
+#include "includes/SynchronizedStorage.hpp"
+#include "includes/Parsing.hpp"
+
 using namespace ara::ucm::storage;
 using namespace ara::ucm::state;
 
@@ -42,7 +45,7 @@ PackageManagerState::PackageManagerState()
 }
 
 
-void PackageManagerState::dependencyCheck(void)
+void PackageManagerState::DependencyCheck(void)
 {
 
 }
@@ -110,7 +113,7 @@ ara::ucm::OperationResultType PackageManagerState::Activate()
     JsonOutStream << std::setw(4) << processList << std::endl;
 
     /*Depenency Missing Error Check*/
-    dependencyCheck();
+    DependencyCheck();
 
     /*if(SM::StartUpdateSession(functional_Group) == SM_ReceivedStates::kRejected)
         {
