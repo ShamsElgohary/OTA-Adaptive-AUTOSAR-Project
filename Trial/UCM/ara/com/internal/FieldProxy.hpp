@@ -1,8 +1,7 @@
 #ifndef _ARA_COM_INTERNAL_FIELDPROXY_HPP_
 #define  _ARA_COM_INTERNAL_FIELDPROXY_HPP_
 
-#include "COM_Types.hpp"
-#include "CORE_Types.hpp"
+#include "Proxy.hpp"
 
 namespace ara
 {
@@ -12,6 +11,18 @@ namespace ara
         {
             template <typename T>
             class FieldProxy {
+
+                private: 
+                    Proxy::HandleType Handle;
+                    uint16_t F_ID;
+
+                public:
+
+                    FieldProxy(Proxy::HandleType& Handle, uint16_t F_ID)
+                    {
+                        this->Handle = Handle;
+                        this->F_ID = F_ID;
+                    }
 
                 public:
 

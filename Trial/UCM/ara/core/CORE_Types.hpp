@@ -66,6 +66,11 @@ namespace ara
 
             private:
         };
+        template <typename T>
+        class Result 
+        {
+
+        };
 
 
     }

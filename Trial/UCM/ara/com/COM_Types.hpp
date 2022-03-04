@@ -1,6 +1,8 @@
 #ifndef _ARA_COM_COM_TYPES_HPP_
 #define _ARA_COM_COM_TYPES_HPP_
 
+#include <stdint.h>
+#include <memory>
 
 namespace ara
 {
@@ -53,6 +55,20 @@ namespace ara
             public:
 
             private:
+        };
+
+
+        class NetworkBase
+        {
+            public:
+                template <typename T, typename... args>
+                ara::core::Future <T> SendRequest(uint16_t ID, args... Args);
+        };
+
+
+        class SubscriptionState
+        {
+
         };
 
     }

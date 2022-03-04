@@ -17,6 +17,10 @@ namespace ara
                 public:
                     class HandleType 
                     {
+                        private:
+                        ara::com::InstanceIdentifier ID;
+                        std::shared_ptr <NetworkBase> network_binding ;
+
                         inline bool operator==(const HandleType &other) const;
                         const ara::com::InstanceIdentifier &GetInstanceId() const;
                     };
