@@ -52,6 +52,7 @@ file(GLOB_RECURSE SRC_FILES_ara_exec_h ${source_ara_exec_dir}/include/*.hpp CMAK
 file(GLOB_RECURSE SRC_FILES_ara_sm_C ${source_ara_sm_dir}/*.cpp CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE SRC_FILES_ara_sm_h ${source_ara_sm_dir}/*.hpp CMAKE_CONFIGURE_DEPENDS)
 
+list (REMOVE_ITEM SRC_FILES_ara_exec_C ${source_ara_exec_dir}/src/main.cpp)
 
 add_library(
      ara_exec
