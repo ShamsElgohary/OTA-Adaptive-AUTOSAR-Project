@@ -8,7 +8,6 @@ public:
    void StopUpdateSession();
    std::future<VerifyUpdateOutput> VerifyUpdate(ara::sm::FunctionGroupList Functiongroups);
    std::future<PrepareUpdateOutput> PrepareUpdate(ara::sm::FunctionGroupList Functiongroups);
-
 private:
    // internal implementation of functions using network binding
    ara::com::skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput doStartUpdateSessionInternal();

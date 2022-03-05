@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <functional>
+#include <vector>
 namespace ara
 {
     namespace com
@@ -23,7 +24,7 @@ namespace ara
 
         private:
         };
-
+        
         template <typename T>
         using ServiceHandleContainer = std::vector<T>;
         struct FindServiceHandle
@@ -39,6 +40,12 @@ namespace ara
 
         template <typename T>
         using FindServiceHandler = std::function<void(ServiceHandleContainer<T>, FindServiceHandle)>;
-
+        
+        class NetworkBase
+        {
+            public:
+                template <typename T, typename... args>
+                std::future<T> SendRequest(uint16_t ID, args... Args);
+        };
     }
 }
