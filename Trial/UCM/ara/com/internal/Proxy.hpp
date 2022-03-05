@@ -10,9 +10,9 @@ namespace ara
 {
     namespace com
     {
-        namespace internal
+        namespace Proxy
         {
-            class Proxy {
+            class ProxyBase {
 
                 public:
                     class HandleType 

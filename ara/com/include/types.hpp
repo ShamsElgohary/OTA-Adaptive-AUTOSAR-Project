@@ -1,30 +1,70 @@
-#pragma once 
-#include <iostream>
-using namespace std ;
+#ifndef _ARA_COM_COM_TYPES_HPP_
+#define _ARA_COM_COM_TYPES_HPP_
 
-namespace ara 
+#include <stdint.h>
+#include <memory>
+
+namespace ara
 {
     namespace com
     {
-         enum class MethodCallProcessingMode
-        {
-            kPoll,
-            kEvent,
-            kEventSingleThread
-        };
+        enum class MethodCallProcessingMode { kPoll, kEvent, kEventSingleThread };
 
+
+        /* INSTANCE IDENTIFIER */
         class InstanceIdentifier
         {
             public:
-            explicit InstanceIdentifier(const string_view value);
-            const string_view toString() const;
-            bool operator==(const InstanceIdentifier& other) const;
-            bool operator<(const InstanceIdentifier& other) const;
-            InstanceIdentifier& operator=(const InstanceIdentifier& other);
+
+
+            private:
+        }
+
+
+        /* USED TO FIND HANDLER */
+        template <typename H>
+        class FindServiceHandler
+        {
+            public:
+
+
+            private:
+
         };
 
-        template <typename T>
-        using ServiceHandleContainer = std::vector<T>;
+
+        class InstanceIdentifierContainer
+        {
+            public:
+
+            private:
+
+        };
+
+        class FindServiceHandle 
+        {
+            public:
+
+            private:
+
+        };
+
+        template <typename H>
+        class ServiceHandleContainer
+        {
+            public:
+
+            private:
+        };
+
+
+
+        class SubscriptionState
+        {
+
+        };
 
     }
 }
+
+#endif

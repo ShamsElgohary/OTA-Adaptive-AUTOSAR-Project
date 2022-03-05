@@ -8,8 +8,10 @@ namespace ara
     {
         
         class NetworkBase
-        {     
-
+        {
+            public:
+                template <typename T, typename... args>
+                ara::core::Future <T> SendRequest(uint16_t ID, args... Args);
         };
         
     }
