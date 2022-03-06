@@ -2,7 +2,7 @@
 
 #include "UCM_Common.hpp"
 #include "State.hpp"
-#include "../../com/COM_Types.hpp"
+#include "../../com/include/types.hpp"
 #include <future> 
 
 

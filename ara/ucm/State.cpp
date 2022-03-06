@@ -100,7 +100,8 @@ ara::ucm::OperationResultType PackageManagerState::Activate()
 
     for(auto itr = NewProListSwClusters.begin(); itr != NewProListSwClusters.end(); ++itr)
     {
-        std::string Path {fileSystemPath + "/" + itr->Name + "/" + itr->Version + "/"};
+        std::string Path {"/" + itr->Name + "/" + itr->Version + "/"};
+
         processList[itr->Name] = { {"Version", itr->Version}, {"Path", Path} };
     }
 

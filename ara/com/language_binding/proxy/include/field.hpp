@@ -1,5 +1,7 @@
 #pragma once 
 #include <iostream>
+#include "serviceProxy.hpp"
+
 using namespace std ;
 
 namespace ara 
@@ -14,11 +16,11 @@ namespace ara
                 class FieldBase {
 
                     private: 
-                        Proxy::HandleType Handle;
+                        ara::com::proxy::ProxyBase::HandleType Handle;
                         uint16_t F_ID;
 
                     public:
-                        FieldProxy(Proxy::HandleType& Handle, uint16_t F_ID)
+                        FieldProxy(ara::com::proxy::ProxyBase::HandleType& Handle, uint16_t F_ID)
                         {
                             this->Handle = Handle;
                             this->F_ID = F_ID;

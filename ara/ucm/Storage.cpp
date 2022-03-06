@@ -217,8 +217,20 @@ void ara::ucm::storage::InstallAction::Execute()
     command = "mkdir " + clusterInFileSystem;
     system(command.c_str());
 
+    /* ADD BIN TO THE  PATH IN THE FILE SYSTEM DIRECTORY */
+    command = "mkdir " + clusterInFileSystem + "/" + "bin";
+    system(command.c_str());
+
+    /* ADD ETC TO THE  PATH IN THE FILE SYSTEM DIRECTORY */
+    command = "mkdir " + clusterInFileSystem + "/" + "etc";
+    system(command.c_str());
+
     /* MOVE THE PACKAGE CONTENTS TO THE FILE SYSTEM DIRECTORY */
-    command = "mv "+ clusterTransferPath + " " + clusterInFileSystem;   
+    command = "find " + clusterTransferPath + " -executable -exec mv {} " + clusterInFileSystem + "/" + "bin " + "\\;";  
+    system(command.c_str());
+
+    /* MOVE THE PACKAGE CONTENTS TO THE FILE SYSTEM DIRECTORY */
+    command = "mv "+ clusterTransferPath + ".json " + clusterInFileSystem + "/" + "etc";   
     system(command.c_str());
 
     ara::ucm::storage::SWCLManager::SetSWCLState(this->SwClusterInfo, ara::ucm::SwClusterStateType::kAdded);

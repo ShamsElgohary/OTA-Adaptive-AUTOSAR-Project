@@ -14,7 +14,7 @@ namespace ara
                 
                 class EventBase {
                     private: 
-                        ara::com::proxy::HandleType Handle;
+                        ara::com::proxy::ProxyBase::HandleType Handle;
                         uint16_t E_ID;
 
                     public:

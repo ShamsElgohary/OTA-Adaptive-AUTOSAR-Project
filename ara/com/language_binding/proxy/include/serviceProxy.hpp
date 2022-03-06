@@ -1,8 +1,8 @@
 #ifndef _ARA_COM_INTERNAL_PROXY_HPP_
 #define  _ARA_COM_INTERNAL_PROXY_HPP_
 
-#include "COM_Types.hpp"
-#include "CORE_Types.hpp"
+#include "../../../include/types.hpp"
+#include "../../../network_binding/network_binding_base.hpp"
 
 /* GENERIC */
 
@@ -20,7 +20,7 @@ namespace ara
                     {
                         private:
                         ara::com::InstanceIdentifier ID;
-                        std::shared_ptr <NetworkBase> network_binding ;
+                        std::shared_ptr <ara::com::NetworkBase> network_binding ;
 
                         inline bool operator==(const HandleType &other) const;
                         const ara::com::InstanceIdentifier &GetInstanceId() const;

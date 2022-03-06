@@ -18,7 +18,7 @@ namespace ara
 
 
             private:
-        }
+        };
 
 
         /* USED TO FIND HANDLER */

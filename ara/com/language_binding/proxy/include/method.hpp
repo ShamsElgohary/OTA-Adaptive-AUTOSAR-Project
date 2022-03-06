@@ -1,6 +1,7 @@
 #pragma once 
 #include <iostream>
-#include "../../../language_binding/Services/include/serviceProxy.hpp"
+#include "serviceProxy.hpp"
+
 using namespace std ;
 
 namespace ara 
@@ -14,10 +15,10 @@ namespace ara
                 template <typename Output>
                 class MethodBase {
                     private: 
-                        ProxyBase::HandleType Handle;
+                        ara::com::proxy::ProxyBase::HandleType Handle;
                         uint16_t M_ID;
                     public:
-                        MethodBase(ProxyBase::HandleType& Handle, uint16_t M_ID)
+                        MethodBase(ara::com::proxy::ProxyBase::HandleType& Handle, uint16_t M_ID)
                         {
                             this->Handle = Handle;
                             this->M_ID = M_ID;
@@ -30,12 +31,12 @@ namespace ara
                 };
                 class MethodOneWayBase {
                     private: 
-                        ProxyBase::HandleType Handle;
+                        ara::com::proxy::ProxyBase::HandleType Handle;
                         uint16_t M_ID;
 
                     public:
 
-                        MethodOneWayBase(ProxyBase::HandleType& Handle, uint16_t M_ID)
+                        MethodOneWayBase(ara::com::proxy::ProxyBase::HandleType& Handle, uint16_t M_ID)
                         {
                             this->Handle = Handle;
                             this->M_ID = M_ID;
@@ -47,16 +48,16 @@ namespace ara
                             this->Handle.network_binding -> SendRequestFireAndForget(M_ID, args);
                         }
                 };
-            //    class calibrate : public MethodBase
-            //    {
-            //        //use base class constructor
-            //        calibrate(handle h):MethodBase(h){};
-            //    };
-            //    class adjust    : public MethodBase{}
-            //    {
-            //        //use base class constructor
-            //        adjust(handle h):MethodBase(h){};
-            //    };
+                //    class calibrate : public MethodBase
+                //    {
+                //        //use base class constructor
+                //        calibrate(handle h):MethodBase(h){};
+                //    };
+                //    class adjust    : public MethodBase{}
+                //    {
+                //        //use base class constructor
+                //        adjust(handle h):MethodBase(h){};
+                //    };
             }
         }
     }

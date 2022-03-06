@@ -1,12 +1,14 @@
 #pragma once 
 #include <iostream>
+
+#include "../../core/types.hpp"
+
 using namespace std ;
 
 namespace ara 
 {
     namespace com
     {
-        
         class NetworkBase
         {
             public:
