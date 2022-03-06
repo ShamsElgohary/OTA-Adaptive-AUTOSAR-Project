@@ -9,8 +9,9 @@
                 "-g",
                 "*.cpp",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
-                "-lboost_filesystem"
+                "${fileDirname}/${fileBasenameNoExtension}" ,
+                "-lboost_filesystem",
+                "-pthread"
             ],
             "options": {
                 "cwd": "${fileDirname}"
