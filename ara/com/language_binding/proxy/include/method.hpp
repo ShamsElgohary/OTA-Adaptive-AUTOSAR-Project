@@ -12,41 +12,41 @@ namespace ara
             namespace methods
             {
                 template <typename Output>
-            class MethodBase {
-                private: 
-                    ProxyBase::HandleType Handle;
-                    uint16_t M_ID;
-                public:
-                    MethodBase(ProxyBase::HandleType& Handle, uint16_t M_ID)
-                    {
-                        this->Handle = Handle;
-                        this->M_ID = M_ID;
-                    }
-                    template <typename... args>
-                    ara::core::Future<Output> operator()(args... Args)
-                    {
-                        return this->Handle.network_binding.SendRequest(M_ID, args);
-                    }
-            };
-            class MethodOneWayBase {
-                private: 
-                    ProxyBase::HandleType Handle;
-                    uint16_t M_ID;
+                class MethodBase {
+                    private: 
+                        ProxyBase::HandleType Handle;
+                        uint16_t M_ID;
+                    public:
+                        MethodBase(ProxyBase::HandleType& Handle, uint16_t M_ID)
+                        {
+                            this->Handle = Handle;
+                            this->M_ID = M_ID;
+                        }
+                        template <typename... args>
+                        ara::core::Future<Output> operator()(args... Args)
+                        {
+                            return this-> Handle.network_binding -> SendRequest(M_ID, args);
+                        }
+                };
+                class MethodOneWayBase {
+                    private: 
+                        ProxyBase::HandleType Handle;
+                        uint16_t M_ID;
 
-                public:
+                    public:
 
-                    MethodOneWayBase(ProxyBase::HandleType& Handle, uint16_t M_ID)
-                    {
-                        this->Handle = Handle;
-                        this->M_ID = M_ID;
-                    }
-                
-                    template <typename... args>
-                    void operator()(args... Args)
-                    {
-                        this->Handle.network_binding.SendRequestFireAndForget(M_ID, args);
-                    }
-            };
+                        MethodOneWayBase(ProxyBase::HandleType& Handle, uint16_t M_ID)
+                        {
+                            this->Handle = Handle;
+                            this->M_ID = M_ID;
+                        }
+                    
+                        template <typename... args>
+                        void operator()(args... Args)
+                        {
+                            this->Handle.network_binding -> SendRequestFireAndForget(M_ID, args);
+                        }
+                };
             //    class calibrate : public MethodBase
             //    {
             //        //use base class constructor

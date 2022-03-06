@@ -1,0 +1,19 @@
+{
+    "Process List Version": 1,
+    "ex1": {
+        "Path": "/executables/ex1",
+        "Version": "0.1"
+    },
+    "ex2": {
+        "Path": "/executables/ex2",
+        "Version": "0.1"
+    },
+    "sm": {
+        "Path": "/executables/sm",
+        "Version": "0.1"
+    },
+    "UCM": {
+        "Path": "/executables/ucm",
+        "Version": "0.1"
+    }
+}

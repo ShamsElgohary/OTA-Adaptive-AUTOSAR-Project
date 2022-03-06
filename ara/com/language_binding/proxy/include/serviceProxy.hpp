@@ -10,11 +10,12 @@ namespace ara
 {
     namespace com
     {
-        namespace Proxy
+        namespace proxy
         {
             class ProxyBase {
 
                 public:
+                    uint16_t Service_Interface_ID;
                     class HandleType 
                     {
                         private:
@@ -24,13 +25,13 @@ namespace ara
                         inline bool operator==(const HandleType &other) const;
                         const ara::com::InstanceIdentifier &GetInstanceId() const;
                     };
-                    static ara::com::ServiceHandleContainer<Proxy::HandleType>FindService();
+                    static ara::com::ServiceHandleContainer<ProxyBase::HandleType>FindService();
 
-                    explicit Proxy(HandleType &handle);
+                    explicit ProxyBase (HandleType &handle);
 
-                    Proxy(Proxy &other) = delete;
+                    ProxyBase (ProxyBase  &other) = delete;
 
-                    Proxy& operator=(const Proxy &other) = delete;
+                    ProxyBase & operator=(const ProxyBase &other) = delete;
 
             };
         }

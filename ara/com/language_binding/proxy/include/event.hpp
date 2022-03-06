@@ -1,5 +1,7 @@
 #pragma once 
 #include <iostream>
+#include "serviceProxy.hpp"
+
 using namespace std ;
 
 namespace ara 
@@ -12,12 +14,12 @@ namespace ara
                 
                 class EventBase {
                     private: 
-                        Proxy::HandleType Handle;
+                        ara::com::proxy::HandleType Handle;
                         uint16_t E_ID;
 
                     public:
 
-                        EventProxy(Proxy::HandleType& Handle, uint16_t E_ID)
+                        EventBase(ProxyBase::HandleType& Handle, uint16_t E_ID)
                         {
                             this->Handle = Handle;
                             this->E_ID = E_ID;
