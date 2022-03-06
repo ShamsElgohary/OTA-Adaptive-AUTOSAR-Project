@@ -33,6 +33,9 @@ extern const string fileBackupPath;
 extern string command;
 
 /* USED TO GET FILE SYSTEM PATH (ONLY IN THIS FILE) */
+static string GetUCMPath();
+
+/* USED TO GET FILE SYSTEM PATH (ONLY IN THIS FILE) */
 static string GetFileSystemPath();
 
 /* Used to get the path of our current directory */
