@@ -1,17 +1,56 @@
 #pragma once
 
-#include <iostream>
-#include <sstream>
-#include <string>
+#include<iostream>
+#include<sstream>
+#include<string>
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
+using namespace std;
+
+
+/* SERIALIZATION OF MULTIPLE PARAMETERS */
+template <typename T, typename... params>
+inline void Serialize(stringstream &ss, T data, params... param)
+{
+  if(sizeof(data) == sizeof(uint8_t)){
+    /* TAG FOR WIRE TYPE 0 ID = 0 (SINGLE VARIABLE) */
+    ss<< "<0x0000> ";   
+  }
+
+  else if(sizeof(data) == sizeof(uint16_t)){
+    ss<< "<0x1000> ";
+  }
+
+  else if(sizeof(data) == sizeof(uint32_t)){
+    ss<< "<0x2000> ";
+  }
+
+  else if(sizeof(data) == sizeof(uint64_t)){
+    ss<< "<0x3000> ";
+  }
+
+  try{    
+  ss<< data;
+  ss<< " ";
+  }
+  catch(const std::exception &e) 
+  {
+    std::cout<< "NOT SUPPORTED IN SERIALIZE \n";
+    std::cout<<e.what()<<endl;
+  }
+  if constexpr (sizeof...(params) > 0) 
+  {
+  Serialize(ss,param...);
+  }
+}
+
 
 /* BOOL , CHAR , INT .. ETC */
 template <typename T> 
-inline void Serialize(std::stringstream &ss, T data)
+inline void Serialize(stringstream &ss, T data)
 {
   if(sizeof(data) == sizeof(uint8_t)){
     /* TAG FOR WIRE TYPE 0 ID = 0 (SINGLE VARIABLE) */
@@ -43,7 +82,7 @@ inline void Serialize(std::stringstream &ss, T data)
 
 
 /* UNSIGNED CHAR  */
-inline void Serialize(std::stringstream &ss, unsigned char data)
+inline void Serialize(stringstream &ss, unsigned char data)
 {
   /* TAG FOR WIRE TYPE 0 ID = 0 (SINGLE VARIABLE) */
   ss<< "<0x0000> ";
@@ -56,7 +95,7 @@ inline void Serialize(std::stringstream &ss, unsigned char data)
 
 /* ARRAY OF BOOL ,CHAR , INT .. ETC. */
 template <typename T, size_t N>
-inline void Serialize(std::stringstream &ss, T (&data)[N] ) 
+inline void Serialize(stringstream &ss, T (&data)[N] ) 
 {
   /*  PUT SIZE OF ARRAY */
   ss << "Length=" << " " << N << " ";
@@ -92,7 +131,7 @@ inline void Serialize(std::stringstream &ss, T (&data)[N] )
 
 /* ARRAY OF UNSIGNED CHAR */
 template <size_t N>
-inline void Serialize(std::stringstream &ss, unsigned char (&data)[N] ) 
+inline void Serialize(stringstream &ss, unsigned char (&data)[N] ) 
 {
   int arrSize = *(&data + 1) - data;
   ss << "Length=" << " " <<arrSize << " ";
@@ -115,7 +154,7 @@ inline void Serialize(std::stringstream &ss, unsigned char (&data)[N] )
 
 /* VECTORS */
 template <typename T>
-inline void Serialize(std::stringstream &ss, vector<T> data ) 
+inline void Serialize(stringstream &ss, vector<T> data ) 
 {
   ss << "Length=" << " " <<data.size() << " ";
 
@@ -149,31 +188,11 @@ inline void Serialize(std::stringstream &ss, vector<T> data )
 
 }
 
-
-/* std::string */
-template <size_t N>
-inline void Serialize(std::stringstream &ss, std::string str) 
-{
-  int arrSize = *(&data + 1) - data;
-  ss << "Length=" << " " << str.size() << " ";
-
-  string str = "<0x0001> ";
-  char dataID= '2';
-
-  for( auto element : data)
-  {
-    ss<< str;
-    str[6] = dataID;
-    dataID++;
-    ss<< +element<<" ";
-  }
-
-}
-
 /* SHOW DATA INSIDE THE STREAM */
-inline void ShowSerializedData(std::stringstream &ss)
+inline void ShowSerializedData(stringstream &ss)
 {
   cout<< ss.str() << endl;
 }
+
 
 
