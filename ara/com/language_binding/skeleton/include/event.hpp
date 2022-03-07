@@ -6,7 +6,7 @@ namespace ara
 {
     namespace com
     {
-        namespace proxy 
+        namespace skeleton 
         {
             namespace event
             {

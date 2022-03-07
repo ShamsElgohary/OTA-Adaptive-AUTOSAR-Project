@@ -9,7 +9,7 @@ namespace ara
     {
         namespace skeleton 
         {
-            namespace methods
+            namespace method
             {
                 
             }

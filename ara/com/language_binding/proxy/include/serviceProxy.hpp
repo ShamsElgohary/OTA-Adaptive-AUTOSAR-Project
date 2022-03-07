@@ -23,7 +23,7 @@ namespace ara
                             ara::com::InterfaceIdentifier InterfaceID;
                             ara::com::InstanceIdentifier InstanceID;
 
-                            std::shared_ptr <ara::com::NetworkBase> network_binding ;
+                            std::shared_ptr <ara::com::NetworkBase> network_binding;
 
                         public:
                             inline bool operator==(const HandleType &other) const;
