@@ -3,25 +3,49 @@
 
 #include <stdint.h>
 #include <memory>
+#include <vector>
 
 namespace ara
 {
     namespace com
     {
         enum class MethodCallProcessingMode { kPoll, kEvent, kEventSingleThread };
+        
+        /* SERVICE IDENTIFIER */
+        using serviceIdentifierType = std::string;
+
+        /* SERVICE INSTANCE IDENTIFIER */
+        using InstanceIdentifier = uint32_t;
+
+        /* SERVICE INTERFACE IDENTIFIER */
+        using InterfaceIdentifier = uint32_t;
+
+        /* SERVICE INSTANCE IDENTIFIER CONTAINER */
+        class InstanceIdentifierContainer : public std::vector<InstanceIdentifier>
+        {};
+
+        /* SERVICE HANDLE CONTAINER */
+        template <typename H>
+        class ServiceHandleContainer : public std::vector<H>
+        {};
 
 
-        /* INSTANCE IDENTIFIER */
-        class InstanceIdentifier
+
+
+
+
+
+        /* NOT IMPLEMENTED */
+        class FindServiceHandle 
         {
             public:
 
-
             private:
+
         };
 
 
-        /* USED TO FIND HANDLER */
+        /* NOT IMPLEMENTED */
         template <typename H>
         class FindServiceHandler
         {
@@ -32,33 +56,7 @@ namespace ara
 
         };
 
-
-        class InstanceIdentifierContainer
-        {
-            public:
-
-            private:
-
-        };
-
-        class FindServiceHandle 
-        {
-            public:
-
-            private:
-
-        };
-
-        template <typename H>
-        class ServiceHandleContainer
-        {
-            public:
-
-            private:
-        };
-
-
-
+        /* NOT IMPLEMENTED */
         class SubscriptionState
         {
 

@@ -10,19 +10,19 @@ namespace ara
     {
         namespace proxy 
         {
-            namespace methods
+            namespace method
             {
                 template <typename Output>
-                class MethodBase {
-                    private: 
+                virtual class MethodBase {
+                    protected: 
                         ara::com::proxy::ProxyBase::HandleType Handle;
-                        uint16_t M_ID;
+                        std::string name;
+                        std::uint_16 D;
                     public:
-                        MethodBase(ara::com::proxy::ProxyBase::HandleType& Handle, uint16_t M_ID)
-                        {
-                            this->Handle = Handle;
-                            this->M_ID = M_ID;
-                        }
+                        /* IMPLEMENTATION IN GENERATION */
+                        MethodBase(ara::com::proxy::ProxyBase::HandleType& Handle);
+
+                        /* MUST (This isnot the Actual Implementation) */
                         template <typename... args>
                         ara::core::Future<Output> operator()(args... Args)
                         {
@@ -30,34 +30,21 @@ namespace ara
                         }
                 };
                 class MethodOneWayBase {
-                    private: 
+                    protected: 
                         ara::com::proxy::ProxyBase::HandleType Handle;
-                        uint16_t M_ID;
+                        std::uint16_t ID;
 
                     public:
+                        /* IMPLEMENTATION IN GENERATION */
+                        MethodOneWayBase(ara::com::proxy::ProxyBase::HandleType& Handle);
 
-                        MethodOneWayBase(ara::com::proxy::ProxyBase::HandleType& Handle, uint16_t M_ID)
-                        {
-                            this->Handle = Handle;
-                            this->M_ID = M_ID;
-                        }
-                    
+                        /* SHOULD (This isnot the Actual Implementation) */
                         template <typename... args>
                         void operator()(args... Args)
                         {
                             this->Handle.network_binding -> SendRequestFireAndForget(M_ID, args);
                         }
                 };
-                //    class calibrate : public MethodBase
-                //    {
-                //        //use base class constructor
-                //        calibrate(handle h):MethodBase(h){};
-                //    };
-                //    class adjust    : public MethodBase{}
-                //    {
-                //        //use base class constructor
-                //        adjust(handle h):MethodBase(h){};
-                //    };
             }
         }
     }

@@ -5,15 +5,15 @@
         "Version": "0.1"
     },
     "ex1": {
-        "Path": "/ex1/0.1/",
+        "Path": "/ex1/",
         "Version": "0.1"
     },
     "ex2": {
-        "Path": "/ex2/0.1/",
+        "Path": "/ex2/",
         "Version": "0.1"
     },
     "sm": {
-        "Path": "/sm/0.1/",
+        "Path": "/sm/",
         "Version": "0.1"
     }
 }
