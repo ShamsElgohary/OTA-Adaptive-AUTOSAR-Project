@@ -8,13 +8,13 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
+
 class Serializer{
 public:
   // Serialize any number of arguments
   template<typename ...Ts>
   inline void Serialize (std::stringstream& ss,Ts && ... multi_inputs)
   {
-      int i = 0;
       ([&ss,this] (auto input)
       {
         this->Serialize(ss,input);
@@ -167,10 +167,9 @@ public:
   }
 
   /* std::string */
-  inline void Serialize(std::stringstream &ss, std::string str) 
+  inline void Serialize(std::stringstream &ss, std::string &str) 
   {
     ss << " Length=" << " " << str.size() << " ";
     ss << str;
   }
 };
-

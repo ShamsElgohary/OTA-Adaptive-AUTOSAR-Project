@@ -11,10 +11,8 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <functional>
-
+#include "Serialization.hpp"
 #include "stdint.h"
-
-
 
 
 namespace someip {
@@ -49,6 +47,7 @@ struct someipHeader {
 		someipHeader();
 		someipHeader(MessageID messageID, RequestID requestID, InterfaceVersion interfaceVersion, 
 				MessageType messageType,ReturnCode returnCode);
+		
 		MessageID getMessageID() const;
 		MethodID getMethodID() const;
 		MessageType getMessageType() const;
@@ -132,7 +131,7 @@ typedef struct
 {
 	std::string raw_ip_address;
 	unsigned short port_num;
-}Destination;
+}EndPoint;
 
 inline ServiceID getServiceID(MessageID messageID) {
 	return messageID >> SERVICE_ID_BITS_COUNT; // GET LAST 16 BITS
@@ -149,19 +148,19 @@ inline MessageID getMessageID(ServiceID serviceID, MethodID MethodID) {
 }
 
 /* FUNCTION TO SEND A someip MESSAGE */
-void SendsomeipMessage(someip_Message &msg);
+void SendsomeipMessage(someip_Message &msg, EndPoint ep);
 
 /* FUNCTION TO RECEIVE A someip MESSAGE */
 someip_Message ReadsomeipMessage(boost::asio::ip::tcp::socket & socket);
 
 /* ROUTING */
-static std::map <ServiceID , Destination > Dispatcher;
+static std::map <ServiceID , EndPoint > Dispatcher;
 
-/* INSERT NEW DESTINATION */
-void AddDestination(ServiceID serviceId, Destination des);
+/* INSERT NEW ENDPOINT */
+void AddEndPoint(ServiceID serviceId, EndPoint ep);
 
-/* GET DESTINATION */
-Destination GetDestination(ServiceID serviceId);
+/* GET ENDPOINT */
+EndPoint GetEndPoint(ServiceID serviceId);
 
 
 } // End of Namespace someip
