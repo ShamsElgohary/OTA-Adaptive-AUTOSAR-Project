@@ -4,7 +4,7 @@ import re
 from django.shortcuts import redirect, render
 from django.template import context
 from django.views.generic import TemplateView
-from .models import FileHandler
+from .models import FileHandler, file_path
 from .forms import FileHandlerform
 import mimetypes
 from django.http import HttpResponse
@@ -42,15 +42,42 @@ class Indexview(TemplateView):
 
 
 
-def download_file(request):
+def meta_data_send(request):
+    data=FileHandler.objects.all()
+    print(data)
+    f = open("demofile2.txt", "w")
+    print("*******************")
+    for x in data:
+        print(x)
+        f.write(str(x))
+        f.write('\n')
+    f.close()
+    filename ="demofile2.txt"
+    filepath="demofile2.txt"
+    path = open(filepath, 'r')
+    # Set the mime type
+    mime_type, _ = mimetypes.guess_type(filepath)
+    # Set the return value of the HttpResponse
+    response = HttpResponse(path, content_type=mime_type)
+    # Set the HTTP header for sending to browser
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    # Return the response value
+    return response
+
+
+
+
+
+
+def download_file(request,value):
     # Define Django project base directory
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # Define text file name
-    filename = 'uploaded.main.cpp'
+    filename = value
     # Define the full file path
-    filepath = '/home/kareem/Graduation_project/aaa/cloud/cloud/cloud/cloud/media/documents/'+ filename
+    filepath = BASE_DIR+'/cloud/media/documents/'+ filename
     # Open the file for reading content
-    path = open(filepath, 'r')
+    path = open(filepath, 'rb')
     # Set the mime type
     mime_type, _ = mimetypes.guess_type(filepath)
     # Set the return value of the HttpResponse
