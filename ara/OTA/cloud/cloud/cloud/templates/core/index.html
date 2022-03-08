@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>django upload download</title>
+</head>
+<body>
+    <form method="POST" enctype= "multipart/form-data">
+        {%csrf_token%}
+
+        <div class="form-group">
+             {{form.file_upload | add_class:"form-control"}}
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+
+<url>
+    {%for item in get_files%}
+
+    <li>
+      <a href="{{item.file_upload.url}}" download>Download file </a>
+    </li>
+    {%endfor%}
+</url>
+</body>
+</html>
