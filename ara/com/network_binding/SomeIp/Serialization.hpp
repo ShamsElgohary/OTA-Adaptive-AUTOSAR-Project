@@ -8,8 +8,8 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
-
 class Serializer{
+
 public:
   // Serialize any number of arguments
   template<typename ...Ts>
@@ -76,7 +76,7 @@ public:
   inline void Serialize(std::stringstream &ss, T (&data)[N] ) 
   {
     /*  PUT SIZE OF ARRAY */
-    ss << " Length=" << " " << N << " ";
+    ss << " <Length=" << " " << N << "> ";
 
     std::string str;
     if(sizeof(data[0]) == sizeof(uint8_t)){
@@ -112,7 +112,7 @@ public:
   inline void Serialize(std::stringstream &ss, unsigned char (&data)[N] ) 
   {
     int arrSize = *(&data + 1) - data;
-    ss << " Length=" << " " <<arrSize << " ";
+    ss << " <Length=" << " " <<arrSize << "> ";
 
     std::string str = "<0x0001> ";
     char dataID= '2';
@@ -130,11 +130,26 @@ public:
   };
 
 
+    /* VECTORS STRING*/
+  inline void Serialize(std::stringstream &ss, std::vector<std::string> &data ) 
+  {
+    ss << " <Length=" << " " <<data.size() << "> ";
+
+    for( auto element : data)
+    {
+      Serialize(ss,element);
+    }
+
+    cout << "CHECK " <<ss.str();
+
+  }
+
+
   /* VECTORS */
   template <typename T>
-  inline void Serialize(std::stringstream &ss, std::vector<T> data ) 
+  inline void Serialize(std::stringstream &ss, std::vector<T> &data ) 
   {
-    ss << " Length=" << " " <<data.size() << " ";
+    ss << " <Length=" << " " <<data.size() << "> ";
 
     std::string str;
     if(sizeof(T) == sizeof(uint8_t)){
@@ -166,10 +181,139 @@ public:
 
   }
 
+
   /* std::string */
-  inline void Serialize(std::stringstream &ss, std::string &str) 
+  inline void Serialize(std::stringstream &ss, std::string str) 
   {
-    ss << " Length=" << " " << str.size() << " ";
+    ss << " <Length=" << " " << str.size() << "> ";
     ss << str;
+  }
+};
+
+
+class Deserializer{
+
+public:
+  // Serialize any number of arguments
+  template<typename ...Ts>
+  inline void Deserialize (std::stringstream& ss,Ts && ... multi_inputs)
+  {
+      ([&ss,this] (auto &input)
+      {
+        this->Deserialize(ss,input);
+      } (multi_inputs), ...);
+  }
+
+  /* BOOL , CHAR , INT .. ETC */
+  template <typename T> 
+  inline void Deserialize(std::stringstream &ss, T &data)
+  {
+    std::string strTag;
+
+    ss >> strTag;
+
+    try{    
+    ss >> data;
+    }
+    catch(const std::exception &e) 
+    {
+      std::cout<< "NOT SUPPORTED IN DESERIALIZE \n";
+      std::cout<<e.what()<<std::endl;
+    }
+  }
+
+
+  /* ARRAY OF BOOL ,CHAR , INT .. ETC. */
+  template <typename T, size_t N>
+  inline void Deserialize(std::stringstream &ss, T (&data)[N] ) 
+  {
+    string strTag;
+    int size;
+
+    /* LENGTH= */
+    ss >> strTag;
+    /* ARRAY SIZE */
+    ss >> size;
+    /* > */
+    ss >> strTag;
+
+    for( int i =0 ; i < size ; i++)
+    {
+      ss >> strTag;
+      ss >> data[i];
+    }
+
+  }
+
+  /* VECTORS OF STRING */
+  inline void Deserialize(std::stringstream &ss, std::vector<std::string> &data ) 
+  {
+    string strTag;
+    int size;
+
+    /* LENGTH= */
+    ss >> strTag;
+    /* ARRAY SIZE */
+    ss >> size;
+    /* > */
+    ss >> strTag;
+
+    if (data.capacity() < size)
+    {
+      data.resize(size);
+    } 
+
+    for(int i = 0; i < size; i++)
+    {
+      Deserialize(ss,data[i]);
+    }
+  }
+
+
+  /* VECTORS */
+  template <typename T>
+  inline void Deserialize(std::stringstream &ss, std::vector<T> &data ) 
+  {
+    string strTag;
+    int size;
+
+    /* LENGTH= */
+    ss >> strTag;
+    /* ARRAY SIZE */
+    ss >> size;
+    /* > */
+    ss >> strTag;
+    
+    if (data.capacity() < size)
+    {
+      data.resize(size);
+    } 
+
+    for(int i = 0; i < size; i++)
+    {
+      ss >> strTag;
+      ss >> data[i];
+    }
+  }
+
+
+  /* std::string */
+  inline void Deserialize(std::stringstream &ss, std::string &str) 
+  {
+    std::string strTag;
+    int strSize;
+    /* LENGTH= */
+    ss >> strTag;
+    /* ARRAY SIZE */
+    ss >> strSize;
+    /* > */
+    ss >> strTag;
+
+    while(str.size() < strSize)
+    {
+      std::string strInput;
+      ss >> strInput;
+      str += strInput + " ";
+    }
   }
 };
