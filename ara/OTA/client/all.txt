@@ -1,7 +1,0 @@
-mariem
-yasmine
-sender.cpp_5
-meta_data
-loay_5
-karim.zip
-all.cpp
