@@ -22,6 +22,7 @@ MEDIA_DIR=os.path.join(BASE_DIR,'media')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'lx94ug)q$xa$u7dq=g#qi9@ivc^8*n^n-*$h4(%-ayyg04c6!v'
+LOGOUT_REDIRECT_URL = 'login'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

@@ -32,6 +32,9 @@ def login_page(request):
     return render(request, "core/login.html", context)
 
 
+def logout_view(request):
+    logout(request)
+    return redirect('core:login')
 
 
 

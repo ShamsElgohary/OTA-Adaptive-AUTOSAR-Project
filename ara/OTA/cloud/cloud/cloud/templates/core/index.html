@@ -62,20 +62,10 @@
           <a href="" class="navbar-brand">
              <h4 class="d-inline align-middle" >OTA</h4>
             </a>
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="collapse navbar-collapse">
           <ul class="navbar-nav ml-auto">
             
-            <li class="nav-item">
-              <a  class="nav-link">log out</a>
-            </li>
-            
-             
-           
-           
-           
+            <a href="{% url 'core:logout' %}" class="nav-link">Logout</a>
           </ul>
         </div>
       </div>
