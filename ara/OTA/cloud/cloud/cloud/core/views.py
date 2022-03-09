@@ -9,8 +9,30 @@ from .forms import FileHandlerform
 import mimetypes
 from django.http import HttpResponse
 import os
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
+
+
+def login_page(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username = username, password = password)
+        if user is not None:
+            login(request, user)
+            return redirect('core:index')
+            
+        else:
+            # Return an 'invalid login' error message.
+            return render(request, "core/login.html",{
+                        "message":"wrong username or password"
+                    })
+    context = {}
+    return render(request, "core/login.html", context)
+
+
+
 
 
 class Indexview(TemplateView):
