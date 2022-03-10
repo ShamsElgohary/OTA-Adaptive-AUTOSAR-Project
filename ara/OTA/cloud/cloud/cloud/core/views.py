@@ -50,11 +50,15 @@ class Indexview(TemplateView):
     def post(self,request,**kwargs):
         context= {}
         if request.method == 'POST':
-            form=FileHandlerform(request.POST or None ,request.FILES or None)
+            form=FileHandlerform(request.POST ,request.FILES )
             if form.is_valid():
-                obj=form.save(commit=False)
-                obj.save()
-
+               # obj=form.save(commit=False)
+               # obj.save()
+                form_model = FileHandler()
+                form_model.file_upolad= form.cleaned_data['file_upload']
+                form_model.file_name= form.cleaned_data['file_name']
+                form.save()
+                print(form)
                 return redirect('core:index')
 
             else:
