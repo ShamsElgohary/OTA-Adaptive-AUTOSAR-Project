@@ -12,13 +12,10 @@ namespace ara
         enum class MethodCallProcessingMode { kPoll, kEvent, kEventSingleThread };
         
         /* SERVICE IDENTIFIER */
-        using serviceIdentifierType = std::string;
+        using serviceIdentifierType = std::string; //should be int?
 
         /* SERVICE INSTANCE IDENTIFIER */
-        using InstanceIdentifier = uint32_t;
-
-        /* SERVICE INTERFACE IDENTIFIER */
-        using InterfaceIdentifier = uint32_t;
+        using InstanceIdentifier = uint32_t; //should be string?
 
         /* SERVICE INSTANCE IDENTIFIER CONTAINER */
         class InstanceIdentifierContainer : public std::vector<InstanceIdentifier>

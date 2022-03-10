@@ -1,55 +1,44 @@
-#pragma once 
+#pragma once
 #include <iostream>
 
 #include "../../../include/types.hpp"
 #include "../../../network_binding/network_binding_base.hpp"
 
-using namespace std ;
+using namespace std;
 
-namespace ara 
+namespace ara
 {
     namespace com
     {
-        namespace skeleton 
+        namespace skeleton
         {
             class Serviceskeleton
             {
-                protected:
-                    ara::com::serviceIdentifierType;
-                    uint32_t VersionMajor;
-                    uint32_t VersionMinor;
+            private:
+                ara::com::InstanceIdentifier instanceID;
+                ara::com::MethodCallProcessingMode mode;
+                std::shared_ptr<ara::com::NetworkBase> ptr2bindingProtocol;
+                uint32_t port;
+                uint32_t ip;
+                void processMethod(uint32_t); //return type to be determined (betragga3 arguments el "send")
 
-                    std::map<ara::com::InstanceIdentifier, ara::com::InterfaceIdentifier> InstancesMap;
-                    
-                    std::map<ara::com::InterfaceIdentifier, std::shared_ptr <ara::com::NetworkBase>> network_bindingMap;
-                
-                public:
-                    /* MUST (Implementation can either be from generator or not) */
-                    Serviceskeleton(ara::com::InstanceIdentifier instanceId,
-                        ara::com::MethodCallProcessingMode mode =
-                        ara::com::MethodCallProcessingMode::kEvent);
+            public:
+                /* MUST (Implementation can either be from generator or not) */
+                Serviceskeleton(ara::com::InstanceIdentifier instanceId,
+                                ara::com::MethodCallProcessingMode mode =
+                                    ara::com::MethodCallProcessingMode::kEvent);
 
-                    /* EXTRA (Implementation can either be from generator or not) */
-                    Serviceskeleton(ara::com::InstanceIdentifierContainer instanceIds,
-                        ara::com::MethodCallProcessingMode mode =
-                        ara::com::MethodCallProcessingMode::kEvent);
+                Serviceskeleton(const Serviceskeleton &other) = delete;
 
-                    /* EXTRA (Implementation can either be from generator or not) */
-                    Serviceskeleton(ara::core::InstanceSpecifier instanceSpec,
-                        ara::com::MethodCallProcessingMode mode =
-                        ara::com::MethodCallProcessingMode::kEvent);
+                Serviceskeleton &operator=(const Serviceskeleton &other) = delete;
 
-                    Serviceskeleton(const Serviceskeleton& other) = delete;
+                ~Serviceskeleton();
 
-                    Serviceskeleton& operator=(const Serviceskeleton& other) = delete;
+                /* MUST */
+                void OfferService();
 
-                    ~Serviceskeleton();
-
-                    /* MUST */
-                    void OfferService();
-                    
-                    /* MUST */
-                    void StopOfferService();
+                /* MUST */
+                void StopOfferService();
             };
         }
     }
