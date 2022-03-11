@@ -9,5 +9,5 @@ public:
 
     void connect();
     void send(std::stringstream data);
-    bool receive();
+    std::stringstream receive();
 };

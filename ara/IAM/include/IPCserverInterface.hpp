@@ -6,5 +6,5 @@ public:
     int getPeerId(int clientSocketDecriptor);
     void connect();
     void send(std::stringstream data);
-    bool receive();
+    std::stringstream receive();
 };

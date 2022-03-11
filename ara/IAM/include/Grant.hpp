@@ -9,13 +9,16 @@ private:
     InstanceID In_id;
     friend class boost::serialization::access;
     template <typename Archive>
-    void serialize(Archive& ar, const unsigned int version){
-        ar & S_id;
-        ar & In_id;
-    }
+ 
     
 public:
     //Constructor to set the id parameters
     void Grant(ServiceID S, InstanceID I);
-    void ParseJson();
+    static vector<Grant> ParseJson(string process_name);
+    std::stringstream serialize_write(Archive& ar, const unsigned int version){
+        // ar & S_id;
+        // ar & In_id;
+        // return ar;
+    }
+    static Grant serialize_read(std::stringstream input);
 };
