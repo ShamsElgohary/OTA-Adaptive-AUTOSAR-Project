@@ -53,6 +53,8 @@ namespace ara
 			class PackageManagerImpl : public PackageManager 
 			{
 			public:
+			std::future<vector <ara::ucm::SwClusterInfoType>> GetPresentSWCLs();
+			std::future<vector <ara::ucm::SwClusterInfoType>> GetSWCLsChangeInfo();
 
 			/* Transfer Operations */
 			std::future<TransferStartOutput> TransferStart(uint64_t Size);

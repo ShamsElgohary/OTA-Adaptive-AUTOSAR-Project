@@ -40,12 +40,30 @@ namespace ara
 
                         /* SHOULD (This isnot the Actual Implementation) */
                         template <typename... args>
-                        void operator()(args... Args)
+                        void operator()(int x)
                         {
-                            this->Handle.network_binding -> SendRequestFireAndForget(M_ID, args);
+                            this->Handle.network_binding -> SendRequestFireAndForget(ID, x);
                         }
                 };
             }
         }
+    }
+}
+
+
+class ucmproxy
+{
+    method::starttarnsfer starttransfer ;
+}
+
+proxy x(handle1 ) ;
+x.starttarnsfer() ;
+
+
+namespace method 
+{
+    class starttarnsfer ;public MethodBase
+    {
+        method_id = 5;
     }
 }
