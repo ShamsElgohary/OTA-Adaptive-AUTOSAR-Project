@@ -1,8 +1,11 @@
 #pragma once
 #include <iostream>
-
+#include<thread>
+#include<utility>
+#include <map>
 #include "../../../include/types.hpp"
 #include "../../../network_binding/network_binding_base.hpp"
+#include "method.hpp"
 
 using namespace std;
 
@@ -17,9 +20,10 @@ namespace ara
             private:
                 ara::com::InstanceIdentifier instanceID;
                 ara::com::MethodCallProcessingMode mode;
-                std::shared_ptr<ara::com::NetworkBase> ptr2bindingProtocol;
+                std::shared_ptr<ara::com::NetworkBindingBase> ptr2bindingProtocol;
                 uint32_t port;
                 uint32_t ip;
+                map<uint32_t, method::methodBase *> ID2method;
                 void processMethod(uint32_t); //return type to be determined (betragga3 arguments el "send")
 
             public:
@@ -32,13 +36,15 @@ namespace ara
 
                 Serviceskeleton &operator=(const Serviceskeleton &other) = delete;
 
-                ~Serviceskeleton();
+                virtual ~Serviceskeleton();
 
                 /* MUST */
-                void OfferService();
+                virtual void OfferService() = 0;
 
                 /* MUST */
-                void StopOfferService();
+                virtual void StopOfferService() = 0;
+
+                static void handleMethod(method::methodBase *, method::input ip);
             };
         }
     }

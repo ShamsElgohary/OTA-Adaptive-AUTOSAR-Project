@@ -14,7 +14,7 @@ namespace ara
             SOMEIP,
             DDS
         };
-        class NetworkBase
+        class NetworkBindingBase
         {
         public:
             template <typename T, typename... args>

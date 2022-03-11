@@ -3,7 +3,7 @@
 
 #include "../../../include/types.hpp"
 #include "../../../network_binding/network_binding_base.hpp"
-
+#include "method.hpp"
 using namespace std;
 
 namespace ara
@@ -50,7 +50,21 @@ namespace ara
                     bool TransferStartResult;
                 };
 
-                virtual ara::core::Future<TransferStartOutput> SoftwarePackage::TransferStart(uint64_t Size) = 0;
+                class startTransfer : public method::methodBase {
+                    void processMethod(uint64_t size)
+                    {
+                        TransferStart(size);
+                    }
+                };
+
+                class ayHaga : public method::methodBase {
+                    void processMethod(ayArgument ayArgument)
+                    {
+                        TransferStart(ayArgument);
+                    }
+                };
+
+                ara::core::Future<TransferStartOutput> SoftwarePackage::TransferStart(uint64_t Size);
 
             private:
                 ara::com::InstanceIdentifier instanceId;
