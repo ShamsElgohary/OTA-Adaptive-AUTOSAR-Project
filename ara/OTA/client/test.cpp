@@ -48,11 +48,11 @@ void parse_meta_data(){
 
 int main()
 {
-    auto responce=cpr::Get(cpr::Url{"http://127.0.0.1:8000/meta_data_send"});
+    auto responce=cpr::Get(cpr::Url{"http://127.0.0.1:8000/download/ex1.cpp"});
     std::cout<<responce.text<<std::endl;
     std::ofstream myfile;
-    myfile.open("meta_data.txt");
+    myfile.open("test2.txt");
     myfile<<responce.text;
     myfile.close();
-    parse_meta_data();
+    //parse_meta_data();
 }
