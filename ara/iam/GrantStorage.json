@@ -1,33 +1,48 @@
 {
-    "grants": 
+    "Grants": 
     [
         {
-            "GrantType": "ComGrant",
-            "Process": "ucm",
-            "PR_Type" : "Provide",
-            "ServiceID" : 1,
-            "InstanceID" : 1
+            "Process" : "ucm",
+            "Elements" :
+            [
+                {
+                    "GrantType": "ComGrant",
+                    "PR_Type" : "Provide",
+                    "ServiceID" : 2,
+                    "InstanceID" : 1
+                },
+                {
+                    "GrantType": "ComGrant",
+                    "PR_Type" : "Require",
+                    "ServiceID" : 1,
+                    "InstanceID" : 1
+                }
+            ]
+
         },
         {
-            "GrantType": "ComGrant",
-            "Process": "ota",
-            "PR_Type": "Require",
-            "ServiceID" : 1,
-            "InstanceID" : 1
+            "Process" : "ota",
+            "Elements" :
+            [
+                {
+                    "GrantType": "ComGrant",
+                    "PR_Type" : "Require",
+                    "ServiceID" : 2,
+                    "InstanceID" : 1
+                }
+            ]
         },
         {
-            "GrantType": "ComGrant",
-            "Process": "ucm",
-            "PR_Type" : "Require",
-            "ServiceID" : 2,
-            "InstanceID" : 1
-        },
-        {
-            "GrantType": "ComGrant",
-            "Process": "sm",
-            "PR_Type" : "Provide",
-            "ServiceID" : 2,
-            "InstanceID" : 1
+            "Process" : "sm",
+            "Elements" :
+            [
+                {
+                    "GrantType": "ComGrant",
+                    "PR_Type" : "Provide",
+                    "ServiceID" : 1,
+                    "InstanceID" : 1
+                }
+            ]
         }
     ]
 }

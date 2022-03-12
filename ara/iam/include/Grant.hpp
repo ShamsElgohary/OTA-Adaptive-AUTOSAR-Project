@@ -1,6 +1,9 @@
 #pragma once
-#include "types.h"
+#include "types.hpp"
+#include "AccessManager.hpp"
 
+using namespace std;
+using namespace ara::iam;
 namespace ara
 {
     namespace iam
@@ -8,41 +11,37 @@ namespace ara
         class Grant
         {   
             private:
-                friend class boost::serialization::access;
-                friend class ara::iam::GrantStorage;
-                template <typename Archive>
-                void serialize(Archive& ar, const unsigned int version)
-                {
-                    ar & S_id;
-                    ar & In_id;
-                    ar & GType;
-                    ar & PR_T;
-                }
-            protected:
-                ara::iam::ServiceID S_id;
-                ara::iam::InstanceID In_id;
-                ara::iam::Grant_Type GType;
-                ara::iam::PR_Type PR_T;
 
             public:
+                ara::iam::ServiceID S_id = 0;
+                ara::iam::InstanceID In_id = 0;
+                ara::iam::Grant_Type GType = "";
+                ara::iam::PR_Type PR_T = "";
+
+            
                 bool IsEqual(Grant& other);        
+                Grant();
+                Grant(ara::iam::ServiceID S, ara::iam::InstanceID I, ara::iam::Grant_Type GT, ara::iam::PR_Type PR);
+                ~Grant();
 
-                //Constructor to set the id parameters
-                Grant(ara::iam::ServiceID S, ara::iam::InstanceID I, ara::iam::Grant_Type GT);
+                void Serialize(ostringstream& oss);
 
-                void Serialize(ostringstream& oss)
-                {
-                    boost::archive::binary_oarchive oa(oss);
-                    oa&* (this);
-                }
-
-                void Deserialize(ostringstream& oss)
-                {
-                    std::string str_data = oss.str();
-                    std::istringstream iss(str_data);
-                    boost::archive::binary_iarchive ia(iss);
-                    ia&* (this);
-                }
+                void Deserialize(ostringstream& oss);
         };
     }
 }
+
+namespace boost {
+namespace serialization {
+
+template<class Archive>
+void serialize(Archive & ar, ara::iam::Grant & g, const unsigned int version)
+{
+    ar & g.S_id;
+    ar & g.In_id;
+    ar & g.GType;
+    ar & g.PR_T;
+}
+
+} // namespace serialization
+} // namespace boost

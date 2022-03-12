@@ -1,16 +1,14 @@
-#include "../include/AccessManager.hpp"
-
+#include "../include/types.hpp"
+#include "../include/Grant.hpp"
 namespace pt = boost::property_tree;
 
 
-//std::map<std::string, std::vector<const ara::iam::Grant>> ara::iam::AccessManager::AccessMap;
-
-void ara::iam::AccessManager::ParseJson(std::string filePath)
+int main (void)
 {
     // Create a root
     pt::ptree root;
     // Load the json file in this ptree
-    pt::read_json(filePath, root);
+    pt::read_json("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/ara/iam/GrantStorage.json", root);
     for(auto&& p : root.get_child("Grants"))
     {
         const pt::ptree & subtree = p.second;
@@ -26,21 +24,7 @@ void ara::iam::AccessManager::ParseJson(std::string filePath)
             ara::iam::Grant G(S_ID , I_ID, GT, PRT);
         }
     }
-}
-
-bool ara::iam::AccessManager::InitGrantStorage(std::string basePath)
-{
-    ara::iam::AccessManager::ParseJson(basePath);
+    std::string filePath = "/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/ara/iam/GrantStorage.json";
+    //ara::iam::AccessManager::InitGrantStorage(filePath);
     return 0;
 }
-
-//bool ara::iam::AccessManager::InitServerAdapter(ara::iam::IPCserverInterface & server)
-//{
-
-//}
-
-void ara::iam::AccessManager::RunEventLoop()
-{
-
-}
-

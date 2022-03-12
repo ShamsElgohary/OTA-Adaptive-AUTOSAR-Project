@@ -1,5 +1,6 @@
 #pragma once
-#include "types.h"
+#include "types.hpp"
+#include "Grant.hpp"
 
 namespace ara
 {
@@ -7,7 +8,13 @@ namespace ara
     {
         class IPCserverInterface
         {
+        private:
+            int portnum = 2000;
+            std::string IP = "127.0.0.1";
+
         public:
+            IPCserverInterface();
+            ~IPCserverInterface();
             int getPeerId(int clientSocketDecriptor);
             void connect();
             void send(std::stringstream data);

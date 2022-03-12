@@ -1,6 +1,7 @@
 #pragma once
-#include "types.h"
+#include "types.hpp"
 #include "IPCclientInterface.hpp"
+#include "Grant.hpp"
 
 namespace ara
 {
@@ -8,6 +9,7 @@ namespace ara
     {
         class IAMGrantQuery
         {
+            private:
             IPCclientInterface *IPC;
 
             public:
