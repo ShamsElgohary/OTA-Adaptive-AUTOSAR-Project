@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00049.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>ota</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="19a133a7-9338-4a8a-b12b-712aea7601a0">
+          <SHORT-NAME>processes</SHORT-NAME>
+          <ELEMENTS>
+            <PROCESS UUID="730cb798-d296-4802-923f-ed332dba820d">
+              <SHORT-NAME>ota_process</SHORT-NAME>
+              <DESIGN-REF DEST="PROCESS-DESIGN">/ota/processes/process_design/ota_process_design</DESIGN-REF>
+              <EXECUTABLE-REF DEST="EXECUTABLE">/ota/executables/ota_exec</EXECUTABLE-REF>
+            </PROCESS>
+            <PROCESS UUID="733fda84-52f2-45da-ae30-1074f887527c">
+              <SHORT-NAME>sm_process</SHORT-NAME>
+              <DESIGN-REF DEST="PROCESS-DESIGN">/ota/processes/process_design/sm_process_design</DESIGN-REF>
+              <EXECUTABLE-REF DEST="EXECUTABLE">/ota/executables/sm_exec</EXECUTABLE-REF>
+            </PROCESS>
+            <PROCESS UUID="b51e8eee-4945-4265-a7f4-0d0692bf168a">
+              <SHORT-NAME>ucm_process</SHORT-NAME>
+              <DESIGN-REF DEST="PROCESS-DESIGN">/ota/processes/process_design/ucm_process_design</DESIGN-REF>
+              <EXECUTABLE-REF DEST="EXECUTABLE">/ota/executables/ucm_exec</EXECUTABLE-REF>
+            </PROCESS>
+          </ELEMENTS>
+          <AR-PACKAGES>
+            <AR-PACKAGE UUID="d6a44b36-a19a-4926-a620-e1bb6a53d3ec">
+              <SHORT-NAME>process_design</SHORT-NAME>
+              <ELEMENTS>
+                <PROCESS-DESIGN UUID="5ddadee1-f70a-4c9c-a1cc-03966df457e0">
+                  <SHORT-NAME>ota_process_design</SHORT-NAME>
+                  <EXECUTABLE-REF DEST="EXECUTABLE">/ota/executables/ota_exec</EXECUTABLE-REF>
+                </PROCESS-DESIGN>
+                <PROCESS-DESIGN UUID="0aab3065-a039-4e69-9775-6f6a5625a489">
+                  <SHORT-NAME>sm_process_design</SHORT-NAME>
+                  <EXECUTABLE-REF DEST="EXECUTABLE">/ota/executables/sm_exec</EXECUTABLE-REF>
+                </PROCESS-DESIGN>
+                <PROCESS-DESIGN UUID="0a4125ec-fdd9-46b8-b20d-60853eac3805">
+                  <SHORT-NAME>ucm_process_design</SHORT-NAME>
+                  <EXECUTABLE-REF DEST="EXECUTABLE">/ota/executables/ucm_exec</EXECUTABLE-REF>
+                </PROCESS-DESIGN>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>
+

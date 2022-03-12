@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00049.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>ota</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="ac165ade-1547-490f-b4b4-cd7203709bbe">
+          <SHORT-NAME>std_types</SHORT-NAME>
+          <ELEMENTS>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="809b155e-b8bc-4ffb-8b3f-930a7b5cadd1">
+              <SHORT-NAME>uint8_t</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="ac472678-6154-454f-800b-6afcc7ca2e90">
+              <SHORT-NAME>uint32_t</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="61e5d04d-baf4-4e3e-b784-7fc261eb0f61">
+              <SHORT-NAME>uint64_t</SHORT-NAME>
+              <CATEGORY>VALUE</CATEGORY>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE UUID="7d63672a-f0df-4a3e-b445-66e1f9c1e4fc">
+          <SHORT-NAME>shared_types</SHORT-NAME>
+          <ELEMENTS>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="39dfdd65-a19c-4a00-a0e1-23a962fcbc3e">
+              <SHORT-NAME>Functiongroup</SHORT-NAME>
+              <CATEGORY>STRING</CATEGORY>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="995b34ef-5535-4829-a2c8-973fa1a0be23">
+              <SHORT-NAME>FunctionGroupList</SHORT-NAME>
+              <CATEGORY>VECTOR</CATEGORY>
+              <TEMPLATE-ARGUMENTS>
+                <CPP-TEMPLATE-ARGUMENT>
+                  <TEMPLATE-TYPE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/Functiongroup</TEMPLATE-TYPE-REF>
+                </CPP-TEMPLATE-ARGUMENT>
+              </TEMPLATE-ARGUMENTS>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="b809c24b-21d7-4f4f-b372-edc5d998aab9">
+              <SHORT-NAME>TransferIdType</SHORT-NAME>
+              <CATEGORY>ARRAY</CATEGORY>
+              <ARRAY-SIZE>16</ARRAY-SIZE>
+              <TEMPLATE-ARGUMENTS>
+                <CPP-TEMPLATE-ARGUMENT>
+                  <TEMPLATE-TYPE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/std_types/uint8_t</TEMPLATE-TYPE-REF>
+                </CPP-TEMPLATE-ARGUMENT>
+              </TEMPLATE-ARGUMENTS>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="374d955a-e7e0-4cdd-9dc4-0ec4163bdd9f">
+              <SHORT-NAME>ByteVectorType</SHORT-NAME>
+              <CATEGORY>VECTOR</CATEGORY>
+              <TEMPLATE-ARGUMENTS>
+                <CPP-TEMPLATE-ARGUMENT>
+                  <TEMPLATE-TYPE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/std_types/uint8_t</TEMPLATE-TYPE-REF>
+                </CPP-TEMPLATE-ARGUMENT>
+              </TEMPLATE-ARGUMENTS>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="d27f0bd2-1185-41d0-86ce-8039478eb4ad">
+              <SHORT-NAME>PackageManagerStatusType</SHORT-NAME>
+              <CATEGORY>TEXTTABLE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <COMPU-METHOD-REF DEST="COMPU-METHOD">/ota/compu_methods/PackageManagerStatusType_compu_method</COMPU-METHOD-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+              <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/std_types/uint8_t</TYPE-REFERENCE-REF>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="9a4dd918-282e-49ac-a813-eb3c4664a7fb">
+              <SHORT-NAME>OperationResultType</SHORT-NAME>
+              <CATEGORY>TEXTTABLE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <COMPU-METHOD-REF DEST="COMPU-METHOD">/ota/compu_methods/OperationResultType_compu_method</COMPU-METHOD-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+              <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/std_types/uint8_t</TYPE-REFERENCE-REF>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="ab43a414-4259-4659-a9af-50acde8c5890">
+              <SHORT-NAME>SwClusterInfoType</SHORT-NAME>
+              <CATEGORY>STRUCT</CATEGORY>
+              <SUB-ELEMENTS>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="161f5fd3-9e69-42a2-a478-cb3d2ce1a809">
+                  <SHORT-NAME>Name</SHORT-NAME>
+                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
+                  <TYPE-REFERENCE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SwNameType</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="8a72b6d1-7bdc-4635-82ed-93cb64843e9e">
+                  <SHORT-NAME>StrongRevisionLabelString</SHORT-NAME>
+                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
+                  <TYPE-REFERENCE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/StrongRevisionLabelString</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="e5be77fd-a5b3-4507-9813-6b7b599db892">
+                  <SHORT-NAME>SwClusterStateType</SHORT-NAME>
+                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
+                  <TYPE-REFERENCE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SwClusterStateType</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              </SUB-ELEMENTS>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="65dc1e2b-2adb-44f7-8101-45fbe979fcc9">
+              <SHORT-NAME>SwNameType</SHORT-NAME>
+              <CATEGORY>STRING</CATEGORY>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="f7a6cafa-1d18-45d8-add9-978de4ce0ef6">
+              <SHORT-NAME>StrongRevisionLabelString</SHORT-NAME>
+              <CATEGORY>STRING</CATEGORY>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="87575a70-96a9-4c6a-acc1-19013f4400d5">
+              <SHORT-NAME>SwClusterStateType</SHORT-NAME>
+              <CATEGORY>TEXTTABLE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <COMPU-METHOD-REF DEST="COMPU-METHOD">/ota/compu_methods/SwClusterStateType_compu_method</COMPU-METHOD-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+              <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/std_types/uint8_t</TYPE-REFERENCE-REF>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="ab744635-e048-4428-8866-fd7bbe5e6990">
+              <SHORT-NAME>OperationResultOutput</SHORT-NAME>
+              <CATEGORY>STRUCT</CATEGORY>
+              <SUB-ELEMENTS>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="7a1ed695-7bbd-4a5b-9705-c32c30d8d141">
+                  <SHORT-NAME>OperationReturn</SHORT-NAME>
+                  <TYPE-REFERENCE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              </SUB-ELEMENTS>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="f342291d-a31e-4ed4-9ae4-556881d3f3c3">
+              <SHORT-NAME>TransferStartOutput</SHORT-NAME>
+              <CATEGORY>STRUCT</CATEGORY>
+              <SUB-ELEMENTS>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="afe7fbad-6d59-40bf-9391-40b366830f1e">
+                  <SHORT-NAME>id</SHORT-NAME>
+                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
+                  <TYPE-REFERENCE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/TransferIdType</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="7e5d9f78-8189-41b6-b564-29836b655121">
+                  <SHORT-NAME>BlockSize</SHORT-NAME>
+                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
+                  <TYPE-REFERENCE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/std_types/uint32_t</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="e9af474c-6478-458f-a419-2cfd1b1257e9">
+                  <SHORT-NAME>TransferStartResult</SHORT-NAME>
+                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
+                  <TYPE-REFERENCE>
+                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-REFERENCE-REF>
+                  </TYPE-REFERENCE>
+                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
+              </SUB-ELEMENTS>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="af8da5cd-4f4d-4cfd-884b-6312a00a5588">
+              <SHORT-NAME>SwClusterInfoVectorType</SHORT-NAME>
+              <CATEGORY>VECTOR</CATEGORY>
+              <TEMPLATE-ARGUMENTS>
+                <CPP-TEMPLATE-ARGUMENT>
+                  <TEMPLATE-TYPE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SwClusterInfoType</TEMPLATE-TYPE-REF>
+                </CPP-TEMPLATE-ARGUMENT>
+              </TEMPLATE-ARGUMENTS>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+          </ELEMENTS>
+        </AR-PACKAGE>
+        <AR-PACKAGE UUID="7e1be076-1e39-4b81-b0c0-422c3c7f320e">
+          <SHORT-NAME>errors</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE UUID="5ce22fa9-72a2-4241-b178-d82bd5dc0a7a">
+              <SHORT-NAME>SM_ApplicationError</SHORT-NAME>
+              <ELEMENTS>
+                <AP-APPLICATION-ERROR UUID="ddd83dc1-53b9-4adc-8b8b-bff00e651777">
+                  <SHORT-NAME>kRejected</SHORT-NAME>
+                  <ERROR-CODE>5</ERROR-CODE>
+                </AP-APPLICATION-ERROR>
+                <AP-APPLICATION-ERROR UUID="4c9ee878-2e4d-4835-81d6-da6cee4d2121">
+                  <SHORT-NAME>kVerifyFailed</SHORT-NAME>
+                  <ERROR-CODE>6</ERROR-CODE>
+                </AP-APPLICATION-ERROR>
+                <AP-APPLICATION-ERROR UUID="92d42d8a-ae6e-4ef3-8259-0fef637c7dc0">
+                  <SHORT-NAME>kPrepareFailed</SHORT-NAME>
+                  <ERROR-CODE>7</ERROR-CODE>
+                </AP-APPLICATION-ERROR>
+                <AP-APPLICATION-ERROR UUID="d5c361e4-6883-491f-bc24-87809f78b61e">
+                  <SHORT-NAME>kRollbackFailed</SHORT-NAME>
+                  <ERROR-CODE>8</ERROR-CODE>
+                </AP-APPLICATION-ERROR>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+        <AR-PACKAGE UUID="441bbb64-4825-4fcd-b9c3-c44e4201d616">
+          <SHORT-NAME>compu_methods</SHORT-NAME>
+          <ELEMENTS>
+            <COMPU-METHOD UUID="95592cf6-a78a-4fae-a1a2-9681f642531f">
+              <SHORT-NAME>PackageManagerStatusType_compu_method</SHORT-NAME>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">7</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">7</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kCleaningUp</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">6</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">6</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kRolledBack</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">5</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">5</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kRollingBack</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">4</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">4</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kActivated</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">3</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kActivating</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">2</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kProcessing</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kReady</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kIdle</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">8</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">8</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kVerifying</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+            <COMPU-METHOD UUID="6d42b52d-bba4-4cec-af33-4232857d2280">
+              <SHORT-NAME>OperationResultType_compu_method</SHORT-NAME>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kSuccess</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kInsufficientMemory</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">2</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kIncorrectBlock</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">3</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kIncorrectSize</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">4</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">4</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kInvalidTransferId</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">5</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">5</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kOperationNotPermitted</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">30</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">30</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kIncorrectBlockSize</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">6</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">6</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kInsufficientData</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+            <COMPU-METHOD UUID="95ec7c83-6c8b-4cfe-8117-b9403a09cfdc">
+              <SHORT-NAME>SwClusterStateType_compu_method</SHORT-NAME>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">2</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">2</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kUpdated</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kAdded</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kPresent</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">3</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kRemoved</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>
+
