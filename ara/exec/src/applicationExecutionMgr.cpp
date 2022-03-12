@@ -147,7 +147,6 @@ bool ApplicationExecutionMgr::run()
     string functionGroup_Name;
     string functionGroup_NewState;
     int size;
-
     while (true)
     {
         ProcessStateClientRequest();

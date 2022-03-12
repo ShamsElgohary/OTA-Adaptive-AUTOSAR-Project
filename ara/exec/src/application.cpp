@@ -28,8 +28,8 @@ int Application::start()
 }
 void Application::terminate()
 {
-
     kill(id,SIGTERM);
+    cout<<"terminating "<<name ;
     Update_status();
     if(this->current_state!=ExecutionState::Kterminate){
        //wait time in microseconds

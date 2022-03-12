@@ -50,16 +50,15 @@ namespace ara {
                 const string rootPath ;
                 PlatformStates platformState_ {PlatformStates::kRunning};
                 TransitionChanges transitionChanges_;
-                ApplicationExecutionMgr(string rootPath); //highlevel : calls functions only
-                void initialize();//done
-                bool run();//done
-                bool setState(FunctionGroupState);//done
-                bool loadMachineConfigrations(); //done
-                bool loadExecutablesConfigrations();//done
-                bool ProcessStateClientRequest();//done
-                bool Terminate();//done
-                bool Execute();//done
-
+                ApplicationExecutionMgr(string rootPath); 
+                void initialize();
+                bool run();
+                bool setState(FunctionGroupState);
+                bool loadMachineConfigrations(); 
+                bool loadExecutablesConfigrations();
+                bool ProcessStateClientRequest();
+                bool Terminate();
+                bool Execute();
         };
     }
 }

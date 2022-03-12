@@ -42,14 +42,12 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
             {
                 if(flag)
                 {
-                    con.function_group_states[function_group.first.data()] = vector<string>();
+                    con.function_group_states[function_group_states.first.data()] = vector<string>();
                     flag =false ;
                 }
-                for(auto &states :function_group.second)
-                {
-                    con.function_group_states[function_group.first.data()].push_back(states.second.data());
-                    applicationStates.push_back(states.second.data());
-                }
+                con.function_group_states[function_group_states.first.data()].push_back(function_group.second.data());
+                applicationStates.push_back(function_group.second.data());
+                
             }
         }
         startUpConfigurations.push_back(con);

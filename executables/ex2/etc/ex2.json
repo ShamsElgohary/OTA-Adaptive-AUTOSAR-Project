@@ -6,7 +6,7 @@
 		{
 			"depends": {},
 			"machine_states": [],
-			"function_group_states": [{"fn1" : ["idle"]}, {"fn2" : ["run"]}],
+			"function_group_states": {"fn1" : ["idle"]},
 			"scheduling_policy": "Round Robin",
 			"scheduling_priority": "1",
 			"arguments": ["arg_0","arg_0"],
@@ -16,21 +16,11 @@
 		{
 			"depends": {},
 			"machine_states": [],
-			"function_group_states": [{"fn2" : ["idle","terminate"]}],
+			"function_group_states": {"fn1" : ["play"]},
 			"scheduling_policy": "Round Robin",
 			"scheduling_priority": "1",
 			"arguments": ["arg_0","arg_0"],
 			"environments": ["env_1","env_1"]
-		},
-		"Config 3": 
-		{
-			"depends": {},
-			"machine_states": [],
-			"function_group_states": [{"fn2" : ["terminate"]}],
-			"scheduling_policy": "Round Robin",
-			"scheduling_priority": "2",
-			"arguments": ["arg_2","arg_2"],
-			"environments": ["env_2","env_2"]
 		}
 	}
 }
