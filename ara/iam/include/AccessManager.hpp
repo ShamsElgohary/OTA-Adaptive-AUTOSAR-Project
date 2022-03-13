@@ -12,7 +12,7 @@ namespace ara
         class AccessManager
         {
             private:
-            //static std::map<std::string, std::vector<ara::iam::Grant>> AccessMap;
+            static std::map<std::string, std::vector<ara::iam::Grant>> AccessMap;
             static void ParseJson(std::string filePath);
             
             public: 

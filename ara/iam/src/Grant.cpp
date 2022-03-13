@@ -11,19 +11,27 @@ bool ara::iam::Grant::IsEqual(Grant& other)
 
 ara::iam::Grant::Grant(ara::iam::ServiceID S, ara::iam::InstanceID I, ara::iam::Grant_Type GT, ara::iam::PR_Type PR) : S_id(S), 
                         In_id(I), GType(GT), PR_T(PR)
-                        {}
+    {}
+
+ara::iam::Grant::Grant() : S_id(0), In_id(0), GType(""), PR_T("")
+    {}
 
 
-void ara::iam::Grant::Serialize(ostringstream& oss)
+ara::iam::Grant::~Grant()
+    {}
+
+/*
+void ara::iam::Grant::Serialize(stringstream& oss)
 {
     boost::archive::binary_oarchive oa(oss);
     oa&* (this);
 }
 
-void ara::iam::Grant::Deserialize(ostringstream& oss)
+void ara::iam::Grant::Deserialize(stringstream& oss)
 {
     std::string str_data = oss.str();
     std::istringstream iss(str_data);
     boost::archive::binary_iarchive ia(iss);
     ia&* (this);
-}
+} 
+*/

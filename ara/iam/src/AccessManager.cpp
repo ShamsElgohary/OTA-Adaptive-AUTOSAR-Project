@@ -3,7 +3,8 @@
 namespace pt = boost::property_tree;
 
 
-//std::map<std::string, std::vector<const ara::iam::Grant>> ara::iam::AccessManager::AccessMap;
+
+std::map<std::string, std::vector<ara::iam::Grant>> ara::iam::AccessManager::AccessMap;
 
 void ara::iam::AccessManager::ParseJson(std::string filePath)
 {
@@ -15,6 +16,7 @@ void ara::iam::AccessManager::ParseJson(std::string filePath)
     {
         const pt::ptree & subtree = p.second;
         ara::iam::Process_Name P_Name = subtree.get<std::string>("Process");
+        std::vector<ara::iam::Grant> VG;
         for(auto&& e : subtree.get_child("Elements"))
         {
             const pt::ptree & sub = e.second;
@@ -24,7 +26,9 @@ void ara::iam::AccessManager::ParseJson(std::string filePath)
             ara::iam::InstanceID I_ID = sub.get<ara::iam::InstanceID>("InstanceID");
 
             ara::iam::Grant G(S_ID , I_ID, GT, PRT);
+            VG.push_back(G);
         }
+        AccessMap.insert({P_Name, VG});
     }
 }
 
