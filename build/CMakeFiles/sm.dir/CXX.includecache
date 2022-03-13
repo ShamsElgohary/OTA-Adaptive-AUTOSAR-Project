@@ -47,6 +47,8 @@ function_group_state.hpp
 /home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/sm/bin/sm.cpp
 iostream
 -
+unistd.h
+-
 ../../../ara/exec/include/execution_client.hpp
 /home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/ara/exec/include/execution_client.hpp
 ../../../ara/exec/include/state_client.hpp

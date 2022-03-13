@@ -46,7 +46,7 @@ namespace ara {
             public:
                 vector<Executable> executables_;
                 unique_ptr<MachineManifest> manifest_ ;
-                map<string,FunctionGroup> function_groups_;
+                map<string,FunctionGroup*> function_groups_;
                 const string rootPath ;
                 PlatformStates platformState_ {PlatformStates::kRunning};
                 TransitionChanges transitionChanges_;

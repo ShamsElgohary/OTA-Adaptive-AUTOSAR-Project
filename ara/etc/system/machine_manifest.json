@@ -1,7 +1,7 @@
 {
   "function_groups": 
   {
-    "machineState": 
+    "machineFG": 
     {
       "states": ["off","startup","running","sleep"] 
     },
