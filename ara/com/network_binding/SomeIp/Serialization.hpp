@@ -107,6 +107,16 @@ public:
 
   }
 
+  /* ARRAY OF CHAR */
+  template <size_t N>
+  inline void Serialize(std::stringstream &ss, const char (&data)[N] ) 
+  {
+    std::string serializeString = data;
+    Serialize(ss, serializeString);
+  };
+
+
+
   /* ARRAY OF UNSIGNED CHAR */
   template <size_t N>
   inline void Serialize(std::stringstream &ss, unsigned char (&data)[N] ) 
