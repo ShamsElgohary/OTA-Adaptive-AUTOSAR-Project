@@ -15,12 +15,25 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
         {
             if (is_directory(p))
             {
-                cout << p << " is a directory containing:\n";
-
                 for (directory_entry &x : directory_iterator(p))
                 {
                     string p2 = x.path().string() + "/etc/" + x.path().filename().string() + ".json";
                     executables_.push_back(Executable{ApplicationManifest(p2), vector<Application>()});
+                    for(auto &app :executables_.back().manifest_.startUpConfigurations)
+                    {
+                        executables_.back().startupConfigurations_.push_back(Application(app,executables_.back().manifest_.name,executables_.back().manifest_.executable_path));
+                    }
+                    for(auto &app :executables_.back().startupConfigurations_)
+                    {
+                        for(auto function_group : app.configuration_.function_group_states)
+                        {
+                            for(auto state :function_group.second )
+                            {
+                                function_groups_[function_group.first]->startupConfigurations_[state].push_back(&app);
+                            }
+                        }
+                    }
+                     
                 }
             }
             else
@@ -78,32 +91,32 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
 
 bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 {
-    auto fn =function_groups_[fgs.fg_name];
-    if(fn->currentState_ != fgs.fg_newState){
-        auto apps =fn->startupConfigurations_[fn->currentState_];
-        for(auto &app : apps)
-        {
-            transitionChanges_.toTerminate_.push_back(app);                        
-        }
-        fn->startupConfigurations_[fn->currentState_].clear();
-    }
-    for (auto &ex : executables_)
+    auto apps = function_groups_[fgs.fg_name]->startupConfigurations_[fgs.fg_newState] ;
+    for(auto &app : apps)
     {
-        for (auto &confg : ex.manifest_.startUpConfigurations)
+        if(app->current_state !=ExecutionState::Krunning)
         {
-            for (auto &state : confg.function_group_states[fgs.fg_name])
+            transitionChanges_.toStart_.push_back(app);
+        }
+    }
+    apps = function_groups_[fgs.fg_name]->startupConfigurations_[function_groups_[fgs.fg_name]->currentState_] ;
+    bool flag = true ;
+    for(auto &app : apps)
+    {
+        if(app->current_state ==ExecutionState::Krunning )
+        {
+            for(auto state :app->configuration_.function_group_states[fgs.fg_name])
             {
-                if (state == fgs.fg_newState)
+                if(state == fgs.fg_newState)
                 {
-                    ex.startupConfigurations_.push_back(Application(confg, ex.manifest_.name, ex.manifest_.executable_path));
-                    function_groups_[fgs.fg_name]->startupConfigurations_[state].push_back(&ex.startupConfigurations_.back());    
-                    transitionChanges_.toStart_.push_back(&ex.startupConfigurations_.back());
-                    function_groups_[fgs.fg_name]->currentState_=fgs.fg_newState;
-                    break;
+                    flag = false ;
                 }
             }
+            if(flag)
+                transitionChanges_.toTerminate_.push_back(app);
         }
     }
+
     return true;
 }
 
@@ -146,14 +159,6 @@ bool ApplicationExecutionMgr::Terminate()
     for (auto &app : transitionChanges_.toTerminate_)
     {
         app->terminate();
-        for (auto &ex : executables_)
-        {
-            for (int i=0  ; i< ex.startupConfigurations_.size();i++)
-            if(app == &ex.startupConfigurations_[i])
-            {
-                ex.startupConfigurations_.erase(ex.startupConfigurations_.begin() +i);
-            }
-        }
     }
 }
 bool ApplicationExecutionMgr::Execute()
