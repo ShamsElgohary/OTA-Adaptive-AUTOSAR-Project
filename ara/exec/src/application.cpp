@@ -28,54 +28,15 @@ int Application::start()
 }
 void Application::terminate()
 {
-
     kill(id,SIGTERM);
-    Update_status();
-    if(this->current_state!=ExecutionState::Kterminate){
-       //wait time in microseconds
-        usleep(100000);
-        kill(id,SIGKILL);
-    }
-}
+    cout<<"terminating "<<name<<"\n\n\n";
 
-Application::CtorToken Application::preconstruct(ApplicationManifest &ex,string fg_name,string fg_state)
-{
-    Application::CtorToken token;
-         for (auto &x : ex.startUpConfigurations)
-            {
-                if(fg_name=="machineState")
-                {
-                   for (auto &y:x.machine_states)
-                        {
-                            if(y==fg_state)
-                            {
-                                token.name = ex.name ;
-                                token.executable_path = ex.executable_path ;
-                                token.configration=x;
-                                return token;
-                            }
-                        }
-                }
-               else{ 
-                    auto it = x.function_group_states.find(fg_name);
-                    if(it==x.function_group_states.end())
-                    { }
-                    else
-                    {
-                        for (auto &y:x.function_group_states[fg_name])
-                        {
-                            if(y==fg_state)
-                            {
-                                token.name = ex.name ;
-                                token.executable_path = ex.executable_path ;
-                                token.configration=x;
-                                return token;
-
-                            }
-                        }
-                    }
-               }
-            }
+    //Update_status();
+    // if(this->current_state!=ExecutionState::Kterminate){
+    //    //wait time in microseconds
+    //     usleep(100000);
+    //     kill(id,SIGKILL);
+    // }
 }
 
 
@@ -84,6 +45,8 @@ void Application::Update_status()
     int fd = open("executablesFifo", O_RDONLY);
     read(fd,&current_state,sizeof(current_state));
     close(fd);
+    if(current_state ==ExecutionState::Krunning)
+        cout<<name << " new state is "<<"Krunning"<<"\n\n\n";
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name , string path)
 {

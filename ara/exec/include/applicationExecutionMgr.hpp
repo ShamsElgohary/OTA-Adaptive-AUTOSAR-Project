@@ -46,20 +46,19 @@ namespace ara {
             public:
                 vector<Executable> executables_;
                 unique_ptr<MachineManifest> manifest_ ;
-                map<string,FunctionGroup> function_groups_;
+                map<string,FunctionGroup*> function_groups_;
                 const string rootPath ;
                 PlatformStates platformState_ {PlatformStates::kRunning};
                 TransitionChanges transitionChanges_;
-                ApplicationExecutionMgr(string rootPath); //highlevel : calls functions only
-                void initialize();//done
-                bool run();//done
-                bool setState(FunctionGroupState);//done
-                bool loadMachineConfigrations(); //done
-                bool loadExecutablesConfigrations();//done
-                bool ProcessStateClientRequest();//done
-                bool Terminate();//done
-                bool Execute();//done
-
+                ApplicationExecutionMgr(string rootPath); 
+                void initialize();
+                bool run();
+                bool setState(FunctionGroupState);
+                bool loadMachineConfigrations(); 
+                bool loadExecutablesConfigrations();
+                bool ProcessStateClientRequest();
+                bool Terminate();
+                bool Execute();
         };
     }
 }

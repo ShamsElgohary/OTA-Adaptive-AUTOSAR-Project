@@ -23,7 +23,6 @@ namespace ara
                 string executable_path;
                 ExecutionState current_state ;
                 ApplicationManifest::startUpConfiguration configuration_;
-                static Application::CtorToken preconstruct(ApplicationManifest &ex,string fg_name,string fg_state);
                 Application(Application::CtorToken && token);
                 Application(ApplicationManifest::startUpConfiguration con, string name , string path);
                 int start();

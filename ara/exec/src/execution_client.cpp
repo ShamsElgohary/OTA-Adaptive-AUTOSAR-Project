@@ -13,13 +13,10 @@ ExecutionClient::ExecutionClient()
 
 void ExecutionClient::ReportExecutionStaste(ExecutionState state)
 {
-    cout<<"trying to open pipe from exuctable\n" ;
     this->fd = open("executablesFifo", O_WRONLY);
-    cout<<"opened pipe from exuctable\n" ;
-    cout<<"writing to pipe from exuctable\n" ;
+    cout<<"reporting state from exuctable\n" ;
     write(fd, &state, sizeof(state));
     close(this->fd);
-
 }
 
 ExecutionClient::~ExecutionClient(){

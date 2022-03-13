@@ -28,13 +28,19 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
         }
         con.scheduling_priority =confg.second.get<string>("scheduling_priority");
         con.scheduling_policy =confg.second.get<string>("scheduling_policy");
-
+        bool flag = true ;
         for(auto &machine_states :confg.second.get_child("machine_states"))
         {   
+            if(flag)
+            {
+                con.function_group_states["machineFG"] = vector<string>();
+                flag =false ;
+            }
             con.machine_states.push_back(machine_states.second.data());
+            con.function_group_states["machineFG"].push_back(machine_states.second.data());
             applicationStates.push_back(machine_states.second.data());
         }
-        bool flag = true ;
+        flag = true ;
         for(auto &function_group_states :confg.second.get_child("function_group_states"))
         {    
             
@@ -42,14 +48,12 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
             {
                 if(flag)
                 {
-                    con.function_group_states[function_group.first.data()] = vector<string>();
+                    con.function_group_states[function_group_states.first.data()] = vector<string>();
                     flag =false ;
                 }
-                for(auto &states :function_group.second)
-                {
-                    con.function_group_states[function_group.first.data()].push_back(states.second.data());
-                    applicationStates.push_back(states.second.data());
-                }
+                con.function_group_states[function_group_states.first.data()].push_back(function_group.second.data());
+                applicationStates.push_back(function_group.second.data());
+                
             }
         }
         startUpConfigurations.push_back(con);

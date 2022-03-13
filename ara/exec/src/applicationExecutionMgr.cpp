@@ -15,12 +15,25 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
         {
             if (is_directory(p))
             {
-                cout << p << " is a directory containing:\n";
-
                 for (directory_entry &x : directory_iterator(p))
                 {
                     string p2 = x.path().string() + "/etc/" + x.path().filename().string() + ".json";
                     executables_.push_back(Executable{ApplicationManifest(p2), vector<Application>()});
+                    for(auto &app :executables_.back().manifest_.startUpConfigurations)
+                    {
+                        executables_.back().startupConfigurations_.push_back(Application(app,executables_.back().manifest_.name,executables_.back().manifest_.executable_path));
+                    }
+                    for(auto &app :executables_.back().startupConfigurations_)
+                    {
+                        for(auto function_group : app.configuration_.function_group_states)
+                        {
+                            for(auto state :function_group.second )
+                            {
+                                function_groups_[function_group.first]->startupConfigurations_[state].push_back(&app);
+                            }
+                        }
+                    }
+                     
                 }
             }
             else
@@ -50,7 +63,7 @@ bool ApplicationExecutionMgr::loadMachineConfigrations()
     {
         for(auto &state :fn.allStates_)
             fn.startupConfigurations_.insert({state ,vector<ara::exec::Application *>{}}) ;
-        function_groups_.insert({fn.name_ , fn});
+        function_groups_.insert({fn.name_ ,&fn});
     }
     return true;
 }
@@ -60,10 +73,7 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
 {
     int size ;
     char functionGroup_Name [10] , functionGroup_NewState[10];
-    cout<<"trying to open pipe from em \n";
-    cout<<"pipe opened \n";
-    if(smpipe==-1)
-        smpipe = open("smFifo",O_RDONLY);
+    smpipe = open("smFifo",O_RDONLY);
     read(smpipe, &size, sizeof(int));
     for(int i =0 ;i<=size ;i++)
     {
@@ -81,45 +91,32 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
 
 bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 {
-    for (auto &ex : executables_)
+    auto apps = function_groups_[fgs.fg_name]->startupConfigurations_[fgs.fg_newState] ;
+    for(auto &app : apps)
     {
-        for (auto &confg : ex.manifest_.startUpConfigurations)
+        if(app->current_state !=ExecutionState::Krunning)
         {
-            if(fgs.fg_name !="machineState")
-                for (auto &state : confg.function_group_states[fgs.fg_name])
+            transitionChanges_.toStart_.push_back(app);
+        }
+    }
+    apps = function_groups_[fgs.fg_name]->startupConfigurations_[function_groups_[fgs.fg_name]->currentState_] ;
+    bool flag = true ;
+    for(auto &app : apps)
+    {
+        if(app->current_state ==ExecutionState::Krunning )
+        {
+            for(auto state :app->configuration_.function_group_states[fgs.fg_name])
+            {
+                if(state == fgs.fg_newState)
                 {
-                    if (state == fgs.fg_newState)
-                    {
-                        ex.startupConfigurations_.push_back(Application(confg, ex.manifest_.name, ex.manifest_.executable_path));
-                        function_groups_[fgs.fg_name].startupConfigurations_[state].push_back(&ex.startupConfigurations_.back());    
-                        transitionChanges_.toStart_.push_back(&ex.startupConfigurations_.back());
-                        break;
-                    }
-                }
-            else{
-                 for (auto &state : confg.machine_states)
-                {
-                    if (state == fgs.fg_newState)
-                    {
-                        ex.startupConfigurations_.push_back(Application(confg, ex.manifest_.name, ex.manifest_.executable_path));
-                        function_groups_[fgs.fg_name].startupConfigurations_[state].push_back(&ex.startupConfigurations_.back());    
-                        transitionChanges_.toStart_.push_back(&ex.startupConfigurations_.back());
-                        break;
-                    }
+                    flag = false ;
                 }
             }
+            if(flag)
+                transitionChanges_.toTerminate_.push_back(app);
         }
     }
-    auto fn =function_groups_[fgs.fg_name];
-    if(fn.currentState_ != fgs.fg_newState){
-        auto apps = fn.startupConfigurations_[fn.currentState_];
-        for(auto &app : apps)
-        {
-            transitionChanges_.toTerminate_.push_back(app);                        
-        }
-        fn.startupConfigurations_[fn.currentState_].clear();
-        fn.currentState_=fgs.fg_newState;
-    }
+
     return true;
 }
 
@@ -129,8 +126,8 @@ void ApplicationExecutionMgr::initialize()
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
-    FunctionGroupState::Preconstruct("machineState", "startup");
-    FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineState", "startup"));
+    FunctionGroupState::Preconstruct("machineFG", "startup");
+    FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
     Execute();
     transitionChanges_.toStart_.clear();
@@ -147,7 +144,6 @@ bool ApplicationExecutionMgr::run()
     string functionGroup_Name;
     string functionGroup_NewState;
     int size;
-
     while (true)
     {
         ProcessStateClientRequest();
@@ -160,17 +156,9 @@ bool ApplicationExecutionMgr::run()
 
 bool ApplicationExecutionMgr::Terminate()
 {
-    for (auto app : transitionChanges_.toTerminate_)
+    for (auto &app : transitionChanges_.toTerminate_)
     {
         app->terminate();
-        for (auto &ex : executables_)
-        {
-            for (int i=0  ; i< ex.startupConfigurations_.size();i++)
-            if(app == &ex.startupConfigurations_[i])
-            {
-                ex.startupConfigurations_.erase(ex.startupConfigurations_.begin() +i);
-            }
-        }
     }
 }
 bool ApplicationExecutionMgr::Execute()

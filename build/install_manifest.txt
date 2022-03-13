@@ -1,0 +1,3 @@
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ex1/bin/ex1
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ex2/bin/ex2
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/sm/bin/sm

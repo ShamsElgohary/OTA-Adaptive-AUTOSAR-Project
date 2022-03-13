@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/ara/exec/include/execution_client.hpp
+stdint.h
+-
+sys/stat.h
+-
+sys/types.h
+-
+fcntl.h
+-
+unistd.h
+-
+errno.h
+-
+bits/stdc++.h
+-
+
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ex2/bin/ex2.cpp
+iostream
+-
+../../../ara/exec/include/execution_client.hpp
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/ara/exec/include/execution_client.hpp
+unistd.h
+-
+
