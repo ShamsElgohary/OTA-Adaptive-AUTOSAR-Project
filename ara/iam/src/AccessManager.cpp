@@ -4,7 +4,7 @@ namespace pt = boost::property_tree;
 
 
 
-std::map<std::string, std::vector<ara::iam::Grant>> ara::iam::AccessManager::AccessMap;
+std::map<std::string, std::vector<ara::iam::Grant>> ara::iam::AccessManager::GrantStorage;
 
 void ara::iam::AccessManager::ParseJson(std::string filePath)
 {

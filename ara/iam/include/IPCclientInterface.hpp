@@ -1,5 +1,6 @@
 #pragma once
 #include "types.hpp"
+#include "ipc_parameters.h"
 
 namespace ara
 {
@@ -8,8 +9,8 @@ namespace ara
         class IPCclientInterface
         {
         private:
-            int portnum = 2000;
-            std::string IP = "127.0.0.1";
+            int portnum = IAM_PORT_NUMBER;
+            std::string IP = IAM_IP_ADDRESS;
 
         public:
             void connect();

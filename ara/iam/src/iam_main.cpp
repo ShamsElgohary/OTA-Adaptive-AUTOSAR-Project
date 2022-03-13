@@ -2,7 +2,7 @@
 
 int main (void)
 {
-    ara::iam::AccessManager::InitGrantStorage("../GrantStorage.json");
+    ara::iam::AccessManager::InitGrantStorage("../../etc/system/iam/access_control_lists.json");
     std::cout << "Done" << std::endl;
 
     // Create GrantObj 1
