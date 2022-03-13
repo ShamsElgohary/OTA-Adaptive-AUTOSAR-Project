@@ -1,6 +1,8 @@
 #include "../include/Grant.hpp"
 
-bool ara::iam::Grant::IsEqual(Grant& other)
+using namespace boost::archive;
+
+bool ara::iam::Grant::IsEqual(const ara::iam::Grant& other)
 {
     if((this ->S_id == other.S_id) && (this ->In_id == other.In_id) && (this ->GType == other.GType) && (this ->PR_T == other.PR_T))
     {
@@ -13,9 +15,8 @@ ara::iam::Grant::Grant(ara::iam::ServiceID S, ara::iam::InstanceID I, ara::iam::
                         In_id(I), GType(GT), PR_T(PR)
     {}
 
-ara::iam::Grant::Grant() : S_id(0), In_id(0), GType(""), PR_T("")
+ara::iam::Grant::Grant (const ara::iam::Grant& other) : S_id(other.S_id), In_id(other.In_id), GType(other.GType), PR_T(other.PR_T)
     {}
-
 
 ara::iam::Grant::~Grant()
     {}
