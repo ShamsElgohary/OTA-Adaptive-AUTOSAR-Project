@@ -8,7 +8,8 @@ namespace ara
         class IPCclientInterface
         {
         private:
-            int socket_descriptor;
+            int portnum = 2000;
+            std::string IP = "127.0.0.1";
 
         public:
             void connect();

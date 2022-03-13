@@ -20,18 +20,16 @@ ara::iam::Grant::Grant() : S_id(0), In_id(0), GType(""), PR_T("")
 ara::iam::Grant::~Grant()
     {}
 
-/*
-void ara::iam::Grant::Serialize(stringstream& oss)
+
+void boost::serialization::Serialize(ara::iam::Grant & g, stringstream& ss)
 {
-    boost::archive::binary_oarchive oa(oss);
-    oa&* (this);
+    boost::archive::text_oarchive oa(ss);
+    oa << g;
 }
 
-void ara::iam::Grant::Deserialize(stringstream& oss)
+void boost::serialization::Deserialize(ara::iam::Grant & g, stringstream& ss)
 {
-    std::string str_data = oss.str();
-    std::istringstream iss(str_data);
-    boost::archive::binary_iarchive ia(iss);
-    ia&* (this);
+    boost::archive::text_iarchive ia(ss);
+    ia >> g;
 } 
-*/
+

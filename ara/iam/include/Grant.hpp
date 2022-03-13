@@ -25,9 +25,6 @@ namespace ara
 
                 ~Grant();
 
-                // void Serialize(stringstream& oss);
-
-                // void Deserialize(stringstream& oss);
         };
     }
 }
@@ -42,6 +39,9 @@ void serialize(Archive & ar, ara::iam::Grant & g, const unsigned int version)
     ar & g.GType;
     ar & g.PR_T;
 }
+void Serialize(ara::iam::Grant & g, stringstream& oss);
+
+void Deserialize(ara::iam::Grant & g, stringstream& oss);
 
 } // namespace serialization
 } // namespace boost
