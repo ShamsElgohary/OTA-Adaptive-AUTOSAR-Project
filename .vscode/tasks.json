@@ -11,6 +11,7 @@
                 "-o",
                 "${fileDirname}/em" ,
                 "-lboost_filesystem",
+                "-lboost_serialization",
                 "-pthread"
             ],
             "options": {

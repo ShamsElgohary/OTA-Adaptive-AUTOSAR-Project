@@ -9,19 +9,19 @@ namespace ara
     {
         class Grant
         {
-            private:
-
             public:
             	ara::iam::ServiceID S_id = 0;
                 ara::iam::InstanceID In_id = 0;
                 ara::iam::Grant_Type GType = "";
                 ara::iam::PR_Type PR_T = "";
 
-                bool IsEqual(Grant& other);        
+                bool IsEqual(const Grant& other);        
 
-                Grant();
+                Grant() = default;
 
                 Grant(ara::iam::ServiceID S, ara::iam::InstanceID I, ara::iam::Grant_Type GT, ara::iam::PR_Type PR);
+
+                Grant (const Grant& other);
 
                 ~Grant();
 
@@ -39,9 +39,9 @@ void serialize(Archive & ar, ara::iam::Grant & g, const unsigned int version)
     ar & g.GType;
     ar & g.PR_T;
 }
-void Serialize(ara::iam::Grant & g, stringstream& oss);
+void Serialize(ara::iam::Grant & g, stringstream& ss);
 
-void Deserialize(ara::iam::Grant & g, stringstream& oss);
+void Deserialize(ara::iam::Grant & g, stringstream& ss);
 
 } // namespace serialization
 } // namespace boost
