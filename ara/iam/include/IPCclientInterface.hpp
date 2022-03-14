@@ -13,9 +13,12 @@ namespace ara
             std::string IP = IAM_IP_ADDRESS;
 
         public:
-            void connect();
-            void send(std::stringstream data);
-            bool receive();
+            int Connect();
+            void Send(std::string data, int clientSd);
+            void sendPID(int clientPID);
+            bool Receive(int clientSd);
         };
+
+        std::string convertToString(char* a, int size);
     }
 }

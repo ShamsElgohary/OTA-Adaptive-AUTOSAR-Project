@@ -17,9 +17,11 @@ namespace ara
             IPCserverInterface();
             ~IPCserverInterface();
             int getPeerId(int clientSocketDecriptor);
-            void connect();
-            void send(std::stringstream data);
-            ara::iam::Grant receive();
+            int Connect();
+            void Send(std::string data, int sd);
+            ara::iam::Grant Receive(int sd);
         };
+
+        std::string convertToString(char* a, int size);
     }
 }
