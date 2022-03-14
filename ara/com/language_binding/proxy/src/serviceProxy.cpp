@@ -1,21 +1,36 @@
-#pragma once 
+#pragma once
 #include <iostream>
-using namespace std ;
+#include"../include/serviceProxy.hpp"
+using namespace std;
 
-namespace ara 
+namespace ara
 {
     namespace com
     {
-        namespace proxy 
+        namespace proxy
         {
-            class ServiceProxy
+            class ProxyBase
             {
-                class handle
+
+                ProxyBase(HandleType handle)
                 {
+                    ProxyBase::Delegate = HandleTypeFactory::create(handle.GetBindingProtocol());
+                    Delegate.function;
+                }
 
-                };
-                
+                static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
+                {
+                    return SD::FindService();
+                }
 
+                static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier instanceId)
+                {
+                    return SD::FindService(instanceId);
+                }
+                // class handle
+                // {
+
+                // };
             };
         }
     }

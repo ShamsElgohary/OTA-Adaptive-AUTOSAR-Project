@@ -3,6 +3,7 @@
 
 #include "../../../include/types.hpp"
 #include "../../../network_binding/network_binding_base.hpp"
+#include "handleType.hpp"
 
 /* GENERIC */
 
@@ -15,35 +16,6 @@ namespace ara
             class ProxyBase
             {
             public:
-                class HandleType
-                {
-                protected:
-                    //uint32_t VersionMajor;
-                    //uint32_t VersionMinor;
-
-                    //  ara::com::InterfaceIdentifier InterfaceID;
-                    ara::com::InstanceIdentifier InstanceID;
-
-                    std::shared_ptr<ara::com::NetworkBindingBase> network_binding;
-
-                public:
-                    //  inline bool operator==(const HandleType &other) const;
-
-                    const ara::com::InstanceIdentifier &GetInstanceId() const;
-
-                    /* COPY CONSTRUCTORS */
-                    HandleType(const HandleType &);
-                    HandleType &operator=(const HandleType &);
-
-                    /* MOVE CONSTRUCTORS */
-                    HandleType(HandleType &&);
-                    HandleType &operator=(HandleType &&);
-
-                    ~HandleType() noexcept;
-
-                    friend class proxy::ProxyBase;
-                };
-
                 /* MUST */
                 static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService();
 
@@ -60,21 +32,20 @@ namespace ara
                     ara::com::FindServiceHandler<ProxyBase::HandleType> handler,
                     ara::com::InstanceIdentifier instanceId);
 
-                
-
                 /* EXTRA (FindServiceHandle is not Implemented) */
                 static void StopFindService(ara::com::FindServiceHandle handle);
 
                 /* IMPLEMENTATION IN GENERATION */
-                explicit ProxyBase(HandleType &handle);
+                ProxyBase(HandleType handle);
 
                 /* DELETE COPY CONSTRUCTORS */
                 ProxyBase(ProxyBase &other) = delete;
                 ProxyBase &operator=(const ProxyBase &other) = delete;
 
             protected:
-                ProxyBase::HandleType Handle;
-                ara::com::serviceIdentifierType;
+                //HandleType Handle;
+                HandleType& Delegate;
+                ara::com::serviceIdentifierType serviceID;
             };
         }
     }
