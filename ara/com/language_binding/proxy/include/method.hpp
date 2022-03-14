@@ -4,6 +4,7 @@
 
 using namespace std ;
 
+
 namespace ara 
 {
     namespace com
@@ -62,7 +63,7 @@ x.starttarnsfer() ;
 
 namespace method 
 {
-    class starttarnsfer ;public MethodBase
+    class starttarnsfer : public MethodBase
     {
         method_id = 5;
     }
