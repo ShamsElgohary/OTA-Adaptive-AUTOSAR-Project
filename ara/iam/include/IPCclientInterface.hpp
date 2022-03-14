@@ -1,5 +1,6 @@
 #pragma once
 #include "types.hpp"
+#include "Grant.hpp"
 #include "ipc_parameters.h"
 
 namespace ara
@@ -11,14 +12,13 @@ namespace ara
         private:
             int portnum = IAM_PORT_NUMBER;
             std::string IP = IAM_IP_ADDRESS;
+            int clientSd;
 
         public:
-            int Connect();
-            void Send(std::string data, int clientSd);
-            void sendPID(int clientPID);
-            bool Receive(int clientSd);
+            std::uint8_t Connect();
+            void Send(ara::iam::Grant G);
+            //void sendPID();
+            bool Receive();
         };
-
-        std::string convertToString(char* a, int size);
     }
 }

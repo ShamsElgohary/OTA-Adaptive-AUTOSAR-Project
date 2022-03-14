@@ -1,41 +1,44 @@
 #include "../include/AccessManager.hpp"
 
+ara::iam::IPCserverInterface ara::iam::AccessManager::server;
+
 void ara::iam::AccessManager::InitGrantStorage(std::string basePath)
 {
     ara::iam::GrantStorage::ParseJson(basePath);
 }
 
-/* void ara::iam::AccessManager::InitServerAdapter(ara::iam::IPCserverInterface & server)
+std::uint8_t ara::iam::AccessManager::InitServerAdapter()
 {
     // RUN SERVER
-
-
-    // START LISTENING FOR GRANTS REQUESTS
-
-
-} */
+    return ara::iam::AccessManager::server.ServerSocketInit();
+}
 
 void ara::iam::AccessManager::RunEventLoop()
 {
-    // LISTEN FOR GRANTS REQUESTS
+    while (1)
+    {
+        // LISTEN FOR GRANTS REQUESTS
+        int sd = ara::iam::AccessManager::server.Listen();
+
+        // Receive PID
 
 
-    // CREATE CLIENT SOCKET
+        // RECIEVE PEER PID
 
 
-    // RECIEVE PEER PID
+        // RESOLVE PID FROM EM
+        std::string P_name = "ucm";
 
+        // RECIEVE GRANT FROM CLIENT 
+        ara::iam::Grant G = ara::iam::AccessManager::server.Receive(sd);
 
-    // RESOLVE PID FROM EM
-    std::string P_name = "ucm";
+        // SEARCH GRANTSTORAGE MAP
+        bool rtn = ara::iam::GrantStorage::SearchGrantStorage(P_name, G);
 
-    // RECIEVE GRANT FROM CLIENT 
-    ara::iam::Grant G(1,2,"ComGrant", "Require");
+        std::cout << "Result: " << rtn << std::endl;
 
-    // SEARCH GRANTSTORAGE MAP
-    bool rtn = ara::iam::GrantStorage::SearchGrantStorage(P_name, G);
-
-    // RETURN RESULT TO CLIENT
-    std::cout << "Result: " << rtn << std::endl;
+        // RETURN RESULT TO CLIENT
+        ara::iam::AccessManager::server.Send(rtn, sd);
+    }
 }
 

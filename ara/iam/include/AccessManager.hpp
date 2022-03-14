@@ -2,7 +2,7 @@
 
 #include "types.hpp"
 #include "GrantStorage.hpp"
-//#include "IPCserverInterface.hpp"
+#include "IPCserverInterface.hpp"
 
 
 namespace ara
@@ -11,11 +11,14 @@ namespace ara
     {
         class AccessManager
         {
+            private:
+            static ara::iam::IPCserverInterface server;
+
             public: 
             
             static void InitGrantStorage(std::string basePath);
             
-            //static void InitServerAdapter(ara::iam::IPCserverInterface & server);
+            static std::uint8_t InitServerAdapter();
 
             static void RunEventLoop();
         };

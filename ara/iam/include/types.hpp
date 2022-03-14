@@ -31,6 +31,8 @@ namespace ara
         typedef std::string Process_Name;
         typedef std::string Grant_Type;
         typedef std::string PR_Type;
+        
+        std::string convertToString(char* a, int size);
     }
 }
 
