@@ -1,6 +1,6 @@
 #pragma once
-#include "types.hpp"
-#include "Grant.hpp"
+#include "../lib/include/types.hpp"
+#include "../lib/include/Grant.hpp"
 
 
 namespace ara

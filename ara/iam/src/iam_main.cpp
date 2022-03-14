@@ -8,6 +8,5 @@ int main (void)
 
     std::cout << "Server End" << std::endl;
 
-
     return 0;
 }

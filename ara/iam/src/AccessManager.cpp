@@ -15,19 +15,22 @@ std::uint8_t ara::iam::AccessManager::InitServerAdapter()
 
 void ara::iam::AccessManager::RunEventLoop()
 {
-    while (1)
+    while (true)
     {
         // LISTEN FOR GRANTS REQUESTS
         int sd = ara::iam::AccessManager::server.Listen();
 
         // Receive PID
-
-
-        // RECIEVE PEER PID
-
+        int PID = ara::iam::AccessManager::server.getPeerId();
 
         // RESOLVE PID FROM EM
-        std::string P_name = "ucm";
+        ara::em::FindProcessClient FPC;
+
+        // Send PID to EM
+        FPC.sendData(PID);
+
+        // Receive Proc
+        std::string P_name = FPC.receiveData();
 
         // RECIEVE GRANT FROM CLIENT 
         ara::iam::Grant G = ara::iam::AccessManager::server.Receive(sd);

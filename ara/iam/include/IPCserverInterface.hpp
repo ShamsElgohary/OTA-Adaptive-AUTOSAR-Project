@@ -1,7 +1,7 @@
 #pragma once
-#include "types.hpp"
-#include "Grant.hpp"
-#include "ipc_parameters.h"
+#include "../lib/include/types.hpp"
+#include "../lib/include/Grant.hpp"
+#include "../lib/include/ipc_parameters.h"
 
 namespace ara
 {
@@ -20,7 +20,7 @@ namespace ara
             IPCserverInterface() = default;
             ~IPCserverInterface() = default;
             std::uint8_t ServerSocketInit();
-            // int getPeerId(int clientSocketDecriptor);
+            int getPeerId(int clientSocketDecriptor);
             int Listen();
             void Send(bool is_granted, int sd);
             ara::iam::Grant Receive(int sd);
