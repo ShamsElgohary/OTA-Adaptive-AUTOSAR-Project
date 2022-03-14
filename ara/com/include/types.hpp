@@ -27,7 +27,11 @@ namespace ara
         {};
 
 
-
+        enum class BindingProtocol
+        {
+            someip,
+            dds
+        };
 
 
 
