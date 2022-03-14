@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
-#include<thread>
-#include<utility>
+#include <thread>
+#include <utility>
 #include <map>
 #include "../../../include/types.hpp"
 #include "../../../network_binding/network_binding_base.hpp"
@@ -18,13 +18,15 @@ namespace ara
             class Serviceskeleton
             {
             private:
+                ara::com::serviceIdentifierType serviceID;
                 ara::com::InstanceIdentifier instanceID;
                 ara::com::MethodCallProcessingMode mode;
                 std::shared_ptr<ara::com::NetworkBindingBase> ptr2bindingProtocol;
                 uint32_t port;
                 uint32_t ip;
                 map<uint32_t, method::methodBase *> ID2method;
-                void processMethod(uint32_t); //return type to be determined (betragga3 arguments el "send")
+                void serve(void);
+                //void processMethod(uint32_t); //return type to be determined (betragga3 arguments el "send")
 
             public:
                 /* MUST (Implementation can either be from generator or not) */
@@ -39,10 +41,10 @@ namespace ara
                 virtual ~Serviceskeleton();
 
                 /* MUST */
-                virtual void OfferService() = 0;
+                void OfferService();
 
                 /* MUST */
-                virtual void StopOfferService() = 0;
+                void StopOfferService();
 
                 static void handleMethod(method::methodBase *, method::input ip);
             };

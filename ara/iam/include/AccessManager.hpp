@@ -1,8 +1,9 @@
 #pragma once
 
-#include "types.hpp"
-//#include "IPCserverInterface.hpp"
-#include "Grant.hpp"
+#include "../lib/include/types.hpp"
+#include "GrantStorage.hpp"
+#include "IPCserverInterface.hpp"
+#include "../../exec/include/find_process_client.hpp"
 
 
 namespace ara
@@ -12,12 +13,13 @@ namespace ara
         class AccessManager
         {
             private:
-            static std::map<std::string, std::vector<ara::iam::Grant>> AccessMap;
-            static void ParseJson(std::string filePath);
-            
+            static ara::iam::IPCserverInterface server;
+
             public: 
-            static bool InitGrantStorage(std::string basePath);
-            //static bool InitServerAdapter(ara::iam::IPCserverInterface & server);
+            
+            static void InitGrantStorage(std::string basePath);
+            
+            static std::uint8_t InitServerAdapter();
 
             static void RunEventLoop();
         };

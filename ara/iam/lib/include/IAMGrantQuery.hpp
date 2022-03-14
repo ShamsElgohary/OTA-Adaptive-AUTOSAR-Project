@@ -10,7 +10,7 @@ namespace ara
         class IAMGrantQuery
         {
             private:
-            IPCclientInterface * IPC;
+            ara::iam::IPCclientInterface IPC;
 
             public:
             bool HasGrant(Grant& G);

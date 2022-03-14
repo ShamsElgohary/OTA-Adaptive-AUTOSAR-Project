@@ -34,3 +34,13 @@ void boost::serialization::Deserialize(ara::iam::Grant & g, stringstream& ss)
     ia >> g;
 } 
 
+std::string ara::iam::convertToString(char* a, int size)
+{
+    int i;
+    string s = "";
+    for (i = 0; i < size; i++) {
+        s = s + a[i];
+    }
+    return s;
+}
+

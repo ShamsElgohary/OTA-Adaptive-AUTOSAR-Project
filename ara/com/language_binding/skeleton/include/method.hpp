@@ -19,10 +19,11 @@ namespace ara
                 {
                 };
 
+                template <typename Tin, typename Tout>
                 class methodBase
                 {
                 public:
-                    virtual output processMethod(input &ip);
+                    virtual Tout processMethod(Tin &ip);
                 };
             }
         }
