@@ -12,21 +12,20 @@ namespace ara
         {
             namespace method
             {
-                template <typename Output>
-                virtual class MethodBase {
+                class MethodBase {
                     protected: 
                         ara::com::proxy::ProxyBase::HandleType Handle;
                         std::string name;
-                        std::uint_16 D;
+                        std::uint_16 M_ID;
                     public:
                         /* IMPLEMENTATION IN GENERATION */
                         MethodBase(ara::com::proxy::ProxyBase::HandleType& Handle);
 
                         /* MUST (This isnot the Actual Implementation) */
-                        template <typename... args>
-                        ara::core::Future<Output> operator()(args... Args)
+                        template <typename Output,typename T>
+                        ara::core::Future<Output> operator()(T arg)
                         {
-                            return this-> Handle.network_binding -> SendRequest(M_ID, args);
+                            return this-> Handle.network_binding -> SendRequest(M_ID, arg);
                         }
                 };
                 class MethodOneWayBase {
