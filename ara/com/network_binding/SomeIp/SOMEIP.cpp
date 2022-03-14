@@ -1,117 +1,18 @@
 #include "SOMEIP.hpp"
+#include "SOMEIP_TCP.hpp"
+
+
+
+using namespace boost::asio::ip;
+using boost::asio::ip::udp;
+using boost::asio::ip::address;
 
 using namespace std;
 
 namespace someip
 {
-    someipHeader::someipHeader() 
-    {
-    interfaceVersion = 0;
-    messageID = requestID = interfaceVersion = 0;
-    returnCode = ReturnCode::E_OK;
-    messageType = MessageType::ERROR;
-    }   
 
-	someipHeader::someipHeader(MessageID messageID, RequestID requestID, InterfaceVersion interfaceVersion, 
-                            MessageType messageType, ReturnCode returnCode) 
-    {
-		interfaceVersion = 0;
-		messageID = messageID;
-		requestID = requestID;
-		interfaceVersion = interfaceVersion;
-		messageType = messageType;
-		returnCode = returnCode;
-	}
-
-    MessageID someipHeader::getMessageID() const {
-		return messageID;
-	}
-
-    MessageType someipHeader::getMessageType() const {
-		return messageType;
-	}
-
-	MethodID someipHeader::getMethodID() const {
-		return someip::getMethodID( messageID );
-	}
-
-    	void someipHeader::setMessageType(MessageType messageType) {
-		messageType = messageType;
-	}
-
-	bool someipHeader::isErrorType() const {
-		return getMessageType() == MessageType::ERROR;
-	}
-
-	void someipHeader::setMessageID(MessageID messageID) {
-		messageID = messageID;
-	}
-
-	void someipHeader::setServiceID(ServiceID serviceID) {
-		messageID = someip::getMessageID( serviceID, getMethodID() );
-	}
-
-	ServiceID someipHeader::getServiceID() const {
-		return someip::getServiceID(messageID);
-	}
-
-	void someipHeader::setMethodID(MethodID MethodID) {
-		messageID = someip::getMessageID(getServiceID(), MethodID);
-	}
-
-	bool someipHeader::isReply() const {
-		return ( (messageType == MessageType::RESPONSE) || (messageType == MessageType::ERROR) );
-	}
-
-	bool someipHeader::isNotification() const {
-		return messageType == MessageType::NOTIFICATION;
-	}
-
-	bool someipHeader::isRequestWithReturn() const {
-		return messageType == MessageType::REQUEST;
-	}
-
-	void someipHeader::setRequestID(RequestID id) {
-		requestID = id;
-	}
-
-	RequestID someipHeader::getRequestID() const {
-		return requestID;
-	}
-
-	size_t someipHeader::getLength() {
-        //return length;
-		return sizeof(someipHeader);
-	}
-
-    bool someipHeader::operator==(const someipHeader& right) const {
-		if (messageID != right.messageID)
-			return false;
-		if (requestID != right.requestID)
-			return false;
-		if (protocolVersion != right.protocolVersion)
-			return false;
-		if (interfaceVersion != right.interfaceVersion)
-			return false;
-		if (messageType != right.messageType)
-			return false;
-		if (returnCode != right.returnCode)
-			return false;
-		return true;
-	}
-
-    someipHeader& someipHeader::operator=(const someipHeader& right) 
-    {
-		messageID = right.messageID;
-		requestID = right.requestID;
-		interfaceVersion = right.interfaceVersion;
-		messageType = right.messageType;
-		returnCode = right.returnCode;
-		protocolVersion = right.protocolVersion;
-		return *this;
-    }
-
-	/* Used as handle in the socket */
+	/* USED AS A HANDLE IN THE SOCKET FOR ASYNCHRONOUS MESSAGES */
 	void on_send_completed(boost::system::error_code ec, size_t bytes_transferred) {
     if (ec)
         std::cout << "Send failed: " << ec.message() << "\n";
@@ -119,52 +20,160 @@ namespace someip
         std::cout << "Send succesful (" << bytes_transferred << " bytes)\n";
 	}
 
-	
-	/* FUNCTION TO SEND A someip MESSAGE */
-	void SendsomeipMessage(someip_Message &msg, EndPoint rawEP)
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////  SOMEIP CLIENT  	/////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	someipEndUser::someipEndUser(SomeIpConfiguration someipConfig)
 	{
-		//GetDestination(Header.serviceId,instanceId);
-		boost::asio::io_service io_service;
-		//socket creation
-		boost::asio::ip::tcp::socket socket(io_service);
-		auto ip = boost::asio::ip::address::from_string(rawEP.raw_ip_address);
-		//connection
-		socket.connect( boost::asio::ip::tcp::endpoint( ip, rawEP.port_num ));
-		boost::asio::streambuf buf;
-		std::ostream oss(&buf);
-		// ostream = stringstream 
-		std:stringstream ss; 
-		msg.Serialize(ss);
-		oss << ss.rdbuf();
-		// send stream buffer 
-     	boost::system::error_code error;
-     	boost::asio::async_write( socket, buf, on_send_completed);
+		this->tpType = someipConfig.tpType;
+		this->endUserType = someipConfig.endUserType;
 	}
 
-	/* FUNCTION TO RECEIVE A someip MESSAGE */
-	someip_Message ReadsomeipMessage(boost::asio::ip::tcp::socket & socket) 
+	someipEndUser::someipEndUser()
 	{
-       boost::system::error_code error;
-       boost::asio::streambuf buf;
-       auto bytes = boost::asio::read(socket, buf, boost::asio::transfer_all(),error);
-       ostream oss(&buf);
-       std::stringstream ss;
-       ss<<oss.rdbuf();
-	   someip_Message someipMsg;
-	   someipMsg.Deserialize(ss);
-	   return someipMsg;
+		/* DEFAULT CONSTRUCTOR */
 	}
 
-	/* INSERT NEW DESTINATION */
-	void AddEndPoint(ServiceID serviceId, EndPoint ep)
+	someipEndUser::~someipEndUser()
 	{
-		//Dispatcher.emplace(des);
+		/* DEFAULT DESTRUCTOR */
 	}
 
-	/* GET DESTINATION */
-	EndPoint GetEndPoint(ServiceID serviceId)
+	std::shared_ptr<someipEndUser> someipEndUser::SetSomeIpConfiguration(
+		boost::asio::io_service& io_service, 
+		uint16_t port, 	 
+		SomeIpConfiguration someipConfig, 
+		std::string IPv4 )
+		
 	{
-		return Dispatcher.at(serviceId);
+		shared_ptr<someipEndUser > endUserInstance;
+
+		if (someipConfig.tpType == TransportProtocol::TCP)
+		{
+			if(someipConfig.endUserType == EndUserType::CLIENT)
+			{
+				endUserInstance = make_shared<ClientTCP> (io_service, port, someipConfig, IPv4);
+			}
+
+			else if(someipConfig.endUserType == EndUserType::SERVER)
+			{
+				endUserInstance = make_shared<ServerTCP> (io_service, port, someipConfig, IPv4);
+			}
+
+			else
+			{
+				cout<<" UNDEFINED TYPE OF END USER \n";
+			}
+
+		}
+
+		else if(someipConfig.tpType == TransportProtocol::UDP)
+		{
+			if(someipConfig.endUserType == EndUserType::CLIENT)
+			{
+
+			}
+
+			else if(someipConfig.endUserType == EndUserType::SERVER)
+			{
+
+			}
+
+			else
+			{
+				cout<<" UNDEFINED TYPE OF END USER \n";
+			}
+		}
+
+		else
+		{
+			cout<<" UNDEFINED TYPE OF TRANSPORT PROTOCOL \n";	
+		}
+
+		return endUserInstance;
+	}
+
+	/* TCP OR UDP MESSAGES? */
+	TransportProtocol someipEndUser::GetTransportProtocolType()
+	{
+		return this->tpType;
+	}
+
+	/* END USER TYPE? */
+	EndUserType someipEndUser::GetEndUserType()
+	{
+		return this->endUserType;
+	}
+
+	/* CONNECT PROXY TO SERVER */
+	bool someipEndUser::ProxyConnect()
+	{
+		// METHOD RELATED TO CLIENTS ONLY 
+		std::cout<< " WRONG INSTANCE CALLED... \n";
+		return false;
+	}	
+
+	/* SERVER LISTENING */
+	void someipEndUser::ServerListen()
+	{
+		std::cout<< " WRONG INSTANCE CALLED... \n";
+		// METHOD RELATED TO SERVER ONLY
+	}
+
+
+
+		
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////  SOMEIP UDP  ////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	someipUDP::someipUDP(boost::asio::io_service& io_service, uint16_t port)			
+		:endpoint(localIp, port ), socket_(io_service, endpoint.protocol() ), timer(io_service)
+	{
+		/* CONSTRUCTOR */
+	}
+
+
+	/* FUNCTION TO SEND A SOME/IP MESSAGE USING UDP */
+	void someipUDP::SendMessage(someip_Message &msg, uint16_t port)
+	{
+		// /* SERIALIZE MESSAGE */
+		// std::stringstream ss;
+		// msg.Serialize(ss);
+		// /* SENDABLE DATA */
+		// std::string data = ss.str();
+		// /* SEND DATA */
+    	// if( send(sockfd , data.c_str() , strlen(data.c_str() ) , 0) < 0)
+    	// {
+        // 	perror("Send failed ");
+        // 	return;
+   	 	// }
+	}
+
+
+	/* FUNCTION TO READ A SOME/IP MESSAGE USING UDP */
+	someip_Message someipUDP::ReadMessage()
+	{
+		// char buffer[size];
+
+		// //Receive a reply from the server
+		// if( recv(sockfd , buffer , sizeof(buffer) , 0) < 0)
+		// {
+		// 	puts("recv failed");
+		// }
+
+		// /* ALL RECEIVED DATA IN MESSAGE STREAM */
+		// std::string messageReceivedStr = buffer;
+		
+        // std::stringstream ss;
+        // ss<<messageReceivedStr;
+	    someip::someip_Message someipMsg;
+	    //someipMsg.Deserialize(ss);
+	    return someipMsg;
 	}
 
 } // Namespace someip
