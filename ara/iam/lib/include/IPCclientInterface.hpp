@@ -17,7 +17,7 @@ namespace ara
         public:
             std::uint8_t Connect();
             void Send(ara::iam::Grant G);
-            //void sendPID();
+            void sendPID(int pid);
             bool Receive();
         };
     }

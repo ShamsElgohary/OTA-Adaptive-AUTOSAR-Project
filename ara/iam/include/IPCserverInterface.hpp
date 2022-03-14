@@ -14,13 +14,14 @@ namespace ara
             std::string IP = IAM_IP_ADDRESS;
             sockaddr_in servAddr;
             int ServerSD;
+            int clientPID;
 
 
         public:
             IPCserverInterface() = default;
             ~IPCserverInterface() = default;
             std::uint8_t ServerSocketInit();
-            int getPeerId(int clientSocketDecriptor);
+            int getPeerId(int sd);
             int Listen();
             void Send(bool is_granted, int sd);
             ara::iam::Grant Receive(int sd);

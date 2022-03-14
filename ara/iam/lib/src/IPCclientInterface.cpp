@@ -42,10 +42,10 @@ void ara::iam::IPCclientInterface::Send(ara::iam::Grant G)
     send(ara::iam::IPCclientInterface::clientSd, (char*)&msg, strlen(msg), 0);
 }
 
-/*void ara::iam::IPCclientInterface::sendPID()
+void ara::iam::IPCclientInterface::sendPID(int pid)
 {
-
-}*/
+    send(ara::iam::IPCclientInterface::clientSd , &pid, sizeof(int) , 0 );
+}
 
 bool ara::iam::IPCclientInterface::Receive()
 {

@@ -27,9 +27,10 @@ std::uint8_t ara::iam::IPCserverInterface::ServerSocketInit()
     return 0;
 }
 
-int ara::iam::IPCserverInterface::getPeerId(int clientSocketDecriptor)
+int ara::iam::IPCserverInterface::getPeerId(int sd)
 {
-
+    recv(sd , &clientPID , sizeof(int) , 0 ) ;
+    return clientPID;
 }
 
 int ara::iam::IPCserverInterface::Listen()

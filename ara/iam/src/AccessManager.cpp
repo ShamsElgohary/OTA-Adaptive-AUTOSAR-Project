@@ -21,7 +21,7 @@ void ara::iam::AccessManager::RunEventLoop()
         int sd = ara::iam::AccessManager::server.Listen();
 
         // Receive PID
-        int PID = ara::iam::AccessManager::server.getPeerId();
+        int PID = ara::iam::AccessManager::server.getPeerId(sd);
 
         // RESOLVE PID FROM EM
         ara::em::FindProcessClient FPC;

@@ -42,7 +42,7 @@ int FindProcessServer::receiveData()
 
 void FindProcessServer::sendData(string processName)
 {
-    send(client_socket , processName.c_str(), size(processName)+1 , 0 ) ;
+    send(client_socket , processName.c_str(), sizeof(processName)+1 , 0 ) ;
 }
 FindProcessServer::~FindProcessServer()
 {
