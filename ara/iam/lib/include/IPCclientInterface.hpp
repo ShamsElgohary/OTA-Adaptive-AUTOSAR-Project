@@ -13,6 +13,7 @@ namespace ara
             int portnum = IAM_PORT_NUMBER;
             std::string IP = IAM_IP_ADDRESS;
             int clientSd;
+            bool is_granted;
 
         public:
             std::uint8_t Connect();

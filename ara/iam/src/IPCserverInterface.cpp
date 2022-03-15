@@ -57,19 +57,7 @@ int ara::iam::IPCserverInterface::Listen()
 
 void ara::iam::IPCserverInterface::Send(bool is_granted, int sd)
 {
-    char msg[1500];
-    memset(&msg, 0, sizeof(msg)); //clear the buffer
-    std::string data;
-    if (is_granted)
-    {
-        data = "1";
-    }
-    else
-    {
-        data = "0";
-    }
-    strcpy(msg, data.c_str());
-    send(sd, (char*)&msg, strlen(msg), 0);
+    send(sd, &is_granted, sizeof(bool), 0);
 }
 
 ara::iam::Grant ara::iam::IPCserverInterface::Receive(int sd)

@@ -49,10 +49,8 @@ void ara::iam::IPCclientInterface::sendPID(int pid)
 
 bool ara::iam::IPCclientInterface::Receive()
 {
-    char msg[1500]; 
     std::cout << "Awaiting server response..." << std::endl;
-    memset(&msg, 0, sizeof(msg));//clear the buffer
-    recv(ara::iam::IPCclientInterface::clientSd, (char*)&msg, sizeof(msg), 0);
-    std::cout << "Result: " << msg << std::endl;
-    return msg == "0" ? 0 : 1;
+    recv(ara::iam::IPCclientInterface::clientSd, &is_granted, sizeof(bool), 0);
+    std::cout << "Result: " << is_granted << std::endl;
+    return is_granted;
 }
