@@ -33,7 +33,7 @@ ipv4_endpoint_option::ipv4_endpoint_option(uint32_t ipv4_address, uint8_t port_n
     this->ipv4_address=ipv4_address;
     this->port_num=port_num;
     this->l4_proto=0x06;
-    OptionCounter+=12;
+    //OptionCounter+=12;
 
 }
 
