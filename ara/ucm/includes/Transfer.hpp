@@ -58,10 +58,10 @@ namespace ara
 				SoftwarePackage();
 
 				/* METHODS RELATED TO THE TRANSFER OPERATION OF THE UCM */
-				static ara::ucm::TransferStartReturnType TransferStart(uint64_t Size);
-				static ara::ucm::OperationResultType  TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter);
-				static ara::ucm::OperationResultType TransferExit(TransferIdType &id);
-				static ara::ucm::OperationResultType TransferDelete(TransferIdType &id);
+				static ara::ucm::TransferStartReturnType TransferStartInternal(uint64_t Size);
+				static ara::ucm::OperationResultType  TransferDataInternal(TransferIdType &id, ByteVectorType data, uint64_t blockCounter);
+				static ara::ucm::OperationResultType TransferExitInternal(TransferIdType &id);
+				static ara::ucm::OperationResultType TransferDeleteInternal(TransferIdType &id);
 
 				/* METHODS RELATED TO THE TransferInfo OBJECT SINCE DATA IS ENCAPSULATED */
 				

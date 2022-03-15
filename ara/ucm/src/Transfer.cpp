@@ -13,7 +13,7 @@ namespace ara::ucm::transfer{
 ////////////////////////////////////////////////////////////////////////////*/
 
 
-ara::ucm::TransferStartReturnType SoftwarePackage::TransferStart(uint64_t Size)
+ara::ucm::TransferStartReturnType SoftwarePackage::TransferStartInternal(uint64_t Size)
 {
 	/* This will hold the data that will be returned from this operation */
 	TransferStartReturnType StartTransferOutput;
@@ -55,7 +55,7 @@ ara::ucm::TransferStartReturnType SoftwarePackage::TransferStart(uint64_t Size)
 
 
 
-ara::ucm::OperationResultType  SoftwarePackage::TransferData (ara::ucm::TransferIdType &id, ara::ucm::ByteVectorType data, uint64_t blockCounter)
+ara::ucm::OperationResultType  SoftwarePackage::TransferDataInternal (ara::ucm::TransferIdType &id, ara::ucm::ByteVectorType data, uint64_t blockCounter)
 {    
 	/* Check ID validity & Get SoftwarePackage  (CurrentSoftwarePackages > Vector of struct of SwPackageInfoType) */
 	shared_ptr<SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
@@ -109,7 +109,7 @@ ara::ucm::OperationResultType  SoftwarePackage::TransferData (ara::ucm::Transfer
 
 
 
-ara::ucm::OperationResultType SoftwarePackage::TransferExit(ara::ucm::TransferIdType &id)
+ara::ucm::OperationResultType SoftwarePackage::TransferExitInternal(ara::ucm::TransferIdType &id)
 {
 	/* Check ID validity & Get SoftwarePackage To Get Its Path */
 	shared_ptr<SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
@@ -137,7 +137,7 @@ ara::ucm::OperationResultType SoftwarePackage::TransferExit(ara::ucm::TransferId
 
 
 
-ara::ucm::OperationResultType SoftwarePackage::TransferDelete(TransferIdType &id)
+ara::ucm::OperationResultType SoftwarePackage::TransferDeleteInternal(TransferIdType &id)
 {
 	/* Check ID validity & Get SoftwarePackage To Get Its Path */
     shared_ptr<SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
