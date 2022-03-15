@@ -53,7 +53,7 @@ void PackageManagerState::DependencyCheck(void)
 
 /*we must write processes in process list*/
 
-ara::ucm::OperationResultType PackageManagerState::Activate()
+ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 {
 
     if ((*CurrentStatus) != PackageManagerStatusType::kReady)
@@ -225,7 +225,7 @@ ara::ucm::OperationResultType PackageManagerState::Cancel(ara::ucm::TransferIdTy
 
 
 /*remove process list*/
-ara::ucm::OperationResultType PackageManagerState::Finish()
+ara::ucm::OperationResultType PackageManagerState::FinishInternal()
 {
     if (((*CurrentStatus) != PackageManagerStatusType::kRolledBack) && ((*CurrentStatus) != PackageManagerStatusType::kActivated))
     {
@@ -257,13 +257,13 @@ ara::ucm::OperationResultType PackageManagerState::Finish()
 }
 
 
-PackageManagerStatusType PackageManagerState::GetStatus()
+PackageManagerStatusType PackageManagerState::GetStatusInternal()
 {
     return (*CurrentStatus);
 }
 
 
-ara::ucm::OperationResultType PackageManagerState::ProcessSwPackage(TransferIdType &id)
+ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(TransferIdType &id)
 {
     /* ONLY ONE PACKAGE CAN BE PROCESSED AT A TIME AND UCM STATE MUST BE IDLE AND KREADY */
     if ( (*CurrentStatus) != PackageManagerStatusType::kIdle && ((*CurrentStatus) != PackageManagerStatusType::kReady))
@@ -343,7 +343,7 @@ ara::ucm::OperationResultType PackageManagerState::RevertProcessedSwPackages()
 }
 
 
-ara::ucm::OperationResultType PackageManagerState::Rollback()
+ara::ucm::OperationResultType PackageManagerState::RollbackInternal()
 {
 
     if ( (*CurrentStatus) != PackageManagerStatusType::kActivated && (*CurrentStatus) != PackageManagerStatusType::kVerifying)

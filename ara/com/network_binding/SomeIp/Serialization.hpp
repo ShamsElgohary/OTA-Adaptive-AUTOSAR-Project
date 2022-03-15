@@ -150,8 +150,6 @@ public:
       Serialize(ss,element);
     }
 
-    cout << "CHECK " <<ss.str();
-
   }
 
 
@@ -237,7 +235,7 @@ public:
   template <typename T, size_t N>
   inline void Deserialize(std::stringstream &ss, T (&data)[N] ) 
   {
-    string strTag;
+    std::string strTag;
     int size;
 
     /* LENGTH= */
@@ -258,7 +256,7 @@ public:
   /* VECTORS OF STRING */
   inline void Deserialize(std::stringstream &ss, std::vector<std::string> &data ) 
   {
-    string strTag;
+    std::string strTag;
     int size;
 
     /* LENGTH= */
@@ -284,7 +282,7 @@ public:
   template <typename T>
   inline void Deserialize(std::stringstream &ss, std::vector<T> &data ) 
   {
-    string strTag;
+    std::string strTag;
     int size;
 
     /* LENGTH= */
@@ -327,3 +325,58 @@ public:
     }
   }
 };
+
+
+
+	// void writeValue(bool v) {
+	// 	writeBasicTypeValue(v);
+	// }
+
+	// void writeValue(const std::string& s) {
+	// 	writeValue( s.c_str(), s.size() );
+	// }
+
+	// void writeValue(const char* s, size_t length) {
+	// 	writeBasicTypeValue(length);
+	// 	writeRawData(s, length);
+	// }
+
+	// void writeValue(int8_t v) {
+	// 	writeBasicTypeValue(v);
+	// }
+
+	// void writeValue(int16_t v) {
+	// 	writeBasicTypeValue(v);
+	// }
+
+	// void writeValue(int32_t v) {
+	// 	writeBasicTypeValue(v);
+	// }
+
+	// void writeValue(int64_t v) {
+	// 	writeBasicTypeValue(v);
+	// }
+
+	// void writeValue(uint8_t v) {
+	// 	writeBasicTypeValue(v);
+	// }
+
+	// void writeValue(uint16_t v) {
+	// 	writeBasicTypeValue(v);
+	// }
+
+	// void writeValue(uint32_t v) {
+	// 	writeBasicTypeValue(v);
+	// }
+
+	// void writeValue(uint64_t v) {
+	// 	writeBasicTypeValue(v);
+	// }
+
+	// void writeValue(float v) {
+	// 	writeBasicTypeValue(v);
+	// }
+
+	// void writeValue(double v) {
+	// 	writeBasicTypeValue(v);
+	// }

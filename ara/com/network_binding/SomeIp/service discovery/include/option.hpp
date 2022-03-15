@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stdio.h>
 #include <cstdint>
 
@@ -6,7 +7,7 @@
 #include <memory>
 
 
-uint32_t OptionCounter ;
+//uint32_t OptionCounter ;
 class option
 {
     protected:

@@ -17,7 +17,7 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::TransferStartOutput> Pac
 {
     std::promise<TransferStartOutput> promise;
 
-    ara::ucm::TransferStartReturnType initialReturn = ara::ucm::transfer::SoftwarePackage::TransferStart(Size);
+    ara::ucm::TransferStartReturnType initialReturn = ara::ucm::transfer::SoftwarePackage::TransferStartInternal(Size);
 
     TransferStartOutput StartReturn;
     StartReturn.BlockSize = initialReturn.BlockSize;
@@ -38,7 +38,7 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput>
 {
     std::promise<OperationResultOutput> promise;
 
-    OperationResultOutput DataReturn{ ara::ucm::transfer::SoftwarePackage::TransferData(id, data, blockCounter) };
+    OperationResultOutput DataReturn{ ara::ucm::transfer::SoftwarePackage::TransferDataInternal(id, data, blockCounter) };
 
     promise.set_value(DataReturn);
     
@@ -53,7 +53,7 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput>  
 {
     std::promise<OperationResultOutput> promise;
 
-    OperationResultOutput ExitReturn{ ara::ucm::transfer::SoftwarePackage::TransferExit(id) };
+    OperationResultOutput ExitReturn{ ara::ucm::transfer::SoftwarePackage::TransferExitInternal(id) };
 
     promise.set_value(ExitReturn);
 
@@ -67,7 +67,7 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
 {
     std::promise<OperationResultOutput> promise;
 
-    OperationResultOutput DeleteReturn{ ara::ucm::transfer::SoftwarePackage::TransferDelete(id) };
+    OperationResultOutput DeleteReturn{ ara::ucm::transfer::SoftwarePackage::TransferDeleteInternal(id) };
 
     promise.set_value(DeleteReturn);
 
@@ -86,7 +86,7 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
     
     try
     {
-        ProcessReturn.OperationReturn = PackageManagerStateinstance->ProcessSwPackage(id);
+        ProcessReturn.OperationReturn = PackageManagerStateinstance->ProcessSwPackageInternal(id);
     }
 
     catch(...)
@@ -106,7 +106,7 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
 {
     std::promise<OperationResultOutput> promise;
 
-    OperationResultOutput ActivateReturn{ PackageManagerStateinstance->Activate() };
+    OperationResultOutput ActivateReturn{ PackageManagerStateinstance->ActivateInternal() };
 
     promise.set_value(ActivateReturn);
 
@@ -134,7 +134,7 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
 {
     std::promise<OperationResultOutput> promise;
     
-    OperationResultOutput RollbackResult{ PackageManagerStateinstance->Rollback() };
+    OperationResultOutput RollbackResult{ PackageManagerStateinstance->RollbackInternal() };
 
     promise.set_value(RollbackResult);
 
@@ -148,7 +148,7 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
 {
     std::promise<OperationResultOutput> promise;
     
-    OperationResultOutput RevertResult{ PackageManagerStateinstance->Rollback() };
+    OperationResultOutput RevertResult{ PackageManagerStateinstance->RollbackInternal() };
 
     promise.set_value(RevertResult);
 
@@ -163,7 +163,7 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::GetCurrentStatusOutput> 
 {
     std::promise<GetCurrentStatusOutput> promise;
 
-    GetCurrentStatusOutput StatusResult{ PackageManagerStateinstance->GetStatus() };
+    GetCurrentStatusOutput StatusResult{ PackageManagerStateinstance->GetStatusInternal() };
 
     promise.set_value(StatusResult);
 
@@ -177,7 +177,7 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
 {
     std::promise<OperationResultOutput> promise;
     
-    OperationResultOutput FinishResult{ PackageManagerStateinstance->Finish() };
+    OperationResultOutput FinishResult{ PackageManagerStateinstance->FinishInternal() };
 
     promise.set_value(FinishResult);
 
