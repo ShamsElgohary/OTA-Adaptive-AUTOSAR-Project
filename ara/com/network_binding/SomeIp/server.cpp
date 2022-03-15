@@ -1,5 +1,5 @@
-#include "SOMEIP.hpp"
-#include "SOMEIP_TCP.hpp"
+#include "someip.hpp"
+
 
 using namespace boost::asio;
 using namespace std;
@@ -20,11 +20,18 @@ int main() {
 
     std::stringstream ss;
 
-    serverUser->ServerListen();
 
-    ss << serverUser->ReadMessage().payload;
-
-    cout << ss.str();
+    while(1)
+        {
+            // KEEP WAITING FOR CONNECTIONS
+        serverUser->ServerListen();
+        ss << serverUser->ReceiveMessageAsynch().payload;
+        // FOR ASYNCHRONOUS
+        //io_service.run();
+        cout << ss.str() << endl;
+        serverUser->CloseConnection();
+        ss.str(""); // EMPTY STRINGSTREAM
+        }
 
     return 0;
 }

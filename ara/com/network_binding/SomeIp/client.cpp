@@ -1,5 +1,4 @@
-#include "SOMEIP.hpp"
-#include "SOMEIP_TCP.hpp"
+#include "someip.hpp"
 
 using namespace boost::asio;
 using namespace std;
@@ -34,8 +33,10 @@ int main() {
     boost::asio::io_service io_service;
 
     shared_ptr<someipEndUser> clientUser = someipEndUser::SetSomeIpConfiguration(io_service, port , someipConfig);
+    
+    clientUser->SendMessageAsynch(msg);
 
-    clientUser->SendMessage(msg);
+    //clientUser->CloseConnection();
 
     cout << "CLIENT FINISHED \n";
 
