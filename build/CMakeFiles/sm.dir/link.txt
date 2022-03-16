@@ -1,1 +1,0 @@
-/usr/bin/c++ -rdynamic CMakeFiles/sm.dir/executables/sm/bin/sm.cpp.o -o sm  libexecution_lib.a 

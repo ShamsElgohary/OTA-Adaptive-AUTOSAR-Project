@@ -3,62 +3,36 @@ using namespace std;
 using namespace ara::exec;
 using namespace boost::filesystem;
 
-//1-parses directories to reach execution manifests
-//2-makes executable objects and passes its manifest path to its constructor
-//3-push executable objects to executables_ vector
+
 bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 {
-    path p("../../../executables");
-    try
+    path p(rootPath+"/executables");
+
+    for (directory_entry &x : directory_iterator(p))
     {
-        if (exists(p))
+        string p2 = x.path().string() + "/etc/" + x.path().filename().string() + ".json";
+        executables_.push_back(Executable{ApplicationManifest(p2), vector<Application>()});
+        for(auto &app :executables_.back().manifest_.startUpConfigurations)
         {
-            if (is_directory(p))
+            executables_.back().startupConfigurations_.push_back(Application(app,executables_.back().manifest_.name,executables_.back().manifest_.executable_path));
+        }
+        for(auto &app :executables_.back().startupConfigurations_)
+        {
+            for(auto function_group : app.configuration_.function_group_states)
             {
-                for (directory_entry &x : directory_iterator(p))
+                for(auto state :function_group.second )
                 {
-                    string p2 = x.path().string() + "/etc/" + x.path().filename().string() + ".json";
-                    executables_.push_back(Executable{ApplicationManifest(p2), vector<Application>()});
-                    for(auto &app :executables_.back().manifest_.startUpConfigurations)
-                    {
-                        executables_.back().startupConfigurations_.push_back(Application(app,executables_.back().manifest_.name,executables_.back().manifest_.executable_path));
-                    }
-                    for(auto &app :executables_.back().startupConfigurations_)
-                    {
-                        for(auto function_group : app.configuration_.function_group_states)
-                        {
-                            for(auto state :function_group.second )
-                            {
-                                function_groups_[function_group.first]->startupConfigurations_[state].push_back(&app);
-                            }
-                        }
-                    }
-                     
+                    function_groups_[function_group.first]->startupConfigurations_[state].push_back(&app);
                 }
             }
-            else
-            {
-                cout << p << " exists, but is not a regular file or directory\n";
-            }
         }
-        else
-        {
-            cout << p << " does not exist\n";
-        }
-    }
-    catch (const filesystem_error &ex)
-    {
-        cout << ex.what() << '\n';
-        return false;
     }
     return true;
 }
 
-//1-makes MachineManifest Object in heap and passses machine manifest path to its constructor
-//2-sets the unique ptr to this object
 bool ApplicationExecutionMgr::loadMachineConfigrations()
 {
-    manifest_ = make_unique<MachineManifest>("../../etc/system/machine_manifest.json");
+    manifest_ = make_unique<MachineManifest>(rootPath+"/ara/etc/system/machine_manifest.json");
     for(auto &fn : manifest_->function_groups)
     {
         for(auto &state :fn.allStates_)
@@ -134,10 +108,7 @@ void ApplicationExecutionMgr::initialize()
     transitionChanges_.toTerminate_.clear();    
 }
 
-ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath)
-{
-    rootPath = rootPath;
-}
+ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath):rootPath{rootPath}{}
 
 bool ApplicationExecutionMgr::run()
 {
