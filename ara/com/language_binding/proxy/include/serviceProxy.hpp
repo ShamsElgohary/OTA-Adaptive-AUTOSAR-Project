@@ -4,6 +4,7 @@
 #include "../../../include/types.hpp"
 #include "../../../network_binding/network_binding_base.hpp"
 #include "handleType.hpp"
+#include"../../../network_binding/NetworkBinding.hpp"
 
 /* GENERIC */
 
@@ -17,10 +18,10 @@ namespace ara
             {
             public:
                 /* MUST */
-                static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService();
+                static ara::com::ServiceHandleContainer<ara::com::proxy::HandleType> FindService();
 
                 /* EXTRA */
-                static ara::com::ServiceHandleContainer<ProxyBase::HandleType>
+                static ara::com::ServiceHandleContainer<ara::com::proxy::HandleType>
                 FindService(ara::com::InstanceIdentifier instanceId);
 
                 /* EXTRA (FindServiceHandler & FindServiceHandle are not Implemented) */
@@ -41,10 +42,8 @@ namespace ara
                 /* DELETE COPY CONSTRUCTORS */
                 ProxyBase(ProxyBase &other) = delete;
                 ProxyBase &operator=(const ProxyBase &other) = delete;
-
-            protected:
-                //HandleType Handle;
-                HandleType& Delegate;
+                
+                HandleType ProxyHandle;
                 ara::com::serviceIdentifierType serviceID;
             };
         }

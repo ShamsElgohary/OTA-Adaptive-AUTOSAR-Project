@@ -24,7 +24,7 @@ namespace ara
         /////////////////////////  NETWORKBASE CLASS INTERFACE CLASS ////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////
         
-        class NetworkBase 
+        class NetworkBindingBase 
         {
             private:
                 
@@ -38,7 +38,8 @@ namespace ara
                 /* STILL TO BE ADJUSTED */
                 virtual void Send();
                 virtual void Receive();
-                virtual void SendRequest();
+                template<typename T,typename...Params>
+                virtual void SendRequest(uint32_t methodID,T a , Params...args);
                 virtual void OfferService();
                 virtual void OfferService(std::string instanceId);
                 virtual void StopOfferService(std::string instanceId);

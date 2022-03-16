@@ -35,7 +35,7 @@ namespace ara
             public:
                 ara::com::BindingProtocol GetBindingProtocol()
                 {
-                    return bindingProtocol;
+                    return ara::com::proxy::HandleType::bindingProtocol;
                 }
             };
         }

@@ -47,7 +47,7 @@ namespace ara
             {
                 //uniqueness check
                 this->ptr2bindingProtocol->SD::OfferService(this->serviceID, this->instanceId, this->ip, this->port);
-                std::thread server(serve);
+                std::thread serve(serve);
             }
 
             void Serviceskeleton::StopOfferService()
@@ -59,3 +59,15 @@ namespace ara
         }
     }
 }
+
+
+ handleMethod(methodID , input)
+ {
+     switch(methodID)
+     {
+         case 3:
+         {
+
+         }
+     }
+ }
