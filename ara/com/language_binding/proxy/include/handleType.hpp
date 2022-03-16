@@ -8,19 +8,18 @@ namespace ara
         {
             class HandleType
             {
-            protected:
+            public:
                 //uint32_t VersionMajor;
                 //uint32_t VersionMinor;
 
-                //  ara::com::InterfaceIdentifier InterfaceID;
                 ara::com::serviceIdentifierType serviceID;
                 ara::com::InstanceIdentifier InstanceID;
                 uint32_t ip;
                 uint32_t port;
-                //std::shared_ptr<ara::com::NetworkBindingBase> network_binding;
-                ara::com::BindingProtocol bindingProtocol;
+                ara::com::NetworkBindingBase* networkBindingPtr;
+                //ara::com::BindingProtocol bindingProtocol;
 
-            public:
+            
                 //  inline bool operator==(const HandleType &other) const;
 
                 const ara::com::InstanceIdentifier &GetInstanceId() const;
@@ -34,6 +33,8 @@ namespace ara
                 HandleType &operator=(HandleType &&);
 
                 ~HandleType() noexcept;
+                template<typename T>
+                virtual SendRequest(uint32_t,T) = 0;
 
                 friend class proxy::ProxyBase;
             };
@@ -41,10 +42,12 @@ namespace ara
             class SOMEIP : public HandleType
             {
             public:
+                struct output{};
                 SOMEIP() : bindingProtocol(BindingProtocol::someip) {}
                 /*********************
                  * someIP functions  *
                  * *******************/
+              output FindService(InstanceIdentifier instanceID);
             };
 
             class DDS : public HandleType
@@ -54,6 +57,7 @@ namespace ara
                 /*********************
                  * DDS functions     *
                  * *******************/
+                struct output{};
             };
 
             class HandleTypeFactory
