@@ -11,9 +11,9 @@ namespace ara
         {
             class ProxyBase
             {
-                ProxyBase(HandleType handle)
+                ProxyBase(HandleType handle, const ara::com::serviceIdentifierType& S_ID) : ProxyHandle(handle), serviceID(S_ID)
                 {
-                    ara::com::proxy::ProxyBase::ProxyHandle = handle;
+                    //ara::com::proxy::ProxyBase::ProxyHandle = handle;
                 }
 
                 static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
@@ -31,7 +31,7 @@ namespace ara
                         h.InstanceID = opVsomeip[i].instanceID;
                         h.ip = opVsomeip[i].ip;
                         h.port = opVsomeip[i].port;
-                        h.serviceID = ara::com::proxy::ProxyBase::serviceID; //will this be hardcoded?
+                        h.serviceID = ara::com::proxy::ProxyBase::serviceID; //will this be hardcoded? Yes
                         vectorOfHandles.push_back(h);
                     }
 

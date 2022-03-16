@@ -14,11 +14,17 @@ namespace ara
                 class MethodBase
                 {
                 public:
-                    MethodBase(HandleType *ptr)
+                    MethodBase(ara::com::NetworkBindingBase *ptr, const std::string& N) : Delegate(ptr), name(N)
                     {
                         //ara::com::proxy::method::MethodBase::Delegate = ara::com::proxy::HandleTypeFactory::create(Handle.GetBindingProtocol());
-                        ara::com::proxy::method::MethodBase::Delegate = ptr;
+                        //ara::com::proxy::method::MethodBase::Delegate = ptr;
                     }
+
+                    SetID(const std::uint32_t& id)
+                    {
+                        ID = id;
+                    }
+
                     template <typename...Params>
                     std::future<ara::com::proxy::method::Output> operator()(Params...args) //variadic function
                     {

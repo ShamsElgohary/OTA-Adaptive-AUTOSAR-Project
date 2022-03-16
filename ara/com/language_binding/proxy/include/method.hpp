@@ -22,10 +22,13 @@ namespace ara
                     ara::com::proxy::HandleType *Delegate;
                     //ara::com::NetworkBindingBase *networkBindingPtr;
                     std::string name;
-                    uint32_t M_ID;
+                    uint32_t ID;
                     Output op;
                     /* IMPLEMENTATION IN GENERATION */
-                    MethodBase(ara::com::NetworkBindingBase *ptr);
+                    MethodBase(ara::com::NetworkBindingBase *ptr, const std::string& N);
+
+                    SetID(const std::uint32_t& id);
+
                     template <typename...Params>
                     ara::core::Future<Output> operator()(Params...args)
                 };

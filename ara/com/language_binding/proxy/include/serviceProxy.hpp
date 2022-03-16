@@ -37,14 +37,14 @@ namespace ara
                 static void StopFindService(ara::com::FindServiceHandle handle);
 
                 /* IMPLEMENTATION IN GENERATION */
-                ProxyBase(HandleType handle);
+                ProxyBase(HandleType handle, const ara::com::serviceIdentifierType& S_ID);
 
                 /* DELETE COPY CONSTRUCTORS */
                 ProxyBase(ProxyBase &other) = delete;
                 ProxyBase &operator=(const ProxyBase &other) = delete;
                 
                 HandleType ProxyHandle;
-                ara::com::serviceIdentifierType serviceID;
+                const ara::com::serviceIdentifierType serviceID;
             };
         }
     }
