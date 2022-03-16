@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include"../include/serviceProxy.hpp"
+
 using namespace std;
 
 namespace ara
@@ -11,7 +12,6 @@ namespace ara
         {
             class ProxyBase
             {
-
                 ProxyBase(HandleType handle)
                 {
                     ProxyBase::Delegate = HandleTypeFactory::create(handle.GetBindingProtocol());

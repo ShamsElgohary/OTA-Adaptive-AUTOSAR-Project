@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../lib/include/types.hpp"
+#include "../lib/include/Grant.hpp"
 #include "GrantStorage.hpp"
 #include "IPCserverInterface.hpp"
 #include "../../exec/include/find_process_client.hpp"

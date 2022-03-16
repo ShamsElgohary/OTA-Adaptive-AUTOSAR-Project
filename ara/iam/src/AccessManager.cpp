@@ -23,6 +23,8 @@ void ara::iam::AccessManager::RunEventLoop()
         // Receive PID
         int PID = ara::iam::AccessManager::server.getPeerId(sd);
 
+        std::cout << "[RECEIVED] " << PID << std::endl;
+
         // RESOLVE PID FROM EM
         ara::em::FindProcessClient FPC;
 
@@ -30,7 +32,8 @@ void ara::iam::AccessManager::RunEventLoop()
         FPC.sendData(PID);
 
         // Receive Proc
-        std::string P_name = FPC.receiveData();
+        std::string P_name; //= "ucm";
+        P_name = FPC.receiveData();
 
         // RECIEVE GRANT FROM CLIENT 
         ara::iam::Grant G = ara::iam::AccessManager::server.Receive(sd);
