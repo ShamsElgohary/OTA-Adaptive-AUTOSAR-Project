@@ -1,4 +1,3 @@
-#pragma once
 #include "../include/find_process_client.hpp"
 
 using namespace ara::em ;

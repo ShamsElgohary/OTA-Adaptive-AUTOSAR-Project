@@ -1,19 +1,24 @@
 cmake_minimum_required(VERSION 3.0)
 set (CMAKE_CXX_STANDARD 17)
 
+###############################EM###############################
 
-set(source_ara_exec_dir "${CMAKE_SOURCE_DIR}/ara/exec")
-
+set(exec_source_dir "${CMAKE_SOURCE_DIR}/ara/exec")
+set(em_install_dir "${CMAKE_SOURCE_DIR}/executables/em/bin")
 project(em)
-find_package(Boost 1.50 REQUIRED COMPONENTS filesystem)
-file(GLOB_RECURSE SRC_FILES ${source_ara_exec_dir}/*.cpp CMAKE_CONFIGURE_DEPENDS)
+find_package(Boost 1.50 COMPONENTS system filesystem program_options serialization REQUIRED)
+file(GLOB_RECURSE SRC_FILES ${exec_source_dir}/*.cpp CMAKE_CONFIGURE_DEPENDS)
 add_executable(em ${SRC_FILES})
-target_include_directories(em PUBLIC  ${source_ara_exec_dir}/include)
-target_link_libraries(em Boost::filesystem )
+target_include_directories(em PUBLIC  ${exec_source_dir}/include)
+target_link_libraries(em Boost::filesystem Boost::program_options)
+install(TARGETS em RUNTIME DESTINATION ${em_install_dir})
 
+###############################EM_LIB###############################
 
-add_library(execution_lib STATIC ${source_ara_exec_dir}/src/execution_client.cpp ${source_ara_exec_dir}/src/state_client.cpp ${source_ara_exec_dir}/src/function_group_state.cpp)
-target_include_directories(execution_lib PUBLIC  ${source_ara_exec_dir}/include)
+add_library(execution_lib STATIC ${exec_source_dir}/src/execution_client.cpp ${exec_source_dir}/src/state_client.cpp ${exec_source_dir}/src/function_group_state.cpp ${exec_source_dir}/src/find_process_client.cpp)
+target_include_directories(execution_lib PUBLIC  ${exec_source_dir}/include)
+
+###############################EX!###############################
 
 project(ex1)
 set(source_excutables_ex1_dir "${CMAKE_SOURCE_DIR}/executables/ex1/bin")
@@ -21,6 +26,7 @@ add_executable(ex1 ${source_excutables_ex1_dir}/ex1.cpp)
 target_link_libraries( ex1 execution_lib )
 install(TARGETS ex1 RUNTIME DESTINATION ${source_excutables_ex1_dir})
 
+###############################EX2###############################
 
 project(ex2)
 set(source_excutables_ex2_dir  "${CMAKE_SOURCE_DIR}/executables/ex2/bin")
@@ -28,15 +34,33 @@ add_executable(ex2 ${source_excutables_ex2_dir}/ex2.cpp)
 target_link_libraries( ex2 execution_lib )
 install(TARGETS ex2 RUNTIME DESTINATION ${source_excutables_ex2_dir})
 
+###############################SM###############################
+
 project(sm)
-set(source_excutables_sm_dir   "${CMAKE_SOURCE_DIR}/executables/sm/bin")
+set(source_excutables_sm_dir "${CMAKE_SOURCE_DIR}/executables/sm/bin")
 add_executable(sm ${source_excutables_sm_dir}/sm.cpp) 
 target_link_libraries( sm execution_lib )
 install(TARGETS sm RUNTIME DESTINATION ${source_excutables_sm_dir})
-# cmake_policy(SET CMP0037 OLD)
-# # use 17 insted of 14
-# set (CMAKE_CXX_STANDARD 17)
-# set (CMAKE_CXX_STANDARD_REQUIRED ON)
+
+################################IAM#############################
+
+project(iam)
+set(iam_install_dir "${CMAKE_SOURCE_DIR}/executables/iam/bin")
+set(iam_source_dir "${CMAKE_SOURCE_DIR}/ara/iam")
+file(GLOB_RECURSE IAM_SRC_FILES ${iam_source_dir}/*.cpp CMAKE_CONFIGURE_DEPENDS)
+add_executable(iam ${SRC_FILES} ${iam_source_dir}/lib/src/Grant.cpp) 
+target_include_directories(iam PUBLIC  ${iam_source_dir}/include  ${iam_source_dir}/lib/include )
+target_link_libraries(iam execution_lib Boost::filesystem Boost::program_options Boost::serialization)
+install(TARGETS iam RUNTIME DESTINATION ${iam_install_dir})
+
+################################IAM_LIB##########################
+
+file(GLOB_RECURSE IAM_LIB_SRC_FILES ${iam_source_dir}/lib/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
+add_library(iam_lib STATIC ${IAM_LIB_SRC_FILES} )
+target_link_libraries(iam_lib  Boost::filesystem Boost::program_options Boost::serialization)
+
+target_include_directories(iam_lib PUBLIC  ${iam_source_dir}/lib/include )
+
 
 # project(sm)
 
