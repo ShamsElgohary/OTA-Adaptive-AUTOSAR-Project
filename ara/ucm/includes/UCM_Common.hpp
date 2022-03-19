@@ -20,7 +20,7 @@
 #include <unistd.h>
 #include <iomanip>
 #include <sys/stat.h>
-#include "UCM_Types.hpp"
+#include "types.hpp"
 #include "nlohmann/json.hpp"
 
 using json = nlohmann::json;
@@ -30,7 +30,11 @@ extern const string UCM_Path;
 extern const string ZIP_PackagesPath;
 extern const string fileSystemPath;
 extern const string fileBackupPath;
+extern const string ProjectPath;
+extern const string ProcessListPath;
 extern string command;
+
+static string GetProjectPath();
 
 /* USED TO GET FILE SYSTEM PATH (ONLY IN THIS FILE) */
 static string GetUCMPath();

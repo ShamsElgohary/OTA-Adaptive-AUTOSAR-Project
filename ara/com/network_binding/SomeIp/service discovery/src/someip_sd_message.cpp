@@ -3,13 +3,13 @@
 
 #include <vector>
 #include <memory>
-#include "../include/someip_sd_message.hpp"
+#include "someip_sd_message.hpp"
 #include <utility>
 #include "entry.cpp"
 #include "option.cpp"
-//#include "../../SOMEIP.cpp"
-//#include"SOMEIP_TCP.cpp"
-//#include"SOMEIP_Message.cpp"
+#include "../someip.hpp"
+//#include"../SOMEIP_TCP.cpp"
+#include"../someipMessage.hpp"
 #include <iostream>
 #include <fstream>
 someip_sd_message::someip_sd_message()
@@ -48,8 +48,8 @@ void someip_sd_message::AddEntry(std::unique_ptr<service_entry> &s1)
     service_entry* se=dynamic_cast<service_entry*>(s1.get()); //cast pointer to ipv4_option_type
     Serializer s;
     std::stringstream ss;
-    std::string entryflag="entry";
-    s.Serialize(ss,entryflag,se->getServiceID(),se->getInstanceID(),se->getTimeToLIve(),se->getType());
+    //std::string entryflag="entry";
+    s.Serialize(ss,se->getServiceID(),se->getInstanceID(),se->getTimeToLIve(),se->getType());
     fstream my_file;
     my_file.open("mariam", std::ios_base::out);
 	if (!my_file) {
@@ -75,8 +75,8 @@ void someip_sd_message::AddOption( std::unique_ptr<ipv4_endpoint_option>& Option
     ipv4_endpoint_option* op=dynamic_cast<ipv4_endpoint_option*>(Option1.get()); //cast pointer to ipv4_option_type
     Serializer s;
     std::stringstream ss;
-    std::string optionflag="option";
-    s.Serialize(ss,optionflag,op->getIPV4_Address(),op->getport_num()); // to be edited
+    //std::string optionflag="option";
+    s.Serialize(ss,op->getIPV4_Address(),op->getport_num()); // to be edited
     fstream my_file;
     my_file.open("waleed", std::ios_base::out);
 	if (!my_file) {
