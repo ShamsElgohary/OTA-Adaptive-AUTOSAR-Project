@@ -28,13 +28,13 @@ int main() {
 
     uint16_t port = 1234;
 
-    SomeIpConfiguration someipConfig{TransportProtocol::TCP,EndUserType::CLIENT};
+    SomeIpConfiguration someipConfig{TransportProtocol::UDP,EndUserType::CLIENT};
 
     boost::asio::io_service io_service;
 
-    shared_ptr<someipEndUser> clientUser = someipEndUser::SetSomeIpConfiguration(io_service, port , someipConfig);
+    shared_ptr<someipConnection> clientUser = someipConnection::SetSomeIpConfiguration(io_service, port , someipConfig);
     
-    clientUser->SendMessageAsynch(msg);
+    clientUser->SendMessage(msg);
 
     //clientUser->CloseConnection();
 

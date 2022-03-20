@@ -36,11 +36,11 @@ typedef struct
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////  SOMEIP ENDUSER   	/////////////////////////////////////////
+    ///////////////////////////////////  SOMEIP CONNECTION    ///////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-class someipEndUser{
+class someipConnection{
 	
 	protected: 
 
@@ -50,13 +50,13 @@ class someipEndUser{
 	
 	public:
 
-		someipEndUser(SomeIpConfiguration someipConfig);
+		someipConnection(SomeIpConfiguration someipConfig);
 
 		/* DEFAULT CONSTRUCTOR */
-		someipEndUser();
+		someipConnection();
 
 		/* DEFAULT DESTRUCTOR */
-		~someipEndUser();
+		~someipConnection();
 
 
 		//CONFGIURE SOMEIP TO SUIT USER : 
@@ -66,7 +66,7 @@ class someipEndUser{
 		// SERVICE PORT
 		// io_service TO USE
 		
-		static std::shared_ptr<someipEndUser> SetSomeIpConfiguration(
+		static std::shared_ptr<someipConnection> SetSomeIpConfiguration(
 			boost::asio::io_service& io_service, 
 			uint16_t port, 	 
 			SomeIpConfiguration someipConfig,					// DEFAULT VALUES INSIDE
@@ -104,8 +104,6 @@ class someipEndUser{
 		/* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
 		virtual someip_Message ReceiveMessageAsynch() = 0;		
 
-		
-
 
 };
 
@@ -117,7 +115,7 @@ class someipEndUser{
     ///////////////////////////////////  SOMEIP TCP     /////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-class someipTCP : public someipEndUser {
+class someipTCP : public someipConnection {
 	
 	protected:
 	
@@ -164,11 +162,9 @@ class someipTCP : public someipEndUser {
 };
 
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
+
     ///////////////////////////////////  SOMEIP TCP SERVER   ////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+ 
 class ServerTCP : public someipTCP {
 	
 	private:
@@ -192,10 +188,7 @@ class ServerTCP : public someipTCP {
 };
 
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////  SOMEIP TCP CLIENT   ////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 class ClientTCP : public someipTCP {
 	
@@ -223,24 +216,21 @@ class ClientTCP : public someipTCP {
 
 
 
-
-
 	/////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////  SOMEIP UDP  ////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-class someipUDP  : public someipEndUser  {
+class someipUDP  : public someipConnection  {
 	
 	protected:
 
 	boost::asio::ip::udp::endpoint udpEndPoint;
 	boost::asio::ip::udp::socket udpSocket;
+	boost::asio::io_service & udp_io_service;  
 	//boost::asio::deadline_timer timer;
 	uint16_t port;
 
-
 	public:
-
 
 	/* CONSTRUCTOR */
 	someipUDP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
@@ -279,9 +269,8 @@ class someipUDP  : public someipEndUser  {
 	/* CONNECT PROXY TO SERVER */
 	bool ProxyConnect();
 
-
-
 };
+
 
 
 

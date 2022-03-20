@@ -12,11 +12,11 @@ int main() {
 
     uint16_t port = 1234;
 
-    SomeIpConfiguration someipConfig{TransportProtocol::TCP,EndUserType::SERVER};
+    SomeIpConfiguration someipConfig{TransportProtocol::UDP,EndUserType::SERVER};
 
     boost::asio::io_service io_service;
 
-    shared_ptr<someipEndUser> serverUser = someipEndUser::SetSomeIpConfiguration(io_service, port , someipConfig);
+    shared_ptr<someipConnection> serverUser = someipConnection::SetSomeIpConfiguration(io_service, port , someipConfig);
 
     std::stringstream ss;
 
@@ -24,12 +24,10 @@ int main() {
     while(1)
         {
             // KEEP WAITING FOR CONNECTIONS
-        serverUser->ServerListen();
-        ss << serverUser->ReceiveMessageAsynch().payload;
-        // FOR ASYNCHRONOUS
-        //io_service.run();
+        //serverUser->ServerListen();
+        ss << serverUser->ReceiveMessage().payload;
         cout << ss.str() << endl;
-        serverUser->CloseConnection();
+        //serverUser->CloseConnection();
         ss.str(""); // EMPTY STRINGSTREAM
         }
 
