@@ -1,11 +1,10 @@
 #pragma once
-
 #include <iostream>
 #include <memory>
 #include <thread>
 #include <chrono>
 #include <mutex>
-#include "../../core/types.hpp"
+#include "types.hpp"
 
 using namespace std;
 
@@ -13,89 +12,48 @@ namespace ara
 {
     namespace com
     {
-
-        enum BindingProtocol
-        {
-            SOMEIP,
-            DDS
-        };
-        
         /////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////  NETWORKBASE CLASS INTERFACE CLASS ////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        class NetworkBindingBase 
+        class NetworkBindingBase
         {
-            private:
-                
-                /* strInstanceId = "SOME/IP 21" */
-                static BindingProtocol GetType(std::string instanceIdStr, uint16_t &instanceId);
-
-            public:
-                
-                static std::shared_ptr<NetworkBase> Bind(uint16_t serviceId, std::string instanceId, uint16_t port);                
-
-                /* STILL TO BE ADJUSTED */
-                virtual void Send();
-                virtual void Receive();
-                template<typename T,typename...Params>
-                virtual void SendRequest(uint32_t methodID,T a , Params...args);
-                virtual void OfferService();
-                virtual void OfferService(std::string instanceId);
-                virtual void StopOfferService(std::string instanceId);
-
+        public:
+            struct output
+            {
+                std::shared_ptr<NetworkBindingBase> networkBindingPtr;
+                int instanceID;
+                string ip;
+                int port;
+                int serviceID;
+            };
+            static std::shared_ptr<NetworkBindingBase> Bind(int serviceId, int instanceId);
+            template <typename... Params>
+            void send(Params... args);
+            template <typename T>
+            void receive(T &in);
+            template <typename... Params>
+            void SendRequest(uint32_t methodID, Params... args);
+            void OfferService();
+            void StopOfferService();
+            int get_method_id();
         };
-       
-        
         /////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////// SOMEIP NETWORK BINDING ///////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////
-
-        class SomeIpNetworkBinding : public NetworkBase
+        class SomeIpNetworkBinding : public NetworkBindingBase
         {
-            private:
-                
-                uint16_t serviceId;
-                uint16_t instanceId;
-                uint16_t port;
-            
-            public:
-                /* PORT BINDED TO THIS SPECIFIC SERVICE ID AND INSTANCE ID */
-                SomeIpNetworkBinding(uint16_t serviceId, uint16_t instanceId, uint16_t port);
-                void Send();
-                void Receive();
-                void SendRequest();
-                void OfferService();
-                void OfferService(std::string instanceId);
-                void StopOfferService(std::string instanceId);
+            int port;
+            string ip;
 
+        public:
+            SomeIpNetworkBinding(int port, string ip);
+            template <typename... Params>
+            void send(Params... args) override;
+            template <typename T>
+            void receive(T &in) override;
+            template <typename... Params>
+            void SendRequest(uint32_t methodID, Params... args) override;
+            static vector<ara::com::NetworkBindingBase::output> FindService_SomeIp(int serviceID);
         };
-
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////// DDS NETWORK BINDING //////////////////////////////////////
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-
-        class DDSNetworkBinding : public NetworkBase
-        {
-            private:
-                
-                uint16_t serviceId;
-                std::string instanceIdStr;
-                uint16_t port;
-            
-            public:
-                /* PORT BINDED TO THIS SPECIFIC SERVICE ID AND INSTANCE ID */
-                DDSNetworkBinding(uint16_t serviceId, std::string instanceIdStr, uint16_t port);
-                void Send();
-                void Receive();
-                void SendRequest();
-                void OfferService();
-                void OfferService(std::string instanceId);
-                void StopOfferService(std::string instanceId);
-
-        };
-
     }
 }
-

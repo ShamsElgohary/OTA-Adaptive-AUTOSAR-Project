@@ -1,13 +1,6 @@
-#ifndef _ARA_COM_INTERNAL_PROXY_HPP_
-#define _ARA_COM_INTERNAL_PROXY_HPP_
-
-#include "../../../include/types.hpp"
-#include "../../../network_binding/network_binding_base.hpp"
-#include "handleType.hpp"
-#include"../../../network_binding/NetworkBinding.hpp"
-
-/* GENERIC */
-
+#pragma once
+#include "types.hpp"
+#include "NetworkBinding.hpp"
 namespace ara
 {
     namespace com
@@ -17,37 +10,29 @@ namespace ara
             class ProxyBase
             {
             public:
-                /* MUST */
-                static ara::com::ServiceHandleContainer<ara::com::proxy::HandleType> FindService();
-
-                /* EXTRA */
-                static ara::com::ServiceHandleContainer<ara::com::proxy::HandleType>
-                FindService(ara::com::InstanceIdentifier instanceId);
-
-                /* EXTRA (FindServiceHandler & FindServiceHandle are not Implemented) */
-                static ara::com::FindServiceHandle StartFindService(
-                    ara::com::FindServiceHandler<ProxyBase::HandleType> handler);
-
-                /* EXTRA  (FindServiceHandler & FindServiceHandle are not Implemented) */
-                static ara::com::FindServiceHandle StartFindService(
-                    ara::com::FindServiceHandler<ProxyBase::HandleType> handler,
-                    ara::com::InstanceIdentifier instanceId);
-
-                /* EXTRA (FindServiceHandle is not Implemented) */
-                static void StopFindService(ara::com::FindServiceHandle handle);
-
-                /* IMPLEMENTATION IN GENERATION */
-                ProxyBase(HandleType handle, const ara::com::serviceIdentifierType& S_ID);
-
-                /* DELETE COPY CONSTRUCTORS */
+                class HandleType
+                {
+                public:
+                    ara::com::InstanceIdentifier InstanceID;
+                    std::shared_ptr<ara::com::NetworkBindingBase> ptr2bindingProtocol;
+                    const ara::com::InstanceIdentifier &GetInstanceId() const;
+                    HandleType();
+                    HandleType(const HandleType &);
+                    HandleType &operator=(const HandleType &);
+                    HandleType(HandleType &&);
+                    HandleType &operator=(HandleType &&);
+                    ~HandleType() noexcept;
+                    friend class ProxyBase;
+                };
+                static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(int serviceID);
+                static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(int serviceID, ara::com::InstanceIdentifier instanceId);
+                static ara::com::serviceIdentifierType serviceID;
+                ProxyBase(HandleType handle);
                 ProxyBase(ProxyBase &other) = delete;
                 ProxyBase &operator=(const ProxyBase &other) = delete;
-                
                 HandleType ProxyHandle;
-                const ara::com::serviceIdentifierType serviceID;
             };
+
         }
     }
 }
-
-#endif

@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
-#include "../include/serviceskeleton.hpp"
+#include "serviceskeleton.hpp"
+#include "types.hpp"
+
 using namespace std;
 
 bool stopOfferFlag = false;
@@ -11,24 +13,25 @@ namespace ara
     {
         namespace skeleton
         {
-            Serviceskeleton(ara::com::InstanceIdentifier instanceId,
-                            ara::com::MethodCallProcessingMode mode =
-                                ara::com::MethodCallProcessingMode::kEvent)
+            Serviceskeleton::Serviceskeleton(ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent)
             {
                 this->instanceID = instanceId;
                 this->mode = mode;
-                //parse manifest using instanceID to get rest of info
-                //this->port = instanceManifest.port;
-                //this->ip = instanceManifest.ip;
-                //ptr2bindingprotocol
+                this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, port);
             }
-
-            void Serviceskeleton::handleMethod(method::methodBase *ptr, method::input ip)
+            //to be generated
+            void Serviceskeleton::handleMethod(int id)
             {
-                method::output op = ptr->method::methodBase::processMethod(ip);
-                this->ptr2bindingProtocol->send(op); //replying to service consumer
+                switch (id)
+                {
+                case 1:
+                    input_add in;
+                    this->ptr2bindingProtocol->receive(in);
+                    int out = add(in.i, in.y);
+                    this->ptr2bindingProtocol->send(out);
+                    break;
+                }
             }
-
             void Serviceskeleton::serve()
             {
                 while (1)
@@ -37,37 +40,19 @@ namespace ara
                     {
                         break;
                     }
-                    std::pair<uint32_t, method::input> receivedPair = this->ptr2bindingProtocol->receive();
-                    //uint32_t methodID = this->ptr2bindingProtocol->receive(); //gowaha listen to port
-                    std::thread handler(Serviceskeleton::handleMethod, this->ID2method[receivedPair.first], std::ref(receivedPair.second));
+                    handleMethod(this->ptr2bindingProtocol->get_method_id());
                 }
             }
-
             void Serviceskeleton::OfferService()
             {
-                //uniqueness check
-                this->ptr2bindingProtocol->SD::OfferService(this->serviceID, this->instanceId, this->ip, this->port);
-                std::thread serve(serve);
+                this->ptr2bindingProtocol->OfferService();
+                std::thread t(serve);
             }
-
             void Serviceskeleton::StopOfferService()
             {
-                this->ptr2bindingProtocol->SD::StopOfferService(this->serviceID, this->instanceID);
+                this->ptr2bindingProtocol->StopOfferService();
                 stopOfferFlag = true;
             }
-
         }
     }
 }
-
-
- handleMethod(methodID , input)
- {
-     switch(methodID)
-     {
-         case 3:
-         {
-
-         }
-     }
- }

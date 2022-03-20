@@ -1,9 +1,7 @@
 #pragma once
 #include <iostream>
 #include "serviceProxy.hpp"
-
 using namespace std;
-
 namespace ara
 {
     namespace com
@@ -12,61 +10,17 @@ namespace ara
         {
             namespace method
             {
-                struct Output{
-                    bool success;
-                };
-
                 class MethodBase
                 {
                 public:
-                    ara::com::proxy::HandleType *Delegate;
-                    //ara::com::NetworkBindingBase *networkBindingPtr;
+                    ProxyBase::HandleType *Delegate;
                     std::string name;
                     uint32_t ID;
-                    Output op;
-                    /* IMPLEMENTATION IN GENERATION */
-                    MethodBase(ara::com::NetworkBindingBase *ptr, const std::string& N);
-
-                    SetID(const std::uint32_t& id);
-
-                    template <typename...Params>
-                    ara::core::Future<Output> operator()(Params...args)
-                };
-                class MethodOneWayBase
-                {
-                protected:
-                    //ara::com::proxy::HandleType Handle;
-                    ara::com::NetworkBindingBase *networkBindingPtr;
-                    std::uint16_t ID;
-
-                public:
-                    /* IMPLEMENTATION IN GENERATION */
-                    MethodOneWayBase(ara::com::NetworkBindingBase *ptr);
-
-                    /* SHOULD (This isnot the Actual Implementation) */
-                    template <typename... args>
-                    void operator()(int x)
-                    {
-                        this->Handle.network_binding->SendRequestFireAndForget(ID, x);
-                    }
+                    MethodBase(ara::com::NetworkBindingBase *ptr, const std::string &N);
+                    template <typename Output, typename... Params>
+                    future<Output> operator()(Params... args);
                 };
             }
         }
-    }
-}
-
-class ucmproxy
-{
-    method::starttarnsfer starttransfer;
-}
-
-proxy x(handle1);
-x.starttarnsfer();
-
-namespace method
-{
-    class starttarnsfer : public MethodBase
-    {
-        method_id = 5;
     }
 }

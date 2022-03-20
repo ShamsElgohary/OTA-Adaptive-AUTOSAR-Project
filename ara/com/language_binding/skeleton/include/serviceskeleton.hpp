@@ -3,9 +3,8 @@
 #include <thread>
 #include <utility>
 #include <map>
-#include "../../../include/types.hpp"
-#include "../../../network_binding/network_binding_base.hpp"
-#include "method.hpp"
+#include "types.hpp"
+#include "NetworkBinding.hpp"
 
 using namespace std;
 
@@ -17,36 +16,21 @@ namespace ara
         {
             class Serviceskeleton
             {
-            private:
-                ara::com::serviceIdentifierType serviceID;
+            public:
+                ara::com::serviceIdentifierType serviceID{1};
                 ara::com::InstanceIdentifier instanceID;
                 ara::com::MethodCallProcessingMode mode;
-                //std::shared_ptr<ara::com::NetworkBindingBase> ptr2bindingProtocol;
+                std::shared_ptr<ara::com::NetworkBindingBase> ptr2bindingProtocol;
                 uint32_t port;
-                uint32_t ip;
-                map<uint32_t, method::methodBase *> ID2method;
-                void serve(void);
-                void processMethod(uint32_t); //return type to be determined (betragga3 arguments el "send")
-
-            public:
-                /* MUST (Implementation can either be from generator or not) */
-                Serviceskeleton(ara::com::InstanceIdentifier instanceId,
-                                ara::com::MethodCallProcessingMode mode =
-                                    ara::com::MethodCallProcessingMode::kEvent);
-
+                string ip;
+                void serve();
+                virtual void handleMethod(int methodID);
+                Serviceskeleton(ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
                 Serviceskeleton(const Serviceskeleton &other) = delete;
-
                 Serviceskeleton &operator=(const Serviceskeleton &other) = delete;
-
                 virtual ~Serviceskeleton();
-
-                /* MUST */
                 void OfferService();
-
-                /* MUST */
                 void StopOfferService();
-
-                static void handleMethod(method::methodBase *, method::input ip);
             };
         }
     }

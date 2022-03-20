@@ -1,6 +1,7 @@
 #pragma once
 #include "../include/method.hpp"
 #include <iostream>
+#include <future>
 using namespace std;
 
 namespace ara
@@ -11,31 +12,16 @@ namespace ara
         {
             namespace method
             {
-                class MethodBase
+                /*Constructor to be generated*/
+
+                template <typename Output, typename... Params>
+                future<Output> MethodBase::operator()(Params... args)
                 {
-                public:
-                    MethodBase(ara::com::NetworkBindingBase *ptr, const std::string& N) : Delegate(ptr), name(N)
-                    {
-                        //ara::com::proxy::method::MethodBase::Delegate = ara::com::proxy::HandleTypeFactory::create(Handle.GetBindingProtocol());
-                        //ara::com::proxy::method::MethodBase::Delegate = ptr;
-                    }
-
-                    SetID(const std::uint32_t& id)
-                    {
-                        ID = id;
-                    }
-
-                    template <typename...Params>
-                    std::future<ara::com::proxy::method::Output> operator()(Params...args) //variadic function
-                    {
-                        //return this->Handle.network_binding->SendRequest(M_ID, arg);
-                        std::promise<Output> p;
-                        auto f = p.get_future();
-                        Output op = ara::com::proxy::method::MethodBase::Delegate->networkBindingPtr->SendRequest(ara::com::proxy::method::MethodBase::M_ID , std::forward<Params>(args)...);
-                        p.set_value(op);
-                        return f;
-                        //return this->Delegate.SendRequest(M_ID, arg);
-                    }
+                    std::promise<Output> p;
+                    auto f = p.get_future();
+                    Output op = ara::com::proxy::method::MethodBase::Delegate->ptr2bindingProtocol->SendRequest(ara::com::proxy::method::MethodBase::ID, args...);
+                    p.set_value(op);
+                    return f;
                 }
 
             }
