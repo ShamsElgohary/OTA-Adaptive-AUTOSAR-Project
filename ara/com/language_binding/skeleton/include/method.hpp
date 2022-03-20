@@ -11,21 +11,39 @@ namespace ara
         {
             namespace method
             {
-                struct input
+                class input
                 {
                 };
 
-                struct output
+                class output
                 {
                 };
 
-                template <typename Tin, typename Tout>
+                
                 class methodBase
                 {
                 public:
-                    virtual Tout processMethod(Tin &ip);
+                    virtual output processMethod(input &ip);
                 };
             }
         }
     }
 }
+
+
+class startTransfer : public methodBase
+{
+    class Adjustinput : public input{
+        public:
+        Position p;
+    }
+
+    class Adjustoutput : public output{
+        public:
+        Position p;
+    }
+
+    Output processMethod(INput ) override{
+        startTransfer()
+    }
+  }

@@ -14,7 +14,7 @@ PackageManagerState::PackageManagerState(PackageManagerStatusType &pkgmgr_Curren
     this->CurrentStatus = &pkgmgr_CurrentStatus;
 
     json CurrentProcessList;
-    std::ifstream JsonInStream (fileSystemPath + "/" + "Process_List.json");
+    std::ifstream JsonInStream (ProcessListPath + "Process_List.json");
     try
     {
         JsonInStream >> CurrentProcessList;
@@ -34,6 +34,7 @@ PackageManagerState::PackageManagerState(PackageManagerStatusType &pkgmgr_Curren
     }
     catch(const std::exception& e)
     {
+        std::cout << e.what() << std::endl;
         PackageManagerState::ProcessListVersion = 0;
     }
 }
@@ -106,11 +107,11 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     }
 
     /* MOVE OLD PROCESS LIST TO BACKUP FOLDER */
-    command = "mv "+ fileSystemPath + "/" + "Process_List.json" + " " + fileSystemPath + "/" + "Backup/";   
+    command = "mv "+ ProcessListPath + "Process_List.json " + ProcessListPath + "Backup/";   
     system(command.c_str());
 
     /* GENERATE THE NEW PROCESS LIST FILE */
-    std::ofstream JsonOutStream(fileSystemPath + "/" + "Process_List.json");
+    std::ofstream JsonOutStream(ProcessListPath + "Process_List.json");
     JsonOutStream << std::setw(4) << processList << std::endl;
 
     /*Depenency Missing Error Check*/
@@ -249,6 +250,9 @@ ara::ucm::OperationResultType PackageManagerState::FinishInternal()
     command = "rm "+ fileSystemPath + "/" + "Backup/*";   
     system(command.c_str());
 
+    command = "rm "+ ProcessListPath + "Backup/Process_List.json";   
+    system(command.c_str());
+
     /*change UCM status into Kcleaningup*/
     (*CurrentStatus) == PackageManagerStatusType::kIdle;
     SWPackagesCounter=0;
@@ -356,11 +360,11 @@ ara::ucm::OperationResultType PackageManagerState::RollbackInternal()
     (*CurrentStatus) = PackageManagerStatusType::kRollingBack;
 
     /* REMOVE NEW PROCESS LIST */
-    command = "rm "+ fileSystemPath + "/" + "Process_List.json";   
+    command = "rm "+ ProcessListPath + "Process_List.json";   
     system(command.c_str());
 
     /* RETURN OLD PROCESS LIST FROM BACKUP */
-    command = "mv "+ fileSystemPath + "/Backup/Process_List.json" + " " + fileSystemPath + "/";   
+    command = "mv "+ ProcessListPath + "/Backup/Process_List.json " + ProcessListPath;   
     system(command.c_str());
 
 

@@ -1,19 +1,19 @@
 {
-    "Process List Version": 1,
-    "UCM": {
-        "Path": "/UCM/0.1/",
-        "Version": "0.1"
+    "Process List Version": 2,
+    "SWCL_TEST1_VENDOR_A": {
+        "Path": "/SWCL_TEST1_VENDOR_A/0.1.0/",
+        "Version": "0.1.0"
     },
     "ex1": {
-        "Path": "/ex1/",
+        "Path": "/ex1/0.1/",
         "Version": "0.1"
     },
     "ex2": {
-        "Path": "/ex2/",
+        "Path": "/ex2/0.1/",
         "Version": "0.1"
     },
     "sm": {
-        "Path": "/sm/",
+        "Path": "/sm/0.1/",
         "Version": "0.1"
     }
 }

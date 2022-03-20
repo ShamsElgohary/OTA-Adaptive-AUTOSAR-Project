@@ -23,7 +23,7 @@ namespace ara
 
                 Grant (const Grant& other);
 
-                ~Grant();
+                ~Grant() = default;
 
         };
     }

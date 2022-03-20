@@ -9,6 +9,7 @@ using namespace ara::ucm;
 
 int main (void)
 {
+
     ara::ucm::pkgmgr::PackageManagerImpl PackageManagerInstance;
     string path =  ZIP_PackagesPath + "/PackageTest.zip";
 
@@ -20,9 +21,9 @@ int main (void)
 
     ara::ucm::ByteVectorType ByteData;
 
-    std::future<ara::com::skeleton::PackageManagerSkeleton::TransferStartOutput> FutureStart = PackageManagerInstance.TransferStart(result.size());
+    std::future<ara::ucm::pkgmgr::PackageManagerSkeleton::TransferStartOutput> FutureStart = PackageManagerInstance.TransferStart(result.size());
     
-    ara::com::skeleton::PackageManagerSkeleton::TransferStartOutput StartReturn = FutureStart.get();
+    ara::ucm::pkgmgr::PackageManagerSkeleton::PackageManagerSkeleton::TransferStartOutput StartReturn = FutureStart.get();
 
     uint32_t BlockNumber = ceil((float) result.size() / (float) StartReturn.BlockSize);
     uint32_t BlockCounter = 0;

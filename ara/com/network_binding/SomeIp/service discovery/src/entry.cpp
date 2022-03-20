@@ -2,8 +2,8 @@
 #include "../include/entry.hpp"
 
 
-uint8_t findtype=0x00;
-uint8_t offertype=0x01;
+uint16_t findtype=0x00;
+uint16_t offertype=0x01;
 //added
 service_entry::service_entry(uint16_t Service_ID,uint16_t Method_ID)
 {
@@ -11,7 +11,7 @@ service_entry::service_entry(uint16_t Service_ID,uint16_t Method_ID)
     Service_ID=Service_ID;
     Method_ID=Method_ID;
 }
-void service_entry::setType(uint8_t type)
+void service_entry::setType(uint16_t type)
 {
 
 this->type=type;
@@ -86,7 +86,7 @@ service_entry *service_entry:: create_find_service_entry(uint16_t Service_ID,uin
 service_entry *service_entry:: create_offer_service_entry(uint16_t Service_ID,uint16_t Instance_ID)
 {   //not sure for return type
    //service_entry SERVICE1(Service_ID,Instance_ID);
-   SERVICE1.setType(offertype);
+   SERVICE1.setType((uint16_t)0x01);
    SERVICE1.setServiceID(Service_ID);
    SERVICE1.setInstanceID(Instance_ID);
    SERVICE1.setMajorVersion(0xFF);
@@ -103,13 +103,13 @@ service_entry *service_entry:: create_stop_offer_service_entry(uint16_t Service_
    SERVICE1.setInstanceID(Instance_ID);
    SERVICE1.setMajorVersion(0xFF);
    SERVICE1.setMinorVersion((uint16_t)0xFFFFFFFF);
-   SERVICE1.setTimeToLive((uint16_t)0x000000);
+   SERVICE1.setTimeToLive((uint32_t)0x000000);
    return &SERVICE1;
 
 }
 
 
-uint8_t service_entry::getType(void)
+uint16_t service_entry::getType(void)
 {
     return type;
 }

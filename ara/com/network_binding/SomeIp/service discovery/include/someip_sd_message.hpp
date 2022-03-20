@@ -5,9 +5,7 @@
 #include <memory>
 #include "entry.hpp"
 #include "option.hpp"
-//#include "SOMEIP.hpp"
-
-
+#include "../someip.hpp"
 
 
 class someip_sd_message : public someip::someip_Message  

@@ -1,4 +1,3 @@
-#pragma once
 #include "../include/find_process_server.hpp"
 
 using namespace std ;

@@ -18,10 +18,6 @@ ara::iam::Grant::Grant(ara::iam::ServiceID S, ara::iam::InstanceID I, ara::iam::
 ara::iam::Grant::Grant (const ara::iam::Grant& other) : S_id(other.S_id), In_id(other.In_id), GType(other.GType), PR_T(other.PR_T)
     {}
 
-ara::iam::Grant::~Grant()
-    {}
-
-
 void boost::serialization::Serialize(ara::iam::Grant & g, stringstream& ss)
 {
     boost::archive::text_oarchive oa(ss);
