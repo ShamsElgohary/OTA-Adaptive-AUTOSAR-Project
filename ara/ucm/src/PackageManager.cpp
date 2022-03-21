@@ -13,7 +13,7 @@ namespace ara::ucm::pkgmgr
 PackageManagerStatusType PackageManagerImpl::CurrentStatus = PackageManagerStatusType::kIdle;
 
 
-std::future<ara::com::skeleton::PackageManagerSkeleton::TransferStartOutput> PackageManagerImpl::TransferStart(uint64_t Size)
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferStartOutput> PackageManagerImpl::TransferStart(uint64_t Size)
 {
     std::promise<TransferStartOutput> promise;
 
@@ -33,12 +33,12 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::TransferStartOutput> Pac
 
 
 
-std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> 
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferDataOutput> 
     PackageManagerImpl::TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter)
 {
-    std::promise<OperationResultOutput> promise;
+    std::promise<ara::ucm::pkgmgr::PackageManagerImpl::TransferDataOutput> promise;
 
-    OperationResultOutput DataReturn{ ara::ucm::transfer::SoftwarePackage::TransferDataInternal(id, data, blockCounter) };
+    ara::ucm::pkgmgr::PackageManagerImpl::TransferDataOutput DataReturn{ ara::ucm::transfer::SoftwarePackage::TransferDataInternal(id, data, blockCounter) };
 
     promise.set_value(DataReturn);
     
@@ -49,11 +49,11 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput>
 
 
 
-std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput>  PackageManagerImpl::TransferExit(TransferIdType &id)
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferExitOutput>  PackageManagerImpl::TransferExit(TransferIdType &id)
 {
-    std::promise<OperationResultOutput> promise;
+    std::promise<ara::ucm::pkgmgr::PackageManagerImpl::TransferExitOutput> promise;
 
-    OperationResultOutput ExitReturn{ ara::ucm::transfer::SoftwarePackage::TransferExitInternal(id) };
+    ara::ucm::pkgmgr::PackageManagerImpl::TransferExitOutput ExitReturn{ ara::ucm::transfer::SoftwarePackage::TransferExitInternal(id) };
 
     promise.set_value(ExitReturn);
 
@@ -63,11 +63,11 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput>  
 }
 
 
-std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::TransferDelete(TransferIdType &id)
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferDeleteOutput> PackageManagerImpl::TransferDelete(TransferIdType &id)
 {
-    std::promise<OperationResultOutput> promise;
+    std::promise<ara::ucm::pkgmgr::PackageManagerImpl::TransferDeleteOutput> promise;
 
-    OperationResultOutput DeleteReturn{ ara::ucm::transfer::SoftwarePackage::TransferDeleteInternal(id) };
+    ara::ucm::pkgmgr::PackageManagerImpl::TransferDeleteOutput DeleteReturn{ ara::ucm::transfer::SoftwarePackage::TransferDeleteInternal(id) };
 
     promise.set_value(DeleteReturn);
 
@@ -77,12 +77,12 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
 }
 
 
-std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::ProcessSwPackage(TransferIdType &id)
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::ProcessSwPackageOutput> PackageManagerImpl::ProcessSwPackage(TransferIdType &id)
 {
     
-    std::promise<OperationResultOutput> promise;
+    std::promise<ara::ucm::pkgmgr::PackageManagerImpl::ProcessSwPackageOutput> promise;
 
-    OperationResultOutput ProcessReturn;  
+    ara::ucm::pkgmgr::PackageManagerImpl::ProcessSwPackageOutput ProcessReturn;  
     
     try
     {
@@ -102,11 +102,11 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
 }
 
 
-std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::Activate()
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::ActivateOutput> PackageManagerImpl::Activate()
 {
-    std::promise<OperationResultOutput> promise;
+    std::promise<ara::ucm::pkgmgr::PackageManagerImpl::ActivateOutput> promise;
 
-    OperationResultOutput ActivateReturn{ PackageManagerStateinstance->ActivateInternal() };
+    ara::ucm::pkgmgr::PackageManagerImpl::ActivateOutput ActivateReturn{ PackageManagerStateinstance->ActivateInternal() };
 
     promise.set_value(ActivateReturn);
 
@@ -116,11 +116,11 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
 }
 
 
-std::future<ara::com::skeleton::PackageManagerSkeleton::GetSWClusterInfoOutput> PackageManagerImpl::GetSwClusterInfo()
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::GetSwClusterInfoOutput> PackageManagerImpl::GetSwClusterInfo()
 {
-   std::promise<GetSWClusterInfoOutput> promise;
+   std::promise<ara::ucm::pkgmgr::PackageManagerImpl::GetSwClusterInfoOutput> promise;
     
-   GetSWClusterInfoOutput getSwCLuserReturn{ ara::ucm::storage::SWCLManager::GetPresentSWCLs() };
+   ara::ucm::pkgmgr::PackageManagerImpl::GetSwClusterInfoOutput getSwCLuserReturn{ ara::ucm::storage::SWCLManager::GetPresentSWCLs() };
 
    promise.set_value(getSwCLuserReturn);
    
@@ -130,11 +130,11 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::GetSWClusterInfoOutput> 
 }
 
 
-std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::Rollback()
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::RollbackOutput> PackageManagerImpl::Rollback()
 {
-    std::promise<OperationResultOutput> promise;
+    std::promise<ara::ucm::pkgmgr::PackageManagerImpl::RollbackOutput> promise;
     
-    OperationResultOutput RollbackResult{ PackageManagerStateinstance->RollbackInternal() };
+    ara::ucm::pkgmgr::PackageManagerImpl::RollbackOutput RollbackResult{ PackageManagerStateinstance->RollbackInternal() };
 
     promise.set_value(RollbackResult);
 
@@ -144,11 +144,11 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
 }	
 
 
-std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::RevertProcessedSwPackages()
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::RevertProcessedSwPackagesOutput> PackageManagerImpl::RevertProcessedSwPackages()
 {
-    std::promise<OperationResultOutput> promise;
+    std::promise<ara::ucm::pkgmgr::PackageManagerImpl::RevertProcessedSwPackagesOutput> promise;
     
-    OperationResultOutput RevertResult{ PackageManagerStateinstance->RollbackInternal() };
+    ara::ucm::pkgmgr::PackageManagerImpl::RevertProcessedSwPackagesOutput RevertResult{ PackageManagerStateinstance->RollbackInternal() };
 
     promise.set_value(RevertResult);
 
@@ -157,27 +157,14 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
     return promise.get_future();
 }	
 
+	
 
 
-std::future<ara::com::skeleton::PackageManagerSkeleton::GetCurrentStatusOutput> PackageManagerImpl::GetCurrentStatus()
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::FinishOutput> PackageManagerImpl::Finish()
 {
-    std::promise<GetCurrentStatusOutput> promise;
-
-    GetCurrentStatusOutput StatusResult{ PackageManagerStateinstance->GetStatusInternal() };
-
-    promise.set_value(StatusResult);
-
-    logger.ActionsLog("[GetCurrentStatus] \t\t Result : ", 0 );
-
-    return promise.get_future();
-}	
-
-
-std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> PackageManagerImpl::Finish()
-{
-    std::promise<OperationResultOutput> promise;
+    std::promise<ara::ucm::pkgmgr::PackageManagerImpl::FinishOutput> promise;
     
-    OperationResultOutput FinishResult{ PackageManagerStateinstance->FinishInternal() };
+    ara::ucm::pkgmgr::PackageManagerImpl::FinishOutput FinishResult{ PackageManagerStateinstance->FinishInternal() };
 
     promise.set_value(FinishResult);
 
@@ -187,15 +174,17 @@ std::future<ara::com::skeleton::PackageManagerSkeleton::OperationResultOutput> P
 }
 
 
-PackageManagerImpl::PackageManagerImpl()
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::GetCurrentStatusField> PackageManagerImpl::GetCurrentStatus()
 {
-    // DEFAULT CONSTRUCTOR
+    std::promise<ara::ucm::pkgmgr::PackageManagerImpl::GetCurrentStatusField> promise;
+
+    ara::ucm::pkgmgr::PackageManagerImpl::GetCurrentStatusField StatusResult{ PackageManagerStateinstance->GetStatusInternal() };
+
+    promise.set_value(StatusResult);
+
+    logger.ActionsLog("[GetCurrentStatus] \t\t Result : ", 0 );
+
+    return promise.get_future();
 }
-
-PackageManagerImpl::~PackageManagerImpl()
-{
-    // DEFAULT DESTRUCTOR
-}   
-
 
 }// end of namespace ara::ucm::pkgmgr

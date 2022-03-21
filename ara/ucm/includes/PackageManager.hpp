@@ -14,88 +14,42 @@ namespace ara
 	{
 		namespace pkgmgr
 		{
-
-			class PackageManager: public ara::com::skeleton::PackageManagerSkeleton
+			class PackageManagerImpl : public ara::ucm::pkgmgr::PackageManagerSkeleton
 			{
 			public:
+				/* Transfer Operations */
+				std::future<TransferStartOutput> TransferStart(uint64_t Size) override;
 
-			/* Transfer Operations */
-			virtual std::future<TransferStartOutput> TransferStart(uint64_t Size) = 0;
+				std::future<TransferDataOutput> TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter) override;
 
-			virtual std::future<OperationResultOutput> TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter) = 0;
-			
-			virtual std::future<OperationResultOutput> TransferExit(TransferIdType &id) = 0;
+				std::future<TransferExitOutput> TransferExit(TransferIdType &id) override;
 
-			virtual std::future<OperationResultOutput> TransferDelete(TransferIdType &id) = 0;
+				std::future<TransferDeleteOutput> TransferDelete(TransferIdType &id) override;
 
-			/* Process a previously transferred Software Package */
-			virtual std::future<OperationResultOutput> ProcessSwPackage(TransferIdType &id) = 0;
+				/* Process a previously transferred Software Package */
+				std::future<ProcessSwPackageOutput> ProcessSwPackage(TransferIdType &id) override;
 
-			virtual std::future<OperationResultOutput> Activate() = 0;
+				std::future<ActivateOutput> Activate() override;
 
-			virtual std::future<GetSWClusterInfoOutput> GetSwClusterInfo() = 0;
+				std::future<GetSwClusterInfoOutput> GetSwClusterInfo() override;
 
-			virtual std::future<OperationResultOutput> Rollback() = 0;
+				std::future<RollbackOutput> Rollback() override;
 
-			virtual std::future<OperationResultOutput> RevertProcessedSwPackages() = 0;
+				std::future<RevertProcessedSwPackagesOutput> RevertProcessedSwPackages() override;
 
-			virtual std::future<GetCurrentStatusOutput> GetCurrentStatus() = 0;
+				std::future<GetCurrentStatusField> GetCurrentStatus() override;
 
-			virtual std::future<OperationResultOutput> Finish() = 0;
-
+				std::future<FinishOutput> Finish() override;
 
 			private:
+				/* The current status of UCM */
+				static PackageManagerStatusType CurrentStatus;
 
+				/* COMPOSITIONS */
+				ara::ucm::transfer::SoftwarePackage SWPackageinstance;
 
-			};
-			
-
-			class PackageManagerImpl : public PackageManager 
-			{
-			public:
-			std::future<vector <ara::ucm::SwClusterInfoType>> GetPresentSWCLs();
-			std::future<vector <ara::ucm::SwClusterInfoType>> GetSWCLsChangeInfo();
-
-			/* Transfer Operations */
-			std::future<TransferStartOutput> TransferStart(uint64_t Size);
-
-			std::future<OperationResultOutput> TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter);
-			
-			std::future<OperationResultOutput> TransferExit(TransferIdType &id);
-
-			std::future<OperationResultOutput> TransferDelete(TransferIdType &id);
-
-			/* Process a previously transferred Software Package */
-			std::future<OperationResultOutput> ProcessSwPackage(TransferIdType &id);
-
-			std::future<OperationResultOutput> Activate();
-
-			std::future<GetSWClusterInfoOutput> GetSwClusterInfo();
-
-			std::future<OperationResultOutput> Rollback();
-
-			std::future<OperationResultOutput> RevertProcessedSwPackages();
-
-			std::future<GetCurrentStatusOutput> GetCurrentStatus();
-
-			std::future<OperationResultOutput> Finish();
-
-			PackageManagerImpl();
-
-			~PackageManagerImpl();
-
-			private:
-			
-			/* The current status of UCM */
-			static PackageManagerStatusType CurrentStatus;
-			
-			/* COMPOSITIONS */
-			ara::ucm::transfer::SoftwarePackage SWPackageinstance;
-
-			/* CURRENT STATUS IS REFERENCED BY THE PACKAGE MANAGER STATE CLASS */
-			shared_ptr<ara::ucm::state::PackageManagerState> PackageManagerStateinstance \
-			= make_shared<ara::ucm::state::PackageManagerState>(CurrentStatus);
-
+				/* CURRENT STATUS IS REFERENCED BY THE PACKAGE MANAGER STATE CLASS */
+				shared_ptr<ara::ucm::state::PackageManagerState> PackageManagerStateinstance = make_shared<ara::ucm::state::PackageManagerState>(CurrentStatus);
 			};
 		}
 	}

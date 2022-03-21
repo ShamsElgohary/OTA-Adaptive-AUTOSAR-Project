@@ -5,8 +5,18 @@ const string UCM_Path = GetUCMPath() ;
 const string ZIP_PackagesPath = UCM_Path + "/ZIP_Packages";
 const string fileSystemPath = GetFileSystemPath();
 const string fileBackupPath = GetFileSystemPath() + "/Backup";
+const string ProjectPath = GetProjectPath();
+const string ProcessListPath = ProjectPath + "ara/etc/system/";
 
 string command;
+
+static string GetProjectPath()
+{
+  string origin = GetCurrentDirectory();
+  int pos = origin.find("ara");
+  string Path {origin.substr(0, pos)};
+  return Path;
+}
 
 
 static string GetUCMPath()

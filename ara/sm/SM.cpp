@@ -4,7 +4,7 @@ using namespace ara::sm;
 using namespace ara::exec;
 using namespace std;
 
-uint8_t UpdateRequest::StartUpdateSession()
+uint8_t UpdateRequestImpl::StartUpdateSession()
 {
     StateClient client{};
     bool success = client.setState(FunctionGroupState({"MachineState", "Updating"}));
@@ -15,13 +15,13 @@ uint8_t UpdateRequest::StartUpdateSession()
     }
     else return uint8_t(SM_ApplicationError::kRejected);
 }
-void UpdateRequest::StopUpdateSession()
+void UpdateRequestImpl::StopUpdateSession()
 {
     StateClient client{};
     bool success = client.setState(FunctionGroupState({"MachineState", "Running"}));
     this->FunctionGroupStates["MachineState"]="Running";
 }
-uint8_t UpdateRequest::PrepareUpdate(FunctionGroupList FunctionGroups)
+uint8_t UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
 {
     bool success;
     StateClient client{};
@@ -42,7 +42,7 @@ uint8_t UpdateRequest::PrepareUpdate(FunctionGroupList FunctionGroups)
         return (uint8_t)SM_ApplicationError::kRejected;
     }
 }
-uint8_t UpdateRequest::VerifyUpdate(FunctionGroupList FunctionGroups)
+uint8_t UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
 {
     bool success;
     StateClient client{};
