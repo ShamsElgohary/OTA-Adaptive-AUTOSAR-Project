@@ -6,6 +6,7 @@
 #include <chrono>
 #include <mutex>
 #include "../../core/types.hpp"
+#include "../../com/network_binding/SomeIp/service_discovery/include/servicediscovery.hpp"
 
 using namespace std;
 
@@ -33,16 +34,16 @@ namespace ara
 
             public:
                 
-                static std::shared_ptr<NetworkBase> Bind(uint16_t serviceId, std::string instanceId, uint16_t port);                
+                static std::shared_ptr<NetworkBindingBase> Bind(uint16_t serviceId, std::string instanceId, uint16_t port);                
 
                 /* STILL TO BE ADJUSTED */
                 virtual void Send();
                 virtual void Receive();
                 template<typename T,typename...Params>
-                virtual void SendRequest(uint32_t methodID,T a , Params...args);
+                void SendRequest(uint32_t methodID,T a , Params...args);
                 virtual void OfferService();
-                virtual void OfferService(std::string instanceId);
-                virtual void StopOfferService(std::string instanceId);
+                //virtual void OfferService(std::string instanceId);
+                virtual void StopOfferService();
 
         };
        
@@ -51,23 +52,24 @@ namespace ara
         ////////////////////////////////////// SOMEIP NETWORK BINDING ///////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////
 
-        class SomeIpNetworkBinding : public NetworkBase
+        class SomeIpNetworkBinding : public NetworkBindingBase
         {
             private:
                 
                 uint16_t serviceId;
                 uint16_t instanceId;
                 uint16_t port;
+                uint32_t ipv4_address;
             
             public:
                 /* PORT BINDED TO THIS SPECIFIC SERVICE ID AND INSTANCE ID */
-                SomeIpNetworkBinding(uint16_t serviceId, uint16_t instanceId, uint16_t port);
+                SomeIpNetworkBinding(uint16_t serviceId, uint16_t instanceId, uint16_t port,uint32_t ipv4_address);
                 void Send();
                 void Receive();
                 void SendRequest();
                 void OfferService();
-                void OfferService(std::string instanceId);
-                void StopOfferService(std::string instanceId);
+                //void OfferService(std::string instanceId);
+                void StopOfferService();
 
         };
 
@@ -76,7 +78,7 @@ namespace ara
         ////////////////////////////////////// DDS NETWORK BINDING //////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////
 
-        class DDSNetworkBinding : public NetworkBase
+        class DDSNetworkBinding : public NetworkBindingBase
         {
             private:
                 

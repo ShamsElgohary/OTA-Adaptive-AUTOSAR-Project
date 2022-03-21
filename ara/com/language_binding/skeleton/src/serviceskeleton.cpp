@@ -11,9 +11,7 @@ namespace ara
     {
         namespace skeleton
         {
-            Serviceskeleton(ara::com::InstanceIdentifier instanceId,
-                            ara::com::MethodCallProcessingMode mode =
-                                ara::com::MethodCallProcessingMode::kEvent)
+            Serviceskeleton::Serviceskeleton(ara::com::InstanceIdentifier instanceId,ara::com::MethodCallProcessingMode mode =MethodCallProcessingMode::kEvent)
             {
                 this->instanceID = instanceId;
                 this->mode = mode;
@@ -21,6 +19,9 @@ namespace ara
                 //this->port = instanceManifest.port;
                 //this->ip = instanceManifest.ip;
                 //ptr2bindingprotocol
+                this->ptr2bindingProtocol=std::make_shared<NetworkBindingBase>();
+                // if configured as someip
+                //this->ptr2bindingProtocol=std::make_shared<SomeIpNetworkBinding>(this->serviceID,this->instanceID,this->port,this->ip);
             }
 
             void Serviceskeleton::handleMethod(method::methodBase *ptr, method::input ip)
@@ -46,13 +47,13 @@ namespace ara
             void Serviceskeleton::OfferService()
             {
                 //uniqueness check
-                this->ptr2bindingProtocol->SD::OfferService(this->serviceID, this->instanceId, this->ip, this->port);
+                this->ptr2bindingProtocol->OfferService();
                 std::thread serve(serve);
             }
 
             void Serviceskeleton::StopOfferService()
             {
-                this->ptr2bindingProtocol->SD::StopOfferService(this->serviceID, this->instanceID);
+                this->ptr2bindingProtocol->StopOfferService();
                 stopOfferFlag = true;
             }
 
@@ -71,3 +72,4 @@ namespace ara
          }
      }
  }
+ 

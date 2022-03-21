@@ -4,7 +4,7 @@
 #include <utility>
 #include <map>
 #include "../../../include/types.hpp"
-#include "../../../network_binding/network_binding_base.hpp"
+#include "../../../network_binding/NetworkBinding.hpp"
 #include "method.hpp"
 
 using namespace std;
@@ -21,7 +21,7 @@ namespace ara
                 ara::com::serviceIdentifierType serviceID;
                 ara::com::InstanceIdentifier instanceID;
                 ara::com::MethodCallProcessingMode mode;
-                //std::shared_ptr<ara::com::NetworkBindingBase> ptr2bindingProtocol;
+                std::shared_ptr<ara::com::NetworkBindingBase> ptr2bindingProtocol;
                 uint32_t port;
                 uint32_t ip;
                 map<uint32_t, method::methodBase *> ID2method;
@@ -29,6 +29,7 @@ namespace ara
                 void processMethod(uint32_t); //return type to be determined (betragga3 arguments el "send")
 
             public:
+               Serviceskeleton();
                 /* MUST (Implementation can either be from generator or not) */
                 Serviceskeleton(ara::com::InstanceIdentifier instanceId,
                                 ara::com::MethodCallProcessingMode mode =

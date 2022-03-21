@@ -2,7 +2,6 @@
 #define _ARA_COM_INTERNAL_PROXY_HPP_
 
 #include "../../../include/types.hpp"
-#include "../../../network_binding/network_binding_base.hpp"
 #include "handleType.hpp"
 #include"../../../network_binding/NetworkBinding.hpp"
 
@@ -26,11 +25,11 @@ namespace ara
 
                 /* EXTRA (FindServiceHandler & FindServiceHandle are not Implemented) */
                 static ara::com::FindServiceHandle StartFindService(
-                    ara::com::FindServiceHandler<ProxyBase::HandleType> handler);
+                    ara::com::FindServiceHandler<ara::com::proxy::HandleType> handler);
 
                 /* EXTRA  (FindServiceHandler & FindServiceHandle are not Implemented) */
                 static ara::com::FindServiceHandle StartFindService(
-                    ara::com::FindServiceHandler<ProxyBase::HandleType> handler,
+                    ara::com::FindServiceHandler<ara::com::proxy::HandleType> handler,
                     ara::com::InstanceIdentifier instanceId);
 
                 /* EXTRA (FindServiceHandle is not Implemented) */

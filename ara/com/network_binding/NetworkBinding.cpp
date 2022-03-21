@@ -22,7 +22,7 @@ namespace ara
         /////////////////////////////////////////////////////////////////////////////////////////////////
 
         /* InstanceId: "SOME/IP 1" */
-        BindingProtocol NetworkBase::GetType(std::string instanceIdStr, uint16_t &instanceId)
+        BindingProtocol NetworkBindingBase::GetType(std::string instanceIdStr, uint16_t &instanceId)
         {
             std::string strBindingDDS = "DDS";
             /* SOME/IP */
@@ -59,12 +59,12 @@ namespace ara
         }
 
 
-        std::shared_ptr<NetworkBase> NetworkBase::Bind(uint16_t serviceId, std::string instanceIdStr, uint16_t port)
+        std::shared_ptr<NetworkBindingBase> NetworkBindingBase::Bind(uint16_t serviceId, std::string instanceIdStr, uint16_t port)
         {
             uint16_t instanceId;
-            BindingProtocol bindType = NetworkBase::GetType(instanceIdStr, instanceId);
+            BindingProtocol bindType = NetworkBindingBase::GetType(instanceIdStr, instanceId);
             
-            std::shared_ptr<NetworkBase> networkBasePtr;
+            std::shared_ptr<NetworkBindingBase> networkBasePtr;
             if (bindType == BindingProtocol::SOMEIP)
             {
                 /* INSTANCE ID IN SOMEIP IS OF TYPE UINT16_T */
@@ -87,16 +87,17 @@ namespace ara
         ////////////////////////////////////// SOMEIP NETWORK BINDING ///////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////
 
-        SomeIpNetworkBinding::SomeIpNetworkBinding(uint16_t serviceId, uint16_t instanceId, uint16_t port)
+        SomeIpNetworkBinding::SomeIpNetworkBinding(uint16_t serviceId, uint16_t instanceId, uint16_t port,uint32_t ipv4_address)
         {
             this->serviceId  = serviceId;
             this->instanceId = instanceId;
             this->port = port;
+            this->ipv4_address=ipv4_address;
         }
 
         void SomeIpNetworkBinding::Send()
         {
-
+       
 
         }
 
@@ -114,20 +115,13 @@ namespace ara
 
         void SomeIpNetworkBinding::OfferService()
         {
-            
-
+        servicediscovery sd;
+        sd.offer_service(this->serviceId,this->instanceId,this->port,this->port);
         }
-
-        void SomeIpNetworkBinding::OfferService(std::string instanceId)
+        void SomeIpNetworkBinding::StopOfferService()
         {
-
-
-        }
-
-        void SomeIpNetworkBinding::StopOfferService(std::string instanceId)
-        {
-
-
+         servicediscovery sd;
+         sd.stop_offer_service(this->serviceId,this->instanceId);
         }
 
 

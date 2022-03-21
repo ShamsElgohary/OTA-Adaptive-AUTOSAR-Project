@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "../../../language_binding/Services/include/serviceProxy.hpp"
+#include "../../../language_binding/proxy/include/serviceProxy.hpp"
 using namespace std;
 
 namespace ara
@@ -29,13 +29,13 @@ namespace ara
         }
     }
 }
-
+/*
 
 class startTransfer : public methodBase
 {
     class Adjustinput : public input{
         public:
-        Position p;
+        //Position p;
     }
 
     class Adjustoutput : public output{
@@ -47,3 +47,4 @@ class startTransfer : public methodBase
         startTransfer()
     }
   }
+*/
