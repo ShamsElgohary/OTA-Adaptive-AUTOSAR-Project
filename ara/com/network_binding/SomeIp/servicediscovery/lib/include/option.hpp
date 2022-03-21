@@ -23,18 +23,18 @@ class option
 class ipv4_endpoint_option:public option
 {  //reserved???
   private:
-  uint32_t ipv4_address;
+  std::string ipv4_address ;
   uint8_t l4_proto;
-  uint8_t port_num;
+  uint16_t port_num;
   public:
-  ipv4_endpoint_option(uint32_t ipv4_address, uint8_t port_num);
+  ipv4_endpoint_option(std::string ipv4_address , uint8_t port_num);
   void setOptionLength(uint16_t length);
   void setOptionType(uint8_t type);
-  void setIPV4Address(uint32_t ipv4_address);
+  void setIPV4Address(std::string ipv4_address );
   void setTransportProtocol(uint8_t l4_proto);
-  void setPortNum(uint8_t port_num);
-  uint32_t getIPV4_Address(void);
-  uint8_t getport_num(void);
+  void setPortNum(uint16_t port_num);
+  std::string getIPV4_Address(void);
+  uint16_t getport_num(void);
   //setters,getters and operator overloading
 
   

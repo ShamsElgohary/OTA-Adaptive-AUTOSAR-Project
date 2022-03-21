@@ -11,7 +11,7 @@ void ipv4_endpoint_option::setOptionType(uint8_t type)
     this->type=0x04;
 }
 
-void ipv4_endpoint_option::setIPV4Address(uint32_t ipv4_address)  //not known  ((defined by language binding))
+void ipv4_endpoint_option::setIPV4Address( std::string ipv4_address)  //not known  ((defined by language binding))
 {
     this->ipv4_address=ipv4_address;
 }
@@ -23,12 +23,12 @@ this->l4_proto=0x06; //in case of TCP
 
 }
 
-void ipv4_endpoint_option::setPortNum(uint8_t port_num)  //not known  ((defined by language binding))
+void ipv4_endpoint_option::setPortNum(uint16_t port_num)  //not known  ((defined by language binding))
 {
    this->port_num=port_num;
 }
 
-ipv4_endpoint_option::ipv4_endpoint_option(uint32_t ipv4_address, uint8_t port_num)
+ipv4_endpoint_option::ipv4_endpoint_option(std::string ipv4_address, uint8_t port_num)
 {
     this->ipv4_address=ipv4_address;
     this->port_num=port_num;
@@ -37,11 +37,11 @@ ipv4_endpoint_option::ipv4_endpoint_option(uint32_t ipv4_address, uint8_t port_n
 
 }
 
-  uint32_t ipv4_endpoint_option::getIPV4_Address(void)
+  std::string ipv4_endpoint_option::getIPV4_Address(void)
   {
       return ipv4_address;
   }
-  uint8_t ipv4_endpoint_option::getport_num(void)
+  uint16_t ipv4_endpoint_option::getport_num(void)
   {
       return port_num;
   }

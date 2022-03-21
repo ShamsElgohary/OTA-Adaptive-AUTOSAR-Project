@@ -3,7 +3,7 @@
 #include <string>
 #include "NetworkBinding.hpp"
 #include "types.hpp"
-
+#include "SomeIp/servicediscovery/lib/include/servicediscovery.hpp"
 using namespace std;
 
 namespace ara
@@ -35,10 +35,11 @@ namespace ara
         }
         void SomeIpNetworkBinding::OfferService()
         {
-
+          servicediscovery::offer_service(service_id, instance_id, ip,port );
         }
         vector<ara::com::SomeIpNetworkBinding::output> SomeIpNetworkBinding::FindService_SomeIp(int serviceID ,ara::com::InstanceIdentifier instance_id = 0xffff)
         {
+            servicediscovery::find_service(service_id,instance_id);
 
         }
     }
