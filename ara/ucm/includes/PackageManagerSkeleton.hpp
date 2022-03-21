@@ -17,12 +17,21 @@ namespace ara
                 {
                     uint64_t Size;
                 };
-
+                ///////////////////////////// PROBLEM //////////////////////////////////
                 struct TransferStartOutput
                 {
                     TransferIdType id;                       // Size (in bytes) of the Software Package to be transferred
                     uint32_t BlockSize;                      // Size of the blocks to be received with TransferData method
                     OperationResultType TransferStartResult; // Success or Failure
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &id;
+                        ar &BlockSize;
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** TransferData **/
@@ -36,6 +45,13 @@ namespace ara
                 struct TransferDataOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** TransferExit **/
@@ -47,6 +63,13 @@ namespace ara
                 struct TransferExitOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** TransferDelete **/
@@ -58,6 +81,13 @@ namespace ara
                 struct TransferDeleteOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** ProcessSwPackage **/
@@ -69,41 +99,90 @@ namespace ara
                 struct ProcessSwPackageOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** Activate **/
                 struct ActivateOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
-
+                ///////////////////////////// PROBLEM //////////////////////////////////
                 /** GetSwClusterInfo **/
                 struct GetSwClusterInfoOutput
                 {
                     vector<ara::ucm::SwClusterInfoType> vectorOfClusterInfo;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &vectorOfClusterInfo;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** Rollback **/
                 struct RollbackOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** RevertProcessedSwPackages **/
                 struct RevertProcessedSwPackagesOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** Finish **/
                 struct FinishOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
-                
-                struct GetCurrentStatusField{
+                struct GetCurrentStatusField
+                {
                     PackageManagerStatusType Status;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &Status;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /* PACKAGE MANAGER METHODS */

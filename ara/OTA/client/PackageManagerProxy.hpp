@@ -1,9 +1,7 @@
 #pragma once
 
-#include "types.hpp"
 #include "../../com/language_binding/proxy/include/serviceProxy.hpp"
 #include "../../com/language_binding/proxy/include/method.hpp"
-#include "../../com/language_binding/proxy/include/field.hpp"
 
 namespace ara
 {
@@ -18,12 +16,21 @@ namespace ara
                 {
                     uint64_t Size;
                 };
-
+                ///////////////////////////// PROBLEM //////////////////////////////////
                 struct TransferStartOutput
                 {
                     TransferIdType id;                       // Size (in bytes) of the Software Package to be transferred
                     uint32_t BlockSize;                      // Size of the blocks to be received with TransferData method
                     OperationResultType TransferStartResult; // Success or Failure
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &id;
+                        ar &BlockSize;
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** TransferData **/
@@ -37,6 +44,13 @@ namespace ara
                 struct TransferDataOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** TransferExit **/
@@ -48,6 +62,13 @@ namespace ara
                 struct TransferExitOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** TransferDelete **/
@@ -59,6 +80,13 @@ namespace ara
                 struct TransferDeleteOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** ProcessSwPackage **/
@@ -70,82 +98,131 @@ namespace ara
                 struct ProcessSwPackageOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** Activate **/
                 struct ActivateOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
-
+                ///////////////////////////// PROBLEM //////////////////////////////////
                 /** GetSwClusterInfo **/
                 struct GetSwClusterInfoOutput
                 {
                     vector<ara::ucm::SwClusterInfoType> vectorOfClusterInfo;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &vectorOfClusterInfo;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** Rollback **/
                 struct RollbackOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** RevertProcessedSwPackages **/
                 struct RevertProcessedSwPackagesOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** Finish **/
                 struct FinishOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationResultType;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 struct GetCurrentStatusField
                 {
                     PackageManagerStatusType Status;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &Status;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 namespace methods
                 {
-                    class TransferStart : public ara::com::proxy::method::MethodBase<TransferStartOutput>
+                    class TransferStart : public ara::com::proxy::method::MethodBase
                     {
                     };
 
-                    class TransferData : public ara::com::proxy::method::MethodBase<TransferDataOutput>
+                    class TransferData : public ara::com::proxy::method::MethodBase
                     {
                     };
 
-                    class TransferExit : public ara::com::proxy::method::MethodBase<TransferExitOutput>
+                    class TransferExit : public ara::com::proxy::method::MethodBase
                     {
                     };
 
-                    class TransferDelete : public ara::com::proxy::method::MethodBase<TransferDeleteOutput>
+                    class TransferDelete : public ara::com::proxy::method::MethodBase
                     {
                     };
 
-                    class ProcessSwPackage : public ara::com::proxy::method::MethodBase<ProcessSwPackageOutput>
+                    class ProcessSwPackage : public ara::com::proxy::method::MethodBase
                     {
                     };
 
-                    class Activate : public ara::com::proxy::method::MethodBase<ActivateOutput>
+                    class Activate : public ara::com::proxy::method::MethodBase
                     {
                     };
 
-                    class GetSwClusterInfo : public ara::com::proxy::method::MethodBase<GetSwClusterInfoOutput>
+                    class GetSwClusterInfo : public ara::com::proxy::method::MethodBase
                     {
                     };
 
-                    class Rollback : public ara::com::proxy::method::MethodBase<RollbackOutput>
+                    class Rollback : public ara::com::proxy::method::MethodBase
                     {
                     };
 
-                    class RevertProcessedSwPackages : public ara::com::proxy::method::MethodBase<RevertProcessedSwPackagesOutput>
+                    class RevertProcessedSwPackages : public ara::com::proxy::method::MethodBase
                     {
                     };
 
-                    class Finish : public ara::com::proxy::method::MethodBase<FinishOutput>
+                    class Finish : public ara::com::proxy::method::MethodBase
                     {
                     };
                 }
@@ -160,12 +237,12 @@ namespace ara
                     public:
                         inline ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
                         {
-                            InternalFindService(1);
+                            ara::com::proxy::ProxyBase::FindService(1);
                         }
 
                         inline ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
                         {
-                            InternalFindService(1, InstanceID);
+                            ara::com::proxy::ProxyBase::FindService(1, InstanceID);
                         }
 
                         methods::TransferStart TransferStart;
