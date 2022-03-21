@@ -14,10 +14,10 @@ namespace ara
     {
         namespace skeleton
         {
-            class Serviceskeleton
+            class skeletonBase
             {
             public:
-                ara::com::serviceIdentifierType serviceID{1};
+                ara::com::serviceIdentifierType serviceID;
                 ara::com::InstanceIdentifier instanceID;
                 ara::com::MethodCallProcessingMode mode;
                 std::shared_ptr<ara::com::NetworkBindingBase> ptr2bindingProtocol;
@@ -25,10 +25,10 @@ namespace ara
                 string ip;
                 void serve();
                 virtual void handleMethod(int methodID);
-                Serviceskeleton(ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
-                Serviceskeleton(const Serviceskeleton &other) = delete;
-                Serviceskeleton &operator=(const Serviceskeleton &other) = delete;
-                virtual ~Serviceskeleton();
+                skeletonBase( ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
+                skeletonBase(const skeletonBase &other) = delete;
+                skeletonBase &operator=(const skeletonBase &other) = delete;
+                virtual ~skeletonBase();
                 void OfferService();
                 void StopOfferService();
             };

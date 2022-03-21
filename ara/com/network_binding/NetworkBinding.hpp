@@ -4,7 +4,7 @@
 #include <thread>
 #include <chrono>
 #include <mutex>
-#include "types.hpp"
+#include "../include/types.hpp"
 
 using namespace std;
 
@@ -18,14 +18,6 @@ namespace ara
         class NetworkBindingBase
         {
         public:
-            struct output
-            {
-                std::shared_ptr<NetworkBindingBase> networkBindingPtr;
-                int instanceID;
-                string ip;
-                int port;
-                int serviceID;
-            };
             static std::shared_ptr<NetworkBindingBase> Bind(int serviceId, int instanceId);
             template <typename... Params>
             void send(Params... args);
@@ -33,7 +25,7 @@ namespace ara
             void receive(T &in);
             template <typename... Params>
             void SendRequest(uint32_t methodID, Params... args);
-            void OfferService();
+            virtual void OfferService();
             void StopOfferService();
             int get_method_id();
         };
@@ -46,14 +38,32 @@ namespace ara
             string ip;
 
         public:
-            SomeIpNetworkBinding(int port, string ip);
+            struct output
+            {
+                string ip;
+                int port;
+                int instance_id;
+
+            };
+            int service_id;
+            int instance_id;
+            string ip;
+            int port ;
+            SomeIpNetworkBinding(string ip, int port):ip{ip},port{port}{}
+            SomeIpNetworkBinding(int service_id, int instance_id,string ip, int port):ip{ip},port{port}{}
+
+            void OfferService() override ;
+
             template <typename... Params>
             void send(Params... args) override;
-            template <typename T>
-            void receive(T &in) override;
+
+            template <typename... Params>
+            void receive(Params& ...args) override;
+
             template <typename... Params>
             void SendRequest(uint32_t methodID, Params... args) override;
-            static vector<ara::com::NetworkBindingBase::output> FindService_SomeIp(int serviceID);
+
+            static vector<ara::com::SomeIpNetworkBinding::output> FindService_SomeIp(int serviceID ,ara::com::InstanceIdentifier instance_id = 0xffff);
         };
     }
 }

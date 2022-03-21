@@ -17,8 +17,8 @@ namespace ara
                     std::string name;
                     uint32_t ID;
                     MethodBase(ara::com::NetworkBindingBase *ptr, const std::string &N);
-                    template <typename Output, typename... Params>
-                    future<Output> operator()(Params... args);
+                    template <typename... Params,typename output>
+                    output operator()(Params... args);
                 };
             }
         }

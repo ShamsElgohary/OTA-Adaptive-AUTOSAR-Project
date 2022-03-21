@@ -1,6 +1,6 @@
 #pragma once
-#include "types.hpp"
-#include "NetworkBinding.hpp"
+#include "../../../include/types.hpp"
+#include "../../../network_binding/NetworkBinding.hpp"
 namespace ara
 {
     namespace com
@@ -26,13 +26,12 @@ namespace ara
                 };
                 static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(int serviceID);
                 static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(int serviceID, ara::com::InstanceIdentifier instanceId);
-                static ara::com::serviceIdentifierType serviceID;
                 ProxyBase(HandleType handle);
                 ProxyBase(ProxyBase &other) = delete;
                 ProxyBase &operator=(const ProxyBase &other) = delete;
                 HandleType ProxyHandle;
             };
-
         }
     }
 }
+
