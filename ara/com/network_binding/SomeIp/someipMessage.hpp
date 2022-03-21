@@ -48,22 +48,22 @@ enum MessageType
 // SOME/IP MESSAGE RETURN CODE
 enum ReturnCode
 {
-	E_OK,                   // No error occurred
-	E_NOT_OK,               // Unspecified error occurred
-	E_UNKOWN_SERVICE,       // Service ID is unknown
-	E_UNKNOWN_METHOD,       // Method ID is unknown
-	eNotReady,              // Service is not running
-	eNotReachable,          // Service is not reachable
-	eTimeout,               // Timeout occurred
-	eWrongProtocolVersion,  // SOME/IP protocol version is not supported
-	eWrongInterfaceVersion, // Service interface version is not supported
-	eMalformedMessage,      // Deserialization error occurred
-	eWrongMessageType,      // Invalid message type
-	eE2eRepeated,           // Repeated E2E calculation error
-	eE2eWrongSequnece,      // Wrong E2E sequence error
-	eE2e,                   // Unspecified E2E error
-	eE2eNotAvailable,       // E2E is not supported
-	eE2eNoNewData           // No new data E2E calculation present
+	E_OK,                      // No error occurred
+	E_NOT_OK,                  // Unspecified error occurred
+	E_UNKOWN_SERVICE,          // Service ID is unknown
+	E_UNKNOWN_METHOD,          // Method ID is unknown
+	E_NOT_READY,               // SERVICE IS NOT RUNNING
+	E_NOT_REACHABLE,           // SERVICE IS NOT REACHABLE
+	E_TIME_OUT,                // TIMEOUT OCCURRED
+	E_WRONG_PROTOCOLVERSION,   // SOME/IP PROTOCOL VERSION IS NOT SUPPORTED
+	E_WRONG_INTERFACEVERSION,  // SERVICE INTERFACE VERSION IS NOT SUPPORTED
+	E_MALFORMED_MESSAGE,       // DESERIALIZATION ERROR OCCURRED
+	E_WRONGMESSAGETYPE,        // INVALID MESSAGE TYPE
+	E_E2E_REPEATED,            // REPEATED E2E CALCULATION ERROR
+	E_E2E_WRONG_SEQUNECE,      // WRONG E2E SEQUENCE ERROR
+	E_E2E,                     // UNSPECIFIED E2E ERROR
+	E_E2E_NOTAVAILABLE,        // E2E IS NOT SUPPORTED
+	E_E2E_NO_NEWDATA           // NO NEW DATA E2E CALCULATION PRESENT
 };
 
 
@@ -75,7 +75,7 @@ inline MethodID getMethodID(MessageID messageID) {
 	return messageID & (0xFFFFFFFF >> SERVICE_ID_BITS_COUNT); // FIRST 16 BITS
 }
 
-inline MessageID getMessageID(ServiceID serviceID, MethodID MethodID) {
+inline MessageID MakeMessageID(ServiceID serviceID, MethodID MethodID) {
 	MessageID messageID = serviceID;
 	messageID = (messageID << SERVICE_ID_BITS_COUNT) + MethodID;
 	return messageID;
@@ -102,6 +102,9 @@ class someipHeader {
 		someipHeader();
 		someipHeader(MessageID messageID, RequestID requestID, InterfaceVersion interfaceVersion, 
 				MessageType messageType,ReturnCode returnCode);
+
+		someipHeader(ServiceID serviceId, MethodID methodId, RequestID requestId, 
+				MessageType messageType,ReturnCode returnCode);
 		
 		MessageID getMessageID() const;
 		MethodID getMethodID() const;
@@ -127,6 +130,8 @@ class someipHeader {
 		bool operator==(const someipHeader& right) const;
 		someipHeader& operator=(const someipHeader& right);
 
+		private:
+
 		/* NOT EXPLICITILY CALLED BY USER */
 		template <typename Archive>
 		void serialize(Archive& ar, const unsigned int version){
@@ -138,6 +143,9 @@ class someipHeader {
 			ar & messageType;
 			ar & returnCode;
 		}
+
+	    friend class boost::serialization::access;
+
 };
 
 
@@ -146,27 +154,28 @@ class someipHeader {
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-struct someip_Message
-{	
+struct someipMessage
+{
+	public:	
     /* MEMBERS */
     someip::someipHeader header;
 	std::string payload;
     
     /* METHODS */
-	someip_Message(someipHeader header, std::stringstream &payload);
-	someip_Message();
-    ~someip_Message();
-	
-    /* USER CAN CALL THIS SERIALIZE (NAME IS STANDARDIZED AS LIKE ALL OTHER METHODS) */
-	void Serialize(std::stringstream &ss);
-	void Deserialize(std::stringstream &ss);
+	someipMessage(someipHeader header, std::stringstream &payload);
+	someipMessage();
+    ~someipMessage();
 
+
+	private:
 	/* NOT EXPLICITILY CALLED BY USER */
 	template <typename Archive>
 	void serialize(Archive& ar, const unsigned int version){
 		ar & this->header;
 		ar & this->payload;
 	}	
+	
+	friend class boost::serialization::access;
 };
 
 

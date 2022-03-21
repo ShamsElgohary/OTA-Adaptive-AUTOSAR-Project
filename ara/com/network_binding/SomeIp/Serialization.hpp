@@ -11,6 +11,7 @@
 class Serializer{
 
 public:
+
   // Serialize any number of arguments
   template<typename ...Ts>
   inline void Serialize (std::stringstream& ss,Ts && ... multi_inputs)
@@ -21,11 +22,14 @@ public:
       } (multi_inputs), ...);
   }
 
+
   /* SHOW DATA INSIDE THE STREAM */
   inline void ShowSerializedData(std::stringstream &ss)
   {
     std::cout<< ss.str() << std::endl;
   }
+
+
   /* BOOL , CHAR , INT .. ETC */
   template <typename T> 
   inline void Serialize(std::stringstream &ss, T data)
@@ -106,6 +110,7 @@ public:
     }
 
   }
+
 
   /* ARRAY OF CHAR */
   template <size_t N>
@@ -196,6 +201,19 @@ public:
     ss << " <Length=" << " " << str.size() << "> ";
     ss << str;
   }
+
+
+  template <typename T> 
+  inline void Serialize(std::stringstream &ss, T *instance)
+  {
+    ss << "<object ";
+    /* SERIALIZTION OF STRUCT */
+    boost::archive::text_oarchive archive(ss);
+    archive << *instance;
+    ss << " >";
+  }
+
+
 };
 
 
@@ -211,6 +229,7 @@ public:
         this->Deserialize(ss,input);
       } (multi_inputs), ...);
   }
+
 
   /* BOOL , CHAR , INT .. ETC */
   template <typename T> 
@@ -229,6 +248,7 @@ public:
       std::cout<<e.what()<<std::endl;
     }
   }
+
 
 
   /* ARRAY OF BOOL ,CHAR , INT .. ETC. */
@@ -252,6 +272,8 @@ public:
     }
 
   }
+
+
 
   /* VECTORS OF STRING */
   inline void Deserialize(std::stringstream &ss, std::vector<std::string> &data ) 
@@ -305,6 +327,7 @@ public:
   }
 
 
+
   /* std::string */
   inline void Deserialize(std::stringstream &ss, std::string &str) 
   {
@@ -324,6 +347,33 @@ public:
       str += strInput + " ";
     }
   }
+
+
+
+  template <typename T> 
+  inline void Deserialize(std::stringstream &ss, T *instance)
+  {
+    std::string read_ss{ss.str()};
+
+    // TO KEEP CONSISTTENCY OF THE STRINGSTREAM 
+    std::string discardedStr;
+    while(discardedStr != ">")
+    {
+      ss >> discardedStr;
+    }
+
+    // REMOVE TAG
+    std::string tag = "<object ";
+    size_t index = read_ss.find(tag);    
+    read_ss = read_ss.substr(index); // <archive serialization boost ----- >
+    read_ss = read_ss.substr(tag.length(), read_ss.find(" >") - tag.length());
+    
+    /* DESERIALIAZTION OF STRUCT */
+    std::istringstream iss(read_ss);
+    boost::archive::text_iarchive ia(iss);
+    ia >> *instance;
+  }
+
 };
 
 

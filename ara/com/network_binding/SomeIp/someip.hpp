@@ -93,28 +93,28 @@ class someipConnection{
 		virtual bool CloseConnection() = 0;
 
 		/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
-		virtual bool SendMessage(someip_Message &msg) = 0;
+		virtual bool SendMessage(someipMessage &msg) = 0;
 
 		/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP */
-		virtual someip_Message ReceiveMessage() = 0;		
+		virtual someipMessage ReceiveMessage() = 0;		
 
 		/* FUNCTION TO SEND A SOMEIP MESSAGE ASYNCH */
-		virtual bool SendMessageAsynch(someip_Message &msg ) = 0;
+		virtual bool SendMessageAsynch(someipMessage &msg ) = 0;
 
 		/* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
-		virtual someip_Message ReceiveMessageAsynch() = 0;	
+		virtual someipMessage ReceiveMessageAsynch() = 0;	
 
 
 		/* MESSAGE TYPES */
 
-		virtual someip_Message SendRequest(someip_Message &msg) = 0;
+		virtual someipMessage SendRequest(someipMessage &msg) = 0;
 
-		virtual bool SendResponse(someip_Message &msg) = 0;
+		virtual bool SendResponse(someipMessage &msg) = 0;
 
 		/* REQUEST NO RESPONSE */
-		virtual bool SendFireAndForget(someip_Message &msg) = 0;
+		virtual bool SendFireAndForget(someipMessage &msg) = 0;
 
-		virtual bool SendNotification(someip_Message &msg) = 0;
+		virtual bool SendNotification(someipMessage &msg) = 0;
 };
 
 
@@ -151,16 +151,16 @@ class someipTCP : public someipConnection {
 	~someipTCP();
 
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
-	bool SendMessage(someip_Message &msg);
+	bool SendMessage(someipMessage &msg);
 
 	/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP */
-	someip_Message ReceiveMessage();
+	someipMessage ReceiveMessage();
 
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP ASYNCH */
-	bool SendMessageAsynch(someip_Message &msg);
+	bool SendMessageAsynch(someipMessage &msg);
 
 	/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP ASYNCH*/
-	someip_Message ReceiveMessageAsynch();
+	someipMessage ReceiveMessageAsynch();
 
 	/* OPEN SOCKET CONNECTION*/
 	bool OpenConnection();
@@ -170,14 +170,14 @@ class someipTCP : public someipConnection {
 
 	/* MESSAGE TYPES */
 
-	someip_Message SendRequest(someip_Message &msg);
+	someipMessage SendRequest(someipMessage &msg);
 
-    bool SendResponse(someip_Message &msg);
+    bool SendResponse(someipMessage &msg);
 
 	/* REQUEST NO RESPONSE */
-	bool SendFireAndForget(someip_Message &msg);
+	bool SendFireAndForget(someipMessage &msg);
 
-	bool SendNotification(someip_Message &msg);
+	bool SendNotification(someipMessage &msg);
 
 };
 
@@ -266,16 +266,16 @@ class someipUDP  : public someipConnection  {
 	~someipUDP();
 
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING UDP */
-	bool SendMessage(someip_Message &msg);
+	bool SendMessage(someipMessage &msg);
 
 	/* FUNCTION TO READ A SOMEIP MESSAGE USING UDP */
-	someip_Message ReceiveMessage();
+	someipMessage ReceiveMessage();
 
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP ASYNCH */
-	bool SendMessageAsynch(someip_Message &msg);
+	bool SendMessageAsynch(someipMessage &msg);
 
 	/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP ASYNCH*/
-	someip_Message ReceiveMessageAsynch();
+	someipMessage ReceiveMessageAsynch();
 
 	/* OPEN SOCKET CONNECTION*/
 	bool OpenConnection();
@@ -290,14 +290,14 @@ class someipUDP  : public someipConnection  {
 	bool ProxyConnect();
 
 
-	someip_Message SendRequest(someip_Message &msg);
+	someipMessage SendRequest(someipMessage &msg);
 
-    bool SendResponse(someip_Message &msg);
+    bool SendResponse(someipMessage &msg);
 
 	/* REQUEST NO RESPONSE */
-	bool SendFireAndForget(someip_Message &msg);
+	bool SendFireAndForget(someipMessage &msg);
 
-	bool SendNotification(someip_Message &msg);
+	bool SendNotification(someipMessage &msg);
 
 };
 

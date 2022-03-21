@@ -18,13 +18,13 @@ int main()
         std::string flag;
         std::stringstream ss;
         uint32_t ttl;
-        someip::someip_Message msg1;
+        someip::someipMessage msg1;
        
         SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::SERVER};
 
         boost::asio::io_service io_service;
 
-        shared_ptr<someipEndUser> serverUser = someipEndUser::SetSomeIpConfiguration(io_service, 2067, someipConfig);
+        shared_ptr<someipConnection> serverUser = someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
 
         serverUser->ServerListen();
 

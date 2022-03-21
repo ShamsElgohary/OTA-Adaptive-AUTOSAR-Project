@@ -175,13 +175,13 @@ namespace someip
 	}
 
 
-	someip_Message someipTCP::SendRequest(someip_Message &req)
+	someipMessage someipTCP::SendRequest(someipMessage &req)
 	{
 		if( req.header.getMessageType() != MessageType::REQUEST )
 		{
 			std::cout<< " MESSAGE TYPE ISN'T REQUEST MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
-			someip_Message msg;
+			someipMessage msg;
 			//return msg;
 		}
 
@@ -189,13 +189,13 @@ namespace someip
 		this->SendMessage(req);
 
 		/* RESPONSE */
-		someip_Message responseMsg = this->ReceiveMessage();
+		someipMessage responseMsg = this->ReceiveMessage();
 
 		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
 		{
 			std::cout<< " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
-			someip_Message msg;
+			someipMessage msg;
 			//return msg;
 		}
 
@@ -203,7 +203,7 @@ namespace someip
 	}
 
 
-    bool someipTCP::SendResponse(someip_Message &responseMsg)
+    bool someipTCP::SendResponse(someipMessage &responseMsg)
 	{
 		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
 		{
@@ -217,7 +217,7 @@ namespace someip
 
 
 	/* REQUEST NO RESPONSE */
-	bool someipTCP::SendFireAndForget(someip_Message &msg)
+	bool someipTCP::SendFireAndForget(someipMessage &msg)
 	{
 		if( msg.header.getMessageType() != MessageType::REQUEST_NO_RETURN )
 		{
@@ -228,7 +228,7 @@ namespace someip
 		return true;
 	}
 
-	bool someipTCP::SendNotification(someip_Message &msg)
+	bool someipTCP::SendNotification(someipMessage &msg)
 	{
 		if( msg.header.getMessageType() != MessageType::NOTIFICATION )
 		{
@@ -241,12 +241,13 @@ namespace someip
 
 
 	/* FUNCTION TO SEND A SOME/IP MESSAGE USING TCP SYNCHRONOUS */
-	bool someipTCP::SendMessage(someip_Message &msg)
+	bool someipTCP::SendMessage(someipMessage &msg)
 	{
 		try {
-			
-			std::stringstream ss; 
-			msg.Serialize(ss);
+			Serializer serializer;
+			std::stringstream ss;
+			// SERIALIZE SOMEIP MESSAGE STRUCT  
+			serializer.Serialize(ss, &msg);
 			std::string mssgBuf = ss.str();
 			tcpSocket.write_some( boost::asio::buffer(mssgBuf) );
 
@@ -261,17 +262,20 @@ namespace someip
 
 
 	/* FUNCTION TO RECEIVE A SOME/IP MESSAGE USING TCP */
-	someip_Message someipTCP::ReceiveMessage()
+	someipMessage someipTCP::ReceiveMessage()
 	{
-		someip_Message someipMsg;
+		someipMessage someipMsg;
 
 		try {
+
 			char buff[512];
 			size_t read = tcpSocket.read_some(boost::asio::buffer(buff));
 			std::string mssgBuf = buff;
 			std::stringstream ss;
 			ss<< mssgBuf;
-			someipMsg.Deserialize(ss);
+			Deserializer deserializer;
+			// DESERIALIZE SOMEIP MESSAGE STRUCT  
+			deserializer.Deserialize(ss, &someipMsg);
 
 		}catch ( boost::system::system_error e) {
 			std::cout << e.what() << "\n";
@@ -285,12 +289,14 @@ namespace someip
 
 
 	/* FUNCTION TO SEND A SOME/IP MESSAGE USING TCP SYNCHRONOUS */
-	bool someipTCP::SendMessageAsynch(someip_Message &msg)
+	bool someipTCP::SendMessageAsynch(someipMessage &msg)
 	{
 		try {
 			
-			std::stringstream ss; 
-			msg.Serialize(ss);
+			Serializer serializer;
+			std::stringstream ss;
+			// SERIALIZE SOMEIP MESSAGE STRUCT  
+			serializer.Serialize(ss, &msg);
 			std::string mssgBuf = ss.str();
 			tcpSocket.async_write_some( boost::asio::buffer(mssgBuf), &OnSendCompleted );
 			// IMPORTANT FOR ASYNCHRONOUS OPERATIONS 
@@ -307,11 +313,12 @@ namespace someip
 
 
 	/* FUNCTION TO RECEIVE A SOME/IP MESSAGE USING TCP */
-	someip_Message someipTCP::ReceiveMessageAsynch()
+	someipMessage someipTCP::ReceiveMessageAsynch()
 	{
-		someip_Message someipMsg;
+		someipMessage someipMsg;
 
 		try {
+
 			char buff[512];
 			tcpSocket.async_read_some(boost::asio::buffer(buff), &OnReceiveCompleted);
 			// IMPORTANT FOR ASYNCHRONOUS OPERATIONS 
@@ -319,7 +326,9 @@ namespace someip
 			std::string mssgBuf = buff;
 			std::stringstream ss;
 			ss<< mssgBuf;
-			someipMsg.Deserialize(ss);
+			Deserializer deserializer;
+			// DESERIALIZE SOMEIP MESSAGE STRUCT  
+			deserializer.Deserialize(ss, &someipMsg);
 
 		}catch ( boost::system::system_error e) {
 			std::cout << e.what() << "\n";
@@ -487,13 +496,13 @@ namespace someip
 		/* DEFAULT DESTRUCTOR */
 	}
 
-	someip_Message someipUDP::SendRequest(someip_Message &req)
+	someipMessage someipUDP::SendRequest(someipMessage &req)
 	{
 		if( req.header.getMessageType() != MessageType::REQUEST )
 		{
 			std::cout<< " MESSAGE TYPE ISN'T REQUEST MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
-			someip_Message msg;
+			someipMessage msg;
 			return msg;
 		}
 
@@ -501,13 +510,13 @@ namespace someip
 		this->SendMessage(req);
 
 		/* RESPONSE */
-		someip_Message responseMsg = this->ReceiveMessage();
+		someipMessage responseMsg = this->ReceiveMessage();
 
 		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
 		{
 			std::cout<< " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
-			someip_Message msg;
+			someipMessage msg;
 			return msg;
 		}
 
@@ -515,7 +524,7 @@ namespace someip
 	}
 
 
-    bool someipUDP::SendResponse(someip_Message &responseMsg)
+    bool someipUDP::SendResponse(someipMessage &responseMsg)
 	{
 		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
 		{
@@ -528,7 +537,7 @@ namespace someip
 	}
 
 	/* REQUEST NO RESPONSE */
-	bool someipUDP::SendFireAndForget(someip_Message &msg)
+	bool someipUDP::SendFireAndForget(someipMessage &msg)
 	{
 		if( msg.header.getMessageType() != MessageType::REQUEST_NO_RETURN )
 		{
@@ -539,7 +548,7 @@ namespace someip
 		return true;
 	}
 
-	bool someipUDP::SendNotification(someip_Message &msg)
+	bool someipUDP::SendNotification(someipMessage &msg)
 	{
 		if( msg.header.getMessageType() != MessageType::NOTIFICATION )
 		{
@@ -551,12 +560,14 @@ namespace someip
 	}
 
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING UDP */
-	bool someipUDP::SendMessage(someip_Message &msg)
+	bool someipUDP::SendMessage(someipMessage &msg)
 	{
 		try {
 			// RECEIVER ENDPOINT
-			std::stringstream ss; 
-			msg.Serialize(ss);
+			Serializer serializer;
+			std::stringstream ss;
+			// SERIALIZE SOMEIP MESSAGE STRUCT  
+			serializer.Serialize(ss, &msg);
 			std::string mssgBuf = ss.str();
 			udpSocket.send_to(boost::asio::buffer(mssgBuf), this->udpEndPoint);
 
@@ -570,9 +581,9 @@ namespace someip
 
 
 	/* FUNCTION TO READ A SOMEIP MESSAGE USING UDP */
-	someip_Message someipUDP::ReceiveMessage()
+	someipMessage someipUDP::ReceiveMessage()
 	{
-		someip_Message someipMsg;
+		someipMessage someipMsg;
 
 		try {
 			char buff[512];
@@ -580,8 +591,9 @@ namespace someip
 			std::string mssgBuf = buff;
 			std::stringstream ss;
 			ss<< mssgBuf;
-			someipMsg.Deserialize(ss);
-
+			Deserializer deserializer;
+			// DESERIALIZE SOMEIP MESSAGE STRUCT  
+			deserializer.Deserialize(ss, &someipMsg);
 		}catch ( boost::system::system_error e) {
 			std::cout << e.what() << "\n";
 			someipMsg.header;
@@ -593,7 +605,7 @@ namespace someip
 
 
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP ASYNCH */
-	bool someipUDP::SendMessageAsynch(someip_Message &msg)
+	bool someipUDP::SendMessageAsynch(someipMessage &msg)
 	{
 		return true;
 	}
@@ -601,9 +613,9 @@ namespace someip
 
 	
 	/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP ASYNCH*/
-	someip_Message someipUDP::ReceiveMessageAsynch()
+	someipMessage someipUDP::ReceiveMessageAsynch()
 	{
-		someip_Message someipMsg;
+		someipMessage someipMsg;
 
 		try {
 			char buff[512];
@@ -611,8 +623,9 @@ namespace someip
 			std::string mssgBuf = buff;
 			std::stringstream ss;
 			ss<< mssgBuf;
-			someipMsg.Deserialize(ss);
-
+			Deserializer deserializer;
+			// DESERIALIZE SOMEIP MESSAGE STRUCT  
+			deserializer.Deserialize(ss, &someipMsg);
 		}catch ( boost::system::system_error e) {
 			std::cout << e.what() << "\n";
 			someipMsg.header;

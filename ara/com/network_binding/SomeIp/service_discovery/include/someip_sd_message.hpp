@@ -8,7 +8,7 @@
 #include "../someip.hpp"
 
 
-class someip_sd_message : public someip::someip_Message  
+class someip_sd_message : public someip::someipMessage  
 // someip_sd_message will have its payload and header
 // someip_sd_message can use send function
 {

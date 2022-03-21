@@ -31,7 +31,7 @@ int main() {
 
     someipHeader s;     // SET SOMEIP HEADER (THIS IS ONLY FOR EXAMPLE) ///
 
-    someip_Message msg(s,data);
+    someipMessage msg(s,data);
 
     serverUser->SendResponse(msg);
 
