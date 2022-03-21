@@ -7,9 +7,8 @@ using namespace someip;
 
 int main() {
 
-
     /// MESSAGE SETUP ////
-      
+
     int z = 10;
 
     std::stringstream data;
@@ -28,13 +27,25 @@ int main() {
 
     uint16_t port = 1234;
 
-    SomeIpConfiguration someipConfig{TransportProtocol::UDP,EndUserType::CLIENT};
+    SomeIpConfiguration someipConfig{TransportProtocol::TCP,EndUserType::CLIENT};
 
     boost::asio::io_service io_service;
 
     shared_ptr<someipConnection> clientUser = someipConnection::SetSomeIpConfiguration(io_service, port , someipConfig);
     
-    clientUser->SendMessage(msg);
+   // clientUser->SendMessage(msg);
+
+    // RECEIVE RESPONSE //
+
+    data.str("");
+
+   // msg.header.setMessageType( MessageType::REQUEST);
+
+    msg = clientUser->SendRequest(msg);
+
+    data << msg.payload;
+
+    cout << data.str();
 
     //clientUser->CloseConnection();
 

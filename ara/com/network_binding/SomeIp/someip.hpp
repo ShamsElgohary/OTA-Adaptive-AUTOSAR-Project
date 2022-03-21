@@ -29,7 +29,7 @@ enum EndUserType{
 
 typedef struct
 {
-	TransportProtocol tpType = TransportProtocol::TCP; 
+	TransportProtocol tpType; 
 	EndUserType endUserType;
 }SomeIpConfiguration;
 
@@ -93,7 +93,7 @@ class someipConnection{
 		virtual bool CloseConnection() = 0;
 
 		/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
-		virtual bool SendMessage(someip_Message &msg ) = 0;
+		virtual bool SendMessage(someip_Message &msg) = 0;
 
 		/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP */
 		virtual someip_Message ReceiveMessage() = 0;		
@@ -102,9 +102,19 @@ class someipConnection{
 		virtual bool SendMessageAsynch(someip_Message &msg ) = 0;
 
 		/* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
-		virtual someip_Message ReceiveMessageAsynch() = 0;		
+		virtual someip_Message ReceiveMessageAsynch() = 0;	
 
 
+		/* MESSAGE TYPES */
+
+		virtual someip_Message SendRequest(someip_Message &msg) = 0;
+
+		virtual bool SendResponse(someip_Message &msg) = 0;
+
+		/* REQUEST NO RESPONSE */
+		virtual bool SendFireAndForget(someip_Message &msg) = 0;
+
+		virtual bool SendNotification(someip_Message &msg) = 0;
 };
 
 
@@ -158,6 +168,16 @@ class someipTCP : public someipConnection {
 	/* CLOSE SOCKET CONNECTION */
 	bool CloseConnection();
 
+	/* MESSAGE TYPES */
+
+	someip_Message SendRequest(someip_Message &msg);
+
+    bool SendResponse(someip_Message &msg);
+
+	/* REQUEST NO RESPONSE */
+	bool SendFireAndForget(someip_Message &msg);
+
+	bool SendNotification(someip_Message &msg);
 
 };
 
@@ -268,6 +288,16 @@ class someipUDP  : public someipConnection  {
 
 	/* CONNECT PROXY TO SERVER */
 	bool ProxyConnect();
+
+
+	someip_Message SendRequest(someip_Message &msg);
+
+    bool SendResponse(someip_Message &msg);
+
+	/* REQUEST NO RESPONSE */
+	bool SendFireAndForget(someip_Message &msg);
+
+	bool SendNotification(someip_Message &msg);
 
 };
 
