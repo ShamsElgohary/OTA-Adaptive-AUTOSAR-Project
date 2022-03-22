@@ -9,15 +9,15 @@ namespace ara
         namespace proxy
         {
             namespace method
-            {
+            {   
+                template <typename output, typename... Params>
                 class MethodBase
                 {
                 public:
-                    ProxyBase::HandleType *Delegate;
-                    std::string name;
-                    uint32_t ID;
-                    MethodBase(ara::com::NetworkBindingBase *ptr, const std::string &N);
-                    template <typename... Params,typename output>
+                    std::shared_ptr<ara::com::NetworkBindingBase> Delegate;
+                    uint16_t ID;
+                    MethodBase(std::shared_ptr<ara::com::NetworkBindingBase>ptr, uint16_t id);
+                    
                     output operator()(Params... args);
                 };
             }

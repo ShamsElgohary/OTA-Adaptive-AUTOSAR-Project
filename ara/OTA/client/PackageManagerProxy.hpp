@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../ucm/includes/types.hpp"
 #include "../../com/language_binding/proxy/include/serviceProxy.hpp"
 #include "../../com/language_binding/proxy/include/method.hpp"
 
@@ -44,6 +45,7 @@ namespace ara
                 struct TransferDataOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
@@ -62,6 +64,7 @@ namespace ara
                 struct TransferExitOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
@@ -80,6 +83,7 @@ namespace ara
                 struct TransferDeleteOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
@@ -98,6 +102,7 @@ namespace ara
                 struct ProcessSwPackageOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
@@ -111,6 +116,7 @@ namespace ara
                 struct ActivateOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
@@ -124,6 +130,7 @@ namespace ara
                 struct GetSwClusterInfoOutput
                 {
                     vector<ara::ucm::SwClusterInfoType> vectorOfClusterInfo;
+
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
@@ -137,6 +144,7 @@ namespace ara
                 struct RollbackOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
@@ -150,6 +158,7 @@ namespace ara
                 struct RevertProcessedSwPackagesOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
@@ -163,6 +172,7 @@ namespace ara
                 struct FinishOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
@@ -175,6 +185,7 @@ namespace ara
                 struct GetCurrentStatusField
                 {
                     PackageManagerStatusType Status;
+
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
@@ -188,6 +199,8 @@ namespace ara
                 {
                     class TransferStart : public ara::com::proxy::method::MethodBase
                     {
+                    public:
+                        
                     };
 
                     class TransferData : public ara::com::proxy::method::MethodBase
@@ -226,41 +239,41 @@ namespace ara
                     {
                     };
                 }
-
+                /*
                 namespace fields
                 {
                     class GetCurrentStatus : public ara::com::proxy::field::FieldBase <GetCurrentStatusField>
                 }
-
+                */
                 class PackageManagerProxy : public ara::com::proxy::ProxyBase
+                {
+                public:
+                    inline ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
                     {
-                    public:
-                        inline ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
-                        {
-                            ara::com::proxy::ProxyBase::FindService(1);
-                        }
+                        ara::com::proxy::ProxyBase::FindService(1);
+                    }
 
-                        inline ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
-                        {
-                            ara::com::proxy::ProxyBase::FindService(1, InstanceID);
-                        }
+                    inline ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
+                    {
+                        ara::com::proxy::ProxyBase::FindService(1, InstanceID);
+                    }
 
-                        methods::TransferStart TransferStart;
-                        methods::TransferData TransferData;
-                        methods::TransferExit TransferExit;
-                        methods::TransferDelete TransferDelete;
-                        methods::ProcessSwPackage ProcessSwPackage;
-                        methods::Activate Activate;
-                        methods::GetSwClusterInfo GetSwClusterInfo;
-                        methods::Rollback Rollback;
-                        methods::RevertProcessedSwPackages RevertProcessedSwPackages;
-                        methods::Finish Finish;
+                    methods::TransferStart TransferStart;
+                    methods::TransferData TransferData;
+                    methods::TransferExit TransferExit;
+                    methods::TransferDelete TransferDelete;
+                    methods::ProcessSwPackage ProcessSwPackage;
+                    methods::Activate Activate;
+                    methods::GetSwClusterInfo GetSwClusterInfo;
+                    methods::Rollback Rollback;
+                    methods::RevertProcessedSwPackages RevertProcessedSwPackages;
+                    methods::Finish Finish;
 
-                        fields::GetCurrentStatus;
-                    };
-                }
-
+                    // fields::GetCurrentStatus;
+                };
             }
 
         }
+
     }
+}
