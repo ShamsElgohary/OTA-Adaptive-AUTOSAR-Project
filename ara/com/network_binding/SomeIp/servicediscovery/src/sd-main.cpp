@@ -18,13 +18,13 @@ int main()
         std::string flag;
         std::stringstream ss;
         uint32_t ttl;
-        someip::someip_Message msg1;
+        someip::someipMessage msg1;
 
-        SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::SERVER};
+        someip::SomeIpConfiguration someipConfig{someip::TransportProtocol::TCP, someip::EndUserType::SERVER};
 
         boost::asio::io_service io_service;
 
-        shared_ptr<someipEndUser> serverUser = someipEndUser::SetSomeIpConfiguration(io_service, 2067, someipConfig);
+        std::shared_ptr<someip::someipConnection> serverUser = someip::someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
 
         serverUser->ServerListen();
 
@@ -81,7 +81,7 @@ int main()
             someip_sd_message msg1;
             someip::someipHeader header1;
             std::stringstream ss, ss1, ss2;
-            someip::someip_Message someipmsg(header1, ss);
+            someip::someipMessage someipmsg(header1, ss);
             msg1.header = someipmsg.header;
             Serializer s;
             s.Serialize(ss, instance_ids);

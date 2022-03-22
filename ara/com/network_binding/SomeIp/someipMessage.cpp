@@ -8,8 +8,8 @@ namespace someip
 
     someipHeader::someipHeader() 
     {
-    interfaceVersion = 0;
-    messageID = requestID = interfaceVersion = 0;
+    interfaceVersion = 1;
+    messageID = requestID = 0;
     returnCode = ReturnCode::E_OK;
     messageType = MessageType::ERROR;
     }   
@@ -17,12 +17,31 @@ namespace someip
 	someipHeader::someipHeader(MessageID messageID, RequestID requestID, InterfaceVersion interfaceVersion, 
                             MessageType messageType, ReturnCode returnCode) 
     {
-		interfaceVersion = 0;
+		interfaceVersion = 1;
 		this->messageID = messageID;
 		this->requestID = requestID;
 		this->interfaceVersion = interfaceVersion;
 		this->messageType = messageType;
 		this->returnCode = returnCode;
+	}
+
+
+	someipHeader::someipHeader(ServiceID serviceId, MethodID methodId, RequestID requestId, 
+				MessageType messageType,ReturnCode returnCode)
+    {
+		this->messageID = someip::MakeMessageID(serviceId, methodId);
+		this->requestID = requestID;
+		this->interfaceVersion = 1;
+		this->messageType = messageType;
+		this->returnCode = returnCode;
+	}
+
+
+	someipHeader::someipHeader(ServiceID serviceId, MethodID methodId)
+    {
+		this->messageID = someip::MakeMessageID(serviceId, methodId);
+		this->requestID = 0;
+		this->interfaceVersion = 1;
 	}
 
     MessageID someipHeader::getMessageID() const {
@@ -50,7 +69,7 @@ namespace someip
 	}
 
 	void someipHeader::setServiceID(ServiceID serviceID) {
-		messageID = someip::getMessageID( serviceID, getMethodID() );
+		messageID = someip::MakeMessageID( serviceID, getMethodID() );
 	}
 
 	ServiceID someipHeader::getServiceID() const {
@@ -58,7 +77,7 @@ namespace someip
 	}
 
 	void someipHeader::setMethodID(MethodID MethodID) {
-		messageID = someip::getMessageID(getServiceID(), MethodID);
+		messageID = someip::MakeMessageID(getServiceID(), MethodID);
 	}
 
 	bool someipHeader::isReply() const {
@@ -125,7 +144,7 @@ namespace someip
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	someip_Message::someip_Message(someipHeader header, std::stringstream &payload)
+	someipMessage::someipMessage(someipHeader header, std::stringstream &payload)
 	{
 		this->header = header;
 		this->payload = payload.str();
@@ -133,34 +152,20 @@ namespace someip
 		//(this->payload) << payload.rdbuf();;	
 	}
 
-	someip_Message::someip_Message()
+	someipMessage::someipMessage()
 	{
+		someipHeader s;
+		this->header = s;
+		this->payload = ""; //EMPTY PAYLOAD
 		/* DEFAULT CONSTRUCTOR */
 	}
 
 
-	someip_Message::~someip_Message()
+	someipMessage::~someipMessage()
 	{
 		/* DEFAULT DESTRUCTOR */
 	}
 	
-	/* USER CAN CALL THIS SERIALIZE (NAME IS STANDARDIZED AS LIKE ALL OTHER METHODS) */
-	void someip_Message::Serialize(std::stringstream &ss){
-		/* SERIALIZTION OF STRUCT */
-		boost::archive::text_oarchive archive(ss);
-		archive << *this;
-	}
-
-	void someip_Message::Deserialize(std::stringstream &ss){
-		/* DESERIALIAZTION OF STRUCT */
-		std::istringstream iss(ss.str());
-		boost::archive::text_iarchive ia(iss);
-		ia >> *this;
-	}
-
-
-
-
 
 } // Namespace someip
 

@@ -70,7 +70,7 @@ std::unique_ptr <entry> someip_sd_message::GetEntry(void)
 std::unique_ptr<ipv4_endpoint_option> someip_sd_message::GetOption(void)
 {
     std::unique_ptr<ipv4_endpoint_option> option1;
-     option1= std::move(options.back());  
+    option1= std::move(options.back());  
     options.pop_back();
     return std::move(option1);
 }

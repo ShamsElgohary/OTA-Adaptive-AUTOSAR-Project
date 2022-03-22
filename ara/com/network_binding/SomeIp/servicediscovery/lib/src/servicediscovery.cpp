@@ -21,7 +21,7 @@ void servicediscovery::offer_service(uint16_t service_id, uint16_t instance_id, 
     someip_sd_message message1;
     someip::someipHeader h1;
     std::stringstream ss;
-    someip::someip_Message m1(h1, ss);
+    someip::someipMessage m1(h1, ss);
     message1.header = m1.header;
     service_entry *ptr = service_entry::create_offer_service_entry(service_id, instance_id); // return &service1
     service_entry s2 = *ptr;
@@ -42,7 +42,7 @@ std::vector<serviceinfo> servicediscovery::find_service(uint16_t service_id, uin
     someip_sd_message message1;
     someip::someipHeader h1;
     std::stringstream ss;
-    someip::someip_Message m1(h1, ss);
+    someip::someipMessage m1(h1, ss);
     message1.header = m1.header;
     service_entry *ptr = service_entry::create_find_service_entry(service_id, instance_id); // return &service1
     service_entry s2 = *ptr;
@@ -82,7 +82,7 @@ void servicediscovery::stop_offer_service(uint16_t service_id, uint16_t instance
     someip_sd_message message1;
     someip::someipHeader h1;
     std::stringstream ss;
-    someip::someip_Message m1(h1, ss);
+    someip::someipMessage m1(h1, ss);
     message1.header = m1.header;
     service_entry *ptr = service_entry::create_stop_offer_service_entry(service_id, instance_id); // return &service1
     service_entry s2 = *ptr;
