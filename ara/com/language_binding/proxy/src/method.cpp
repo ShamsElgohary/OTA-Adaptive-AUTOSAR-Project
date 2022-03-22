@@ -1,7 +1,5 @@
-#pragma once
 #include "../include/method.hpp"
-#include <iostream>
-#include <future>
+
 using namespace std;
 
 namespace ara

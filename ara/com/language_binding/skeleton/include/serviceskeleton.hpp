@@ -3,8 +3,8 @@
 #include <thread>
 #include <utility>
 #include <map>
-#include "types.hpp"
-#include "NetworkBinding.hpp"
+#include "../../../include/types.hpp"
+#include "../../../network_binding/NetworkBinding.hpp"
 
 using namespace std;
 
