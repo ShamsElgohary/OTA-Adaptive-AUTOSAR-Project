@@ -12,7 +12,8 @@
                 "${fileDirname}/em" ,
                 "-lboost_filesystem",
                 "-lboost_serialization",
-                "-pthread"
+                "-pthread",
+                "-ljsoncpp"
             ],
             "options": {
                 "cwd": "${fileDirname}"

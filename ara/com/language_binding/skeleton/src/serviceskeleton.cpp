@@ -10,10 +10,45 @@ namespace ara
     {
         namespace skeleton
         {
-            skeletonBase::skeletonBase(ara::com::serviceIdentifierType serviceID ,ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode)
-            :instanceID{instanceID} , serviceID{serviceID} ,mode{mode}{
+
+            string parse(string x, ara::com::InstanceIdentifier instance_id, ara::com::serviceIdentifierType service_id, string required)
+            {
+                ifstream file(x);
+                Json::Value actualJson;
+                Json::Reader reader;
+                reader.parse(file, actualJson);
+                for (int i = 0; i < actualJson["ap_service_instances"]["provided_ap_service_instances"].size(); i++)
+                {
+                    if (actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["instance_id"] == instance_id && actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["service_id"] == service_id)
+                    {
+                        return actualJson["ap_service_instances"]["provided_ap_service_instances"][i][required].asString();
+                    }
+                }
+            }
+
+            int parse(string x, ara::com::InstanceIdentifier instance_id, ara::com::serviceIdentifierType service_id)
+            {
+                ifstream file(x);
+                Json::Value actualJson;
+                Json::Reader reader;
+                reader.parse(file, actualJson);
+                for (int i = 0; i < actualJson["ap_service_instances"]["provided_ap_service_instances"].size(); i++)
+                {
+                    if (actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["instance_id"] == instance_id && actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["service_id"] == service_id)
+                    {
+                        return actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["port"].asInt();
+                    }
+                }
+            }
+
+            skeletonBase::skeletonBase(ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode)
+                : instanceID{instanceID}, serviceID{serviceID}, mode{mode}
+            {
                 //parsing to get ip and port type of network binding
-                this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID,instanceID,ip,port);
+                string ip = parse("service_manifest.json", instanceId, serviceID, "ipv4");
+                int port = parse("service_manifest.json", instanceId, serviceID);
+
+                this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, ip, port);
             }
             void skeletonBase::OfferService()
             {
@@ -28,7 +63,7 @@ namespace ara
                     {
                         break;
                     }
-                    handleMethod( this->ptr2bindingProtocol->get_method_id() );
+                    handleMethod(this->ptr2bindingProtocol->get_method_id());
                 }
             }
             void skeletonBase::StopOfferService()
@@ -38,7 +73,6 @@ namespace ara
         }
     }
 }
-
 
 // to be generated
 // void Serviceskeleton::handleMethod(int id)
@@ -53,5 +87,3 @@ namespace ara
 //         break;
 //     }
 // }
-
-
