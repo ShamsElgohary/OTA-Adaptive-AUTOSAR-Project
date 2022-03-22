@@ -32,11 +32,11 @@ namespace ara
         void SomeIpNetworkBinding::ReceiveMessage(T &in)
         {
             someip::someipMessage someipMsg = clientInstance->ReceiveMessage();
-            std::stringstream payload;
-            payload << someipMsg.payload;
+            std::stringstream receivedData;
+            receivedData << someipMsg.payload;
             Deserializer D;
+            D.Deserializer(receivedData, &in);
         }
-
 
         void SomeIpNetworkBinding::OfferService()
         {

@@ -33,7 +33,7 @@ void servicediscovery::offer_service(uint16_t service_id, uint16_t instance_id, 
     // message1
     SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::CLIENT};
     boost::asio::io_service io_service;
-    shared_ptr<someipEndUser> clientUser = someipEndUser::SetSomeIpConfiguration(io_service, 2067, someipConfig);
+    shared_ptr<someipConnection> clientUser = someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
     clientUser->SendMessage(message1);
 }
 
@@ -50,7 +50,7 @@ std::vector<serviceinfo> servicediscovery::find_service(uint16_t service_id, uin
     message1.AddEntry(ptr3);
     SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::CLIENT};
     boost::asio::io_service io_service;
-    shared_ptr<someipEndUser> clientUser = someipEndUser::SetSomeIpConfiguration(io_service, 2067, someipConfig);
+    shared_ptr<someipConnection> clientUser = someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
     clientUser->SendMessage(message1);
     ss << clientUser->ReceiveMessage().payload;
     vector<uint16_t> v1;
@@ -91,6 +91,6 @@ void servicediscovery::stop_offer_service(uint16_t service_id, uint16_t instance
     // message1
     SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::CLIENT};
     boost::asio::io_service io_service;
-    shared_ptr<someipEndUser> clientUser = someipEndUser::SetSomeIpConfiguration(io_service, 2067, someipConfig);
+    shared_ptr<someipConnection> clientUser = someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
     clientUser->SendMessage(message1);
 }
