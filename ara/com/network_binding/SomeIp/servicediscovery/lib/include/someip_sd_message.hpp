@@ -33,7 +33,7 @@ class someip_sd_message : public someip::someipMessage
     void AddOption(std::unique_ptr<ipv4_endpoint_option> &Option1);
     //set option length
     //someip_sd_message(ServiceID serviceID,MethodID methodID,ClientID clientID,SessionID sessionID,ProtocolVersion protocol_version,MessageType messageType,ReturnCode returnCode);
-    void setflag(Flag flag);
+    void setflag(uint8_t flag);
    // void setEntryLength(uint32_t counter);
     //void setOptionsLength(uint32_t OptionCounter);
     uint8_t getFlag(void);

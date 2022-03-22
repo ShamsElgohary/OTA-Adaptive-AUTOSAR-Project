@@ -13,9 +13,9 @@ namespace ara
                 template <typename output, typename... Params>
                 output MethodBase<output, Params...>::operator()(Params... args)
                 {
-                    ara::com::proxy::method::MethodBase::Delegate->SendRequest(this->ID, args...);
+                    this->Delegate->SendRequest(this->ID, args...);
                     output in ;
-                    ara::com::proxy::method::MethodBase::Delegate->receive(in);
+                    this->Delegate->ReceiveMessage(in);
                     return in;
                 }
                 template <typename output, typename... Params>

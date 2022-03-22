@@ -22,7 +22,7 @@ namespace ara
             std::stringstream payload;
             Serializer S;
             S.Serialize(payload,std::forward<Params>(args)...);
-		    someip::someipHeader header(serviceId, methodId);
+		    someip::someipHeader header(serviceId, methodID);
             someip::someipMessage someipMsg(header,payload);
 
             clientInstance->SendRequest(someipMsg);
