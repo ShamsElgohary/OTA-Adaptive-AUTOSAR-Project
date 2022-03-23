@@ -13,13 +13,6 @@ namespace ara
             struct StartUpdateSessionOutput
             {
                 uint8_t AppError;
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &AppError;
-                    }
-                    friend class boost::serialization::access;
             };
 
             /** PrepareUpdate **/
@@ -31,13 +24,6 @@ namespace ara
             struct PrepareUpdateOutput
             {
                 uint8_t AppError;
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &AppError;
-                    }
-                    friend class boost::serialization::access;
             };
 
             /** VerifyUpdate **/
@@ -49,26 +35,12 @@ namespace ara
             struct VerifyUpdateOutput
             {
                 uint8_t AppError;
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &AppError;
-                    }
-                    friend class boost::serialization::access;
             };
 
             /** StopUpdateSession **/
             struct StopUpdateSessionOutput
             {
                 uint8_t AppError;
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &AppError;
-                    }
-                    friend class boost::serialization::access;
             };
 
             virtual uint8_t StartUpdateSession() = 0;

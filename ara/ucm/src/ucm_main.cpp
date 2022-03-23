@@ -9,9 +9,7 @@ using namespace ara::ucm;
 
 int main (void)
 {
-    
-
-    /*ara::ucm::pkgmgr::PackageManagerImpl PackageManagerInstance;
+    ara::ucm::pkgmgr::PackageManagerImpl PackageManagerInstance;
     string path =  ZIP_PackagesPath + "/PackageTest.zip";
 
     ifstream ifs(path, ios::binary | ios::ate);
@@ -52,7 +50,7 @@ int main (void)
 
     //PackageManagerInstance.Rollback();
 
-    PackageManagerInstance.Finish(); */
+    PackageManagerInstance.Finish(); 
 
     return 0;
 } 

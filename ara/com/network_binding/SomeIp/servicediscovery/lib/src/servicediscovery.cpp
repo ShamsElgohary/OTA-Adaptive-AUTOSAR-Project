@@ -1,12 +1,11 @@
 #include "../include/servicediscovery.hpp"
 
-
 using namespace std;
 using namespace someip;
 ServiceID serviceID = 0xFFFF;
 MethodID methodID = 0x8100;
-ClientID clientid = 0x0000;
-SessionID sessionID = 0x0001;
+// ClientID clientid = 0x0000;
+// SessionID sessionID = 0x0001;
 ProtocolVersion protocol_version = 0x01;
 InterfaceVersion interface_version = 0x01;
 // ReturnCode returnCode=0x00;
@@ -60,20 +59,36 @@ std::vector<serviceinfo> servicediscovery::find_service(uint16_t service_id, uin
     d.Deserialize(ss, v1);
     d.Deserialize(ss, v2);
     d.Deserialize(ss, v3);
-
+       for (auto it =v1.begin(); it!=v1.end(); ++it)
+        {
+           cout<<*it<<endl;
+        }
+         for (auto it =v2.begin(); it!=v2.end(); ++it)
+        {
+           cout<<*it<<endl;
+        }
+         for (auto it =v3.begin(); it!=v3.end(); ++it)
+        {
+           cout<<*it<<endl;
+        }
     std::vector<serviceinfo> rtn;
-    for (auto itr = v1.begin(); itr <= v1.end(); ++itr)
-    {
+      vector<std::string> ::iterator it2=v2.begin();
+    vector<std::uint16_t> ::iterator it3=v3.begin();
+    for (auto itr = v1.begin(); itr != v1.end(); ++itr)
+    {    
+    
         serviceinfo str;
-
-        str.Instance_ID = v1.back();
-        v1.pop_back();
-        str.ipv4_address = v2.back();
-        v2.pop_back();
-        str.port_num = v3.back();
-        v3.pop_back();
+        str.Instance_ID = *itr;
+        //v1.pop_back();
+        str.ipv4_address = *it2;
+        //v2.pop_back();
+        str.port_num = *it3;
+        //v3.pop_back();
         rtn.push_back(str);
+       it2++;
+       it3++;
     }
+   
     return rtn;
 }
 

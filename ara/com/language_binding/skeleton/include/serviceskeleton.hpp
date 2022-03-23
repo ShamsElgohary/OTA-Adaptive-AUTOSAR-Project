@@ -29,6 +29,7 @@ namespace ara
                 skeletonBase( ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
                 skeletonBase(const skeletonBase &other) = delete;
                 skeletonBase &operator=(const skeletonBase &other) = delete;
+                skeletonBase();
                 virtual ~skeletonBase();
                 void OfferService();
                 void StopOfferService();

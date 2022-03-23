@@ -17,6 +17,8 @@ namespace ara
 			class PackageManagerImpl : public ara::ucm::pkgmgr::PackageManagerSkeleton
 			{
 			public:
+				PackageManagerImpl() = default;
+				
 				/* Transfer Operations */
 				std::future<TransferStartOutput> TransferStart(uint64_t Size) override;
 

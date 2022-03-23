@@ -1,9 +1,8 @@
 #pragma once
 
-#include "types.hpp"
+#include "../../sm/types.hpp"
 #include "../com/language_binding/proxy/include/serviceProxy.hpp"
 #include "../com/language_binding/proxy/include/method.hpp"
-
 namespace ara
 {
     namespace sm
@@ -14,13 +13,6 @@ namespace ara
             struct StartUpdateSessionOutput
             {
                 uint8_t AppError;
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &AppError;
-                    }
-                    friend class boost::serialization::access;
             };
 
             /** PrepareUpdate **/
@@ -32,13 +24,6 @@ namespace ara
             struct PrepareUpdateOutput
             {
                 uint8_t AppError;
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &AppError;
-                    }
-                    friend class boost::serialization::access;
             };
 
             /** VerifyUpdate **/
@@ -50,48 +35,34 @@ namespace ara
             struct VerifyUpdateOutput
             {
                 uint8_t AppError;
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &AppError;
-                    }
-                    friend class boost::serialization::access;
             };
 
             /** StopUpdateSession **/
             struct StopUpdateSessionOutput
             {
                 uint8_t AppError;
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &AppError;
-                    }
-                    friend class boost::serialization::access;
             };
 
             namespace methods
             {
-                class StartUpdateSession : public ara::com::proxy::method::MethodBase
+                class StartUpdateSession : public ara::com::proxy::method::MethodBase <StartUpdateSessionOutput>
                 {
                 };
 
-                class PrepareUpdate : public ara::com::proxy::method::MethodBase
+                class PrepareUpdate : public ara::com::proxy::method::MethodBase <PrepareUpdateOutput, FunctionGroupList>
                 {
                 };
 
-                class VerifyUpdate : public ara::com::proxy::method::MethodBase
+                class VerifyUpdate : public ara::com::proxy::method::MethodBase <VerifyUpdateOutput, FunctionGroupList>
                 {
                 };
 
-                class StopUpdateSession : public ara::com::proxy::method::MethodBase
+                class StopUpdateSession : public ara::com::proxy::method::MethodBase <StopUpdateSessionOutput>
                 {
                 };
             }
 
-            class UpdateRequestProxy : public ara::com::proxy::ProxyBase
+            class UpdateRequestProxy // : public ara::com::proxy::ProxyBase
             {
             public:
                 inline ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()

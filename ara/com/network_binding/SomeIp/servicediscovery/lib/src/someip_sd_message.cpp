@@ -7,7 +7,7 @@ someip_sd_message::someip_sd_message()
  this->entries_length=0x00000010;
   
 }
-void someip_sd_message::setflag(Flag flag)
+void someip_sd_message::setflag(uint8_t flag)
 {
     this->flags=flag;
 }

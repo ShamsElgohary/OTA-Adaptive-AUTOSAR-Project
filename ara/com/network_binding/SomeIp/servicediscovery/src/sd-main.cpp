@@ -26,6 +26,8 @@ int main()
 
         std::shared_ptr<someip::someipConnection> serverUser = someip::someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
 
+        std::cout << "Listening For SD Requests" << std::endl;
+
         serverUser->ServerListen();
 
         ss << serverUser->ReceiveMessage().payload;
@@ -62,14 +64,14 @@ int main()
         case (uint16_t)0x00: // find service
         {
             
-            vector<serviceinfo> rtn;
+            std::vector<serviceinfo> rtn;
             rtn = servicestorage::SearchServiceRegistry(SID, IID); // return typeee
 
            
 
-            vector<uint16_t> instance_ids;
-            vector<std::string> addresses;
-            vector<uint16_t> port_num;
+            std::vector<uint16_t> instance_ids;
+            std::vector<std::string> addresses;
+            std::vector<uint16_t> port_num;
             for (auto itr = rtn.begin(); itr != rtn.end(); ++itr)
             {
                 instance_ids.push_back(itr->Instance_ID);
@@ -95,7 +97,7 @@ int main()
             break;
         }
         default:
-            cout << "default" << endl;
+            std::cout << "default" << std::endl;
         }
     }
 }
