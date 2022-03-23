@@ -18,7 +18,7 @@ install(TARGETS em RUNTIME DESTINATION ${em_install_dir})
 add_library(execution_lib STATIC ${exec_source_dir}/src/execution_client.cpp ${exec_source_dir}/src/state_client.cpp ${exec_source_dir}/src/function_group_state.cpp ${exec_source_dir}/src/find_process_client.cpp)
 target_include_directories(execution_lib PUBLIC  ${exec_source_dir}/include)
 
-###############################EX!###############################
+###############################EX1###############################
 
 set(source_excutables_ex1_dir "${CMAKE_SOURCE_DIR}/executables/ex1/bin")
 add_executable(ex1 ${source_excutables_ex1_dir}/ex1.cpp) 
@@ -64,22 +64,29 @@ file(GLOB_RECURSE COM_NetworkBinding_SRC_FILES ${com_source_dir}/network_binding
 file(GLOB_RECURSE COM_SomeIp_SRC_FILES ${com_source_dir}/network_binding/SomeIp/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE COM_serviceDiscovery_SRC_FILES ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 
-
 add_library(com_lib STATIC ${COM_Proxy_SRC_FILES} ${COM_Skeleton_SRC_FILES} ${COM_NetworkBinding_SRC_FILES} ${COM_SomeIp_SRC_FILES} ${COM_serviceDiscovery_SRC_FILES} )
-target_link_libraries(com_lib  Boost::filesystem Boost::program_options Boost::serialization)
+target_link_libraries(com_lib Boost::filesystem Boost::program_options Boost::serialization)
+
+target_include_directories(
+        com_lib PUBLIC  ${com_source_dir}/language_binding/proxy/include  
+        ${com_source_dir}/language_binding/skeleton/include 
+        ${com_source_dir}/network_binding
+        ${com_source_dir}/network_binding/SomeIp
+        ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include
+        ) 
 
 ################################COM_test##########################
-set(test_client_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Client")
-add_executable(test_client ${test_client_source_dir}/main.cpp) 
-target_link_libraries(test_client com_lib)
-
-install(TARGETS test_client RUNTIME DESTINATION ${test_client_source_dir})
-
 set(test_server_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Server")
-add_executable(test_server ${test_server_source_dir}/main.cpp) 
+add_executable(test_server ${test_server_source_dir}/main.cpp ) 
+target_include_directories( test_server PUBLIC ${test_server_source_dir} )
 target_link_libraries(test_server com_lib)
-
 install(TARGETS test_server RUNTIME DESTINATION ${test_server_source_dir})
+
+# set(test_client_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Client")
+# add_executable(test_client ${test_client_source_dir}/main.cpp) 
+# target_include_directories( test_client PUBLIC ${test_client_source_dir})
+# target_link_libraries(test_client com_lib)
+# install(TARGETS test_client RUNTIME DESTINATION ${test_client_source_dir})
 
 
 # project(sm)
@@ -109,7 +116,7 @@ install(TARGETS test_server RUNTIME DESTINATION ${test_server_source_dir})
 #      ara_sm
 #      ${source_ara_sm_dir}/SM.hpp
 #      ${source_ara_sm_dir}/SM.cpp
-#    )
+#)
 
 # # named it from include_directories to target_include_directories also made it public 
 #  target_include_directories(ara_exec PUBLIC ${source_ara_exec_dir}/include )
