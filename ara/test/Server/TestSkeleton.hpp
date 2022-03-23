@@ -1,6 +1,5 @@
 #pragma once
 
-#include "types.hpp"
 #include "../../com/language_binding/skeleton/include/serviceskeleton.hpp"
 #include "../../com/include/types.hpp"
 
@@ -28,8 +27,7 @@ namespace ara
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
                     {
-                        ar &a;
-                        ar &b;
+                        ar &Sum;
                     }
                     friend class boost::serialization::access;
                 };
