@@ -1,8 +1,8 @@
 #pragma once
 
 #include "types.hpp"
-#include "../com/language_binding/skeleton/include/serviceskeleton.hpp"
-#include "../com/include/types.hpp"
+#include "../../com/language_binding/skeleton/include/serviceskeleton.hpp"
+#include "../../com/include/types.hpp"
 
 namespace ara
 {

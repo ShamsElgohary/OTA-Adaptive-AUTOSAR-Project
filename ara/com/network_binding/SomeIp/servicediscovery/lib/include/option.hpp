@@ -5,7 +5,9 @@
 
 #include <vector>
 #include <memory>
+#include <iostream>
 
+using namespace std ;
 
 //uint32_t OptionCounter ;
 class option
@@ -23,17 +25,17 @@ class option
 class ipv4_endpoint_option:public option
 {  //reserved???
   private:
-  std::string ipv4_address ;
+  string ipv4_address ;
   uint8_t l4_proto;
   uint16_t port_num;
   public:
-  ipv4_endpoint_option(std::string ipv4_address , uint8_t port_num);
+  ipv4_endpoint_option(string ipv4_address , uint8_t port_num);
   void setOptionLength(uint16_t length);
   void setOptionType(uint8_t type);
-  void setIPV4Address(std::string ipv4_address );
+  void setIPV4Address(string ipv4_address );
   void setTransportProtocol(uint8_t l4_proto);
   void setPortNum(uint16_t port_num);
-  std::string getIPV4_Address(void);
+  string getIPV4_Address(void);
   uint16_t getport_num(void);
   //setters,getters and operator overloading
 

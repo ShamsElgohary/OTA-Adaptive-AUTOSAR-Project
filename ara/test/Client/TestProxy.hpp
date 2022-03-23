@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../com/language_binding/proxy/include/serviceProxy.hpp"
-#include "../com/language_binding/proxy/include/method.hpp"
-#include "../com/include/types.hpp"
+#include "../../com/language_binding/proxy/include/serviceProxy.hpp"
+#include "../../com/language_binding/proxy/include/method.hpp"
+#include "../../com/include/types.hpp"
 
 namespace ara
 {
@@ -27,8 +27,7 @@ namespace ara
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
                     {
-                        ar &a;
-                        ar &b;
+                        ar &Sum;
                     }
                     friend class boost::serialization::access;
                 };

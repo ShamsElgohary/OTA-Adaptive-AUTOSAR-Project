@@ -35,7 +35,7 @@ namespace ara
             std::stringstream receivedData;
             receivedData << someipMsg.payload;
             Deserializer D;
-            D.Deserializer(receivedData, &in);
+            D.Deserialize(receivedData, &in);
         }
 
         void SomeIpNetworkBinding::OfferService()

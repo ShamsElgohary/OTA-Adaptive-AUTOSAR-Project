@@ -1,18 +1,18 @@
 {
 	"ap_service_instances":
-	{
-		"required_ap_service_instances" : [],
-										  "provided_ap_service_instances" : [
-											  {
-												  "service_id" : 7,
-												  "type" : "SOME/IP",
-												  "instance_id" : 1
-											  },
-											  {
-												  "service_id" : 5,
-												  "type" : "SOME/IP",
-												  "instance_id" : 1
-											  }
-										  ]
-	}
+		{
+			"required_ap_service_instances": [],
+			"provided_ap_service_instances": [
+				{
+					"service_id": 7,
+					"type": "SOME/IP",
+					"instance_id": 1
+				},
+				{
+					"service_id": 5,
+					"type": "SOME/IP",
+					"instance_id": 1
+				}
+			]
+		}
 }

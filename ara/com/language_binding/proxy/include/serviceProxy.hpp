@@ -2,7 +2,7 @@
 #include "../../../include/types.hpp"
 #include "../../../network_binding/NetworkBinding.hpp"
 #include<fstream>
-#include<jsoncpp/json/json.h>
+#include <jsoncpp/json/json.h>
 namespace ara
 {
     namespace com
@@ -18,12 +18,12 @@ namespace ara
                     ara::com::InstanceIdentifier InstanceID;
                     std::shared_ptr<ara::com::NetworkBindingBase> ptr2bindingProtocol;
                     const ara::com::InstanceIdentifier &GetInstanceId() const;
-                    HandleType();
+                    HandleType()=default;
                     HandleType(const HandleType &);
                     HandleType &operator=(const HandleType &);
                     HandleType(HandleType &&);
                     HandleType &operator=(HandleType &&);
-                    ~HandleType() noexcept;
+                    ~HandleType() noexcept =default;
                     friend class ProxyBase;
                 };
                 static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(int serviceID);
