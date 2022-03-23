@@ -34,10 +34,17 @@ namespace ara
 
                 namespace methods
                 {
-                    class Add : public ara::com::proxy::method::MethodBase <AddOutput, uint64_t, uint64_t>
+                    class Add : public ara::com::proxy::method::MethodBase
                     {
                     public:
                         Add(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 1) {}
+                        AddOutput operator()(uint64_t a, uint64_t b)
+                        {
+                            this->Delegate->SendRequest(this->ID, a, b);
+                            AddOutput in;
+                            this->Delegate->ReceiveMessage(in);
+                            return in;
+                        }
                     };
 
                 }

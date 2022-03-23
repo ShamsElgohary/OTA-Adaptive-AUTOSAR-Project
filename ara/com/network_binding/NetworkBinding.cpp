@@ -48,5 +48,16 @@ namespace ara
             return servicediscovery::find_service(serviceID, instance_id);
         }
 
+        int NetworkBindingBase::get_method_id()
+        {
+            std::cout << "GET_METHOD_ID" << std::endl;
+            return 1;
+        }
+
+        void SomeIpNetworkBinding::StopOfferService()
+        {
+            servicediscovery::stop_offer_service(serviceId,InstanceId);
+        }
+
     }
 }

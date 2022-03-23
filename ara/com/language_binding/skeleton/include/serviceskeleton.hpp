@@ -25,12 +25,12 @@ namespace ara
                 uint32_t port;
                 string ip;
                 void serve();
-                virtual void handleMethod(int methodID);
-                skeletonBase( ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
+                virtual void handleMethod(int methodID){}
+                skeletonBase(ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
                 skeletonBase(const skeletonBase &other) = delete;
                 skeletonBase &operator=(const skeletonBase &other) = delete;
-                skeletonBase();
-                virtual ~skeletonBase();
+                skeletonBase()=delete;
+                ~skeletonBase()=default;
                 void OfferService();
                 void StopOfferService();
             };

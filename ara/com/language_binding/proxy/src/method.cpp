@@ -11,15 +11,15 @@ namespace ara
             namespace method
             {
                 template <typename output, typename... Params>
-                output MethodBase<output, Params...>::operator()(Params... args)
+                output MethodBase::operator()(Params... args)
                 {
                     this->Delegate->SendRequest(this->ID, args...);
                     output in ;
                     this->Delegate->ReceiveMessage(in);
                     return in;
                 }
-                template <typename output, typename... Params>
-                MethodBase<output, Params...>::MethodBase(std::shared_ptr<ara::com::NetworkBindingBase>ptr, uint16_t id) : Delegate(ptr), ID(id)
+                
+                MethodBase::MethodBase(std::shared_ptr<ara::com::NetworkBindingBase>ptr, uint16_t id) : Delegate(ptr), ID(id)
                 {}
             }
         }

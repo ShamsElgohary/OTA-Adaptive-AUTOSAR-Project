@@ -20,15 +20,15 @@ namespace ara
         class NetworkBindingBase
         {
         public:
-            static std::shared_ptr<NetworkBindingBase> Bind(int serviceId, int instanceId);
-
+            NetworkBindingBase() = default;
+            ~NetworkBindingBase() = default;
             template <typename... Params>
-            void SendRequest(uint32_t methodID, Params... args);
+            void SendRequest(uint32_t methodID, Params... args){}
             template <typename T>
-            void ReceiveMessage(T &in);
+            void ReceiveMessage(T &in){}
 
-            virtual void OfferService();
-            void StopOfferService();
+            virtual void OfferService(){}
+            virtual void StopOfferService(){}
             int get_method_id();
         };
         /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,6 +54,7 @@ namespace ara
             SomeIpNetworkBinding(int service_id, int instance_id, string ip, int port);
 
             void OfferService() override;
+            void StopOfferService()override;
 
             template <typename... Params>
             void SendRequest(uint32_t methodID, Params... args);

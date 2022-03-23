@@ -19,10 +19,10 @@ namespace ara
                     std::shared_ptr<ara::com::NetworkBindingBase> ptr2bindingProtocol;
                     const ara::com::InstanceIdentifier &GetInstanceId() const;
                     HandleType()=default;
-                    HandleType(const HandleType &);
-                    HandleType &operator=(const HandleType &);
-                    HandleType(HandleType &&);
-                    HandleType &operator=(HandleType &&);
+                    HandleType(const HandleType &)=default;
+                    HandleType &operator=(const HandleType &)=default;
+                    HandleType(HandleType &&)=default;
+                    HandleType &operator=(HandleType &&)=default;
                     ~HandleType() noexcept =default;
                     friend class ProxyBase;
                 };
