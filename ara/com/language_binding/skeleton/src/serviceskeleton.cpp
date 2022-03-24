@@ -45,8 +45,8 @@ namespace ara
                 : instanceID{instanceID}, serviceID{serviceID}, mode{mode}
             {
                 //parsing to get ip and port type of network binding
-                string ip = parse("service_manifest.json", instanceId, serviceID, "ipv4");
-                int port = parse("service_manifest.json", instanceId, serviceID);
+                string ip = "192.168. 0.1";//parse("service_manifest.json", instanceId, serviceID, "ipv4");
+                int port = 3000 ;//parse("service_manifest.json", instanceId, serviceID);
 
                 this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, ip, port);
             }

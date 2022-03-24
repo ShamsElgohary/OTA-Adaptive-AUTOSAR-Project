@@ -50,7 +50,7 @@ namespace ara
 
         int NetworkBindingBase::get_method_id()
         {
-            std::cout << "GET_METHOD_ID" << std::endl;
+            // std::cout << "GET_METHOD_ID" << std::endl;
             return 1;
         }
 

@@ -7,7 +7,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "*.cpp",
+                "ara/com/language_binding/proxy/src/*.cpp ara/com/language_binding/skeleton/src/*.cpp ara/com/network_binding/NetworkBinding.cpp ara/com/network_binding/SomeIp/*.cpp ara/com/network_binding/SomeIp/servicediscovery/lib/src/*.cpp ara/test/Server/main.cpp",
                 "-o",
                 "${fileDirname}/em" ,
                 "-lboost_filesystem",
