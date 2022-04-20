@@ -2,7 +2,7 @@
 #include "../../../include/types.hpp"
 #include "../../../network_binding/NetworkBinding.hpp"
 #include<fstream>
-#include <jsoncpp/json/json.h>
+#include "../../../../../jsoncpp/header/json.h"
 namespace ara
 {
     namespace com

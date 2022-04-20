@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 set (CMAKE_CXX_STANDARD 17)
+project(Adaptive_platform)
 
 ###############################EM###############################
-project(Adaptive_platform)
 
 set(exec_source_dir "${CMAKE_SOURCE_DIR}/ara/exec")
 set(em_install_dir "${CMAKE_SOURCE_DIR}/executables/em/bin")
@@ -56,7 +56,15 @@ add_library(iam_lib STATIC ${IAM_LIB_SRC_FILES} )
 target_link_libraries(iam_lib  Boost::filesystem Boost::program_options Boost::serialization)
 
 target_include_directories(iam_lib PUBLIC  ${iam_source_dir}/lib/include )
+
+################################jsoncpp_lib##########################
+
+set(jsoncpp_dir "${CMAKE_SOURCE_DIR}/jsoncpp")
+add_library(jsoncpp_lib STATIC ${jsoncpp_dir}/src/jsoncpp.cpp)
+target_include_directories(jsoncpp_lib PUBLIC ${jsoncpp_dir}/jsoncpp/header)
+
 ################################COM_LIB##########################
+
 set(com_source_dir "${CMAKE_SOURCE_DIR}/ara/com")
 file(GLOB_RECURSE COM_Proxy_SRC_FILES ${com_source_dir}/language_binding/proxy/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE COM_Skeleton_SRC_FILES ${com_source_dir}/language_binding/skeleton/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
@@ -65,7 +73,7 @@ file(GLOB_RECURSE COM_SomeIp_SRC_FILES ${com_source_dir}/network_binding/SomeIp/
 file(GLOB_RECURSE COM_serviceDiscovery_SRC_FILES ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 
 add_library(com_lib STATIC ${COM_Proxy_SRC_FILES} ${COM_Skeleton_SRC_FILES} ${COM_NetworkBinding_SRC_FILES} ${COM_SomeIp_SRC_FILES} ${COM_serviceDiscovery_SRC_FILES} )
-target_link_libraries(com_lib Boost::filesystem Boost::program_options Boost::serialization)
+target_link_libraries(com_lib Boost::filesystem Boost::program_options Boost::serialization jsoncpp_lib)
 
 target_include_directories(
         com_lib PUBLIC  ${com_source_dir}/language_binding/proxy/include  
@@ -75,19 +83,31 @@ target_include_directories(
         ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include
         ) 
 
+################################SomeIP_SD##########################
+
+set(someIp_SD_install_dir "${CMAKE_SOURCE_DIR}/executables/someIp_SD/bin")
+
+file(GLOB_RECURSE COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES ${com_source_dir}/network_binding/SomeIp/servicediscovery/src/sd-main.cpp )
+add_executable(someip_SD ${COM_serviceDiscovery_SRC_FILES} ${COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES})
+target_link_libraries(someip_SD com_lib)
+target_include_directories(someip_SD PUBLIC ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include ) 
+install(TARGETS someip_SD RUNTIME DESTINATION ${someIp_SD_install_dir})
+
 ################################COM_test##########################
+
 set(test_server_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Server")
 add_executable(test_server ${test_server_source_dir}/main.cpp ) 
+target_link_libraries(test_server com_lib )
 target_include_directories( test_server PUBLIC ${test_server_source_dir} )
-target_link_libraries(test_server com_lib)
 install(TARGETS test_server RUNTIME DESTINATION ${test_server_source_dir})
 
-# set(test_client_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Client")
-# add_executable(test_client ${test_client_source_dir}/main.cpp) 
-# target_include_directories( test_client PUBLIC ${test_client_source_dir})
-# target_link_libraries(test_client com_lib)
-# install(TARGETS test_client RUNTIME DESTINATION ${test_client_source_dir})
+set(test_client_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Client")
+add_executable(test_client ${test_client_source_dir}/main.cpp) 
+target_include_directories( test_client PUBLIC ${test_client_source_dir})
+target_link_libraries(test_client com_lib)
+install(TARGETS test_client RUNTIME DESTINATION ${test_client_source_dir})
 
+##################################################################
 
 # project(sm)
 
