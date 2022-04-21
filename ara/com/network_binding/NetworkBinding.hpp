@@ -50,8 +50,8 @@ namespace ara
 
         public:
 
-            SomeIpNetworkBinding(string ip, int port);
-            SomeIpNetworkBinding(int service_id, int instance_id, string ip, int port ,someip::EndUserType type);
+            SomeIpNetworkBinding(string ip, uint16_t port);
+            SomeIpNetworkBinding(int service_id, int instance_id, string ip, uint16_t port ,someip::EndUserType type);
 
             void OfferService() override;
             void StopOfferService()override;

@@ -63,7 +63,7 @@ add_library(jsoncpp_lib STATIC ${jsoncpp_dir}/src/jsoncpp.cpp)
 target_include_directories(jsoncpp_lib PUBLIC ${jsoncpp_dir}/jsoncpp/header)
 
 ################################COM_LIB##########################
-
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 set(com_source_dir "${CMAKE_SOURCE_DIR}/ara/com")
 file(GLOB_RECURSE COM_Proxy_SRC_FILES ${com_source_dir}/language_binding/proxy/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE COM_Skeleton_SRC_FILES ${com_source_dir}/language_binding/skeleton/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
@@ -86,6 +86,7 @@ target_include_directories(
 
 set(someIp_SD_install_dir "${CMAKE_SOURCE_DIR}/executables/someIp_SD/bin")
 set(COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES "${com_source_dir}/network_binding/SomeIp/servicediscovery/src")
+
 add_executable(someip_SD ${COM_serviceDiscovery_SRC_FILES} ${COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES}/sd-main.cpp)
 target_link_libraries(someip_SD com_lib)
 target_include_directories(someip_SD PUBLIC ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include ) 

@@ -41,13 +41,12 @@ namespace ara
                 }
             }
 
-            skeletonBase::skeletonBase(ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode)
+            skeletonBase::skeletonBase(ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceID, ara::com::MethodCallProcessingMode mode)
                 : instanceID{instanceID}, serviceID{serviceID}, mode{mode}
             {
                 //parsing to get ip and port type of network binding
                 string ip = "127.0.0.1 ";//parse("service_manifest.json", instanceId, serviceID, "ipv4");
-                int port = 2000 ;//parse("service_manifest.json", instanceId, serviceID);
-
+                uint16_t port = 2000 ;//parse("service_manifest.json", instanceId, serviceID);
                 this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, ip, port ,someip::EndUserType::SERVER);
             }
             void skeletonBase::OfferService()

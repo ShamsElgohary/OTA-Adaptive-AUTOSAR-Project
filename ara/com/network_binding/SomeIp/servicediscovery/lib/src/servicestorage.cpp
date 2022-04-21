@@ -73,7 +73,7 @@ std::vector<serviceinfo> servicestorage::SearchServiceRegistry(uint16_t Service_
     }
 }
 
-serviceinfo servicestorage::SetServiceInfo(uint16_t Instance_ID, std::string ipv4_address, uint8_t port_num)
+serviceinfo servicestorage::SetServiceInfo(uint16_t Instance_ID, std::string ipv4_address, uint16_t port_num)
 {
     serviceinfo s1;
     s1.Instance_ID = Instance_ID;

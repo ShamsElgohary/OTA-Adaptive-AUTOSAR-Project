@@ -65,7 +65,8 @@ int main()
         {
             
             std::vector<serviceinfo> rtn;
-            cout<<IID<<endl ;
+            cout<<"Inatance ID: "<<IID<<endl ;
+            cout<<"Service ID: "<<SID<<endl ;
             rtn = servicestorage::SearchServiceRegistry(SID, IID); // return typeee
 
            
@@ -75,6 +76,7 @@ int main()
             std::vector<uint16_t> port_num;
             for (auto itr = rtn.begin(); itr != rtn.end(); ++itr)
             {
+                
                 cout<<itr->Instance_ID<<endl<< itr->ipv4_address<<endl<<itr->port_num<<endl ;
                 instance_ids.push_back(itr->Instance_ID);
                 addresses.push_back(itr->ipv4_address);

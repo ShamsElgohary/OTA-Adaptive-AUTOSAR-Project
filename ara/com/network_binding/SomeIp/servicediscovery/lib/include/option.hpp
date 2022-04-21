@@ -29,7 +29,7 @@ class ipv4_endpoint_option:public option
   uint8_t l4_proto;
   uint16_t port_num;
   public:
-  ipv4_endpoint_option(string ipv4_address , uint8_t port_num);
+  ipv4_endpoint_option(string ipv4_address , uint16_t port_num);
   void setOptionLength(uint16_t length);
   void setOptionType(uint8_t type);
   void setIPV4Address(string ipv4_address );

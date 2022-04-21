@@ -28,7 +28,7 @@ void ipv4_endpoint_option::setPortNum(uint16_t port_num)  //not known  ((defined
    this->port_num=port_num;
 }
 
-ipv4_endpoint_option::ipv4_endpoint_option(std::string ipv4_address, uint8_t port_num)
+ipv4_endpoint_option::ipv4_endpoint_option(std::string ipv4_address, uint16_t port_num)
 {
     this->ipv4_address=ipv4_address;
     this->port_num=port_num;

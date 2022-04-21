@@ -51,8 +51,9 @@ namespace ara
                     }
                 }
 
-                PackageManagerSkeleton(InstanceID I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(1, I_id, mode)
+                PackageManagerSkeleton(ara::com::InstanceIdentifier  I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(1, I_id, mode)
                 {
+
                 }
             };
         }
@@ -62,8 +63,9 @@ namespace ara
 class Imp : public ara::ucm::pkgmgr::PackageManagerSkeleton
 {
 public:
-    Imp(InstanceID I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : PackageManagerSkeleton(I_id, mode)
+    Imp(ara::com::InstanceIdentifier  I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : PackageManagerSkeleton(I_id, mode)
     {
+
     }
 
     inline AddOutput Add(uint64_t a, uint64_t b) override
