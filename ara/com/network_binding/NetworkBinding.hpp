@@ -45,13 +45,13 @@ namespace ara
 
         boost::asio::io_service io_service;
         // TEST
-        someip::SomeIpConfiguration someipConfig{someip::TransportProtocol::TCP, someip::EndUserType::CLIENT};
-        std::shared_ptr<someip::someipConnection> clientInstance = someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig);
+        someip::SomeIpConfiguration someipConfig;
+        std::shared_ptr<someip::someipConnection> clientInstance ;
 
         public:
 
             SomeIpNetworkBinding(string ip, int port);
-            SomeIpNetworkBinding(int service_id, int instance_id, string ip, int port);
+            SomeIpNetworkBinding(int service_id, int instance_id, string ip, int port ,someip::EndUserType type);
 
             void OfferService() override;
             void StopOfferService()override;

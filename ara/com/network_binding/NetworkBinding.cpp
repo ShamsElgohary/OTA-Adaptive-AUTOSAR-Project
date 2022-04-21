@@ -11,8 +11,12 @@ namespace ara
         /////////////////////////////////////////////////////////////////////////////////////////////////
         SomeIpNetworkBinding::SomeIpNetworkBinding(string ip, int port) : ip{ip}, port{port} {}
 
-        SomeIpNetworkBinding::SomeIpNetworkBinding(int service_id, int instance_id, string ip, int port) :
-                    ip{ip}, port{port}, serviceId{service_id}, InstanceId{instance_id} {}
+        SomeIpNetworkBinding::SomeIpNetworkBinding(int service_id, int instance_id, string ip, int port ,someip::EndUserType type) :
+                    ip{ip}, port{port}, serviceId{service_id}, InstanceId{instance_id},someipConfig{someip::TransportProtocol::TCP, type},
+                    clientInstance{someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig)} {
+
+                        ;
+                    }
 
 
 

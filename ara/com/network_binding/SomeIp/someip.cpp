@@ -1,9 +1,8 @@
 #include "someip.hpp"
 
-
 using namespace boost::asio::ip;
-using boost::asio::ip::udp;
 using boost::asio::ip::address;
+using boost::asio::ip::udp;
 
 using namespace std;
 
@@ -12,28 +11,27 @@ namespace someip
 
 	////////////////////////////// HANDLES FOR ASYNCH OPERATIONS ///////////////////////////////////////
 
-
-		/* USED AS A HANDLE IN THE SOCKET FOR ASYNCHRONOUS MESSAGES */
-	void OnSendCompleted(boost::system::error_code ec, size_t bytes_transferred) {
-    if (ec)
-        std::cout << "Send failed: " << ec.message() << "\n";
-    else
-        std::cout << "Send succesful (" << bytes_transferred << " bytes)\n";
+	/* USED AS A HANDLE IN THE SOCKET FOR ASYNCHRONOUS MESSAGES */
+	void OnSendCompleted(boost::system::error_code ec, size_t bytes_transferred)
+	{
+		if (ec)
+			std::cout << "Send failed: " << ec.message() << "\n";
+		else
+			std::cout << "Send succesful (" << bytes_transferred << " bytes)\n";
 	}
 
-			/* USED AS A HANDLE IN THE SOCKET FOR ASYNCHRONOUS MESSAGES */
-	void OnReceiveCompleted(boost::system::error_code ec, size_t bytes_transferred) {
-    if (ec)
-        std::cout << "Receive Failed: " << ec.message() << "\n";
-    else
-        std::cout << "Receive Successful (" << bytes_transferred << " bytes)\n";
+	/* USED AS A HANDLE IN THE SOCKET FOR ASYNCHRONOUS MESSAGES */
+	void OnReceiveCompleted(boost::system::error_code ec, size_t bytes_transferred)
+	{
+		if (ec)
+			std::cout << "Receive Failed: " << ec.message() << "\n";
+		else
+			std::cout << "Receive Successful (" << bytes_transferred << " bytes)\n";
 	}
-
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////  SOMEIP CLIENT  	/////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-
+	///////////////////////////////////  SOMEIP CLIENT  	/////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	someipConnection::someipConnection(SomeIpConfiguration someipConfig)
 	{
@@ -52,11 +50,11 @@ namespace someip
 	}
 
 	std::shared_ptr<someipConnection> someipConnection::SetSomeIpConfiguration(
-		boost::asio::io_service& io_service, 
-		uint16_t port, 	 
-		SomeIpConfiguration someipConfig, 
-		std::string IPv4 )
-		
+		boost::asio::io_service &io_service,
+		uint16_t port,
+		SomeIpConfiguration someipConfig,
+		std::string IPv4)
+
 	{
 		shared_ptr<someipConnection> endUserInstance;
 
@@ -119,33 +117,30 @@ namespace someip
 	/* CONNECT PROXY TO SERVER */
 	bool someipConnection::ProxyConnect()
 	{
-		// METHOD RELATED TO CLIENTS ONLY 
-		std::cout<< " WRONG INSTANCE CALLED... \n";
+		// METHOD RELATED TO CLIENTS ONLY
+		std::cout << " WRONG INSTANCE CALLED... \n";
 		return false;
-	}	
+	}
 
 	/* SERVER LISTENING */
 	void someipConnection::ServerListen()
 	{
-		std::cout<< " WRONG INSTANCE CALLED... \n";
+		std::cout << " WRONG INSTANCE CALLED... \n";
 		// METHOD RELATED TO SERVER ONLY
 	}
 
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////// 		TCP 	/////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////// 		TCP 	/////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////  someipTCP CLASS    ///////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////  someipTCP CLASS    ///////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/* CONSTRUCTOR */
-	someipTCP::someipTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4)			
+	someipTCP::someipTCP(boost::asio::io_service &io_service, uint16_t port, std::string IPv4)
 		: tcpSocket(io_service), tcp_io_service(io_service)
 	{
 		auto ip = address::from_string(IPv4);
@@ -153,14 +148,13 @@ namespace someip
 		this->tcpEndPoint = boost::asio::ip::tcp::endpoint(ip, port);
 	}
 
-
 	/* USED TO CONSTRUCT AN INSTANCE IN THE SOMEIP ENDUSER CLASS */
 	someipTCP::someipTCP(
-		boost::asio::io_service& io_service, 
-		uint16_t port, 
+		boost::asio::io_service &io_service,
+		uint16_t port,
 		SomeIpConfiguration someipConfig,
-		std::string IPv4)		
-		: tcpSocket(io_service), tcp_io_service(io_service), someipConnection(someipConfig) 
+		std::string IPv4)
+		: tcpSocket(io_service), tcp_io_service(io_service), someipConnection(someipConfig)
 	{
 		auto ip = address::from_string(IPv4);
 		this->port = port;
@@ -174,15 +168,14 @@ namespace someip
 		tcpSocket.close();
 	}
 
-
 	someipMessage someipTCP::SendRequest(someipMessage &req)
 	{
-		if( req.header.getMessageType() != MessageType::REQUEST )
+		if (req.header.getMessageType() != MessageType::REQUEST)
 		{
-			std::cout<< " MESSAGE TYPE ISN'T REQUEST MESSAGE " << std::endl;
+			std::cout << " MESSAGE TYPE ISN'T REQUEST MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
 			someipMessage msg;
-			//return msg;
+			// return msg;
 		}
 
 		/* SEND MESSAGE */
@@ -191,37 +184,35 @@ namespace someip
 		/* RESPONSE */
 		someipMessage responseMsg = this->ReceiveMessage();
 
-		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
+		if (responseMsg.header.getMessageType() != MessageType::RESPONSE)
 		{
-			std::cout<< " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
+			std::cout << " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
 			someipMessage msg;
-			//return msg;
+			// return msg;
 		}
 
 		return responseMsg;
 	}
 
-
-    bool someipTCP::SendResponse(someipMessage &responseMsg)
+	bool someipTCP::SendResponse(someipMessage &responseMsg)
 	{
-		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
+		if (responseMsg.header.getMessageType() != MessageType::RESPONSE)
 		{
-			std::cout<< " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
-			//return false;
+			std::cout << " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
+			// return false;
 		}
 
 		bool operationStatus = this->SendMessage(responseMsg);
 		return operationStatus;
 	}
 
-
 	/* REQUEST NO RESPONSE */
 	bool someipTCP::SendFireAndForget(someipMessage &msg)
 	{
-		if( msg.header.getMessageType() != MessageType::REQUEST_NO_RETURN )
+		if (msg.header.getMessageType() != MessageType::REQUEST_NO_RETURN)
 		{
-			std::cout<< " MESSAGE TYPE ISN'T REQUEST NO RETURN MESSAGE " << std::endl;
+			std::cout << " MESSAGE TYPE ISN'T REQUEST NO RETURN MESSAGE " << std::endl;
 		}
 
 		this->SendMessage(msg);
@@ -230,115 +221,115 @@ namespace someip
 
 	bool someipTCP::SendNotification(someipMessage &msg)
 	{
-		if( msg.header.getMessageType() != MessageType::NOTIFICATION )
+		if (msg.header.getMessageType() != MessageType::NOTIFICATION)
 		{
-			std::cout<< " MESSAGE TYPE ISN'T NOTIFICATION " << std::endl;
+			std::cout << " MESSAGE TYPE ISN'T NOTIFICATION " << std::endl;
 		}
 
 		this->SendMessage(msg);
 		return true;
 	}
 
-
 	/* FUNCTION TO SEND A SOME/IP MESSAGE USING TCP SYNCHRONOUS */
 	bool someipTCP::SendMessage(someipMessage &msg)
 	{
-		try {
+		try
+		{
 			Serializer serializer;
 			std::stringstream ss;
-			// SERIALIZE SOMEIP MESSAGE STRUCT  
+			// SERIALIZE SOMEIP MESSAGE STRUCT
 			serializer.Serialize(ss, &msg);
 			std::string mssgBuf = ss.str();
-			tcpSocket.write_some( boost::asio::buffer(mssgBuf) );
-
-		}catch ( boost::system::system_error e) {
+			tcpSocket.write_some(boost::asio::buffer(mssgBuf));
+		}
+		catch (boost::system::system_error e)
+		{
 			std::cout << e.what() << "\n";
 			return false; // MESSAGE NOT SENT
 		}
 
 		return true;
-
 	}
-
 
 	/* FUNCTION TO RECEIVE A SOME/IP MESSAGE USING TCP */
 	someipMessage someipTCP::ReceiveMessage()
 	{
 		someipMessage someipMsg;
 
-		try {
+		try
+		{
 
 			char buff[512];
 			size_t read = tcpSocket.read_some(boost::asio::buffer(buff));
 			std::string mssgBuf = buff;
 			std::stringstream ss;
-			ss<< mssgBuf;
+			ss << mssgBuf;
 			Deserializer deserializer;
-			// DESERIALIZE SOMEIP MESSAGE STRUCT  
+			// DESERIALIZE SOMEIP MESSAGE STRUCT
 			deserializer.Deserialize(ss, &someipMsg);
-
-		}catch ( boost::system::system_error e) {
+		}
+		catch (boost::system::system_error e)
+		{
 			std::cout << e.what() << "\n";
 			someipMsg.header;
 			// MESSAGE NOT READ
 		}
 
-	   return someipMsg;
+		return someipMsg;
 	}
-
-
 
 	/* FUNCTION TO SEND A SOME/IP MESSAGE USING TCP SYNCHRONOUS */
 	bool someipTCP::SendMessageAsynch(someipMessage &msg)
 	{
-		try {
-			
+		try
+		{
+
 			Serializer serializer;
 			std::stringstream ss;
-			// SERIALIZE SOMEIP MESSAGE STRUCT  
+			// SERIALIZE SOMEIP MESSAGE STRUCT
 			serializer.Serialize(ss, &msg);
 			std::string mssgBuf = ss.str();
-			tcpSocket.async_write_some( boost::asio::buffer(mssgBuf), &OnSendCompleted );
-			// IMPORTANT FOR ASYNCHRONOUS OPERATIONS 
+			tcpSocket.async_write_some(boost::asio::buffer(mssgBuf), &OnSendCompleted);
+			// IMPORTANT FOR ASYNCHRONOUS OPERATIONS
 			tcp_io_service.run();
-
-		}catch ( boost::system::system_error e) {
+		}
+		catch (boost::system::system_error e)
+		{
 			std::cout << e.what() << "\n";
 			return false; // MESSAGE NOT SENT
 		}
 
 		return true;
-
 	}
-
 
 	/* FUNCTION TO RECEIVE A SOME/IP MESSAGE USING TCP */
 	someipMessage someipTCP::ReceiveMessageAsynch()
 	{
 		someipMessage someipMsg;
 
-		try {
+		try
+		{
 
 			char buff[512];
 			tcpSocket.async_read_some(boost::asio::buffer(buff), &OnReceiveCompleted);
-			// IMPORTANT FOR ASYNCHRONOUS OPERATIONS 
+			// IMPORTANT FOR ASYNCHRONOUS OPERATIONS
 			tcp_io_service.run();
 			std::string mssgBuf = buff;
 			std::stringstream ss;
-			ss<< mssgBuf;
+			ss << mssgBuf;
 			Deserializer deserializer;
-			// DESERIALIZE SOMEIP MESSAGE STRUCT  
+			// DESERIALIZE SOMEIP MESSAGE STRUCT
 			deserializer.Deserialize(ss, &someipMsg);
-
-		}catch ( boost::system::system_error e) {
+		}
+		catch (boost::system::system_error e)
+		{
 			std::cout << e.what() << "\n";
 			someipMsg.header;
 			// MESSAGE NOT READ
 		}
 
-	   return someipMsg;
+		return someipMsg;
 	}
-
 
 	bool someipTCP::OpenConnection()
 	{
@@ -353,59 +344,55 @@ namespace someip
 		return true;
 	}
 
-	
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////  SOMEIP TCP SERVER   ////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////  SOMEIP TCP SERVER   ////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-	ServerTCP::ServerTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4)			
-		: 
-		acceptor(io_service, boost::asio::ip::tcp::endpoint(address::from_string(IPv4), port)), 			
-		someipTCP(io_service, port, IPv4)
+	ServerTCP::ServerTCP(boost::asio::io_service &io_service, uint16_t port, std::string IPv4)
+		: acceptor(io_service, boost::asio::ip::tcp::endpoint(address::from_string(IPv4), port)),
+		  someipTCP(io_service, port, IPv4)
 	{
 		// CONSTRUCTOR
 	}
-
 
 	/* USED TO CONSTRUCT AN INSTANCE IN THE SOMEIP ENDUSER CLASS */
 	ServerTCP::ServerTCP(
-		boost::asio::io_service& io_service, 
-		uint16_t port, 
+		boost::asio::io_service &io_service,
+		uint16_t port,
 		SomeIpConfiguration someipConfig,
-		std::string IPv4)		
-		: 	 
-		acceptor(io_service, boost::asio::ip::tcp::endpoint(address::from_string(IPv4), port)), 			
-		someipTCP(io_service, port, someipConfig, IPv4)
-	{	
+		std::string IPv4)
+		: acceptor(io_service, boost::asio::ip::tcp::endpoint(address::from_string(IPv4), port)),
+		  someipTCP(io_service, port, someipConfig, IPv4)
+	{
 		// CONSTRUCTOR
 	}
 
-
-	void ServerTCP::ServerListen() 
+	void ServerTCP::ServerListen()
 	{
-		try{
-			//waiting for connection
-      		acceptor.accept(this->tcpSocket);
+		try
+		{
+			// waiting for connection
+			acceptor.accept(this->tcpSocket);
 		}
-		catch( boost::system::system_error e) {
+		catch (boost::system::system_error e)
+		{
 			std::cout << e.what() << "\n";
 			std::cout << " ERROR ACCEPTING CONNECTION \n";
 		}
-	
 	}
 
-
-
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////// SOMEIP TCP CLIENT   /////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////// SOMEIP TCP CLIENT   /////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ClientTCP::ClientTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4)			
+	ClientTCP::ClientTCP(boost::asio::io_service &io_service, uint16_t port, std::string IPv4)
 		: someipTCP(io_service, port, IPv4)
 	{
-		try{
-			//CLIENT/PROXY CONNECTION
+		try
+		{
+			// CLIENT/PROXY CONNECTION
+			cout << this->tcpEndPoint.address() << endl<< this->tcpEndPoint.port();
+			cout << endl;
 			tcpSocket.connect(this->tcpEndPoint);
 		}
 		catch (boost::system::system_error e)
@@ -414,18 +401,20 @@ namespace someip
 			std::cout << "CLIENT DIDN'T CONNECT TO SERVER \n";
 		}
 	}
-
 
 	/* USED TO CONSTRUCT AN INSTANCE IN THE SOMEIP ENDUSER CLASS */
 	ClientTCP::ClientTCP(
-		boost::asio::io_service& io_service, 
-		uint16_t port, 
+		boost::asio::io_service &io_service,
+		uint16_t port,
 		SomeIpConfiguration someipConfig,
-		std::string IPv4)		
+		std::string IPv4)
 		: someipTCP(io_service, port, someipConfig, IPv4)
 	{
-		try{
-			//CLIENT/PROXY CONNECTION
+		try
+		{
+			// CLIENT/PROXY CONNECTION
+			cout << this->tcpEndPoint.address() <<endl<< this->tcpEndPoint.port();
+			cout << endl; 
 			tcpSocket.connect(this->tcpEndPoint);
 		}
 		catch (boost::system::system_error e)
@@ -434,14 +423,14 @@ namespace someip
 			std::cout << "CLIENT DIDN'T CONNECT TO SERVER \n";
 		}
 	}
-
 
 	bool ClientTCP::ProxyConnect()
 	{
 		bool opResult = true;
-		try{
+		try
+		{
 
-			//CLIENT/PROXY CONNECTION
+			// CLIENT/PROXY CONNECTION
 			tcpSocket.connect(this->tcpEndPoint);
 		}
 		catch (boost::system::system_error e)
@@ -449,33 +438,25 @@ namespace someip
 			std::cout << e.what() << "\n";
 			std::cout << "CLIENT DIDN'T CONNECT TO SERVER (PROXY CONNECT METHOD) \n";
 			opResult = false;
-
 		}
 
 		return opResult;
 	}
 
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////// 		UDP   	 /////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////// 		UDP   	 /////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-		
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////  SOMEIP UDP  ////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+	///////////////////////////////////  SOMEIP UDP  ////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/* CONSTRUCTOR (+ SOMEIP ENDUSER CONSTRUCTOR)*/
 	someipUDP::someipUDP(
-		boost::asio::io_service& io_service, 
-		uint16_t port, 
+		boost::asio::io_service &io_service,
+		uint16_t port,
 		SomeIpConfiguration someipConfig,
 		std::string IPv4)
 		: udpSocket(io_service, udpEndPoint.protocol()), udp_io_service(io_service), someipConnection(someipConfig)
@@ -490,7 +471,7 @@ namespace someip
 			udpSocket.bind(udpEndPoint);
 		}
 	}
-	
+
 	someipUDP::~someipUDP()
 	{
 		/* DEFAULT DESTRUCTOR */
@@ -498,9 +479,9 @@ namespace someip
 
 	someipMessage someipUDP::SendRequest(someipMessage &req)
 	{
-		if( req.header.getMessageType() != MessageType::REQUEST )
+		if (req.header.getMessageType() != MessageType::REQUEST)
 		{
-			std::cout<< " MESSAGE TYPE ISN'T REQUEST MESSAGE " << std::endl;
+			std::cout << " MESSAGE TYPE ISN'T REQUEST MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
 			someipMessage msg;
 			return msg;
@@ -512,9 +493,9 @@ namespace someip
 		/* RESPONSE */
 		someipMessage responseMsg = this->ReceiveMessage();
 
-		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
+		if (responseMsg.header.getMessageType() != MessageType::RESPONSE)
 		{
-			std::cout<< " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
+			std::cout << " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
 			someipMessage msg;
 			return msg;
@@ -523,12 +504,11 @@ namespace someip
 		return responseMsg;
 	}
 
-
-    bool someipUDP::SendResponse(someipMessage &responseMsg)
+	bool someipUDP::SendResponse(someipMessage &responseMsg)
 	{
-		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
+		if (responseMsg.header.getMessageType() != MessageType::RESPONSE)
 		{
-			std::cout<< " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
+			std::cout << " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
 			return false;
 		}
 
@@ -539,9 +519,9 @@ namespace someip
 	/* REQUEST NO RESPONSE */
 	bool someipUDP::SendFireAndForget(someipMessage &msg)
 	{
-		if( msg.header.getMessageType() != MessageType::REQUEST_NO_RETURN )
+		if (msg.header.getMessageType() != MessageType::REQUEST_NO_RETURN)
 		{
-			std::cout<< " MESSAGE TYPE ISN'T REQUEST NO RETURN MESSAGE " << std::endl;
+			std::cout << " MESSAGE TYPE ISN'T REQUEST NO RETURN MESSAGE " << std::endl;
 		}
 
 		this->SendMessage(msg);
@@ -550,9 +530,9 @@ namespace someip
 
 	bool someipUDP::SendNotification(someipMessage &msg)
 	{
-		if( msg.header.getMessageType() != MessageType::NOTIFICATION )
+		if (msg.header.getMessageType() != MessageType::NOTIFICATION)
 		{
-			std::cout<< " MESSAGE TYPE ISN'T NOTIFICATION " << std::endl;
+			std::cout << " MESSAGE TYPE ISN'T NOTIFICATION " << std::endl;
 		}
 
 		this->SendMessage(msg);
@@ -562,16 +542,18 @@ namespace someip
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING UDP */
 	bool someipUDP::SendMessage(someipMessage &msg)
 	{
-		try {
+		try
+		{
 			// RECEIVER ENDPOINT
 			Serializer serializer;
 			std::stringstream ss;
-			// SERIALIZE SOMEIP MESSAGE STRUCT  
+			// SERIALIZE SOMEIP MESSAGE STRUCT
 			serializer.Serialize(ss, &msg);
 			std::string mssgBuf = ss.str();
 			udpSocket.send_to(boost::asio::buffer(mssgBuf), this->udpEndPoint);
-
-		}catch ( boost::system::system_error e) {
+		}
+		catch (boost::system::system_error e)
+		{
 			std::cout << e.what() << "\n";
 			return false; // MESSAGE NOT SENT
 		}
@@ -579,30 +561,31 @@ namespace someip
 		return true;
 	}
 
-
 	/* FUNCTION TO READ A SOMEIP MESSAGE USING UDP */
 	someipMessage someipUDP::ReceiveMessage()
 	{
 		someipMessage someipMsg;
 
-		try {
+		try
+		{
 			char buff[512];
 			size_t read = udpSocket.receive_from(boost::asio::buffer(buff), this->udpEndPoint);
 			std::string mssgBuf = buff;
 			std::stringstream ss;
-			ss<< mssgBuf;
+			ss << mssgBuf;
 			Deserializer deserializer;
-			// DESERIALIZE SOMEIP MESSAGE STRUCT  
+			// DESERIALIZE SOMEIP MESSAGE STRUCT
 			deserializer.Deserialize(ss, &someipMsg);
-		}catch ( boost::system::system_error e) {
+		}
+		catch (boost::system::system_error e)
+		{
 			std::cout << e.what() << "\n";
 			someipMsg.header;
 			// MESSAGE NOT READ
 		}
 
-	   return someipMsg;
+		return someipMsg;
 	}
-
 
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP ASYNCH */
 	bool someipUDP::SendMessageAsynch(someipMessage &msg)
@@ -610,31 +593,31 @@ namespace someip
 		return true;
 	}
 
-
-	
 	/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP ASYNCH*/
 	someipMessage someipUDP::ReceiveMessageAsynch()
 	{
 		someipMessage someipMsg;
 
-		try {
+		try
+		{
 			char buff[512];
 			size_t read = udpSocket.receive_from(boost::asio::buffer(buff), this->udpEndPoint);
 			std::string mssgBuf = buff;
 			std::stringstream ss;
-			ss<< mssgBuf;
+			ss << mssgBuf;
 			Deserializer deserializer;
-			// DESERIALIZE SOMEIP MESSAGE STRUCT  
+			// DESERIALIZE SOMEIP MESSAGE STRUCT
 			deserializer.Deserialize(ss, &someipMsg);
-		}catch ( boost::system::system_error e) {
+		}
+		catch (boost::system::system_error e)
+		{
 			std::cout << e.what() << "\n";
 			someipMsg.header;
 			// MESSAGE NOT READ
 		}
 
-	   return someipMsg;
+		return someipMsg;
 	}
-
 
 	bool someipUDP::OpenConnection()
 	{
@@ -653,17 +636,17 @@ namespace someip
 	/* SERVER LISTENING */
 	void someipUDP::ServerListen()
 	{
-		std::cout<< "NO CONNECTION ESTABLISHMENT IN UDP "<<std::endl;
+		std::cout << "NO CONNECTION ESTABLISHMENT IN UDP " << std::endl;
 	}
 
 	/* CONNECT PROXY TO SERVER */
 	bool someipUDP::ProxyConnect()
 	{
-		std::cout<< "NO CONNECTION ESTABLISHMENT IN UDP "<<std::endl;
+		std::cout << "NO CONNECTION ESTABLISHMENT IN UDP " << std::endl;
 		return true;
 	}
 
-	// /* CONSTRUCTOR */  
+	// /* CONSTRUCTOR */
 	// someipUDP::someipUDP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4)
 	// 	: udpSocket(io_service, udpEndPoint.protocol()) , udp_io_service(io_service)
 	// {
@@ -672,6 +655,5 @@ namespace someip
 	// 	this->udpEndPoint = boost::asio::ip::udp::endpoint(ip, port);
 
 	// }
-
 
 } // Namespace someip

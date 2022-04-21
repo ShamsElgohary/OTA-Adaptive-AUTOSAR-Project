@@ -26,7 +26,7 @@ int main()
 
         std::shared_ptr<someip::someipConnection> serverUser = someip::someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
 
-        std::cout << "Listening For SD Requests" << std::endl;
+        std::cout << "Listening For SD Requests..." << std::endl;
 
         serverUser->ServerListen();
 
@@ -49,7 +49,7 @@ int main()
         {
             if (TTL == (uint32_t)0xFFFFFF) // offer
             {
-                
+                cout<<IID<<endl<< Address<<endl<<port<<endl ;
                 servicestorage::AddToServiceRegistry(SID, servicestorage::SetServiceInfo(IID, Address, port)); // return struct
             }
             else if (TTL == (uint32_t)0x000000) // stop offer  //only remove from map
@@ -65,6 +65,7 @@ int main()
         {
             
             std::vector<serviceinfo> rtn;
+            cout<<IID<<endl ;
             rtn = servicestorage::SearchServiceRegistry(SID, IID); // return typeee
 
            
@@ -74,6 +75,7 @@ int main()
             std::vector<uint16_t> port_num;
             for (auto itr = rtn.begin(); itr != rtn.end(); ++itr)
             {
+                cout<<itr->Instance_ID<<endl<< itr->ipv4_address<<endl<<itr->port_num<<endl ;
                 instance_ids.push_back(itr->Instance_ID);
                 addresses.push_back(itr->ipv4_address);
                 port_num.push_back(itr->port_num);

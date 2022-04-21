@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 set (CMAKE_CXX_STANDARD 17)
 project(Adaptive_platform)
-
 ###############################EM###############################
 
 set(exec_source_dir "${CMAKE_SOURCE_DIR}/ara/exec")
@@ -86,9 +85,8 @@ target_include_directories(
 ################################SomeIP_SD##########################
 
 set(someIp_SD_install_dir "${CMAKE_SOURCE_DIR}/executables/someIp_SD/bin")
-
-file(GLOB_RECURSE COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES ${com_source_dir}/network_binding/SomeIp/servicediscovery/src/sd-main.cpp )
-add_executable(someip_SD ${COM_serviceDiscovery_SRC_FILES} ${COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES})
+set(COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES "${com_source_dir}/network_binding/SomeIp/servicediscovery/src")
+add_executable(someip_SD ${COM_serviceDiscovery_SRC_FILES} ${COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES}/sd-main.cpp)
 target_link_libraries(someip_SD com_lib)
 target_include_directories(someip_SD PUBLIC ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include ) 
 install(TARGETS someip_SD RUNTIME DESTINATION ${someIp_SD_install_dir})
