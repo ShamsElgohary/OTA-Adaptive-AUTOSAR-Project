@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 set (CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+
 project(Adaptive_platform)
 ###############################EM###############################
 
@@ -63,7 +65,6 @@ add_library(jsoncpp_lib STATIC ${jsoncpp_dir}/src/jsoncpp.cpp)
 target_include_directories(jsoncpp_lib PUBLIC ${jsoncpp_dir}/jsoncpp/header)
 
 ################################COM_LIB##########################
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 set(com_source_dir "${CMAKE_SOURCE_DIR}/ara/com")
 file(GLOB_RECURSE COM_Proxy_SRC_FILES ${com_source_dir}/language_binding/proxy/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE COM_Skeleton_SRC_FILES ${com_source_dir}/language_binding/skeleton/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
