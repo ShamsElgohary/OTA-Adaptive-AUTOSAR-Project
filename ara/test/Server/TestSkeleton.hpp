@@ -2,7 +2,7 @@
 
 #include "../../com/language_binding/skeleton/include/serviceskeleton.hpp"
 #include "../../com/include/types.hpp"
-
+#include "serialization_simple.hpp"
 namespace ara
 {
     namespace ucm
@@ -17,6 +17,15 @@ namespace ara
                 {
                     uint64_t a;
                     uint64_t b;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &a;
+                        ar &b;
+                    }
+                    friend class boost::serialization::access;
                 };
                 ///////////////////////////// PROBLEM //////////////////////////////////
                 struct AddOutput
@@ -36,24 +45,31 @@ namespace ara
 
                 virtual AddOutput Add(uint64_t a, uint64_t b) = 0;
 
-                inline void handleMethod(int methodID) override
+                void handleMethod() override
                 {
+                    int methodID;
+                    this->ptr2bindingProtocol->ServerListen();
+                    stringstream payload = this->ptr2bindingProtocol->ReceiveMessage(methodID);
+
                     switch (methodID)
                     {
                     case 1:
                     {
                         AddInput ip;
-                        this->ptr2bindingProtocol->ReceiveMessage(ip);
+                        Deserializer2 D;
+                        D.deserialize(payload, ip);
+                        std::cout << ip.a << std::endl;
                         AddOutput op = Add(ip.a, ip.b);
-                        this->ptr2bindingProtocol->SendRequest(1, op);
+                        Serializer2 S;
+                        S.serialize(payload, op);
+                        this->ptr2bindingProtocol->SendRequest(1, payload);
                         break;
                     }
                     }
                 }
 
-                PackageManagerSkeleton(ara::com::InstanceIdentifier  I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(1, I_id, mode)
+                PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(1, I_id, mode)
                 {
-
                 }
             };
         }
@@ -63,9 +79,8 @@ namespace ara
 class Imp : public ara::ucm::pkgmgr::PackageManagerSkeleton
 {
 public:
-    Imp(ara::com::InstanceIdentifier  I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : PackageManagerSkeleton(I_id, mode)
+    Imp(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : PackageManagerSkeleton(I_id, mode)
     {
-
     }
 
     inline AddOutput Add(uint64_t a, uint64_t b) override

@@ -11,35 +11,39 @@ namespace ara
         /////////////////////////////////////////////////////////////////////////////////////////////////
         SomeIpNetworkBinding::SomeIpNetworkBinding(string ip, uint16_t port) : ip{ip}, port{port} {}
 
-        SomeIpNetworkBinding::SomeIpNetworkBinding(int service_id, int instance_id, string ip, uint16_t port ,someip::EndUserType type) :
-                    ip{ip}, port{port}, serviceId{service_id}, InstanceId{instance_id},someipConfig{someip::TransportProtocol::TCP, type},
-                    clientInstance{someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig)} {
-                        
-
-                    }
-
-
-
-        template <typename... Params>
-        void SomeIpNetworkBinding::SendRequest(uint32_t methodID, Params... args)
+        SomeIpNetworkBinding::SomeIpNetworkBinding(int service_id, int instance_id,
+                                                   string ip, uint16_t port, someip::EndUserType type) : ip{ip}, port{port},
+                                                                                                         serviceId{service_id}, InstanceId{instance_id}, someipConfig{someip::TransportProtocol::TCP, type},
+                                                                                                         clientInstance{someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig)}
         {
-            std::stringstream payload;
-            Serializer S;
-            S.Serialize(payload,std::forward<Params>(args)...);
-		    someip::someipHeader header(serviceId, methodID);
-            someip::someipMessage someipMsg(header,payload);
-
-            clientInstance->SendRequest(someipMsg);
         }
-        
-        template <typename T>
-        void SomeIpNetworkBinding::ReceiveMessage(T &in)
+        void SomeIpNetworkBinding::SendRequest(uint32_t methodID, stringstream &s)
         {
+            someip::someipHeader header(serviceId, methodID);
+            someip::someipMessage someipMsg(header, s);
+            cout<<"7"<<endl;
+            clientInstance->SendRequest(someipMsg);
+            cout<<"8"<<endl;
+        }
+        void SomeIpNetworkBinding::ServerListen()
+        {
+            clientInstance->ServerListen();
+        }
+        stringstream SomeIpNetworkBinding::ReceiveMessage(int &method_id)
+        {
+            someip::someipMessage someipMsg = clientInstance->ReceiveMessage();
+            method_id = someipMsg.header.getMethodID();
+            std::stringstream receivedData;
+            receivedData << someipMsg.payload;
+            return receivedData;
+        }
+        stringstream SomeIpNetworkBinding::ReceiveMessage()
+        {
+            clientInstance->ServerListen();
             someip::someipMessage someipMsg = clientInstance->ReceiveMessage();
             std::stringstream receivedData;
             receivedData << someipMsg.payload;
-            Deserializer D;
-            D.Deserialize(receivedData, &in);
+            return receivedData;
         }
 
         void SomeIpNetworkBinding::OfferService()
@@ -52,15 +56,9 @@ namespace ara
             return servicediscovery::find_service(serviceID, instance_id);
         }
 
-        int NetworkBindingBase::get_method_id()
-        {
-            // std::cout << "GET_METHOD_ID" << std::endl;
-            return 1;
-        }
-
         void SomeIpNetworkBinding::StopOfferService()
         {
-            servicediscovery::stop_offer_service(serviceId,InstanceId);
+            servicediscovery::stop_offer_service(serviceId, InstanceId);
         }
 
     }

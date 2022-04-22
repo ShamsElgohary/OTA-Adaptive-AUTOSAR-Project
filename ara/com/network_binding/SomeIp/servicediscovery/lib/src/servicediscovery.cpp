@@ -59,18 +59,18 @@ std::vector<serviceinfo> servicediscovery::find_service(uint16_t service_id, uin
     d.Deserialize(ss, v1);
     d.Deserialize(ss, v2);
     d.Deserialize(ss, v3);
-       for (auto it =v1.begin(); it!=v1.end(); ++it)
-        {
-           cout<<*it<<endl;
-        }
-         for (auto it =v2.begin(); it!=v2.end(); ++it)
-        {
-           cout<<*it<<endl;
-        }
-         for (auto it =v3.begin(); it!=v3.end(); ++it)
-        {
-           cout<<*it<<endl;
-        }
+    // for (auto it =v1.begin(); it!=v1.end(); ++it)
+    // {
+    //     cout<<*it<<endl;
+    // }
+    //     for (auto it =v2.begin(); it!=v2.end(); ++it)
+    // {
+    //     cout<<*it<<endl;
+    // }
+    //     for (auto it =v3.begin(); it!=v3.end(); ++it)
+    // {
+    //     cout<<*it<<endl;
+    // }
     std::vector<serviceinfo> rtn;
       vector<std::string> ::iterator it2=v2.begin();
     vector<std::uint16_t> ::iterator it3=v3.begin();

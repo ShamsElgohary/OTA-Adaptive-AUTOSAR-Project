@@ -62,7 +62,7 @@ namespace ara
                     {
                         break;
                     }
-                    handleMethod(this->ptr2bindingProtocol->get_method_id());
+                    handleMethod();
                 }
             }
             void skeletonBase::StopOfferService()
@@ -73,16 +73,4 @@ namespace ara
     }
 }
 
-// to be generated
-// void Serviceskeleton::handleMethod(int id)
-// {
-//     switch (id)
-//     {
-//     case 1:
-//         input_add in;
-//         this->ptr2bindingProtocol->receive(in.i , in.y);
-//         int out = add(in.i, in.y);
-//         this->ptr2bindingProtocol->send(out);
-//         break;
-//     }
-// }
+

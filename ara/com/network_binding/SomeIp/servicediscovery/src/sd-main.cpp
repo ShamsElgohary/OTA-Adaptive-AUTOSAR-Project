@@ -49,7 +49,6 @@ int main()
         {
             if (TTL == (uint32_t)0xFFFFFF) // offer
             {
-                cout<<IID<<endl<< Address<<endl<<port<<endl ;
                 servicestorage::AddToServiceRegistry(SID, servicestorage::SetServiceInfo(IID, Address, port)); // return struct
             }
             else if (TTL == (uint32_t)0x000000) // stop offer  //only remove from map
@@ -65,8 +64,6 @@ int main()
         {
             
             std::vector<serviceinfo> rtn;
-            cout<<"Inatance ID: "<<IID<<endl ;
-            cout<<"Service ID: "<<SID<<endl ;
             rtn = servicestorage::SearchServiceRegistry(SID, IID); // return typeee
 
            
@@ -96,7 +93,7 @@ int main()
             msg1.payload += ss1.str();
             s.Serialize(ss2, port_num);
             msg1.payload += ss2.str();
-            
+            cout<<msg1.payload<<endl;
             serverUser->SendMessage(msg1);
             break;
         }
