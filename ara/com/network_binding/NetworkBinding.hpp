@@ -28,6 +28,7 @@ namespace ara
             virtual stringstream ReceiveMessage() = 0;
             virtual void SendRequest(uint32_t methodID, stringstream &s) = 0;
             virtual void ServerListen() = 0;
+            virtual void CloseConnection() = 0;
         };
         /////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////// SOMEIP NETWORK BINDING ///////////////////////////////////
@@ -46,15 +47,18 @@ namespace ara
 
         public:
             SomeIpNetworkBinding(string ip, uint16_t port);
-            SomeIpNetworkBinding(int service_id, int instance_id, string ip, uint16_t port, someip::EndUserType type);
+            SomeIpNetworkBinding(serviceIdentifierType service_id, InstanceIdentifier instance_id,
+                                                   string ip, uint16_t port, someip::EndUserType type);
 
             void OfferService() override;
             void StopOfferService() override;
             void ServerListen() override;
             void SendRequest(uint32_t methodID, stringstream &s) override;
+            void CloseConnection() override;
             stringstream ReceiveMessage(int &method_id) override;
             stringstream ReceiveMessage() override;
             static vector<serviceinfo> FindService_SomeIp(int serviceID, ara::com::InstanceIdentifier instance_id = 0xffff);
+
         };
     }
 }

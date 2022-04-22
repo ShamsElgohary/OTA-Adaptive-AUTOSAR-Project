@@ -152,7 +152,7 @@ class someipTCP : public someipConnection {
 	~someipTCP();
 
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
-	bool SendMessage(someipMessage &msg);
+	bool SendMessage(someipMessage &msg) override;
 
 	/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP */
 	someipMessage ReceiveMessage();

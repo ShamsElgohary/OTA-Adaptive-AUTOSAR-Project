@@ -50,18 +50,16 @@ namespace ara
                         {
                             stringstream payload;
                             Serializer2 S;
-                            cout << "1" << endl;
-                            S.serialize(payload, a, b);
-                            cout << payload.str() << endl;
+                            AddInput in;
+                            in.a = a;
+                            in.b = b;
+                            S.serialize(payload,in);
+
                             this->Delegate->SendRequest(this->ID, payload);
                             AddOutput out;
-                            cout << "3" << endl;
                             stringstream out_ss = this->Delegate->ReceiveMessage();
-                            cout << "4" << endl;
                             Deserializer2 D;
                             D.deserialize(out_ss, out);
-                            cout << "5" << endl;
-
                             return out;
                         }
                     };

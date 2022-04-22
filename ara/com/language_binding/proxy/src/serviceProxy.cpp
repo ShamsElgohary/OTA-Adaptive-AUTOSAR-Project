@@ -20,7 +20,7 @@ namespace ara
                 {
                     ProxyBase::HandleType h;
                     h.InstanceID = opVsomeip[i].Instance_ID;
-                    h.ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(opVsomeip[i].ipv4_address, opVsomeip[i].port_num);
+                    h.ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(1, 1, opVsomeip[i].ipv4_address, opVsomeip[i].port_num, someip::EndUserType::CLIENT);
                     vectorOfHandles.push_back(h);
                 }
 
@@ -38,7 +38,7 @@ namespace ara
                     {
                         ProxyBase::HandleType h;
                         h.InstanceID = opVsomeip[i].Instance_ID;
-                        h.ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(opVsomeip[i].ipv4_address, opVsomeip[i].port_num);
+                        h.ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(1, 1, opVsomeip[i].ipv4_address, opVsomeip[i].port_num, someip::EndUserType::CLIENT);
                         vectorOfHandles.push_back(h);
                     }
                     

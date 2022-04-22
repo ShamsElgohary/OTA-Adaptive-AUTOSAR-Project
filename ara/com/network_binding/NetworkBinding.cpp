@@ -11,7 +11,7 @@ namespace ara
         /////////////////////////////////////////////////////////////////////////////////////////////////
         SomeIpNetworkBinding::SomeIpNetworkBinding(string ip, uint16_t port) : ip{ip}, port{port} {}
 
-        SomeIpNetworkBinding::SomeIpNetworkBinding(int service_id, int instance_id,
+        SomeIpNetworkBinding::SomeIpNetworkBinding(serviceIdentifierType service_id, InstanceIdentifier instance_id,
                                                    string ip, uint16_t port, someip::EndUserType type) : ip{ip}, port{port},
                                                                                                          serviceId{service_id}, InstanceId{instance_id}, someipConfig{someip::TransportProtocol::TCP, type},
                                                                                                          clientInstance{someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig)}
@@ -21,10 +21,14 @@ namespace ara
         {
             someip::someipHeader header(serviceId, methodID);
             someip::someipMessage someipMsg(header, s);
-            cout<<"7"<<endl;
-            clientInstance->SendRequest(someipMsg);
-            cout<<"8"<<endl;
+            clientInstance->SendMessage(someipMsg);
         }
+
+        void SomeIpNetworkBinding::CloseConnection()
+        {
+            clientInstance->CloseConnection();
+        }
+
         void SomeIpNetworkBinding::ServerListen()
         {
             clientInstance->ServerListen();
@@ -39,7 +43,6 @@ namespace ara
         }
         stringstream SomeIpNetworkBinding::ReceiveMessage()
         {
-            clientInstance->ServerListen();
             someip::someipMessage someipMsg = clientInstance->ReceiveMessage();
             std::stringstream receivedData;
             receivedData << someipMsg.payload;

@@ -3,6 +3,7 @@
 #include "../../com/language_binding/skeleton/include/serviceskeleton.hpp"
 #include "../../com/include/types.hpp"
 #include "serialization_simple.hpp"
+using namespace std;
 namespace ara
 {
     namespace ucm
@@ -58,14 +59,18 @@ namespace ara
                         AddInput ip;
                         Deserializer2 D;
                         D.deserialize(payload, ip);
-                        std::cout << ip.a << std::endl;
+
                         AddOutput op = Add(ip.a, ip.b);
+                        cout << "SUM: " << op.Sum << endl;
                         Serializer2 S;
-                        S.serialize(payload, op);
-                        this->ptr2bindingProtocol->SendRequest(1, payload);
+                        stringstream result;
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(1, result);
+                        
                         break;
                     }
                     }
+                    this->ptr2bindingProtocol->CloseConnection();
                 }
 
                 PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(1, I_id, mode)

@@ -46,7 +46,7 @@ namespace ara
             {
                 //parsing to get ip and port type of network binding
                 string ip = "127.0.0.1 ";//parse("service_manifest.json", instanceId, serviceID, "ipv4");
-                uint16_t port = 2000 ;//parse("service_manifest.json", instanceId, serviceID);
+                uint16_t port = 2500 ;//parse("service_manifest.json", instanceId, serviceID);
                 this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, ip, port ,someip::EndUserType::SERVER);
             }
             void skeletonBase::OfferService()

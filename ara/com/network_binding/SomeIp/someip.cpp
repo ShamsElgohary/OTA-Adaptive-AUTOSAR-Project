@@ -118,14 +118,14 @@ namespace someip
 	bool someipConnection::ProxyConnect()
 	{
 		// METHOD RELATED TO CLIENTS ONLY
-		std::cout << " WRONG INSTANCE CALLED... \n";
+		std::cout << "WRONG INSTANCE CALLED... \n";
 		return false;
 	}
 
 	/* SERVER LISTENING */
 	void someipConnection::ServerListen()
 	{
-		std::cout << " WRONG INSTANCE CALLED... \n";
+		std::cout << "WRONG INSTANCE CALLED... \n";
 		// METHOD RELATED TO SERVER ONLY
 	}
 
@@ -170,6 +170,8 @@ namespace someip
 
 	someipMessage someipTCP::SendRequest(someipMessage &req)
 	{
+		std::cout << "SR 1" << std::endl;
+		std::cout << req.payload << std::endl;
 		if (req.header.getMessageType() != MessageType::REQUEST)
 		{
 			std::cout << " MESSAGE TYPE ISN'T REQUEST MESSAGE " << std::endl;
@@ -281,6 +283,7 @@ namespace someip
 	/* FUNCTION TO SEND A SOME/IP MESSAGE USING TCP SYNCHRONOUS */
 	bool someipTCP::SendMessageAsynch(someipMessage &msg)
 	{
+		std::cout << "SM 2" << endl;
 		try
 		{
 
