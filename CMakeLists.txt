@@ -60,7 +60,7 @@ target_include_directories(iam_lib PUBLIC  ${iam_source_dir}/lib/include )
 
 ################################jsoncpp_lib##########################
 
-set(jsoncpp_dir "${CMAKE_SOURCE_DIR}/jsoncpp")
+set(jsoncpp_dir "${CMAKE_SOURCE_DIR}/utility/jsoncpp")
 add_library(jsoncpp_lib STATIC ${jsoncpp_dir}/src/jsoncpp.cpp)
 target_include_directories(jsoncpp_lib PUBLIC ${jsoncpp_dir}/jsoncpp/header)
 
@@ -81,7 +81,9 @@ target_include_directories(
         ${com_source_dir}/network_binding
         ${com_source_dir}/network_binding/SomeIp
         ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include
+        ${com_source_dir}/include
         ${com_source_dir}/include 
+        ${CMAKE_SOURCE_DIR}/utility/serialization
         ) 
 
 ################################SomeIP_SD##########################
