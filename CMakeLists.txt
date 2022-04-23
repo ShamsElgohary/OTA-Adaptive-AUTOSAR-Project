@@ -60,7 +60,15 @@ add_library(iam_lib STATIC ${IAM_LIB_SRC_FILES} )
 target_link_libraries(iam_lib  Boost::filesystem Boost::program_options Boost::serialization)
 
 target_include_directories(iam_lib PUBLIC  ${iam_source_dir}/lib/include )
-
+################################CRYPTO_LIB#################################
+project(crypto)
+set(crypto_source_dir "${CMAKE_SOURCE_DIR}/ara/crypto/cryp")
+file(GLOB_RECURSE CRYPTO_LIB_SRC_FILES ${crypto_source_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
+add_library(crypto_lib STATIC ${CRYPTO_LIB_SRC_FILES} )
+target_link_libraries(crypto_lib cryptopp)
+target_include_directories(crypto_lib PUBLIC  ${crypto_source_dir}/include)
+add_executable(crypto_test ${CRYPTO_LIB_SRC_FILES})
+target_link_libraries(crypto_test crypto_lib)
 
 # project(sm)
 

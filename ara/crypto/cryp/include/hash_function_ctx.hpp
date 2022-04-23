@@ -32,16 +32,6 @@ namespace ara
                 void Update (ReadOnlyMemRegion in, int length);
                 std::vector <byte> Finish();           
                 std::vector <byte> GetDigest (std::size_t offset=0);
-                //template <typename Alloc = <implementation-defined>>ara::core::Result<ByteVector<Alloc> > GetDigest (std::size_t offset=0)const noexcept; 
-            };
-
-
-            class CryptoProvider
-            {
-            public:
-                HashFunctionCtx::Uptr CreateHashFunctionCtx(AlgId algId);
-
-            private:
             };
         }
     }
