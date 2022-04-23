@@ -81,6 +81,7 @@ target_include_directories(
         ${com_source_dir}/network_binding
         ${com_source_dir}/network_binding/SomeIp
         ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include
+        ${com_source_dir}/include 
         ) 
 
 ################################SomeIP_SD##########################

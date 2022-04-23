@@ -1,10 +1,7 @@
 #pragma once
-
-#include "../../com/language_binding/proxy/include/serviceProxy.hpp"
-#include "../../com/language_binding/proxy/include/method.hpp"
-#include "../../com/include/types.hpp"
-#include "serialization_simple.hpp"
-
+#include "serviceProxy.hpp"
+#include "method.hpp"
+#include "types.hpp"
 namespace ara
 {
     namespace ucm
@@ -48,18 +45,12 @@ namespace ara
                         Add(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 1) {}
                         AddOutput operator()(uint64_t a, uint64_t b)
                         {
-                            stringstream payload;
-                            Serializer2 S;
+                            
                             AddInput in;
                             in.a = a;
-                            in.b = b;
-                            S.serialize(payload,in);
-
-                            this->Delegate->SendRequest(this->ID, payload);
-                            AddOutput out;
-                            stringstream out_ss = this->Delegate->ReceiveMessage();
-                            Deserializer2 D;
-                            D.deserialize(out_ss, out);
+                            in.b = b;     
+                            AddOutput out;           
+                            process_method_call<AddOutput,AddInput>(in,out);
                             return out;
                         }
                     };
@@ -76,12 +67,10 @@ namespace ara
                     {
                         return ara::com::proxy::ProxyBase::FindService(1);
                     }
-
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
                     {
                         return ara::com::proxy::ProxyBase::FindService(1, InstanceID);
                     }
-
                     methods::Add Add;
                 };
             }
