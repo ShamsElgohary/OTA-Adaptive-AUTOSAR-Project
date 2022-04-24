@@ -1,12 +1,12 @@
 #pragma once
 #include "types.hpp"
-//#include "../com/language_binding/skeleton/include/serviceskeleton.hpp"
+#include "../com/language_binding/skeleton/include/serviceskeleton.hpp"
 
 namespace ara
 {
     namespace sm
     {
-        class UpdateRequest //: public ara::com::skeleton::Serviceskeleton
+        class UpdateRequestSkeleton : public ara::com::skeleton::skeletonBase
         {
         public:
             /** StartUpdateSession **/
@@ -43,11 +43,16 @@ namespace ara
                 uint8_t AppError;
             };
 
-            virtual uint8_t StartUpdateSession() = 0;
-            virtual uint8_t PrepareUpdate(FunctionGroupList FunctionGroups) = 0;
-            virtual uint8_t VerifyUpdate(FunctionGroupList FunctionGroups) = 0;
+            virtual std::future<StartUpdateSessionOutput> StartUpdateSession() = 0;
+            virtual std::future<PrepareUpdateOutput> PrepareUpdate(FunctionGroupList FunctionGroups) = 0;
+            virtual std::future<VerifyUpdateOutput> VerifyUpdate(FunctionGroupList FunctionGroups) = 0;
             virtual void StopUpdateSession() = 0;
 
+            UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(1, I_id, mode)
+            {
+            }
+            inline void handleMethod() override
+            {}
             /*inline void handleMethod(int methodID) override
             {
                 switch (methodID)

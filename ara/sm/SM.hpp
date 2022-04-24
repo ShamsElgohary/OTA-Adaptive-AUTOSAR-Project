@@ -5,6 +5,7 @@
 #include <bits/stdc++.h>
 #include <stdexcept>
 #include <map>
+#include <future>
 #include "UpdateRequestSkeleton.hpp"
 #include "types.hpp"
 
@@ -15,9 +16,12 @@ namespace ara
         class UpdateRequestImpl : public ara::sm::UpdateRequestSkeleton
         {
         public:
-            uint8_t StartUpdateSession();
-            uint8_t PrepareUpdate(FunctionGroupList FunctionGroups);
-            uint8_t VerifyUpdate(FunctionGroupList FunctionGroups);
+            UpdateRequestImpl(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::UpdateRequestSkeleton(I_id, mode)
+            {
+            }
+            std::future<StartUpdateSessionOutput> StartUpdateSession();
+            std::future<PrepareUpdateOutput> PrepareUpdate(FunctionGroupList FunctionGroups);
+            std::future<VerifyUpdateOutput> VerifyUpdate(FunctionGroupList FunctionGroups);
             void StopUpdateSession();
 
         private:

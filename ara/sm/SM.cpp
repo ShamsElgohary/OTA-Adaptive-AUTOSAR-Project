@@ -4,16 +4,22 @@ using namespace ara::sm;
 using namespace ara::exec;
 using namespace std;
 
-uint8_t UpdateRequestImpl::StartUpdateSession()
+std::future<UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateRequestImpl::StartUpdateSession()
 {
     StateClient client{};
+    std::promise<UpdateRequestSkeleton::StartUpdateSessionOutput> promise;
+    UpdateRequestSkeleton::StartUpdateSessionOutput out;
     bool success = client.setState(FunctionGroupState({"MachineState", "Updating"}));
     if(success)
     {
     this->FunctionGroupStates["MachineState"]="Updating";
-    return success;
+    out.AppError=success;
     }
-    else return uint8_t(SM_ApplicationError::kRejected);
+    else
+    out.AppError=uint8_t(SM_ApplicationError::kRejected);
+
+    promise.set_value(out);
+    return promise.get_future();
 }
 void UpdateRequestImpl::StopUpdateSession()
 {
@@ -21,31 +27,37 @@ void UpdateRequestImpl::StopUpdateSession()
     bool success = client.setState(FunctionGroupState({"MachineState", "Running"}));
     this->FunctionGroupStates["MachineState"]="Running";
 }
-uint8_t UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
+std::future<UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
 {
     bool success;
     StateClient client{};
+    std::promise<UpdateRequestSkeleton::PrepareUpdateOutput> promise;
+    UpdateRequestSkeleton::PrepareUpdateOutput out;
     if(this->FunctionGroupStates["MachineState"]=="Updating")
     {
     for (auto fg : FunctionGroups)
     {
         success = client.setState(FunctionGroupState({fg, "Preparing"}));
         if (!success)
-            return uint8_t(SM_ApplicationError::kPrepareFailed);
+            out.AppError=uint8_t(SM_ApplicationError::kPrepareFailed);
         this->FunctionGroupStates[fg]="Preparing";
     }
-    return success;
+    out.AppError=success;
     }
     else
     {
         throw std::string("StartUpdateSession must be called before\n");
-        return (uint8_t)SM_ApplicationError::kRejected;
+        out.AppError=(uint8_t)SM_ApplicationError::kRejected;
     }
+    promise.set_value(out);
+    return promise.get_future();
 }
-uint8_t UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
+std::future<UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
 {
     bool success;
     StateClient client{};
+    std::promise<UpdateRequestSkeleton::VerifyUpdateOutput> promise;
+    UpdateRequestSkeleton::VerifyUpdateOutput out;
     if(this->FunctionGroupStates["MachineState"]=="Updating")
     {
     for (auto fg : FunctionGroups)
@@ -53,18 +65,20 @@ uint8_t UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
         if(this->FunctionGroupStates[fg]!="Preparing")
         {
         throw std::string("PrepareUpdate must be called before");
-        return uint8_t(SM_ApplicationError::kRejected);
+        out.AppError=uint8_t(SM_ApplicationError::kRejected);
         }
         success = client.setState(FunctionGroupState({fg, "Verifying"}));
         if (!success)
-            return  uint8_t(SM_ApplicationError::kVerifyFailed);
+        out.AppError=uint8_t(SM_ApplicationError::kVerifyFailed);
         this->FunctionGroupStates[fg]="Verifying";
     }
-    return success;
+    out.AppError=success;
     }
     else
     {
         throw std::string("StartUpdateSession must be called before\n");
-        return (uint8_t)SM_ApplicationError::kRejected;
+        out.AppError=(uint8_t)SM_ApplicationError::kRejected;
     }
+    promise.set_value(out);
+    return promise.get_future();
 }
