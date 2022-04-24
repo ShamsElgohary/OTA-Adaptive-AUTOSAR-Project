@@ -2,6 +2,19 @@
 #include "serviceProxy.hpp"
 #include "method.hpp"
 #include "types.hpp"
+
+struct s
+{
+    int data;
+
+private:
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar &data;
+    }
+    friend class boost::serialization::access;
+};
 namespace ara
 {
     namespace ucm
@@ -12,15 +25,12 @@ namespace ara
             {
                 struct AddInput
                 {
-                    uint64_t a;
-                    uint64_t b;
-
+                    vector<s> x;
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
                     {
-                        ar &a;
-                        ar &b;
+                        ar &x;
                     }
                     friend class boost::serialization::access;
                 };
@@ -43,14 +53,12 @@ namespace ara
                     {
                     public:
                         Add(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 1) {}
-                        AddOutput operator()(uint64_t a, uint64_t b)
+                        AddOutput operator()(vector<s> x)
                         {
-                            
                             AddInput in;
-                            in.a = a;
-                            in.b = b;     
-                            AddOutput out;           
-                            process_method_call<AddOutput,AddInput>(in,out);
+                            in.x =x ;
+                            AddOutput out;
+                            process_method_call<AddOutput, AddInput>(in, out);
                             return out;
                         }
                     };
