@@ -12,7 +12,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
-
+#include "serialization_simple.hpp"
 
 using namespace std;
 
@@ -25,14 +25,14 @@ namespace ara
 		using UCMIdentifierType = string;
 
 		/* Represents a handle identifier used to reference a particular transfer request */
-		using TransferIdType = array <uint8_t, 16>;
-		//using TransferIdType = uint64_t;		// For Simplicity Right now
+		using TransferIdType = array<uint8_t, 16>;
+		// using TransferIdType = uint64_t;		// For Simplicity Right now
 
 		/* SW Cluster or SW Package shortName attribute inherited from referrable metaClass */
 		using SwNameType = string;
 
 		/* Represents a dynamic size array of Software Cluster names */
-		using  SwNameVectorType = vector<SwNameType>;
+		using SwNameVectorType = vector<SwNameType>;
 
 		/* Primitive type representing SoftwareCluster (SoftwarePackage) version */
 		using StrongRevisionLabelString = string;
@@ -43,7 +43,7 @@ namespace ara
 			SwNameType Name;
 			StrongRevisionLabelString Version;
 
-		}SwNameVersionType;
+		} SwNameVersionType;
 
 		/* Represents a dynamic size array of Software Name and Version */
 		using SwNameVersionVectorType = vector<SwNameVersionType>;
@@ -62,7 +62,6 @@ namespace ara
 
 		};
 
-
 		/* Represents the information of a Software Package */
 		typedef struct
 		{
@@ -73,19 +72,17 @@ namespace ara
 			uint64_t ConsecutiveBytesReceived;
 			uint64_t ConsecutiveBlocksReceived;
 			SwPackageStateType State;
-			
+
 			/* Added on Standerd to represent the path to the JSON File */
 			string JsonPath;
 
-		}SwPackageInfoType;
-
+		} SwPackageInfoType;
 
 		/* Represents a dynamic size array of Software Packages */
 		typedef vector<SwPackageInfoType> SwPackageInfoVectorType;
 
-
 		/* Contains general information related to SoftwareCluster that can be used by Vehicle
-		* Driver Application or Human Interface. */
+		 * Driver Application or Human Interface. */
 		typedef struct
 		{
 			SwNameType Name;
@@ -95,7 +92,7 @@ namespace ara
 			string ReleaseNotes;
 			uint64_t Size;
 
-		}SwDescType;
+		} SwDescType;
 
 		/* Represents a dynamic size array of SoftwareCluster description */
 		typedef vector<SwDescType> SwDescVectorType;
@@ -111,12 +108,22 @@ namespace ara
 		};
 
 		/* Represents the information of a SoftwareCluster */
-		typedef struct
+		struct SwClusterInfoType
 		{
 			SwNameType Name;
 			StrongRevisionLabelString Version;
 			SwClusterStateType State;
-		}SwClusterInfoType;
+
+		private:
+			template <typename Archive>
+			void serialize(Archive &ar, const unsigned int version)
+			{
+				ar &Name;
+				ar &Version;
+				ar &State;
+			}
+			friend class boost::serialization::access;
+		};
 
 		/* Represents a dynamic size array of SoftwareClusters */
 		typedef vector<SwClusterInfoType> SwClusterInfoVectorType;
@@ -136,7 +143,6 @@ namespace ara
 
 		};
 
-
 		/* Represents the UCM action */
 		enum class ActionType : uint8_t
 		{
@@ -144,7 +150,6 @@ namespace ara
 			kInstall = 1U,
 			kRemove = 2U,
 		};
-
 
 		/* Represents the result of UCM action */
 		enum class ResultType : uint8_t
@@ -155,7 +160,7 @@ namespace ara
 		};
 
 		/* Time refers to the activation time of the software cluster. It is represented in milliseconds
-		* of UCMs action resolution since 01.01.1970 (UTC).  */
+		 * of UCMs action resolution since 01.01.1970 (UTC).  */
 		typedef struct
 		{
 			uint64_t Time;
@@ -164,11 +169,10 @@ namespace ara
 			ActionType Action;
 			ResultType Resolution;
 
-		}GetHistoryType;
+		} GetHistoryType;
 
 		/* Represents a list of UCM actions */
 		typedef vector<GetHistoryType> GetHistoryVectorType;
-
 
 		/* Campaign failure type */
 		enum class CampaignFailureType : uint8_t
@@ -181,8 +185,6 @@ namespace ara
 			kCampaignCancelled = 6U,
 
 		};
-
-
 
 		/* UCM Software Package step at which error occurred */
 		enum class SoftwarePackageStepType : uint8_t
@@ -201,14 +203,13 @@ namespace ara
 			SoftwarePackageStepType SoftwarePackageStep;
 			uint8_t ReturnedError;
 
-		}UCMStepErrorType;
+		} UCMStepErrorType;
 
 		typedef struct
 		{
 			CampaignFailureType CampaignFailure;
 			UCMStepErrorType UCMStepError;
-		}CampaignErrorType;
-
+		} CampaignErrorType;
 
 		/* History of an UCM */
 		typedef struct
@@ -216,7 +217,7 @@ namespace ara
 			UCMIdentifierType id;
 			GetHistoryVectorType HistoryVector;
 
-		}HistoryVectorType;
+		} HistoryVectorType;
 
 		/* Campaign history */
 		typedef struct
@@ -249,17 +250,14 @@ namespace ara
 
 		};
 
-
 		/* The type of the Safety Policy */
 		typedef string SafetyPolicyType;
 
-
 		/////////////////////////////////// IMPLEMENTATION SPECIFIC TYPES //////////////////////////////////////
-
 
 		// Shayef nseb da w nktb kol el errors feh w nstkhdmo fe ay operation badl mn3od nkrar el code le kol function lesa el functions kter
 
-		/// &ad yezbat l 
+		/// &ad yezbat l
 		enum class OperationResultType : uint8_t
 		{
 			kSuccess = 0U,
@@ -274,15 +272,13 @@ namespace ara
 			/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 		};
 
-
 		typedef struct
 		{
-			TransferIdType id;		  // Size (in bytes) of the Software Package to be transferred
-			uint32_t BlockSize;		  // Size of the blocks to be received with TransferData method
+			TransferIdType id;						 // Size (in bytes) of the Software Package to be transferred
+			uint32_t BlockSize;						 // Size of the blocks to be received with TransferData method
 			OperationResultType TransferStartResult; // Success or Failure
 
-		}TransferStartReturnType;
+		} TransferStartReturnType;
 
 	}
 }
-

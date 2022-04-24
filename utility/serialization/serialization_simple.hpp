@@ -2,6 +2,7 @@
 #include <iostream>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/array.hpp>
 
 using namespace std;
 class Serializer2
@@ -19,12 +20,18 @@ public:
     boost::archive::text_oarchive oa(ss);
     oa << data;
   }
-  template <typename T ,typename...params>
-  void serialize(stringstream &ss, T &data , params&... args)
+  template <typename T>
+  void serialize(stringstream &ss, array<T, 16> &data)
   {
-    serialize(ss,data);
-    if(sizeof...(args)!=0)
-      serialize(ss,args...);
+    boost::archive::text_oarchive oa(ss);
+    oa << data;
+  }
+  template <typename T, typename... params>
+  void serialize(stringstream &ss, T &data, params &...args)
+  {
+    serialize(ss, data);
+    if (sizeof...(args) != 0)
+      serialize(ss, args...);
   }
 };
 
@@ -43,11 +50,17 @@ public:
     boost::archive::text_iarchive oa(ss);
     oa << data;
   }
-   template <typename T ,typename...params>
-  void deserialize(stringstream &ss, T &data , params&... args)
+  template <typename T>
+  void deserialize(stringstream &ss, array<T, 16> &data)
   {
-    deserialize(ss,data);
-    if(sizeof...(args)!=0)
-      deserialize(ss,args...);
+    boost::archive::text_iarchive oa(ss);
+    oa << data;
+  }
+  template <typename T, typename... params>
+  void deserialize(stringstream &ss, T &data, params &...args)
+  {
+    deserialize(ss, data);
+    if (sizeof...(args) != 0)
+      deserialize(ss, args...);
   }
 };

@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cmath>
 #include <vector>
-#include "../includes/PackageManager.hpp"
+#include "PackageManager.hpp"
 
 using namespace std;
 using namespace ara::ucm;
@@ -11,7 +11,8 @@ int main (void)
 {
     ara::ucm::pkgmgr::PackageManagerImpl PackageManagerInstance(1, ara::com::MethodCallProcessingMode::kEvent);
     string path =  ZIP_PackagesPath + "/PackageTest.zip";
-
+    PackageManagerInstance.OfferService();
+    /*
     ifstream ifs(path, ios::binary | ios::ate);
     ifstream::pos_type pos = ifs.tellg();
     vector<char> result(pos);
@@ -50,7 +51,7 @@ int main (void)
 
     //PackageManagerInstance.Rollback();
 
-    PackageManagerInstance.Finish(); 
+    PackageManagerInstance.Finish(); */
 
     return 0;
 } 

@@ -4,6 +4,7 @@
 #include <array>
 #include "serviceskeleton.hpp"
 #include "serialization_simple.hpp"
+#include "types.hpp"
 
 using namespace std;
 
@@ -19,62 +20,6 @@ namespace ara
                 PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : 
                 skeletonBase(1, I_id, mode)
                 {}
-                using TransferIdType = array<uint8_t, 16>;
-                using ByteVectorType = vector<uint8_t>;
-                using SwNameType = string;
-                using StrongRevisionLabelString = string;
-
-                enum class OperationResultType : uint8_t
-                {
-                    kSuccess = 0U,
-                    kInsufficientMemory = 1U,
-                    kIncorrectBlock = 2U,
-                    kIncorrectSize = 3U,
-                    kInvalidTransferId = 4U,
-                    kOperationNotPermitted = 5U,
-                    kIncorrectBlockSize = 30U,
-                    kInsufficientData = 6U,
-                };
-
-                enum class SwClusterStateType : uint8_t
-                {
-                    kPresent = 0U,
-                    kAdded = 1U,
-                    kUpdated = 2U,
-                    kRemoved = 3U,
-
-                };
-
-                enum class PackageManagerStatusType : uint8_t
-                {
-                    kIdle = 0U,
-                    kReady = 1U,
-                    kProcessing = 2U,
-                    kActivating = 3U,
-                    kActivated = 4U,
-                    kRollingBack = 5U,
-                    kRolledBack = 6U,
-                    kCleaningUp = 7U,
-                    kVerifying = 8U,
-
-                };
-
-                struct SwClusterInfoType
-                {
-                    SwNameType Name;
-                    StrongRevisionLabelString Version;
-                    SwClusterStateType State;
-
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &Name;
-                        ar &Version;
-                        ar &State;
-                    }
-                    friend class boost::serialization::access;
-                };
 
                 /** TransferStart **/
                 struct TransferStartInput
@@ -235,7 +180,7 @@ namespace ara
                 /** GetSwClusterInfo **/
                 struct GetSwClusterInfoOutput
                 {
-                    vector<ara::ucm::SwClusterInfoType> vectorOfClusterInfo;
+                    vector<SwClusterInfoType> vectorOfClusterInfo;
 
                 private:
                     template <typename Archive>
