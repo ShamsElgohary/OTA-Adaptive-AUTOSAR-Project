@@ -9,9 +9,6 @@ ara::log logger;
 namespace ara::ucm::pkgmgr
 {
 
-/* INITIALIZE CURRENT STATUS */
-PackageManagerStatusType PackageManagerImpl::CurrentStatus = PackageManagerStatusType::kIdle;
-
 
 std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferStartOutput> PackageManagerImpl::TransferStart(uint64_t Size)
 {
@@ -21,8 +18,8 @@ std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferStartOutput> PackageMa
 
     TransferStartOutput StartReturn;
     StartReturn.BlockSize = initialReturn.BlockSize;
-    StartReturn.TransferStartResult = initialReturn.TransferStartResult;
-    std::copy(initialReturn.id, initialReturn.id+16, StartReturn.id); //COPY 16 ELEMENTS OF ID FROM initialReturn TO StartReturn
+    StartReturn.TransferStartResult = static_cast<PackageManagerSkeleton::OperationResultType> (initialReturn.TransferStartResult);
+    StartReturn.id = initialReturn.id; //COPY 16 ELEMENTS OF ID FROM initialReturn TO StartReturn
 
     promise.set_value(StartReturn);
     
@@ -34,7 +31,7 @@ std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferStartOutput> PackageMa
 
 
 std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferDataOutput> 
-    PackageManagerImpl::TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter)
+    PackageManagerImpl::TransferData(TransferIdType id, ByteVectorType data, uint64_t blockCounter)
 {
     std::promise<ara::ucm::pkgmgr::PackageManagerImpl::TransferDataOutput> promise;
 
@@ -49,7 +46,7 @@ std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferDataOutput>
 
 
 
-std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferExitOutput>  PackageManagerImpl::TransferExit(TransferIdType &id)
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferExitOutput>  PackageManagerImpl::TransferExit(TransferIdType id)
 {
     std::promise<ara::ucm::pkgmgr::PackageManagerImpl::TransferExitOutput> promise;
 
@@ -63,7 +60,7 @@ std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferExitOutput>  PackageMa
 }
 
 
-std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferDeleteOutput> PackageManagerImpl::TransferDelete(TransferIdType &id)
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferDeleteOutput> PackageManagerImpl::TransferDelete(TransferIdType id)
 {
     std::promise<ara::ucm::pkgmgr::PackageManagerImpl::TransferDeleteOutput> promise;
 
@@ -77,7 +74,7 @@ std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferDeleteOutput> PackageM
 }
 
 
-std::future<ara::ucm::pkgmgr::PackageManagerImpl::ProcessSwPackageOutput> PackageManagerImpl::ProcessSwPackage(TransferIdType &id)
+std::future<ara::ucm::pkgmgr::PackageManagerImpl::ProcessSwPackageOutput> PackageManagerImpl::ProcessSwPackage(TransferIdType id)
 {
     
     std::promise<ara::ucm::pkgmgr::PackageManagerImpl::ProcessSwPackageOutput> promise;
@@ -178,7 +175,8 @@ std::future<ara::ucm::pkgmgr::PackageManagerImpl::GetCurrentStatusField> Package
 {
     std::promise<ara::ucm::pkgmgr::PackageManagerImpl::GetCurrentStatusField> promise;
 
-    ara::ucm::pkgmgr::PackageManagerImpl::GetCurrentStatusField StatusResult{ PackageManagerStateinstance->GetStatusInternal() };
+    ara::ucm::pkgmgr::PackageManagerImpl::GetCurrentStatusField StatusResult;
+    StatusResult.Status = static_cast<PackageManagerSkeleton::PackageManagerStatusType>(PackageManagerStateinstance->GetStatusInternal());
 
     promise.set_value(StatusResult);
 

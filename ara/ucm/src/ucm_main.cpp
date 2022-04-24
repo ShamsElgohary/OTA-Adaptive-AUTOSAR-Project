@@ -9,7 +9,7 @@ using namespace ara::ucm;
 
 int main (void)
 {
-    ara::ucm::pkgmgr::PackageManagerImpl PackageManagerInstance;
+    ara::ucm::pkgmgr::PackageManagerImpl PackageManagerInstance(1, ara::com::MethodCallProcessingMode::kEvent);
     string path =  ZIP_PackagesPath + "/PackageTest.zip";
 
     ifstream ifs(path, ios::binary | ios::ate);

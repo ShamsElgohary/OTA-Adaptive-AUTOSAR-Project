@@ -14,7 +14,7 @@ namespace ara
             private:
 
                 /* State of The Entire UCM PKG */ 
-                PackageManagerStatusType *CurrentStatus;
+                PackageManagerStatusType CurrentStatus;
                 uint8_t SWPackagesCounter=0;
                 static uint16_t ProcessListVersion;
 
@@ -27,13 +27,13 @@ namespace ara
                 };
 
             public:
-                PackageManagerState(PackageManagerStatusType &pkgmgr_CurrentStatus);
+                PackageManagerState(PackageManagerStatusType pkgmgr_CurrentStatus);
                 PackageManagerState();
                 ara::ucm::OperationResultType ActivateInternal();
                 ara::ucm::OperationResultType Cancel(ara::ucm::TransferIdType);
                 ara::ucm::OperationResultType FinishInternal();
                 PackageManagerStatusType GetStatusInternal();
-                ara::ucm::OperationResultType ProcessSwPackageInternal(TransferIdType &id);
+                ara::ucm::OperationResultType ProcessSwPackageInternal(TransferIdType id);
                 ara::ucm::OperationResultType RevertProcessedSwPackages();
                 ara::ucm::OperationResultType RollbackInternal();
                 void DependencyCheck(void);

@@ -61,12 +61,12 @@ namespace ara
                         D.deserialize(payload, ip);
 
                         AddOutput op = Add(ip.a, ip.b);
-                        cout << "SUM: " << op.Sum << endl;
+                        
                         Serializer2 S;
                         stringstream result;
                         S.serialize(result, op);
                         this->ptr2bindingProtocol->SendRequest(1, result);
-                        
+
                         break;
                     }
                     }

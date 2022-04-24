@@ -39,7 +39,7 @@ namespace ara
 					uint32_t GetBlockSize ();
 					string GetTransferPath();
 					SwPackageStateType GetTransferState();
-					void GetTransferId(ara::ucm::TransferIdType &TransferID);			
+					TransferIdType GetTransferId();			
 				
 			};
 
@@ -59,9 +59,9 @@ namespace ara
 
 				/* METHODS RELATED TO THE TRANSFER OPERATION OF THE UCM */
 				static ara::ucm::TransferStartReturnType TransferStartInternal(uint64_t Size);
-				static ara::ucm::OperationResultType  TransferDataInternal(TransferIdType &id, ByteVectorType data, uint64_t blockCounter);
-				static ara::ucm::OperationResultType TransferExitInternal(TransferIdType &id);
-				static ara::ucm::OperationResultType TransferDeleteInternal(TransferIdType &id);
+				static ara::ucm::OperationResultType  TransferDataInternal(TransferIdType id, ByteVectorType data, uint64_t blockCounter);
+				static ara::ucm::OperationResultType TransferExitInternal(TransferIdType id);
+				static ara::ucm::OperationResultType TransferDeleteInternal(TransferIdType id);
 
 				/* METHODS RELATED TO THE TransferInfo OBJECT SINCE DATA IS ENCAPSULATED */
 				
@@ -81,7 +81,7 @@ namespace ara
 				uint32_t GetPackageBlockSize ();
 				string GetPackagePath();
 				SwPackageStateType GetPackageState();
-				void GetPackageId(ara::ucm::TransferIdType &TransferID); 
+				TransferIdType GetPackageId(); 
 				
 			};
 

@@ -8,10 +8,10 @@ using namespace ara::ucm::state;
 
 uint16_t PackageManagerState::ProcessListVersion = 0;
 
-PackageManagerState::PackageManagerState(PackageManagerStatusType &pkgmgr_CurrentStatus)
+PackageManagerState::PackageManagerState(PackageManagerStatusType pkgmgr_CurrentStatus)
 {
     /* CURRENT STATUS IS REFERENCED TO THE STATUS IN THE INTERFACE PACKAGEMANAGER */
-    this->CurrentStatus = &pkgmgr_CurrentStatus;
+    this->CurrentStatus = pkgmgr_CurrentStatus;
 
     json CurrentProcessList;
     std::ifstream JsonInStream (ProcessListPath + "Process_List.json");
@@ -57,14 +57,14 @@ void PackageManagerState::DependencyCheck(void)
 ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 {
 
-    if ((*CurrentStatus) != PackageManagerStatusType::kReady)
+    if ((CurrentStatus) != PackageManagerStatusType::kReady)
     {
         /* PKG not in ready state */
         /*Operation Not Permitted*/
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
 
-    (*CurrentStatus) = PackageManagerStatusType::kActivating;
+    (CurrentStatus) = PackageManagerStatusType::kActivating;
     /* Get all Clusters with kPresent State */
     vector<ara::ucm::SwClusterInfoType> PresentSWCls = SWCLManager::GetPresentSWCLs();
 
@@ -136,7 +136,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
         if(PrepareState == SM_ReceivedStates::kPrepareFailed)
         {
-            (*CurrentStatus) = PackageManagerStatusType::kReady;
+            (CurrentStatus) = PackageManagerStatusType::kReady;
 
             PreActivation Failed Error
 
@@ -147,7 +147,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         {
             if(RejectedCounter == 6 (hash define for rejected counter))
             {
-                (*CurrentStatus) = PackageManagerStatusType::kReady;
+                (CurrentStatus) = PackageManagerStatusType::kReady;
 
                 PreActivation Failed Error
 
@@ -166,12 +166,12 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     do
     {
         SM_ReceivedStates VerifyState = SM::VerifyUpdate(functional_Group);
-        (*CurrentStatus) = PackageManagerStatusType::kVerifing;
+        (CurrentStatus) = PackageManagerStatusType::kVerifing;
 
 
         if(VerifyState == SM_ReceivedStates::kVerifyFailed)
         {
-            (*CurrentStatus) = PackageManagerStatusType::kReady;
+            (CurrentStatus) = PackageManagerStatusType::kReady;
 
             VerificationFailed Failed Error
 
@@ -194,7 +194,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     }while(VerifyState != kVerified);    
 
     */
-    (*CurrentStatus) = PackageManagerStatusType::kActivated;
+    (CurrentStatus) = PackageManagerStatusType::kActivated;
 
     return ara::ucm::OperationResultType::kSuccess;
 
@@ -204,7 +204,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 ara::ucm::OperationResultType PackageManagerState::Cancel(ara::ucm::TransferIdType id)
 {
 
-    if ( (*CurrentStatus) != PackageManagerStatusType::kProcessing)
+    if ( (CurrentStatus) != PackageManagerStatusType::kProcessing)
     {
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
@@ -213,11 +213,11 @@ ara::ucm::OperationResultType PackageManagerState::Cancel(ara::ucm::TransferIdTy
 
     if (SWPackagesCounter == 0)
     {
-        (*CurrentStatus) != PackageManagerStatusType::kIdle;
+        (CurrentStatus) != PackageManagerStatusType::kIdle;
     }
     else 
     {
-        (*CurrentStatus) != PackageManagerStatusType::kReady;
+        (CurrentStatus) != PackageManagerStatusType::kReady;
     }
 
     return ara::ucm::OperationResultType::kSuccess;
@@ -228,21 +228,21 @@ ara::ucm::OperationResultType PackageManagerState::Cancel(ara::ucm::TransferIdTy
 /*remove process list*/
 ara::ucm::OperationResultType PackageManagerState::FinishInternal()
 {
-    if (((*CurrentStatus) != PackageManagerStatusType::kRolledBack) && ((*CurrentStatus) != PackageManagerStatusType::kActivated))
+    if (((CurrentStatus) != PackageManagerStatusType::kRolledBack) && ((CurrentStatus) != PackageManagerStatusType::kActivated))
     {
        return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
 
-    (*CurrentStatus) == PackageManagerStatusType::kCleaningUp;
+    (CurrentStatus) == PackageManagerStatusType::kCleaningUp;
 
     /*if UCM status is activated finish method commit changes*/
-    if ( (*CurrentStatus) == PackageManagerStatusType::kActivated)
+    if ( (CurrentStatus) == PackageManagerStatusType::kActivated)
     {
         ara::ucm::storage::SWCLManager::CommitChanges();
     }
 
     /*if UCM status is krolledback finish method revert changes*/
-    if ( (*CurrentStatus) == PackageManagerStatusType::kRolledBack)
+    if ( (CurrentStatus) == PackageManagerStatusType::kRolledBack)
     {
         ara::ucm::storage::SWCLManager::RevertChanges();
     }
@@ -254,7 +254,7 @@ ara::ucm::OperationResultType PackageManagerState::FinishInternal()
     system(command.c_str());
 
     /*change UCM status into Kcleaningup*/
-    (*CurrentStatus) == PackageManagerStatusType::kIdle;
+    (CurrentStatus) == PackageManagerStatusType::kIdle;
     SWPackagesCounter=0;
     return ara::ucm::OperationResultType::kSuccess;
 
@@ -263,21 +263,21 @@ ara::ucm::OperationResultType PackageManagerState::FinishInternal()
 
 PackageManagerStatusType PackageManagerState::GetStatusInternal()
 {
-    return (*CurrentStatus);
+    return (CurrentStatus);
 }
 
 
-ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(TransferIdType &id)
+ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(TransferIdType id)
 {
     /* ONLY ONE PACKAGE CAN BE PROCESSED AT A TIME AND UCM STATE MUST BE IDLE AND KREADY */
-    if ( (*CurrentStatus) != PackageManagerStatusType::kIdle && ((*CurrentStatus) != PackageManagerStatusType::kReady))
+    if ( (CurrentStatus) != PackageManagerStatusType::kIdle && ((CurrentStatus) != PackageManagerStatusType::kReady))
     {
        return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
 
     SWPackagesCounter++;
     /* CURRENT STATUS OF UCM = START PROCESSING */
-    (*CurrentStatus) = PackageManagerStatusType::kProcessing;
+    (CurrentStatus) = PackageManagerStatusType::kProcessing;
 
     /* CREATE A POINTER TO GET THE SOFTWARE PACKAGE THROUGH THE ID */
     shared_ptr<ara::ucm::transfer::SoftwarePackage> ptrToSwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
@@ -312,7 +312,7 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
     /* ADD SWCLUSTER & EXECUTE */
     actionPtr = SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo, action, SWPackagePath);
 
-    (*CurrentStatus) = PackageManagerStatusType::kReady;
+    (CurrentStatus) = PackageManagerStatusType::kReady;
 
     /* CHANGE STATE TO KPROCESSING */
     ptrToSwPkg -> SetPackageState(SwPackageStateType::kProcessed);
@@ -328,18 +328,18 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
  /* missing KProcessing*/
 ara::ucm::OperationResultType PackageManagerState::RevertProcessedSwPackages()
 {   
-    if ((*CurrentStatus) != PackageManagerStatusType::kReady || (*CurrentStatus) != PackageManagerStatusType::kProcessing)
+    if ((CurrentStatus) != PackageManagerStatusType::kReady || (CurrentStatus) != PackageManagerStatusType::kProcessing)
     {
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
    
-    if ((*CurrentStatus) == PackageManagerStatusType::kReady)
+    if ((CurrentStatus) == PackageManagerStatusType::kReady)
     {
-        (*CurrentStatus) == PackageManagerStatusType::kCleaningUp;
+        (CurrentStatus) == PackageManagerStatusType::kCleaningUp;
 
         ara::ucm::storage::SWCLManager::RevertChanges();
 
-        (*CurrentStatus) == PackageManagerStatusType::kIdle;
+        (CurrentStatus) == PackageManagerStatusType::kIdle;
         SWPackagesCounter=0;
 
     }
@@ -350,14 +350,14 @@ ara::ucm::OperationResultType PackageManagerState::RevertProcessedSwPackages()
 ara::ucm::OperationResultType PackageManagerState::RollbackInternal()
 {
 
-    if ( (*CurrentStatus) != PackageManagerStatusType::kActivated && (*CurrentStatus) != PackageManagerStatusType::kVerifying)
+    if ( (CurrentStatus) != PackageManagerStatusType::kActivated && (CurrentStatus) != PackageManagerStatusType::kVerifying)
     {
         /* PKG not in Acitvited or Verifing state */
         /*Operation Not Permitted*/
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
 
-    (*CurrentStatus) = PackageManagerStatusType::kRollingBack;
+    (CurrentStatus) = PackageManagerStatusType::kRollingBack;
 
     /* REMOVE NEW PROCESS LIST */
     command = "rm "+ ProcessListPath + "Process_List.json";   
@@ -378,7 +378,7 @@ ara::ucm::OperationResultType PackageManagerState::RollbackInternal()
 
         if(RollbackState == SM_ReceivedStates::kRollbackFailed)
         {
-            (*CurrentStatus) = PackageManagerStatusType::kReady;
+            (CurrentStatus) = PackageManagerStatusType::kReady;
 
             NotAbleToRollback
 
@@ -387,7 +387,7 @@ ara::ucm::OperationResultType PackageManagerState::RollbackInternal()
         }
         else if (RollbackState == SM_ReceivedStates::kRejected)
         {
-            (*CurrentStatus) = PackageManagerStatusType::kReady;
+            (CurrentStatus) = PackageManagerStatusType::kReady;
 
             NotAbleToRollback
 
@@ -398,7 +398,7 @@ ara::ucm::OperationResultType PackageManagerState::RollbackInternal()
     */
 
 
-    (*CurrentStatus) = PackageManagerStatusType::kRolledBack;
+    (CurrentStatus) = PackageManagerStatusType::kRolledBack;
 
     return ara::ucm::OperationResultType::kSuccess;
 }

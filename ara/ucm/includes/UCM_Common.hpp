@@ -16,6 +16,7 @@
 #include <iterator>
 #include <string>
 #include <vector>
+#include <array>
 #include <utility>
 #include <unistd.h>
 #include <iomanip>
@@ -49,7 +50,7 @@ string GetCurrentDirectory();
 bool IsPathExist(const std::string &s);
 
 /* CONVERTS ID INTO A STRING FORMAT */
-string Convert2StringID(ara::ucm::TransferIdType &TransferID);
+string Convert2StringID(ara::ucm::TransferIdType TransferID);
 
 json jsonReadFromFile(string jsonName);
 

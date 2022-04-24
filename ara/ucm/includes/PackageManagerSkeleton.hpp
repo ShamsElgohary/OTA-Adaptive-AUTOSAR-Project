@@ -1,8 +1,11 @@
 #pragma once
 
-#include "types.hpp"
-//#include "../../com/language_binding/skeleton/include/serviceskeleton.hpp"
-//#include "../../com/include/types.hpp"
+#include <vector>
+#include <array>
+#include "serviceskeleton.hpp"
+#include "serialization_simple.hpp"
+
+using namespace std;
 
 namespace ara
 {
@@ -10,13 +13,81 @@ namespace ara
     {
         namespace pkgmgr
         {
-            class PackageManagerSkeleton //: public ara::com::skeleton::skeletonBase
+            class PackageManagerSkeleton : public ara::com::skeleton::skeletonBase
             {
             public:
+                PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : 
+                skeletonBase(1, I_id, mode)
+                {}
+                using TransferIdType = array<uint8_t, 16>;
+                using ByteVectorType = vector<uint8_t>;
+                using SwNameType = string;
+                using StrongRevisionLabelString = string;
+
+                enum class OperationResultType : uint8_t
+                {
+                    kSuccess = 0U,
+                    kInsufficientMemory = 1U,
+                    kIncorrectBlock = 2U,
+                    kIncorrectSize = 3U,
+                    kInvalidTransferId = 4U,
+                    kOperationNotPermitted = 5U,
+                    kIncorrectBlockSize = 30U,
+                    kInsufficientData = 6U,
+                };
+
+                enum class SwClusterStateType : uint8_t
+                {
+                    kPresent = 0U,
+                    kAdded = 1U,
+                    kUpdated = 2U,
+                    kRemoved = 3U,
+
+                };
+
+                enum class PackageManagerStatusType : uint8_t
+                {
+                    kIdle = 0U,
+                    kReady = 1U,
+                    kProcessing = 2U,
+                    kActivating = 3U,
+                    kActivated = 4U,
+                    kRollingBack = 5U,
+                    kRolledBack = 6U,
+                    kCleaningUp = 7U,
+                    kVerifying = 8U,
+
+                };
+
+                struct SwClusterInfoType
+                {
+                    SwNameType Name;
+                    StrongRevisionLabelString Version;
+                    SwClusterStateType State;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &Name;
+                        ar &Version;
+                        ar &State;
+                    }
+                    friend class boost::serialization::access;
+                };
+
                 /** TransferStart **/
                 struct TransferStartInput
                 {
                     uint64_t Size;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &Size;
+                    }
+                    friend class boost::serialization::access;
                 };
                 ///////////////////////////// PROBLEM //////////////////////////////////
                 struct TransferStartOutput
@@ -24,6 +95,15 @@ namespace ara
                     TransferIdType id;                       // Size (in bytes) of the Software Package to be transferred
                     uint32_t BlockSize;                      // Size of the blocks to be received with TransferData method
                     OperationResultType TransferStartResult; // Success or Failure
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &id;
+                        ar &BlockSize;
+                        ar &TransferStartResult;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** TransferData **/
@@ -32,94 +112,206 @@ namespace ara
                     TransferIdType id;
                     ByteVectorType data;
                     uint64_t blockCounter;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &id;
+                        ar &data;
+                        ar &blockCounter;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 struct TransferDataOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationReturn;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** TransferExit **/
                 struct TransferExitInput
                 {
                     TransferIdType id;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &id;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 struct TransferExitOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationReturn;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** TransferDelete **/
                 struct TransferDeleteInput
                 {
                     TransferIdType id;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &id;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 struct TransferDeleteOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationReturn;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** ProcessSwPackage **/
                 struct ProcessSwPackageInput
                 {
                     TransferIdType id;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &id;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 struct ProcessSwPackageOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationReturn;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** Activate **/
                 struct ActivateOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationReturn;
+                    }
+                    friend class boost::serialization::access;
                 };
                 ///////////////////////////// PROBLEM //////////////////////////////////
                 /** GetSwClusterInfo **/
                 struct GetSwClusterInfoOutput
                 {
                     vector<ara::ucm::SwClusterInfoType> vectorOfClusterInfo;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &vectorOfClusterInfo;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** Rollback **/
                 struct RollbackOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationReturn;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** RevertProcessedSwPackages **/
                 struct RevertProcessedSwPackagesOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationReturn;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 /** Finish **/
                 struct FinishOutput
                 {
                     ara::ucm::OperationResultType OperationReturn;
+
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &OperationReturn;
+                    }
+                    friend class boost::serialization::access;
                 };
 
                 struct GetCurrentStatusField
                 {
                     PackageManagerStatusType Status;
-                };
 
-                PackageManagerSkeleton () = default;
+                private:
+                    template <typename Archive>
+                    void serialize(Archive &ar, const unsigned int version)
+                    {
+                        ar &Status;
+                    }
+                    friend class boost::serialization::access;
+                };
 
                 /* PACKAGE MANAGER METHODS */
 
                 virtual std::future<TransferStartOutput> TransferStart(uint64_t Size) = 0;
 
-                virtual std::future<TransferDataOutput> TransferData(TransferIdType &id, ByteVectorType data, uint64_t blockCounter) = 0;
+                virtual std::future<TransferDataOutput> TransferData(TransferIdType id, ByteVectorType data, uint64_t blockCounter) = 0;
 
-                virtual std::future<TransferExitOutput> TransferExit(TransferIdType &id) = 0;
+                virtual std::future<TransferExitOutput> TransferExit(TransferIdType id) = 0;
 
-                virtual std::future<TransferDeleteOutput> TransferDelete(TransferIdType &id) = 0;
+                virtual std::future<TransferDeleteOutput> TransferDelete(TransferIdType id) = 0;
 
-                virtual std::future<ProcessSwPackageOutput> ProcessSwPackage(TransferIdType &id) = 0;
+                virtual std::future<ProcessSwPackageOutput> ProcessSwPackage(TransferIdType id) = 0;
 
                 virtual std::future<ActivateOutput> Activate() = 0;
 
@@ -133,88 +325,166 @@ namespace ara
 
                 virtual std::future<GetCurrentStatusField> GetCurrentStatus() = 0;
 
-                /*inline void handleMethod(int methodID) override
+                void handleMethod() override
                 {
+                    int methodID;
+                    this->ptr2bindingProtocol->ServerListen();
+                    stringstream payload = this->ptr2bindingProtocol->ReceiveMessage(methodID);
+
                     switch (methodID)
                     {
                     case 1:
                     {
                         TransferStartInput ip;
-                        this->ptr2bindingProtocol->ReceiveMessage(ip);
-                        std::future<TransferStartOutput> op = TransferStart(ip.Size);
-                        this->ptr2bindingProtocol->SendRequest(1, op.get());
+                        Deserializer2 D;
+                        D.deserialize(payload, ip);
+                        std::future<TransferStartOutput> F_op = TransferStart(ip.Size);
+
+                        Serializer2 S;
+                        stringstream result;
+                        TransferStartOutput op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(1, result);
+
                         break;
                     }
                     case 2:
                     {
                         TransferDataInput ip;
-                        this->ptr2bindingProtocol->ReceiveMessage(ip);
-                        std::future<TransferDataOutput> op = TransferData(ip.id, ip.data, ip.blockCounter);
-                        this->ptr2bindingProtocol->SendRequest(2, op.get());
+                        Deserializer2 D;
+                        D.deserialize(payload, ip);
+                        std::future<TransferDataOutput> F_op = TransferData(ip.id, ip.data, ip.blockCounter);
+
+                        Serializer2 S;
+                        stringstream result;
+                        TransferDataOutput op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(2, result);
+
                         break;
                     }
                     case 3:
                     {
                         TransferExitInput ip;
-                        this->ptr2bindingProtocol->ReceiveMessage(ip);
-                        std::future<TransferExitOutput> op = TransferExit(ip.id);
-                        this->ptr2bindingProtocol->SendRequest(3, op.get());
+                        Deserializer2 D;
+                        D.deserialize(payload, ip);
+                        std::future<TransferExitOutput> F_op = TransferExit(ip.id);
+
+                        Serializer2 S;
+                        stringstream result;
+                        TransferExitOutput op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(3, result);
+
                         break;
                     }
                     case 4:
                     {
                         TransferDeleteInput ip;
-                        this->ptr2bindingProtocol->ReceiveMessage(ip);
-                        std::future<TransferDeleteOutput> op = TransferDelete(ip.id);
-                        this->ptr2bindingProtocol->SendRequest(4, op.get());
+                        Deserializer2 D;
+                        D.deserialize(payload, ip);
+                        std::future<TransferDeleteOutput> F_op = TransferDelete(ip.id);
+
+                        Serializer2 S;
+                        stringstream result;
+                        TransferDeleteOutput op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(4, result);
+
                         break;
                     }
                     case 5:
                     {
                         ProcessSwPackageInput ip;
-                        this->ptr2bindingProtocol->ReceiveMessage(ip);
-                        std::future<ProcessSwPackageOutput> op = ProcessSwPackage(ip.id);
-                        this->ptr2bindingProtocol->SendRequest(5, op.get());
+                        Deserializer2 D;
+                        D.deserialize(payload, ip);
+                        std::future<ProcessSwPackageOutput> F_op = ProcessSwPackage(ip.id);
+
+                        Serializer2 S;
+                        stringstream result;
+                        ProcessSwPackageOutput op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(5, result);
+
                         break;
                     }
                     case 6:
                     {
-                        std::future<ActivateOutput> op = Activate();
-                        this->ptr2bindingProtocol->SendRequest(6, op.get());
+                        std::future<ActivateOutput> F_op = Activate();
+
+                        Serializer2 S;
+                        stringstream result;
+                        ActivateOutput op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(6, result);
+
                         break;
                     }
                     case 7:
                     {
-                        std::future<GetSwClusterInfoOutput> op = GetSwClusterInfo();
-                        this->ptr2bindingProtocol->SendRequest(7, op.get());
+                        std::future<GetSwClusterInfoOutput> F_op = GetSwClusterInfo();
+
+                        Serializer2 S;
+                        stringstream result;
+                        GetSwClusterInfoOutput op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(7, result);
+
                         break;
                     }
                     case 8:
                     {
-                        std::future<RollbackOutput> op = Rollback();
-                        this->ptr2bindingProtocol->SendRequest(8, op.get());
+                        std::future<RollbackOutput> F_op = Rollback();
+
+                        Serializer2 S;
+                        stringstream result;
+                        RollbackOutput op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(8, result);
+
                         break;
                     }
                     case 9:
                     {
-                        std::future<RevertProcessedSwPackagesOutput> op = RevertProcessedSwPackages();
-                        this->ptr2bindingProtocol->SendRequest(9, op.get());
+                        std::future<RevertProcessedSwPackagesOutput> F_op = RevertProcessedSwPackages();
+
+                        Serializer2 S;
+                        stringstream result;
+                        RevertProcessedSwPackagesOutput op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(9, result);
+
                         break;
                     }
                     case 10:
                     {
-                        std::future<FinishOutput> op = Finish();
-                        this->ptr2bindingProtocol->SendRequest(10, op.get());
+
+                        std::future<FinishOutput> F_op = Finish();
+
+                        Serializer2 S;
+                        stringstream result;
+                        FinishOutput op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(10, result);
+
                         break;
                     }
                     case 11:
                     {
-                        std::future<GetCurrentStatusField> f = GetCurrentStatus();
-                        this->ptr2bindingProtocol->SendRequest(11, f.get());
+
+                        std::future<GetCurrentStatusField> F_op = GetCurrentStatus();
+
+                        Serializer2 S;
+                        stringstream result;
+                        GetCurrentStatusField op = F_op.get();
+                        S.serialize(result, op);
+                        this->ptr2bindingProtocol->SendRequest(11, result);
+
                         break;
                     }
-                    } 
-                } */
+                    }
+                    this->ptr2bindingProtocol->CloseConnection();
+                }
             };
         }
     }

@@ -55,12 +55,12 @@ bool IsPathExist(const std::string &s)
   return (stat (s.c_str(), &buffer) == 0);
 }
 
-string Convert2StringID(ara::ucm::TransferIdType &TransferID)
+string Convert2StringID(ara::ucm::TransferIdType TransferID)
 {
-    string StringID = to_string(TransferID[0]);   
-    for (uint8_t i =1 ; i < 16 ; i++)
+    string StringID = "";   
+    for (auto i : TransferID)
     {
-      StringID += '-' + to_string(TransferID[i]);
+      StringID += '-' + to_string(i);
     }
     return StringID;
 }

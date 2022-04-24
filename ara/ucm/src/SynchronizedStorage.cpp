@@ -6,14 +6,14 @@ using namespace ara::ucm::transfer;
 
 map<std::string, shared_ptr<ara::ucm::transfer::SoftwarePackage>> ara::ucm::SynchronizedStorage::Data;
 
-void SynchronizedStorage::AddItem(ara::ucm::TransferIdType &transferId, shared_ptr<ara::ucm::transfer::SoftwarePackage> Package)
+void SynchronizedStorage::AddItem(ara::ucm::TransferIdType transferId, shared_ptr<ara::ucm::transfer::SoftwarePackage> Package)
 {
     string StringID{Convert2StringID(transferId)};
     Data.emplace(StringID, Package);
     // Data.insert(pair<TransferIdType, SoftwarePackage> (transferId, Package) );
 }
 
-void SynchronizedStorage::DeleteItem(TransferIdType &transferId)
+void SynchronizedStorage::DeleteItem(TransferIdType transferId)
 {
     string StringID{Convert2StringID(transferId)};
 
@@ -29,7 +29,7 @@ void SynchronizedStorage::DeleteItem(TransferIdType &transferId)
     }
 }
 
-shared_ptr<ara::ucm::transfer::SoftwarePackage> SynchronizedStorage::GetItem(TransferIdType &transferId)
+shared_ptr<ara::ucm::transfer::SoftwarePackage> SynchronizedStorage::GetItem(TransferIdType transferId)
 {
     string StringID{Convert2StringID(transferId)};
     map<std::string, shared_ptr<SoftwarePackage>>::iterator itr;

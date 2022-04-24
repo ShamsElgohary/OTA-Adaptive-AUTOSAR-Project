@@ -11,7 +11,8 @@
 
 #include <iostream>
 #include <vector>
-#include "../../core/types.hpp"
+#include <array>
+
 
 using namespace std;
 
@@ -24,7 +25,7 @@ namespace ara
 		using UCMIdentifierType = string;
 
 		/* Represents a handle identifier used to reference a particular transfer request */
-		using TransferIdType = uint8_t[16];
+		using TransferIdType = array <uint8_t, 16>;
 		//using TransferIdType = uint64_t;		// For Simplicity Right now
 
 		/* SW Cluster or SW Package shortName attribute inherited from referrable metaClass */

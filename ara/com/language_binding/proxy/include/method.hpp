@@ -29,6 +29,15 @@ namespace ara
                         Deserializer2 D;
                         D.deserialize(out_ss, out);
                     }
+                    template <typename output>
+                    void process_method_call(output &out)
+                    {
+                        stringstream payload;
+                        this->Delegate->SendRequest(this->ID, payload);
+                        stringstream out_ss = this->Delegate->ReceiveMessage();
+                        Deserializer2 D;
+                        D.deserialize(out_ss, out);
+                    }
                 };
             }
         }
