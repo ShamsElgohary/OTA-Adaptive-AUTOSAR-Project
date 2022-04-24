@@ -15,7 +15,7 @@ int main()
     UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
     FunctionGroupList function_groups = {"fg1", "fg2"};
     /*********Test*******************/
-    std::future<UpdateRequestSkeleton::StartUpdateSessionOutput> out=updaterequest.StartUpdateSession();
+    std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> out=updaterequest.StartUpdateSession();
     std::cout<<std::endl<<unsigned(out.get().AppError);
     updaterequest.PrepareUpdate(function_groups);
     updaterequest.VerifyUpdate(function_groups);

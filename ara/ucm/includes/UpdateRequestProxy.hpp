@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../../sm/types.hpp"
-#include "../com/language_binding/proxy/include/serviceProxy.hpp"
-#include "../com/language_binding/proxy/include/method.hpp"
+#include "serviceProxy.hpp"
+#include "method.hpp"
+#include "types.hpp"
 namespace ara
 {
     namespace sm
@@ -99,7 +100,7 @@ namespace ara
                     {
                         public:
                         StartUpdateSession(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 1) {}
-                        StartUpdateSessionOutput operator()(uint8_t AppError)
+                        StartUpdateSessionOutput operator()()
                         {
                             StartUpdateSessionOutput out;
                             process_method_call<StartUpdateSessionOutput>(out);
@@ -110,13 +111,13 @@ namespace ara
                     class PrepareUpdate : public ara::com::proxy::method::MethodBase
                     {
                         public:
-                        PrepareUpdate(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 1) {}
-                        AddOutput operator()()
+                        PrepareUpdate(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 2) {}
+                        PrepareUpdateOutput operator()(FunctionGroupList fg)
                         {
-                            AddInput in;
-                            in.x =x ;
-                            AddOutput out;
-                            process_method_call<AddOutput, AddInput>(in, out);
+                            PrepareUpdateInput in;
+                            in.FunctionGroups =fg ;
+                            PrepareUpdateOutput out;
+                            process_method_call<PrepareUpdateOutput, PrepareUpdateInput>(in, out);
                             return out;
                         }
                     };
@@ -124,27 +125,23 @@ namespace ara
                     class VerifyUpdate : public ara::com::proxy::method::MethodBase
                     {
                         public:
-                        Add(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 1) {}
-                        AddOutput operator()(vector<s> x)
+                        VerifyUpdate(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 3) {}
+                        VerifyUpdateOutput operator()(FunctionGroupList fg)
                         {
-                            AddInput in;
-                            in.x =x ;
-                            AddOutput out;
-                            process_method_call<AddOutput, AddInput>(in, out);
+                            VerifyUpdateInput in;
+                            in.FunctionGroups =fg ;
+                            VerifyUpdateOutput out;
+                            process_method_call<VerifyUpdateOutput, VerifyUpdateInput>(in, out);
                             return out;
                         }
                     };
                     class StopUpdateSession : public ara::com::proxy::method::MethodBase
                     {
                         public:
-                        Add(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 1) {}
-                        AddOutput operator()(vector<s> x)
+                        StopUpdateSession(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 4) {}
+                        void operator()()
                         {
-                            AddInput in;
-                            in.x =x ;
-                            AddOutput out;
-                            process_method_call<AddOutput, AddInput>(in, out);
-                            return out;
+                         //fire and forget
                         }
                     };
                 }
@@ -152,7 +149,7 @@ namespace ara
                 class UpdateRequestproxy : public ara::com::proxy::ProxyBase
                 {
                 public:
-                    UpdateRequestproxy(HandleType handle) : ProxyBase(handle), StartUpdateSession(handle.ptr2bindingProtocol)
+                    UpdateRequestproxy(HandleType handle) : ProxyBase(handle), StartUpdateSession(handle.ptr2bindingProtocol) , PrepareUpdate(handle.ptr2bindingProtocol),VerifyUpdate(handle.ptr2bindingProtocol),StopUpdateSession(handle.ptr2bindingProtocol)
                     {
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()

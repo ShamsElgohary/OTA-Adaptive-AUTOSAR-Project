@@ -13,10 +13,10 @@ namespace ara
 {
     namespace sm
     {
-        class UpdateRequestImpl : public ara::sm::UpdateRequestSkeleton
+        class UpdateRequestImpl : public ara::sm::skeleton::UpdateRequestSkeleton
         {
         public:
-            UpdateRequestImpl(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::UpdateRequestSkeleton(I_id, mode)
+            UpdateRequestImpl(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::skeleton::UpdateRequestSkeleton(I_id, mode)
             {
             }
             std::future<StartUpdateSessionOutput> StartUpdateSession();

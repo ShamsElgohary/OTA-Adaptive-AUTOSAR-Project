@@ -4,7 +4,7 @@ using namespace ara::sm;
 using namespace ara::exec;
 using namespace std;
 
-std::future<UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateRequestImpl::StartUpdateSession()
+std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateRequestImpl::StartUpdateSession()
 {
     StateClient client{};
     std::promise<UpdateRequestSkeleton::StartUpdateSessionOutput> promise;
@@ -27,7 +27,7 @@ void UpdateRequestImpl::StopUpdateSession()
     bool success = client.setState(FunctionGroupState({"MachineState", "Running"}));
     this->FunctionGroupStates["MachineState"]="Running";
 }
-std::future<UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
+std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
 {
     bool success;
     StateClient client{};
@@ -52,7 +52,7 @@ std::future<UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::Prepa
     promise.set_value(out);
     return promise.get_future();
 }
-std::future<UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
+std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
 {
     bool success;
     StateClient client{};
