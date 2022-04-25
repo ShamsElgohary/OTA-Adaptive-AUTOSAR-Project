@@ -17,10 +17,11 @@ namespace ara
                 public:
                     std::shared_ptr<ara::com::NetworkBindingBase> Delegate;
                     uint16_t ID;
-                    MethodBase(std::shared_ptr<ara::com::NetworkBindingBase>ptr, uint16_t id) : Delegate(ptr), ID(id){}
+                    MethodBase(std::shared_ptr<ara::com::NetworkBindingBase> ptr, uint16_t id) : Delegate(ptr), ID(id) {}
                     template <typename output, typename T>
                     void process_method_call(T in, output &out)
                     {
+                        
                         stringstream payload;
                         Serializer2 S;
                         S.serialize(payload, in);
@@ -32,6 +33,7 @@ namespace ara
                     template <typename output>
                     void process_method_call(output &out)
                     {
+                        
                         stringstream payload;
                         this->Delegate->SendRequest(this->ID, payload);
                         stringstream out_ss = this->Delegate->ReceiveMessage();

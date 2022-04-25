@@ -10,10 +10,10 @@ namespace ara
         class Grant
         {
             public:
-            	ara::iam::ServiceID S_id = 0;
-                ara::iam::InstanceID In_id = 0;
-                ara::iam::Grant_Type GType = "";
-                ara::iam::PR_Type PR_T = "";
+            	ara::iam::ServiceID S_id ;
+                ara::iam::InstanceID In_id ;
+                ara::iam::Grant_Type GType; 
+                ara::iam::PR_Type PR_T ;
 
                 bool IsEqual(const Grant& other);        
 

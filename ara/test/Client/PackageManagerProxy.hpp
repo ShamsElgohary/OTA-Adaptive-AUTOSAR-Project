@@ -466,11 +466,11 @@ namespace ara
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
                     {
-                        return ara::com::proxy::ProxyBase::FindService(1);
+                        return ara::com::proxy::ProxyBase::FindService("service_manifest.json",1);
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
                     {
-                        return ara::com::proxy::ProxyBase::FindService(1, InstanceID);
+                        return ara::com::proxy::ProxyBase::FindService("service_manifest.json",1, InstanceID);
                     }
 
                     methods::TransferStart TransferStart;

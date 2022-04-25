@@ -14,18 +14,6 @@ public:
     boost::archive::text_oarchive oa(ss);
     oa << data;
   }
-  template <typename T>
-  void serialize(stringstream &ss, vector<T> &data)
-  {
-    boost::archive::text_oarchive oa(ss);
-    oa << data;
-  }
-  template <typename T>
-  void serialize(stringstream &ss, array<T, 16> &data)
-  {
-    boost::archive::text_oarchive oa(ss);
-    oa << data;
-  }
   template <typename T, typename... params>
   void serialize(stringstream &ss, T &data, params &...args)
   {
@@ -43,18 +31,6 @@ public:
   {
     boost::archive::text_iarchive ia(ss);
     ia >> data;
-  }
-  template <typename T>
-  void deserialize(stringstream &ss, vector<T> &data)
-  {
-    boost::archive::text_iarchive oa(ss);
-    oa << data;
-  }
-  template <typename T>
-  void deserialize(stringstream &ss, array<T, 16> &data)
-  {
-    boost::archive::text_iarchive oa(ss);
-    oa << data;
   }
   template <typename T, typename... params>
   void deserialize(stringstream &ss, T &data, params &...args)

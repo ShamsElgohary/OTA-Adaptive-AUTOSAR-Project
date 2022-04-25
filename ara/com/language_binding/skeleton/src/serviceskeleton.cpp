@@ -41,18 +41,37 @@ namespace ara
                 }
             }
 
-            skeletonBase::skeletonBase(ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceID, ara::com::MethodCallProcessingMode mode)
+            skeletonBase::skeletonBase(string path, ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceID, ara::com::MethodCallProcessingMode mode)
                 : instanceID{instanceID}, serviceID{serviceID}, mode{mode}
             {
-                //parsing to get ip and port type of network binding
-                string ip = "127.0.0.1 ";//parse("service_manifest.json", instanceId, serviceID, "ipv4");
-                uint16_t port = 2500 ;//parse("service_manifest.json", instanceId, serviceID);
-                this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, ip, port ,someip::EndUserType::SERVER);
+                ara::iam::IAMGrantQuery IGQ;
+                ara::iam::Grant G(serviceID, instanceID, "ComGrant", "Provide");
+                grant_result = IGQ.HasGrant(G);
+                std::cout << "Result: " << grant_result << std::endl;
+
+                if (grant_result)
+                {
+                    string ip = parse(path, instanceID, serviceID, "ipv4") + " ";
+                    int port = parse(path, instanceID, serviceID);
+                    cout << port << endl;
+                    this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, ip, port, someip::EndUserType::SERVER);
+                }
+                else
+                {
+                    cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                }
             }
             void skeletonBase::OfferService()
             {
-                this->ptr2bindingProtocol->OfferService();
-                serve();
+                if (grant_result)
+                {
+                    this->ptr2bindingProtocol->OfferService();
+                    serve();
+                }
+                else
+                {
+                    cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                }
             }
             void skeletonBase::serve()
             {
@@ -72,5 +91,3 @@ namespace ara
         }
     }
 }
-
-

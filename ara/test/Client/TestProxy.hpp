@@ -3,18 +3,7 @@
 #include "method.hpp"
 #include "types.hpp"
 
-struct s
-{
-    int data;
 
-private:
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
-    {
-        ar &data;
-    }
-    friend class boost::serialization::access;
-};
 namespace ara
 {
     namespace ucm
@@ -25,12 +14,14 @@ namespace ara
             {
                 struct AddInput
                 {
-                    vector<s> x;
+                    uint64_t a;
+                    uint64_t b;
                 private:
                     template <typename Archive>
                     void serialize(Archive &ar, const unsigned int version)
                     {
-                        ar &x;
+                        ar &a;
+                        ar &b;
                     }
                     friend class boost::serialization::access;
                 };
@@ -53,10 +44,12 @@ namespace ara
                     {
                     public:
                         Add(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 1) {}
-                        AddOutput operator()(vector<s> x)
+                        AddOutput operator()(uint64_t a, uint64_t b)
                         {
                             AddInput in;
-                            in.x =x ;
+                            in.a =a;
+                            in.b =b;
+
                             AddOutput out;
                             process_method_call<AddOutput, AddInput>(in, out);
                             return out;
@@ -73,11 +66,11 @@ namespace ara
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
                     {
-                        return ara::com::proxy::ProxyBase::FindService(1);
+                        return ara::com::proxy::ProxyBase::FindService("service_manifest.json",1);
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
                     {
-                        return ara::com::proxy::ProxyBase::FindService(1, InstanceID);
+                        return ara::com::proxy::ProxyBase::FindService("service_manifest.json",1, InstanceID);
                     }
                     methods::Add Add;
                 };

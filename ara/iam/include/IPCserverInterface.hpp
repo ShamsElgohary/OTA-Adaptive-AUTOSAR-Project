@@ -16,7 +16,6 @@ namespace ara
             int ServerSD;
             int clientPID;
 
-
         public:
             IPCserverInterface() = default;
             ~IPCserverInterface() = default;

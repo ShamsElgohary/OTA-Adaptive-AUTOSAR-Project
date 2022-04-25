@@ -3,18 +3,18 @@
 		"required_ap_service_instances": [],
 		"provided_ap_service_instances": [
 			{
-				"service_id": 7,
+				"service_id": 1,
 				"type": "SOME/IP",
 				"instance_id": 1,
-				"ipv4": "127.10.10.10",
-				"port": 80
+				"ipv4": "127.0.0.1",
+				"port": 2222
 			},
 			{
-				"service_id": 5,
+				"service_id": 2,
 				"type": "SOME/IP",
 				"instance_id": 1,
-				"ipv4": "127.10.10.10",
-				"port": 80
+				"ipv4": "127.0.0.1",
+				"port": 2223
 			}
 		]
 	}

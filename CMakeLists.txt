@@ -4,7 +4,6 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 project(Adaptive_platform)
 ###############################EM###############################
-
 set(exec_source_dir "${CMAKE_SOURCE_DIR}/ara/exec")
 set(em_install_dir "${CMAKE_SOURCE_DIR}/executables/em/bin")
 find_package(Boost 1.50 COMPONENTS system filesystem program_options serialization REQUIRED)
@@ -44,8 +43,8 @@ install(TARGETS sm RUNTIME DESTINATION ${source_excutables_sm_dir})
 
 set(iam_install_dir "${CMAKE_SOURCE_DIR}/executables/iam/bin")
 set(iam_source_dir "${CMAKE_SOURCE_DIR}/ara/iam")
-file(GLOB_RECURSE IAM_SRC_FILES ${iam_source_dir}/*.cpp CMAKE_CONFIGURE_DEPENDS)
-add_executable(iam ${SRC_FILES} ${iam_source_dir}/lib/src/Grant.cpp) 
+file(GLOB_RECURSE IAM_SRC_FILES ${iam_source_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
+add_executable(iam ${IAM_SRC_FILES} ${iam_source_dir}/lib/src/Grant.cpp) 
 target_include_directories(iam PUBLIC  ${iam_source_dir}/include  ${iam_source_dir}/lib/include )
 target_link_libraries(iam execution_lib Boost::filesystem Boost::program_options Boost::serialization)
 install(TARGETS iam RUNTIME DESTINATION ${iam_install_dir})
@@ -98,28 +97,28 @@ install(TARGETS someip_SD RUNTIME DESTINATION ${someIp_SD_install_dir})
 
 ################################UCM#############################
 
-set(UCM_FILES "${CMAKE_SOURCE_DIR}/ara/ucm/")
-set(ucm_install_dir "${UCM_FILES}/src")
+# set(UCM_FILES "${CMAKE_SOURCE_DIR}/ara/ucm/")
+# set(ucm_install_dir "${CMAKE_SOURCE_DIR}/executables/ucm/bin")
 
-file(GLOB_RECURSE UCM_SRC_FILES ${UCM_FILES}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
-add_executable(ucm ${UCM_SRC_FILES}) 
+# file(GLOB_RECURSE UCM_SRC_FILES ${UCM_FILES}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
+# add_executable(ucm ${UCM_SRC_FILES}) 
 
-target_link_libraries(ucm execution_lib Boost::filesystem Boost::program_options Boost::serialization com_lib)
-target_include_directories( ucm PUBLIC ${UCM_FILES}/includes )
-install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
+# target_link_libraries(ucm execution_lib Boost::filesystem Boost::program_options Boost::serialization com_lib)
+# target_include_directories( ucm PUBLIC ${UCM_FILES}/includes )
+# install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
 
 ################################COM_test##########################
 
 set(test_server_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Server")
 add_executable(test_server ${test_server_source_dir}/main.cpp ) 
-target_link_libraries(test_server com_lib )
+target_link_libraries(test_server com_lib iam_lib)
 target_include_directories( test_server PUBLIC ${test_server_source_dir} )
 install(TARGETS test_server RUNTIME DESTINATION ${test_server_source_dir})
 
 set(test_client_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Client")
 add_executable(test_client ${test_client_source_dir}/main.cpp) 
 target_include_directories( test_client PUBLIC ${test_client_source_dir})
-target_link_libraries(test_client com_lib)
+target_link_libraries(test_client com_lib iam_lib)
 install(TARGETS test_client RUNTIME DESTINATION ${test_client_source_dir})
 
 ##################################################################
