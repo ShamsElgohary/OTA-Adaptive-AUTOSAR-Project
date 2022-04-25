@@ -28,14 +28,6 @@ public:
   bool verify_certificate(bool preverified,
       boost::asio::ssl::verify_context& ctx)
   {
-    // The verify callback can be used to check whether the certificate that is
-    // being presented is valid for the peer. For example, RFC 2818 describes
-    // the steps involved in doing this for HTTPS. Consult the OpenSSL
-    // documentation for more details. Note that the callback is called once
-    // for each certificate in the certificate chain, starting from the root
-    // certificate authority.
-
-    // In this example we will simply print the certificate's subject name.
     char subject_name[256];
     X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
     X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
