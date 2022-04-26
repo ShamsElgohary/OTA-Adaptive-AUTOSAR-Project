@@ -87,7 +87,7 @@ target_include_directories(
 
 ################################SomeIP_SD##########################
 
-set(someIp_SD_install_dir "${CMAKE_SOURCE_DIR}/executables/someIp_SD/bin")
+set(someIp_SD_install_dir "${CMAKE_SOURCE_DIR}/executables/someip_sd/bin")
 set(COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES "${com_source_dir}/network_binding/SomeIp/servicediscovery/src")
 
 add_executable(someip_SD ${COM_serviceDiscovery_SRC_FILES} ${COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES}/sd-main.cpp)
