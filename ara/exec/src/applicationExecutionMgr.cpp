@@ -5,10 +5,9 @@ using namespace boost::filesystem;
 
 bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 {
- ifstream file("../../etc/system/Process_List.json");
     Json::Value v;
     Json::Reader r;
-    r.parse(file,v);
+    r.parse("../../etc/system/Process_List.json",v);
     vector <path>p;
     for (Json::Value::const_iterator it=v.begin(); it!=v.end(); ++it)
     {
