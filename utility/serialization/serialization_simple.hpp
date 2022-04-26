@@ -3,6 +3,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/array.hpp>
+#include <boost/serialization/vector.hpp>
 
 using namespace std;
 class Serializer2

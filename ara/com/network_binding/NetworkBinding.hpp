@@ -43,7 +43,7 @@ namespace ara
             std::string ip;
             boost::asio::io_service io_service;
             someip::SomeIpConfiguration someipConfig;
-            std::shared_ptr<someip::someipConnection> clientInstance;
+            std::shared_ptr<someip::someipConnection> clientInstance = nullptr;
 
         public:
             SomeIpNetworkBinding(string ip, uint16_t port);

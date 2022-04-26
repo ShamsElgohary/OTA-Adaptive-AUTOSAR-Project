@@ -12,8 +12,7 @@ InterfaceVersion interface_version = 0x01;
 someip::MessageType messagetype = someip::MessageType::NOTIFICATION;
 
 servicediscovery::servicediscovery()
-{
-}
+{}
 
 void servicediscovery::offer_service(uint16_t service_id, uint16_t instance_id, std::string ipv4_address, uint16_t port_num)
 {

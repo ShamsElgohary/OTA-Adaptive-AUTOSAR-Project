@@ -97,15 +97,15 @@ install(TARGETS someip_SD RUNTIME DESTINATION ${someIp_SD_install_dir})
 
 ################################UCM#############################
 
-# set(UCM_FILES "${CMAKE_SOURCE_DIR}/ara/ucm/")
-# set(ucm_install_dir "${CMAKE_SOURCE_DIR}/executables/ucm/bin")
+set(UCM_FILES "${CMAKE_SOURCE_DIR}/ara/ucm/")
+set(ucm_install_dir "${CMAKE_SOURCE_DIR}/executables/ucm/bin")
 
-# file(GLOB_RECURSE UCM_SRC_FILES ${UCM_FILES}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
-# add_executable(ucm ${UCM_SRC_FILES}) 
+file(GLOB_RECURSE UCM_SRC_FILES ${UCM_FILES}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
+add_executable(ucm ${UCM_SRC_FILES}) 
 
-# target_link_libraries(ucm execution_lib Boost::filesystem Boost::program_options Boost::serialization com_lib)
-# target_include_directories( ucm PUBLIC ${UCM_FILES}/includes )
-# install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
+target_link_libraries(ucm execution_lib Boost::filesystem Boost::program_options Boost::serialization com_lib)
+target_include_directories( ucm PUBLIC ${UCM_FILES}/includes )
+install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
 
 ################################COM_test##########################
 

@@ -18,14 +18,18 @@ namespace ara
 
                 for (uint8_t i = 0; i < opVsomeip.size(); i++)
                 {
-                    ara::iam::IAMGrantQuery IGQ;
-                    ara::iam::Grant G(serviceID, opVsomeip[i].Instance_ID, "ComGrant", "Require");
-                    bool grant_result = IGQ.HasGrant(G);
-                    if (!grant_result)
+                    if (IAM_ACTIVATED)
                     {
-                        cout << "ACCESS FORBIDDEN !!!!!" << endl;
-                        continue;
+                        ara::iam::IAMGrantQuery IGQ;
+                        ara::iam::Grant G(serviceID, opVsomeip[i].Instance_ID, "ComGrant", "Require");
+                        bool grant_result = IGQ.HasGrant(G);
+                        if (!grant_result)
+                        {
+                            cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                            continue;
+                        }
                     }
+
                     ProxyBase::HandleType h;
                     h.serviceID = serviceID;
                     h.InstanceID = opVsomeip[i].Instance_ID;
@@ -45,13 +49,16 @@ namespace ara
                     vector<serviceinfo> opVsomeip = ara::com::SomeIpNetworkBinding::FindService_SomeIp(serviceID, instanceId);
                     for (uint8_t i = 0; i < opVsomeip.size(); i++)
                     {
-                        ara::iam::IAMGrantQuery IGQ;
-                        ara::iam::Grant G(serviceID, opVsomeip[i].Instance_ID, "ComGrant", "Require");
-                        bool grant_result = IGQ.HasGrant(G);
-                        if (!grant_result)
+                        if (IAM_ACTIVATED)
                         {
-                            cout << "ACCESS FORBIDDEN !!!!!" << endl;
-                            continue;
+                            ara::iam::IAMGrantQuery IGQ;
+                            ara::iam::Grant G(serviceID, opVsomeip[i].Instance_ID, "ComGrant", "Require");
+                            bool grant_result = IGQ.HasGrant(G);
+                            if (!grant_result)
+                            {
+                                cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                                continue;
+                            }
                         }
                         ProxyBase::HandleType h;
                         h.serviceID = serviceID;

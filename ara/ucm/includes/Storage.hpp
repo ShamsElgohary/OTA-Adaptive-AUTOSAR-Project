@@ -83,7 +83,6 @@ namespace ara
 					static void RemoveSWCL(ara::ucm::SwClusterInfoType ChangedSWCluster);
 					static void PushInSWCLusters(ara::ucm::SwClusterInfoType ChangedSWCluster);
 			};
-
 		}
 	}
 }

@@ -13,12 +13,15 @@ namespace ara
 
         SomeIpNetworkBinding::SomeIpNetworkBinding(serviceIdentifierType service_id, InstanceIdentifier instance_id,
                                                    string ip, uint16_t port, someip::EndUserType type) : ip{ip}, port{port},
-                                                                                                         serviceId{service_id}, InstanceId{instance_id}, someipConfig{someip::TransportProtocol::TCP, type},
-                                                                                                         clientInstance{someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig)}
+                                                                                                         serviceId{service_id}, InstanceId{instance_id}, someipConfig{someip::TransportProtocol::TCP, type}
         {
         }
         void SomeIpNetworkBinding::SendRequest(uint32_t methodID, stringstream &s)
         {
+            if (!clientInstance)
+            {
+                clientInstance = someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig);
+            }
             someip::someipHeader header(serviceId, methodID);
             someip::someipMessage someipMsg(header, s);
             clientInstance->SendMessage(someipMsg);
@@ -27,16 +30,24 @@ namespace ara
         void SomeIpNetworkBinding::CloseConnection()
         {
             clientInstance->CloseConnection();
+            clientInstance = nullptr;
         }
 
         void SomeIpNetworkBinding::ServerListen()
         {
+            if (!clientInstance)
+            {
+                clientInstance = someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig);
+            }
             clientInstance->ServerListen();
         }
         stringstream SomeIpNetworkBinding::ReceiveMessage(int &method_id)
         {
+
             someip::someipMessage someipMsg = clientInstance->ReceiveMessage();
+            cout << "Rec 2" << endl;
             method_id = someipMsg.header.getMethodID();
+            cout << "Rec 3" << endl;
             std::stringstream receivedData;
             receivedData << someipMsg.payload;
             return receivedData;
@@ -63,6 +74,5 @@ namespace ara
         {
             servicediscovery::stop_offer_service(serviceId, InstanceId);
         }
-
     }
 }

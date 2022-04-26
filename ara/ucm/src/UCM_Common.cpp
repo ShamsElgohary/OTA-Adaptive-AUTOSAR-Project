@@ -6,7 +6,7 @@ const string ZIP_PackagesPath = UCM_Path + "/ZIP_Packages";
 const string fileSystemPath = GetFileSystemPath();
 const string fileBackupPath = GetFileSystemPath() + "/Backup";
 const string ProjectPath = GetProjectPath();
-const string ProcessListPath = ProjectPath + "ara/etc/system/";
+const string ProcessListPath = ProjectPath + "etc/system/";
 
 string command;
 

@@ -1,2 +1,1 @@
-[Transfer Start] 		 Result : kSuccess
-[Transfer Start] 		 Result : kSuccess
+

@@ -17,13 +17,17 @@ namespace ara
                 Json::Value actualJson;
                 Json::Reader reader;
                 reader.parse(file, actualJson);
+
                 for (int i = 0; i < actualJson["ap_service_instances"]["provided_ap_service_instances"].size(); i++)
                 {
                     if (actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["instance_id"] == instance_id && actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["service_id"] == service_id)
                     {
                         return actualJson["ap_service_instances"]["provided_ap_service_instances"][i][required].asString();
+                        ;
                     }
                 }
+                cout << "Couldn't Find Data from Instance Manifest" << endl;
+                return "";
             }
 
             int parse(string x, ara::com::InstanceIdentifier instance_id, ara::com::serviceIdentifierType service_id)
@@ -39,31 +43,32 @@ namespace ara
                         return actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["port"].asInt();
                     }
                 }
+                cout << "Couldn't Find Data from Instance Manifest" << endl;
+                return -1;
             }
 
             skeletonBase::skeletonBase(string path, ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceID, ara::com::MethodCallProcessingMode mode)
                 : instanceID{instanceID}, serviceID{serviceID}, mode{mode}
             {
-                ara::iam::IAMGrantQuery IGQ;
-                ara::iam::Grant G(serviceID, instanceID, "ComGrant", "Provide");
-                grant_result = IGQ.HasGrant(G);
-                std::cout << "Result: " << grant_result << std::endl;
+                if (IAM_ACTIVATED)
+                {
+                    ara::iam::IAMGrantQuery IGQ;
+                    ara::iam::Grant G(serviceID, instanceID, "ComGrant", "Provide");
+                    grant_result = IGQ.HasGrant(G);
+                    if (!grant_result)
+                    {
+                        cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                        return;
+                    }
+                }
 
-                if (grant_result)
-                {
-                    string ip = parse(path, instanceID, serviceID, "ipv4") + " ";
-                    int port = parse(path, instanceID, serviceID);
-                    cout << port << endl;
-                    this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, ip, port, someip::EndUserType::SERVER);
-                }
-                else
-                {
-                    cout << "ACCESS FORBIDDEN !!!!!" << endl;
-                }
+                string ip = parse(path, instanceID, serviceID, "ipv4") + " ";
+                int port = parse(path, instanceID, serviceID);
+                this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, ip, port, someip::EndUserType::SERVER);
             }
             void skeletonBase::OfferService()
             {
-                if (grant_result)
+                if (grant_result || IAM_ACTIVATED)
                 {
                     this->ptr2bindingProtocol->OfferService();
                     serve();
@@ -82,6 +87,7 @@ namespace ara
                         break;
                     }
                     handleMethod();
+                    cout << "Served" << endl;
                 }
             }
             void skeletonBase::StopOfferService()

@@ -1,6 +1,9 @@
 #pragma once 
 #include<iostream>
 #include<vector>
+
+const bool IAM_ACTIVATED = false;
+
 namespace ara
 {
     namespace com
