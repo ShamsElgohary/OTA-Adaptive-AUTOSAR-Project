@@ -13,7 +13,7 @@ using namespace std;
 
 namespace ara
 {
-    namespace em
+    namespace exec
     {
         class FindProcessServer
         {
@@ -23,10 +23,13 @@ namespace ara
             int pid; 
             int server_socket ;
             int client_socket ;
+         
         public:
             FindProcessServer();
             ~FindProcessServer();
             int receiveData();
+            void connect();
+            void disconnect();
             void sendData(string processName);
         };
     }
