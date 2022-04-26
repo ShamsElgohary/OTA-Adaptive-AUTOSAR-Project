@@ -1,10 +1,9 @@
+
 #include <cstdlib>
 #include <iostream>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
-
-#define CertificateLocation "../Certificate/"
 
 enum { max_length = 1024 };
 
@@ -17,8 +16,8 @@ public:
     : socket_(io_context, context)
   {
     socket_.set_verify_mode(boost::asio::ssl::verify_peer);
-    socket_.set_verify_callback(
-        boost::bind(&client::verify_certificate, this, _1, _2));
+    
+    socket_.set_verify_callback(boost::bind(&client::verify_certificate, this, _1, _2));
 
     boost::asio::async_connect(socket_.lowest_layer(), endpoints,
         boost::bind(&client::handle_connect, this,
@@ -28,6 +27,13 @@ public:
   bool verify_certificate(bool preverified,
       boost::asio::ssl::verify_context& ctx)
   {
+    // The verify callback can be used to check whether the certificate that is
+    // being presented is valid for the peer. For example, RFC 2818 describes
+    // the steps involved in doing this for HTTPS. Consult the OpenSSL
+    // documentation for more details. Note that the callback is called once
+    // for each certificate in the certificate chain, starting from the root
+    // certificate authority.
+
     char subject_name[256];
     X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
     X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
@@ -108,25 +114,19 @@ private:
   char reply_[max_length];
 };
 
-int main(int argc, char* argv[])
+int main()
 {
   try
   {
-    /*
-    if (argc != 3)
-    {
-      std::cerr << "Usage: client <host> <port>\n";
-      return 1;
-    }*/
-
     boost::asio::io_context io_context;
 
     boost::asio::ip::tcp::resolver resolver(io_context);
-    boost::asio::ip::tcp::resolver::results_type endpoints =
-      resolver.resolve("127.0.0.1", "1321");
 
-    boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23);
-    ctx.load_verify_file("Certificate.pem");
+    boost::asio::ip::tcp::resolver::results_type endpoints =
+      resolver.resolve("127.0.0.1", "1234");
+
+    boost::asio::ssl::context ctx(boost::asio::ssl::context::tls);
+    ctx.load_verify_file("../Certificates/server.crt");
 
     client c(io_context, ctx, endpoints);
 
@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
   }
   catch (std::exception& e)
   {
-    std::cerr << "Exception: " << e.what() << "\n";
+    std::cerr << "Exception: 1" << e.what() << "\n";
   }
 
   return 0;
