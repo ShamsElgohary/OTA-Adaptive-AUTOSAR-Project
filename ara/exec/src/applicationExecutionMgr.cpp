@@ -138,7 +138,6 @@ bool ApplicationExecutionMgr::run()
         transitionChanges_.toStart_.clear();
         transitionChanges_.toTerminate_.clear();
     }
-    x.get();
 }
 
 bool ApplicationExecutionMgr::Terminate()
@@ -177,16 +176,15 @@ string ApplicationExecutionMgr::get_process_name(int test_id)
 
 void ApplicationExecutionMgr::IAM_handle()
 {
-    x = async(launch::async, [this]()
-          {
-              FindProcessServer srv;
-              int id;
-              string process_name;
-              while(1){
-                  id = srv.receiveData();
-                   process_name = get_process_name(id);
-                  cout << "em " << process_name << endl;
-                  srv.sendData(process_name);
-               }});
-              
+    iam_future = async(launch::async, [this]()
+        {
+        FindProcessServer srv;
+        int id;
+        string process_name;
+        while(1){
+            id = srv.receiveData();
+            process_name = get_process_name(id);
+            cout << "em " << process_name << endl;
+            srv.sendData(process_name);
+        } });
 }

@@ -3,7 +3,7 @@
 #include "../lib/include/servicestorage.hpp"
 #include "../lib/include/someip_sd_message.hpp"
 #include "string.h"
-
+#include "../../../../../exec/include/execution_client.hpp"
 uint16_t service_id;
 uint16_t instance_id;
 uint32_t TTL;
@@ -12,6 +12,8 @@ uint16_t port_num;
 
 int main()
 {
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
     while (1)
     {
         std::string ipv4_address;

@@ -27,25 +27,25 @@ void ara::iam::AccessManager::RunEventLoop()
 
         std::cout << "[RECEIVED] " << PID << std::endl;
 
-        // // RESOLVE PID FROM EM
-        // ara::em::FindProcessClient FPC;
+        // RESOLVE PID FROM EM
+        ara::exec::FindProcessClient FPC;
 
-        // // Send PID to EM
-        // FPC.sendData(PID);
+        // Send PID to EM
+        FPC.sendData(PID);
 
-        // // Receive Proc
-        // std::string P_name = FPC.receiveData();
+        // Receive Proc
+        std::string P_name = FPC.receiveData();
 
-        // // RECIEVE GRANT FROM CLIENT 
-        // ara::iam::Grant G = ara::iam::AccessManager::server.Receive(sd);
+        // RECIEVE GRANT FROM CLIENT 
+        ara::iam::Grant G = ara::iam::AccessManager::server.Receive(sd);
 
-        // // SEARCH GRANTSTORAGE MAP
-        // bool rtn = ara::iam::GrantStorage::SearchGrantStorage(P_name, G);
+        // SEARCH GRANTSTORAGE MAP
+        bool rtn = ara::iam::GrantStorage::SearchGrantStorage(P_name, G);
 
-        // std::cout << "Result: " << rtn << std::endl;
+        std::cout << "Result: " << rtn << std::endl;
 
-        // // RETURN RESULT TO CLIENT
-        // ara::iam::AccessManager::server.Send(rtn, sd);
+        // RETURN RESULT TO CLIENT
+        ara::iam::AccessManager::server.Send(rtn, sd);
     }
 }
 

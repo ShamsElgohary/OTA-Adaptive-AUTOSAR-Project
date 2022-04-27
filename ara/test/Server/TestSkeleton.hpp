@@ -72,7 +72,7 @@ namespace ara
                     }
                     this->ptr2bindingProtocol->CloseConnection();
                 }
-                PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("service_manifest.json",1, I_id, mode)
+                PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("../etc/service_manifest.json",1, I_id, mode)
                 {
                 }
             };

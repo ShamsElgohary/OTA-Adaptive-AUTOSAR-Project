@@ -18,6 +18,11 @@ int main ()
     FindProcessClient cl;
     cl.sendData(getpid());
     cout<<"ex1 "<<cl.receiveData()<<endl;
+    usleep(5*1000000);
+
+
+    cl.sendData(getpid());
+    cout<<"ex1 2 "<<cl.receiveData()<<endl;
     return 0;
 
 }
