@@ -1,0 +1,27 @@
+{
+	"platform_application": "false",
+	"startup_configs": 
+	{
+		"Config 1": 
+		{
+			"depends": {},
+			"machine_states": [],
+			"function_group_states": {"fn2" : ["idle"]},
+			"scheduling_policy": "Round Robin",
+			"scheduling_priority": "1",
+			"arguments": ["arg_0","arg_0"],
+			"environments": ["env_1","env_1"]
+		},
+		"Config 2": 
+		{
+			"depends": {},
+			"machine_states": [],
+			"function_group_states": {"fn2" : ["run"]},
+			"scheduling_policy": "Round Robin",
+			"scheduling_priority": "1",
+			"arguments": ["arg_0","arg_0"],
+			"environments": ["env_1","env_1"]
+		}
+	}
+}
+

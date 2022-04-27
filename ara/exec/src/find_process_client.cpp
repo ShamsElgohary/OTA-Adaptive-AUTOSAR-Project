@@ -1,38 +1,30 @@
 #include "../include/find_process_client.hpp"
 
-using namespace ara::em ;
+using namespace ara::exec;
 
-FindProcessClient::FindProcessClient()
+
+FindProcessClient::FindProcessClient() : io_service(), socket_(io_service)
 {
-    server_socket  = socket(AF_INET, SOCK_STREAM, 0);
-    if(server_socket <0)
-    {
-        cout<<"client establishing connection..." ;
-        return ;
-    }
-    struct sockaddr_in address;
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = inet_addr(IP.c_str());
-    address.sin_port = htons(portNum);
+    cout<<"client conneting to server....."<<endl;
+    socket_.connect(tcp::endpoint(boost::asio::ip::address::from_string(EM_IP_ADDRESS), EM_PORT_NUMBER));
+    cout<<"client conneted to server....."<<endl;
 
-    if(connect(server_socket ,(struct sockaddr *)&address, sizeof(address))<0)
-    {
-        cout<<"error while connecting to server...\n" ;
-    }
 }
 
-void FindProcessClient::sendData(int pid)
+void FindProcessClient::sendData(int pid_)
 {
-    send(server_socket , &pid, sizeof(int) , 0 );
+    const string pid = to_string(pid_)+"\0";
+    boost::asio::write(socket_, boost::asio::buffer(pid));
 }
 
 string FindProcessClient::receiveData()
 {
-    recv(server_socket , buff , BUFF_SIZE , 0 ) ;
-    return string(buff);
+    boost::asio::streambuf buf;
+    boost::asio::read_until( socket_, buf, "\0" );
+    return boost::asio::buffer_cast<const char*>(buf.data());
 }
 
 FindProcessClient::~FindProcessClient()
 {
-    close(server_socket) ;
+    socket_.close();
 }
