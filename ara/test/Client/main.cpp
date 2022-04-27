@@ -1,6 +1,6 @@
 #include "PackageManagerProxy.hpp"
-// #include "TestProxy.hpp"
 #include <iostream>
+#include "execution_client.hpp"
 
 using namespace ara::ucm::pkgmgr::proxy;
 using namespace ara::com::proxy;
@@ -11,6 +11,8 @@ string Convert2String(ByteVectorType Data);
 
 int main()
 {
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
     ara::com::ServiceHandleContainer<ProxyBase::HandleType> handles = PackageManagerProxy::FindService(1);
     PackageManagerProxy RecService(handles[0]);
     if (handles.size())

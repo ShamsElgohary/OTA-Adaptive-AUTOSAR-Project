@@ -3,14 +3,21 @@ set (CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 project(Adaptive_platform)
+################################jsoncpp_lib##########################
+
+set(jsoncpp_dir "${CMAKE_SOURCE_DIR}/utility/jsoncpp")
+add_library(jsoncpp_lib STATIC ${jsoncpp_dir}/src/jsoncpp.cpp)
+target_include_directories(jsoncpp_lib PUBLIC ${jsoncpp_dir}/jsoncpp/header)
+
 ###############################EM###############################
+
 set(exec_source_dir "${CMAKE_SOURCE_DIR}/ara/exec")
 set(em_install_dir "${CMAKE_SOURCE_DIR}/executables/em/bin")
 find_package(Boost 1.50 COMPONENTS system filesystem program_options serialization REQUIRED)
 file(GLOB_RECURSE SRC_FILES ${exec_source_dir}/*.cpp CMAKE_CONFIGURE_DEPENDS)
 add_executable(em ${SRC_FILES})
 target_include_directories(em PUBLIC  ${exec_source_dir}/include)
-target_link_libraries(em Boost::filesystem Boost::program_options)
+target_link_libraries(em Boost::filesystem Boost::program_options jsoncpp_lib)
 install(TARGETS em RUNTIME DESTINATION ${em_install_dir})
 
 ###############################EM_LIB###############################
@@ -57,11 +64,6 @@ target_link_libraries(iam_lib  Boost::filesystem Boost::program_options Boost::s
 
 target_include_directories(iam_lib PUBLIC  ${iam_source_dir}/lib/include )
 
-################################jsoncpp_lib##########################
-
-set(jsoncpp_dir "${CMAKE_SOURCE_DIR}/utility/jsoncpp")
-add_library(jsoncpp_lib STATIC ${jsoncpp_dir}/src/jsoncpp.cpp)
-target_include_directories(jsoncpp_lib PUBLIC ${jsoncpp_dir}/jsoncpp/header)
 
 ################################COM_LIB##########################
 set(com_source_dir "${CMAKE_SOURCE_DIR}/ara/com")
@@ -87,39 +89,41 @@ target_include_directories(
 
 ################################SomeIP_SD##########################
 
-set(someIp_SD_install_dir "${CMAKE_SOURCE_DIR}/executables/someIp_SD/bin")
+set(someIp_SD_install_dir "${CMAKE_SOURCE_DIR}/executables/someip_sd/bin")
 set(COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES "${com_source_dir}/network_binding/SomeIp/servicediscovery/src")
 
 add_executable(someip_SD ${COM_serviceDiscovery_SRC_FILES} ${COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES}/sd-main.cpp)
-target_link_libraries(someip_SD com_lib)
-target_include_directories(someip_SD PUBLIC ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include ) 
+target_link_libraries(someip_SD com_lib execution_lib)
+target_include_directories(someip_SD  PUBLIC ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include ) 
 install(TARGETS someip_SD RUNTIME DESTINATION ${someIp_SD_install_dir})
 
 ################################UCM#############################
 
-set(UCM_FILES "${CMAKE_SOURCE_DIR}/ara/ucm/")
-set(ucm_install_dir "${CMAKE_SOURCE_DIR}/executables/ucm/bin")
+# set(UCM_FILES "${CMAKE_SOURCE_DIR}/ara/ucm/")
+# set(ucm_install_dir "${CMAKE_SOURCE_DIR}/executables/ucm/bin")
 
-file(GLOB_RECURSE UCM_SRC_FILES ${UCM_FILES}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
-add_executable(ucm ${UCM_SRC_FILES}) 
+# file(GLOB_RECURSE UCM_SRC_FILES ${UCM_FILES}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
+# add_executable(ucm ${UCM_SRC_FILES}) 
 
-target_link_libraries(ucm execution_lib Boost::filesystem Boost::program_options Boost::serialization com_lib)
-target_include_directories( ucm PUBLIC ${UCM_FILES}/includes )
-install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
+# target_link_libraries(ucm execution_lib Boost::filesystem Boost::program_options Boost::serialization com_lib)
+# target_include_directories( ucm PUBLIC ${UCM_FILES}/includes )
+# install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
 
 ################################COM_test##########################
 
 set(test_server_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Server")
+set(test_server_install_dir "${CMAKE_SOURCE_DIR}/executables/com_skeleton_test/bin")
 add_executable(test_server ${test_server_source_dir}/main.cpp ) 
-target_link_libraries(test_server com_lib iam_lib)
+target_link_libraries(test_server com_lib iam_lib execution_lib)
 target_include_directories( test_server PUBLIC ${test_server_source_dir} )
-install(TARGETS test_server RUNTIME DESTINATION ${test_server_source_dir})
+install(TARGETS test_server RUNTIME DESTINATION ${test_server_install_dir})
 
 set(test_client_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Client")
+set(test_client_install_dir "${CMAKE_SOURCE_DIR}/executables/com_proxy_test/bin")
 add_executable(test_client ${test_client_source_dir}/main.cpp) 
 target_include_directories( test_client PUBLIC ${test_client_source_dir})
-target_link_libraries(test_client com_lib iam_lib)
-install(TARGETS test_client RUNTIME DESTINATION ${test_client_source_dir})
+target_link_libraries(test_client com_lib iam_lib execution_lib)
+install(TARGETS test_client RUNTIME DESTINATION ${test_client_install_dir})
 
 ##################################################################
 
@@ -150,7 +154,7 @@ install(TARGETS test_client RUNTIME DESTINATION ${test_client_source_dir})
 #      ara_sm
 #      ${source_ara_sm_dir}/SM.hpp
 #      ${source_ara_sm_dir}/SM.cpp
-#)
+# )
 
 # # named it from include_directories to target_include_directories also made it public 
 #  target_include_directories(ara_exec PUBLIC ${source_ara_exec_dir}/include )

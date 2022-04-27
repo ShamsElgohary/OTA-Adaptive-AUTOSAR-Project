@@ -3,24 +3,39 @@ using namespace std;
 using namespace ara::exec;
 using namespace boost::filesystem;
 
-
 bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 {
-    path p(rootPath+"/executables");
+    Json::Value v;
+    Json::Reader r;
+    std::ifstream is;
+    is.open("../../etc/system/Process_List.json");
+    r.parse(is, v);
+    vector<path> p;
 
-    for (directory_entry &x : directory_iterator(p))
+    for (Json::Value::const_iterator it = v.begin(); it != v.end(); ++it)
     {
-        string p2 = x.path().string() + "/etc/" + x.path().filename().string() + ".json";
-        executables_.push_back(Executable{ApplicationManifest(p2), vector<Application>()});
-        for(auto &app :executables_.back().manifest_.startUpConfigurations)
+        string key = it.key().asString();
+        if (key != "Process List Version")
         {
-            executables_.back().startupConfigurations_.push_back(Application(app,executables_.back().manifest_.name,executables_.back().manifest_.executable_path));
+            string x = v[key]["Path"].asString();
+            path y(rootPath + "/executables" + x);
+            p.push_back(y);
         }
-        for(auto &app :executables_.back().startupConfigurations_)
+    }
+
+    for (auto &x : p)
+    {
+        string p2 = x.string() + "/etc/execution_manifest.json";
+        executables_.push_back(Executable{ApplicationManifest(p2), vector<Application>()});
+        for (auto &app : executables_.back().manifest_.startUpConfigurations)
         {
-            for(auto function_group : app.configuration_.function_group_states)
+            executables_.back().startupConfigurations_.push_back(Application(app, executables_.back().manifest_.name, executables_.back().manifest_.executable_path));
+        }
+        for (auto &app : executables_.back().startupConfigurations_)
+        {
+            for (auto function_group : app.configuration_.function_group_states)
             {
-                for(auto state :function_group.second )
+                for (auto state : function_group.second)
                 {
                     function_groups_[function_group.first]->startupConfigurations_[state].push_back(&app);
                 }
@@ -32,29 +47,28 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 
 bool ApplicationExecutionMgr::loadMachineConfigrations()
 {
-    manifest_ = make_unique<MachineManifest>(rootPath+"/ara/etc/system/machine_manifest.json");
-    for(auto &fn : manifest_->function_groups)
+    manifest_ = make_unique<MachineManifest>(rootPath + "/ara/etc/system/machine_manifest.json");
+    for (auto &fn : manifest_->function_groups)
     {
-        for(auto &state :fn.allStates_)
-            fn.startupConfigurations_.insert({state ,vector<ara::exec::Application *>{}}) ;
-        function_groups_.insert({fn.name_ ,&fn});
+        for (auto &state : fn.allStates_)
+            fn.startupConfigurations_.insert({state, vector<ara::exec::Application *>{}});
+        function_groups_.insert({fn.name_, &fn});
     }
     return true;
 }
 
-
 bool ApplicationExecutionMgr::ProcessStateClientRequest()
 {
-    int size ;
-    char functionGroup_Name [10] , functionGroup_NewState[10];
-    smpipe = open("smFifo",O_RDONLY);
+    int size;
+    char functionGroup_Name[10], functionGroup_NewState[10];
+    smpipe = open("smFifo", O_RDONLY);
     read(smpipe, &size, sizeof(int));
-    for(int i =0 ;i<=size ;i++)
+    for (int i = 0; i <= size; i++)
     {
         read(smpipe, &functionGroup_Name[i], sizeof(char));
     }
     read(smpipe, &size, sizeof(int));
-     for(int i =0 ;i<=size ;i++)
+    for (int i = 0; i <= size; i++)
     {
         read(smpipe, &functionGroup_NewState[i], sizeof(char));
     }
@@ -65,28 +79,28 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
 
 bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 {
-    auto apps = function_groups_[fgs.fg_name]->startupConfigurations_[fgs.fg_newState] ;
-    for(auto &app : apps)
+    auto apps = function_groups_[fgs.fg_name]->startupConfigurations_[fgs.fg_newState];
+    for (auto &app : apps)
     {
-        if(app->current_state !=ExecutionState::Krunning)
+        if (app->current_state != ExecutionState::Krunning)
         {
             transitionChanges_.toStart_.push_back(app);
         }
     }
-    apps = function_groups_[fgs.fg_name]->startupConfigurations_[function_groups_[fgs.fg_name]->currentState_] ;
-    bool flag = true ;
-    for(auto &app : apps)
+    apps = function_groups_[fgs.fg_name]->startupConfigurations_[function_groups_[fgs.fg_name]->currentState_];
+    bool flag = true;
+    for (auto &app : apps)
     {
-        if(app->current_state ==ExecutionState::Krunning )
+        if (app->current_state == ExecutionState::Krunning)
         {
-            for(auto state :app->configuration_.function_group_states[fgs.fg_name])
+            for (auto state : app->configuration_.function_group_states[fgs.fg_name])
             {
-                if(state == fgs.fg_newState)
+                if (state == fgs.fg_newState)
                 {
-                    flag = false ;
+                    flag = false;
                 }
             }
-            if(flag)
+            if (flag)
                 transitionChanges_.toTerminate_.push_back(app);
         }
     }
@@ -100,15 +114,16 @@ void ApplicationExecutionMgr::initialize()
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
+    IAM_handle();
     FunctionGroupState::Preconstruct("machineFG", "startup");
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
     Execute();
     transitionChanges_.toStart_.clear();
-    transitionChanges_.toTerminate_.clear();    
+    transitionChanges_.toTerminate_.clear();
 }
 
-ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath):rootPath{rootPath}{}
+ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{rootPath} {}
 
 bool ApplicationExecutionMgr::run()
 {
@@ -141,4 +156,35 @@ bool ApplicationExecutionMgr::Execute()
         if (app->current_state != ExecutionState::Krunning)
             return false;
     }
+}
+
+string ApplicationExecutionMgr::get_process_name(int test_id)
+{
+    string p_name;
+    for (auto &x : executables_)
+    {
+        for (auto &y : x.startupConfigurations_)
+        {
+            if (test_id == y.id)
+            {
+                p_name = y.name;
+                return p_name;
+            }
+        }
+    }
+}
+
+void ApplicationExecutionMgr::IAM_handle()
+{
+    iam_future = async(launch::async, [this]()
+        {
+        FindProcessServer srv;
+        int id;
+        string process_name;
+        while(1){
+            id = srv.receiveData();
+            process_name = get_process_name(id);
+            cout << "em " << process_name << endl;
+            srv.sendData(process_name);
+        } });
 }

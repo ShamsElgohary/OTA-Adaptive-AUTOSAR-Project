@@ -6,23 +6,31 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <iostream>
+#include <boost/asio.hpp>
 
-#define EM_PORT_NUMBER 8080
-#define EM_IP_ADDRESS "127.0.0.1"
+
+
+using namespace boost::asio;
+using ip::tcp;
 using namespace std;
+
+#define EM_PORT_NUMBER 8084
+#define EM_IP_ADDRESS "127.0.0.1"
+
+
 
 namespace ara
 {
-    namespace em
+    namespace exec
     {
         class FindProcessServer
         {
         private:
-            int portNum = EM_PORT_NUMBER;
-            string IP = EM_IP_ADDRESS;
-            int pid; 
-            int server_socket ;
-            int client_socket ;
+            int pid;
+            boost::asio::io_service io_service;
+            tcp::acceptor acceptor_;
+            tcp::socket socket_;
+
         public:
             FindProcessServer();
             ~FindProcessServer();
