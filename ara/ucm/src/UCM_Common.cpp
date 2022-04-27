@@ -1,11 +1,13 @@
 #include "../includes/UCM_Common.hpp"
 
 /* THESE PATHS ARE CONSTANTS AND THEY DO NOT CHANGE */
-const string UCM_Path = GetUCMPath() ;
-const string ZIP_PackagesPath = UCM_Path + "/ZIP_Packages";
-const string fileSystemPath = GetFileSystemPath();
-const string fileBackupPath = GetFileSystemPath() + "/Backup";
+
+
 const string ProjectPath = GetProjectPath();
+const string UCM_Path = ProjectPath + "/ucm/";
+const string fileSystemPath = ProjectPath + "executables";
+const string ZIP_PackagesPath = ProjectPath + "executables/ucm/ZIP_Packages";
+const string fileBackupPath = ProjectPath + "executables/Backup";
 const string ProcessListPath = ProjectPath + "etc/system/";
 
 string command;
@@ -13,31 +15,9 @@ string command;
 static string GetProjectPath()
 {
   string origin = GetCurrentDirectory();
-  int pos = origin.find("ara");
+  int pos = origin.find("executables");
   string Path {origin.substr(0, pos)};
   return Path;
-}
-
-
-static string GetUCMPath()
-{
-  string origin = GetCurrentDirectory();
-  chdir(  "../" );
-  string UCM_Path { GetCurrentDirectory() };
-  /* RETURN TO PROGRAM PATH */
-  chdir( &origin[0] );
-  return UCM_Path;
-}
-
-
-
-static string GetFileSystemPath()
-{
-  chdir(  "../../.." );
-  string fileSystemPath { GetCurrentDirectory() + "/executables" };
-  /* RETURN TO PROGRAM PATH */
-  chdir( &UCM_Path[0] );
-  return fileSystemPath;
 }
 
 

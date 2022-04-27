@@ -379,7 +379,9 @@ namespace ara
                         ActivateOutput operator()()
                         {
                             ActivateOutput out;
+                            cout << "Before Process" << endl;
                             process_method_call<ActivateOutput>(out);
+                            cout << "After Process" << endl;
                             return out;
                         }
                     };
