@@ -18,7 +18,7 @@ namespace ara
             class UpdateRequestSkeleton : public ara::com::skeleton::skeletonBase
             {
             public:
-               UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(1, I_id, mode)
+               UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("../etc/service_manifest.json",1, I_id, mode)
                {
                }
                 /** StartUpdateSession **/
