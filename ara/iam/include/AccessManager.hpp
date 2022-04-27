@@ -14,15 +14,16 @@ namespace ara
         class AccessManager
         {
             private:
-            static ara::iam::IPCserverInterface server;
+            ara::iam::IPCserverInterface server;
+            ara::exec::FindProcessClient FPC;
 
             public: 
             
-            static void InitGrantStorage(std::string basePath);
+            void InitGrantStorage(std::string basePath);
             
-            static std::uint8_t InitServerAdapter();
+            std::uint8_t InitServerAdapter();
 
-            static void RunEventLoop();
+            void RunEventLoop();
         };
     }
 }

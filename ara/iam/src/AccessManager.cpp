@@ -1,6 +1,5 @@
 #include "../include/AccessManager.hpp"
 
-ara::iam::IPCserverInterface ara::iam::AccessManager::server;
 
 void ara::iam::AccessManager::InitGrantStorage(std::string basePath)
 {
@@ -10,7 +9,7 @@ void ara::iam::AccessManager::InitGrantStorage(std::string basePath)
 std::uint8_t ara::iam::AccessManager::InitServerAdapter()
 {
     // RUN SERVER
-    return ara::iam::AccessManager::server.ServerSocketInit();
+    return server.ServerSocketInit();
 }
 
 
@@ -20,24 +19,22 @@ void ara::iam::AccessManager::RunEventLoop()
     while (true)
     {
         // LISTEN FOR GRANTS REQUESTS
-        int sd = ara::iam::AccessManager::server.Listen();
+        int sd = server.Listen();
 
         // Receive PID
-        int PID = ara::iam::AccessManager::server.getPeerId(sd);
+        int PID = server.getPeerId(sd);
 
         std::cout << "[RECEIVED] " << PID << std::endl;
 
-        // RESOLVE PID FROM EM
-        ara::exec::FindProcessClient FPC;
 
         // Send PID to EM
         FPC.sendData(PID);
 
         // Receive Proc
         std::string P_name = FPC.receiveData();
-
+        cout<<"IAM: process name "<<P_name<<endl;
         // RECIEVE GRANT FROM CLIENT 
-        ara::iam::Grant G = ara::iam::AccessManager::server.Receive(sd);
+        ara::iam::Grant G = server.Receive(sd);
 
         // SEARCH GRANTSTORAGE MAP
         bool rtn = ara::iam::GrantStorage::SearchGrantStorage(P_name, G);
@@ -45,7 +42,7 @@ void ara::iam::AccessManager::RunEventLoop()
         std::cout << "Result: " << rtn << std::endl;
 
         // RETURN RESULT TO CLIENT
-        ara::iam::AccessManager::server.Send(rtn, sd);
+        server.Send(rtn, sd);
     }
 }
 

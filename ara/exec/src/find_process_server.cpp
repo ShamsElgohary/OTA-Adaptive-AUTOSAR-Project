@@ -3,7 +3,7 @@ using namespace ara::exec;
 
 FindProcessServer::FindProcessServer():io_service() ,acceptor_(io_service, tcp::endpoint(tcp::v4(), EM_PORT_NUMBER)),socket_(io_service)
 {
-    cout<<"server listening....."<<endl;
+    cout<<"em listening for iam requests....."<<endl;
     acceptor_.accept(socket_);
 }
 
@@ -20,7 +20,7 @@ int FindProcessServer::receiveData()
 
 void FindProcessServer::sendData(string processName)
 {
-    const string msg = processName +"\0";
+    const string msg = processName;
     boost::asio::write( socket_, boost::asio::buffer(msg) );
 }
 FindProcessServer::~FindProcessServer()

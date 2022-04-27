@@ -1,6 +1,5 @@
 #include <iostream>
 #include "execution_client.hpp"
-#include "find_process_client.hpp"
 #include<unistd.h>
 using namespace std;
 using namespace ara::exec ;
@@ -15,9 +14,6 @@ int main ()
 
     exec.ReportExecutionStaste(ExecutionState::Krunning);
 
-    FindProcessClient cl;
-    cl.sendData(getpid());
-    cout<<"ex1 "<<cl.receiveData()<<endl;
     while(1);
     return 0;
 

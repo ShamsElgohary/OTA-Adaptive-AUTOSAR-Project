@@ -11,5 +11,13 @@
     "sm": {
         "Path": "/sm",
         "Version": "0.1"
+    },
+    "someip_sd": {
+        "Path": "/someip_sd",
+        "Version": "0.1"
+    },
+    "iam": {
+        "Path": "/iam",
+        "Version": "0.1"
     }
 }

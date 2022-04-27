@@ -5,15 +5,14 @@ using namespace ara::exec;
 
 FindProcessClient::FindProcessClient() : io_service(), socket_(io_service)
 {
-    cout<<"client conneting to server....."<<endl;
     socket_.connect(tcp::endpoint(boost::asio::ip::address::from_string(EM_IP_ADDRESS), EM_PORT_NUMBER));
-    cout<<"client conneted to server....."<<endl;
+    cout<<"iam connected to em....."<<endl;
 
 }
 
 void FindProcessClient::sendData(int pid_)
 {
-    const string pid = to_string(pid_)+"\0";
+    const string pid = to_string(pid_);
     boost::asio::write(socket_, boost::asio::buffer(pid));
 }
 

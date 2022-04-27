@@ -92,10 +92,10 @@ target_include_directories(
 set(someIp_SD_install_dir "${CMAKE_SOURCE_DIR}/executables/someip_sd/bin")
 set(COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES "${com_source_dir}/network_binding/SomeIp/servicediscovery/src")
 
-add_executable(someip_SD ${COM_serviceDiscovery_SRC_FILES} ${COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES}/sd-main.cpp)
-target_link_libraries(someip_SD com_lib execution_lib)
-target_include_directories(someip_SD  PUBLIC ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include ) 
-install(TARGETS someip_SD RUNTIME DESTINATION ${someIp_SD_install_dir})
+add_executable(someip_sd ${COM_serviceDiscovery_SRC_FILES} ${COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES}/sd-main.cpp)
+target_link_libraries(someip_sd com_lib execution_lib)
+target_include_directories(someip_sd  PUBLIC ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include ) 
+install(TARGETS someip_sd RUNTIME DESTINATION ${someIp_SD_install_dir})
 
 ################################UCM#############################
 
@@ -113,17 +113,17 @@ install(TARGETS someip_SD RUNTIME DESTINATION ${someIp_SD_install_dir})
 
 set(test_server_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Server")
 set(test_server_install_dir "${CMAKE_SOURCE_DIR}/executables/com_skeleton_test/bin")
-add_executable(test_server ${test_server_source_dir}/main.cpp ) 
-target_link_libraries(test_server com_lib iam_lib execution_lib)
-target_include_directories( test_server PUBLIC ${test_server_source_dir} )
-install(TARGETS test_server RUNTIME DESTINATION ${test_server_install_dir})
+add_executable(com_skeleton_test ${test_server_source_dir}/main.cpp ) 
+target_link_libraries(com_skeleton_test com_lib iam_lib execution_lib)
+target_include_directories( com_skeleton_test PUBLIC ${test_server_source_dir} )
+install(TARGETS com_skeleton_test RUNTIME DESTINATION ${test_server_install_dir})
 
 set(test_client_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Client")
 set(test_client_install_dir "${CMAKE_SOURCE_DIR}/executables/com_proxy_test/bin")
-add_executable(test_client ${test_client_source_dir}/main.cpp) 
-target_include_directories( test_client PUBLIC ${test_client_source_dir})
-target_link_libraries(test_client com_lib iam_lib execution_lib)
-install(TARGETS test_client RUNTIME DESTINATION ${test_client_install_dir})
+add_executable(com_proxy_test ${test_client_source_dir}/main.cpp) 
+target_include_directories( com_proxy_test PUBLIC ${test_client_source_dir})
+target_link_libraries(com_proxy_test com_lib iam_lib execution_lib)
+install(TARGETS com_proxy_test RUNTIME DESTINATION ${test_client_install_dir})
 
 ##################################################################
 

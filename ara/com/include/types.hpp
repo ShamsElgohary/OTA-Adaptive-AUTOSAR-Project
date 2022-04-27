@@ -2,7 +2,7 @@
 #include<iostream>
 #include<vector>
 
-const bool IAM_ACTIVATED = false;
+const bool IAM_ACTIVATED = true;
 
 namespace ara
 {
