@@ -6,6 +6,8 @@ using boost::asio::ip::udp;
 
 using namespace std;
 
+const uint32_t SOMEIP_BUFFER_SIZE = 4096;
+
 namespace someip
 {
 
@@ -259,7 +261,7 @@ namespace someip
 
 		try
 		{
-			char buff[1024];
+			char buff[SOMEIP_BUFFER_SIZE];
 			size_t read = tcpSocket.read_some(boost::asio::buffer(buff));
 			std::string mssgBuf = buff;
 			std::stringstream ss;
@@ -267,7 +269,6 @@ namespace someip
 			Deserializer deserializer;
 			// DESERIALIZE SOMEIP MESSAGE STRUCT
 			deserializer.Deserialize(ss, &someipMsg);
-			cout << "Rec 7" << endl;
 		}
 		catch (boost::system::system_error e)
 		{
@@ -312,7 +313,7 @@ namespace someip
 		try
 		{
 
-			char buff[1024];
+			char buff[SOMEIP_BUFFER_SIZE];
 			tcpSocket.async_read_some(boost::asio::buffer(buff), &OnReceiveCompleted);
 			// IMPORTANT FOR ASYNCHRONOUS OPERATIONS
 			tcp_io_service.run();
@@ -570,7 +571,7 @@ namespace someip
 
 		try
 		{
-			char buff[1024];
+			char buff[SOMEIP_BUFFER_SIZE];
 			size_t read = udpSocket.receive_from(boost::asio::buffer(buff), this->udpEndPoint);
 			std::string mssgBuf = buff;
 			std::stringstream ss;
@@ -602,7 +603,7 @@ namespace someip
 
 		try
 		{
-			char buff[1024];
+			char buff[SOMEIP_BUFFER_SIZE];
 			size_t read = udpSocket.receive_from(boost::asio::buffer(buff), this->udpEndPoint);
 			std::string mssgBuf = buff;
 			std::stringstream ss;

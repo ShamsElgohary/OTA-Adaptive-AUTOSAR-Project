@@ -29,7 +29,6 @@ namespace ara::ucm::pkgmgr
     std::future<ara::ucm::pkgmgr::PackageManagerImpl::TransferDataOutput>
     PackageManagerImpl::TransferData(TransferIdType id, ByteVectorType data, uint64_t blockCounter)
     {
-        cout << "Tranfer Data Server" << endl;
         std::promise<ara::ucm::pkgmgr::PackageManagerImpl::TransferDataOutput> promise;
 
         ara::ucm::pkgmgr::PackageManagerImpl::TransferDataOutput DataReturn{ara::ucm::transfer::SoftwarePackage::TransferDataInternal(id, data, blockCounter)};

@@ -87,7 +87,6 @@ namespace ara
                         break;
                     }
                     handleMethod();
-                    cout << "Served" << endl;
                 }
             }
             void skeletonBase::StopOfferService()

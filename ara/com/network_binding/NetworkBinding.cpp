@@ -45,9 +45,7 @@ namespace ara
         {
 
             someip::someipMessage someipMsg = clientInstance->ReceiveMessage();
-            cout << "Rec 2" << endl;
             method_id = someipMsg.header.getMethodID();
-            cout << "Rec 3" << endl;
             std::stringstream receivedData;
             receivedData << someipMsg.payload;
             return receivedData;

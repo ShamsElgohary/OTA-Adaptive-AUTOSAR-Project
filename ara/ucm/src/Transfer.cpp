@@ -54,7 +54,6 @@ namespace ara::ucm::transfer
 
     ara::ucm::OperationResultType SoftwarePackage::TransferDataInternal(ara::ucm::TransferIdType id, ara::ucm::ByteVectorType data, uint64_t blockCounter)
     {
-        cout << "Tranfer Data Server Internal" << endl;
         /* Check ID validity & Get SoftwarePackage  (CurrentSoftwarePackages > Vector of struct of SwPackageInfoType) */
         shared_ptr<SoftwarePackage> SwPkg = ara::ucm::SynchronizedStorage::GetItem(id);
         if (SwPkg == nullptr)

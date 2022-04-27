@@ -274,7 +274,6 @@ namespace ara
                     int methodID;
                     this->ptr2bindingProtocol->ServerListen();
                     stringstream payload = this->ptr2bindingProtocol->ReceiveMessage(methodID);
-                    cout << "After S Reciev" << methodID << endl;
                     switch (methodID)
                     {
                     case 1:

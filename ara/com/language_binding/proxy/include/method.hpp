@@ -30,7 +30,6 @@ namespace ara
                         S.serialize(payload, in);
                         this->Delegate->SendRequest(this->ID, payload);
                         stringstream out_ss = this->Delegate->ReceiveMessage();
-                        cout << "After Recieve of TD" << endl;
                         Deserializer2 D;
                         D.deserialize(out_ss, out);
                         this -> Delegate ->CloseConnection();

@@ -28,7 +28,8 @@ int main()
         cout << "Start Tranfer Output: " << endl;
         cout << "ID: " << Convert2StringID(Startrtn.id) << endl;
         cout << "Block Size: " << Startrtn.BlockSize << endl;
-/*
+        
+
         uint32_t BlockNumber = ceil((float)result.size() / (float)Startrtn.BlockSize);
         uint32_t BlockCounter = 0;
         uint64_t BlockSize = Startrtn.BlockSize;
@@ -40,10 +41,8 @@ int main()
             {
                 ByteData.push_back(result[i + j]);
             }
-            cout << "Before TD" << endl;
 
             RecService.TransferData(Startrtn.id, ByteData, BlockCounter);
-            cout << "TD Pass" << endl;
             BlockCounter++;
             ByteData.clear();
             i += BlockSize;
@@ -52,13 +51,13 @@ int main()
         RecService.TransferExit(Startrtn.id);
 
         RecService.ProcessSwPackage(Startrtn.id);
-
+/*
         RecService.Activate();
 
         // RecService.Rollback();
 
         RecService.Finish(); 
-        */
+*/
     }
     
     return 0;
