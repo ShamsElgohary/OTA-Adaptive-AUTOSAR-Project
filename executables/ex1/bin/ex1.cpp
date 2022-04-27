@@ -8,7 +8,7 @@ using namespace ara::exec ;
 int main ()
 {
     
-    cout<<"hello from ex1\n" ;
+    cout<<"hello from ex1 with pid = " <<getpid()<<"\n" ;
     usleep(1000000);
     
     ExecutionClient exec;
@@ -18,11 +18,7 @@ int main ()
     FindProcessClient cl;
     cl.sendData(getpid());
     cout<<"ex1 "<<cl.receiveData()<<endl;
-    usleep(5*1000000);
-
-
-    cl.sendData(getpid());
-    cout<<"ex1 2 "<<cl.receiveData()<<endl;
+    while(1);
     return 0;
 
 }

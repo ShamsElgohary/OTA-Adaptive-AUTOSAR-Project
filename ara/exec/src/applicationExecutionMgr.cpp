@@ -47,7 +47,7 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 
 bool ApplicationExecutionMgr::loadMachineConfigrations()
 {
-    manifest_ = make_unique<MachineManifest>(rootPath + "/ara/etc/system/machine_manifest.json");
+    manifest_ = make_unique<MachineManifest>("../../etc/system/machine_manifest.json");
     for (auto &fn : manifest_->function_groups)
     {
         for (auto &state : fn.allStates_)
@@ -104,7 +104,7 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
                 transitionChanges_.toTerminate_.push_back(app);
         }
     }
-
+    function_groups_[fgs.fg_name]->currentState_  =   fgs.fg_newState ;
     return true;
 }
 
@@ -115,7 +115,6 @@ void ApplicationExecutionMgr::initialize()
     loadMachineConfigrations();
     loadExecutablesConfigrations();
     IAM_handle();
-    FunctionGroupState::Preconstruct("machineFG", "startup");
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
     Execute();

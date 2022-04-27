@@ -17,7 +17,7 @@ namespace ara
                     string executable_path; 
             }CtorToken; 
             public:
-                int id;
+                pid_t id;
                 int fd;
                 string name;
                 string executable_path;
@@ -25,7 +25,7 @@ namespace ara
                 ApplicationManifest::startUpConfiguration configuration_;
                 Application(Application::CtorToken && token);
                 Application(ApplicationManifest::startUpConfiguration con, string name , string path);
-                int start();
+                void start();
                 void terminate();
                 void Update_status();
         };

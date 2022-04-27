@@ -17,19 +17,24 @@ Application::Application(Application::CtorToken && token)
     name  = token.name;
     executable_path =token.executable_path;
 }
-int Application::start()
+void Application::start()
 {
     this->id =fork();
     if(this->id ==0)
     {
         execl(executable_path.c_str(),nullptr);
     }
-    return id ;
 }
 void Application::terminate()
 {
-    kill(id,SIGTERM);
-    cout<<"terminating "<<name<<"\n\n\n";
+    if(kill(id,SIGKILL) == 0)
+    {
+         cout<<"terminating "<<name<<"\n\n\n";
+    }
+    else
+    {
+         cout<<"couldn't terminate process.... with id = "<<id<<" and named "<<name<<"\n\n\n";
+    }
 
     //Update_status();
     // if(this->current_state!=ExecutionState::Kterminate){
