@@ -127,7 +127,24 @@ target_include_directories( com_proxy_test PUBLIC ${test_client_source_dir})
 target_link_libraries(com_proxy_test com_lib iam_lib execution_lib)
 install(TARGETS com_proxy_test RUNTIME DESTINATION ${test_client_install_dir})
 
-##################################################################
+######################### ota ##########################
+
+set(ota_source_dir "${CMAKE_SOURCE_DIR}/ara/ota/client")
+set(ota_install_dir "${CMAKE_SOURCE_DIR}/executables/ota/bin")
+add_executable(ota ${ota_source_dir}/main.cpp ) 
+target_link_libraries(ota com_lib iam_lib execution_lib cpr )
+install(TARGETS ota RUNTIME DESTINATION ${ota_install_dir})
+
+
+
+
+
+
+
+
+
+
+
 
 # project(sm)
 

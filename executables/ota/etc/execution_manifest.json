@@ -9,8 +9,8 @@
 			"function_group_states": {},
 			"scheduling_policy": "Round Robin",
 			"scheduling_priority": "1",
-			"arguments": [],
-			"environments": []
+			"arguments": ["arg_0","arg_0"],
+			"environments": ["env_1","env_1"]
 		}
 	}
 }

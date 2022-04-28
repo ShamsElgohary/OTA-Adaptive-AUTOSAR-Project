@@ -11,11 +11,12 @@ string Convert2String(ByteVectorType Data);
 
 int main()
 {
-    // ara::exec::ExecutionClient exec;
-    // exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
-    ara::com::ServiceHandleContainer<ProxyBase::HandleType> handles = PackageManagerProxy::FindService();
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
 
-    cout << "Size: " << handles.size() << endl;
+    
+    ara::com::ServiceHandleContainer<ProxyBase::HandleType> handles = PackageManagerProxy::FindService(1);
+    PackageManagerProxy RecService(handles[0]);
     if (handles.size())
     {
         PackageManagerProxy RecService(handles[0]);
@@ -30,8 +31,6 @@ int main()
         ByteVectorType ByteData;
 
         TransferStartOutput Startrtn = RecService.TransferStart(result.size());
-        cout << "Size of File: " << result.size() << endl;
-        cout << "Size of Block: " << Startrtn.BlockSize << endl;
 
         uint32_t BlockNumber = ceil((float)result.size() / (float)Startrtn.BlockSize);
         uint32_t BlockCounter = 0;
@@ -56,11 +55,9 @@ int main()
         RecService.ProcessSwPackage(Startrtn.id);
         RecService.Activate();
         // RecService.Rollback();
-        RecService.Finish();
-
-        
+        RecService.Finish(); 
     }
-
+    
     return 0;
 }
 
