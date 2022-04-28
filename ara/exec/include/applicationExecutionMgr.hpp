@@ -8,6 +8,7 @@
 #include <boost/property_tree/json_parser.hpp>
 #include "function_group.hpp"
 #include <thread>
+#include <pthread.h>
 #include <future>
 #include <stdint.h> 
 #include <sys/stat.h>
@@ -16,13 +17,17 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include <fstream>
 #include <boost/filesystem.hpp>
 #include <bits/stdc++.h>
 #include "execution_client.hpp"
+#include"find_process_server.hpp"
+#include"../../../utility/jsoncpp/header/json.h"
 using namespace std;
 namespace ara {
     namespace exec
     {
+        typedef void * (*THREADFUNCPTR)(void *);
         enum class PlatformStates : uint8_t
         {
             kRunning,
@@ -42,8 +47,12 @@ namespace ara {
 
         class ApplicationExecutionMgr final
         {
+            private:
+            string get_process_name(int pid);
+            void* IAM_server(void* p);
             int smpipe{-1};
             public:
+                vector<Application*> waiting;
                 vector<Executable> executables_;
                 unique_ptr<MachineManifest> manifest_ ;
                 map<string,FunctionGroup*> function_groups_;
@@ -59,6 +68,7 @@ namespace ara {
                 bool ProcessStateClientRequest();
                 bool Terminate();
                 bool Execute();
+                void IAM_handle();
         };
     }
 }

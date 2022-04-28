@@ -9,7 +9,7 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
 {   
     path p {executionManifestPath};
     name = p.parent_path().parent_path().filename().string() ;
-    executable_path = p.parent_path().parent_path().string()+"/bin/";
+    executable_path = p.parent_path().parent_path().string()+"/bin";
 
     pt::ptree executionTree;
     pt::read_json(executionManifestPath, executionTree);
@@ -18,6 +18,10 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
     for(auto &confg :executionTree.get_child("startup_configs"))
     {   
         ApplicationManifest::startUpConfiguration con;
+        for(auto &dep :confg.second.get_child("depends"))
+        {   
+            con.dependency.push_back(dep.second.data());
+        }
         for(auto &arguments :confg.second.get_child("arguments"))
         {   
             con.arguments.push_back(arguments.second.data());
