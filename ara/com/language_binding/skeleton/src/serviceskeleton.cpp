@@ -17,16 +17,14 @@ namespace ara
                 Json::Value actualJson;
                 Json::Reader reader;
                 reader.parse(file, actualJson);
-
                 for (int i = 0; i < actualJson["ap_service_instances"]["provided_ap_service_instances"].size(); i++)
                 {
                     if (actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["instance_id"] == instance_id && actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["service_id"] == service_id)
                     {
                         return actualJson["ap_service_instances"]["provided_ap_service_instances"][i][required].asString();
-                        ;
                     }
                 }
-                cout << "Couldn't Find Data from Instance Manifest" << endl;
+                cout << "[com::Skeleton::Parse] Couldn't Find Data from Instance Manifest" << endl;
                 return "";
             }
 
@@ -43,7 +41,7 @@ namespace ara
                         return actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["port"].asInt();
                     }
                 }
-                cout << "Couldn't Find Data from Instance Manifest" << endl;
+                cout << "[com::skeleton::Parse] Couldn't Find Data from Instance Manifest" << endl;
                 return -1;
             }
 
@@ -57,13 +55,15 @@ namespace ara
                     grant_result = IGQ.HasGrant(G);
                     if (!grant_result)
                     {
-                        cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                        cout << "[com::skeleton::skeletonBase] ACCESS FORBIDDEN !!!!!" << endl;
                         return;
                     }
                 }
 
                 string ip = parse(path, instanceID, serviceID, "ipv4") + " ";
                 int port = parse(path, instanceID, serviceID);
+                cout << "IP Address: " << ip << endl;
+                cout << "Port: " << port << endl;
                 this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, ip, port, someip::EndUserType::SERVER);
             }
             void skeletonBase::OfferService()
@@ -75,7 +75,7 @@ namespace ara
                 }
                 else
                 {
-                    cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                    cout << "[com::skeleton::OfferService] ACCESS FORBIDDEN !!!!!" << endl;
                 }
             }
             void skeletonBase::serve()

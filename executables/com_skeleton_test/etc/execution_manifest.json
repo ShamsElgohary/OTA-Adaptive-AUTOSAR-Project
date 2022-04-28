@@ -6,11 +6,11 @@
 		{
 			"depends": {},
 			"machine_states": [],
-			"function_group_states": {"fn1" : ["idle" ,"play"]},
+			"function_group_states": {"fn3" : ["idle" ,"run"]},
 			"scheduling_policy": "Round Robin",
 			"scheduling_priority": "1",
-			"arguments": ["arg_0","arg_0"],
-			"environments": ["env_1","env_1"]
+			"arguments": [],
+			"environments": []
 		}
 	}
 }

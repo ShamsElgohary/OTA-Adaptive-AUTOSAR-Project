@@ -35,7 +35,7 @@ int ara::iam::IPCserverInterface::getPeerId(int sd)
 
 int ara::iam::IPCserverInterface::Listen()
 {
-    std::cout << "Waiting for a client to connect..." << std::endl;
+    std::cout << "[iamServer] Waiting for a client to connect..." << std::endl;
     // listen for up to 5 requests at a time
     listen(ara::iam::IPCserverInterface::ServerSD, 5);
     // receive a request from client using accept
@@ -50,7 +50,7 @@ int ara::iam::IPCserverInterface::Listen()
         cerr << "Error accepting request from client!" << std::endl;
         return -1;
     }
-    std::cout << "Connected with client!" << std::endl;
+    std::cout << "[iamServer] Connected with client!" << std::endl;
 
     return newSd;
 }
@@ -64,7 +64,7 @@ ara::iam::Grant ara::iam::IPCserverInterface::Receive(int sd)
 {
     char msg[1500];
     //receive a message from the client (listen)
-    std::cout << "Awaiting client response..." << std::endl;
+    std::cout << "[iamServer] Awaiting client response..." << std::endl;
     memset(&msg, 0, sizeof(msg));//clear the buffer
     
     recv(sd, (char*)&msg, sizeof(msg), 0);
@@ -78,12 +78,12 @@ ara::iam::Grant ara::iam::IPCserverInterface::Receive(int sd)
 
     // Deserialize stringstream ss in GrantObj
     boost::serialization::Deserialize(G, ss);
-
-    std::cout << "[CLIENT]" << std::endl;
-    std::cout << "Service ID: " << G.S_id << std::endl;
-    std::cout << "Instance ID: " << G.In_id << std::endl;
-    std::cout << "Grant Type: " << G.GType << std::endl;
-    std::cout << "PR Type: " << G.PR_T << std::endl;
+    
+    // std::cout << "[CLIENT]" << std::endl;
+    // std::cout << "Service ID: " << G.S_id << std::endl;
+    // std::cout << "Instance ID: " << G.In_id << std::endl;
+    // std::cout << "Grant Type: " << G.GType << std::endl;
+    // std::cout << "PR Type: " << G.PR_T << std::endl;
 
     return G;
 }

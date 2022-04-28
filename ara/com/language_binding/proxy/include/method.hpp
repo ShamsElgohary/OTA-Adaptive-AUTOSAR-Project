@@ -38,11 +38,8 @@ namespace ara
                     void process_method_call(output &out)
                     {
                         stringstream payload;
-                        cout << "Before Send" << endl;
                         this->Delegate->SendRequest(this->ID, payload);
-                        cout << "After Send" << endl;
                         stringstream out_ss = this->Delegate->ReceiveMessage();
-                        cout << "After Rec" << endl;
                         Deserializer2 D;
                         D.deserialize(out_ss, out);
                         this -> Delegate ->CloseConnection();

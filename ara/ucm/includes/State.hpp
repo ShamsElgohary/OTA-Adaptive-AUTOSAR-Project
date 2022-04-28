@@ -1,8 +1,9 @@
 #pragma once
 
 #include "UCM_Common.hpp"
+#include "UpdateRequestProxy.hpp"
 
-
+#define PrepareUpdateCounter 3
 namespace ara
 {
     namespace ucm
@@ -17,14 +18,9 @@ namespace ara
                 PackageManagerStatusType CurrentStatus;
                 uint8_t SWPackagesCounter=0;
                 static uint16_t ProcessListVersion;
+                //shared ptr creation
+                std::shared_ptr <ara::sm::UpdateRequest::proxy::UpdateRequestproxy> proxy = nullptr;  
 
-                enum class SM_ReceivedStates : uint8_t
-                {
-                    kRejected = 5U,
-                    kVerifyFailed = 6U,
-                    kPrepareFailed = 7U,
-                    kRollbackFailed = 8U,
-                };
 
             public:
                 PackageManagerState(PackageManagerStatusType pkgmgr_CurrentStatus);

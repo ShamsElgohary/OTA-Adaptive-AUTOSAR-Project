@@ -6,7 +6,6 @@ namespace pt = boost::property_tree;
 
 using namespace ara::ucm::parsing;
 
-
 SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
 {
     SwClusterInfoType swClusterInfo;
@@ -16,7 +15,7 @@ SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
     pt::ptree root;
     // Load the json file in this ptree
     pt::read_json(Path, root);
-    string version = root.get<std::string>("version").substr(0,5);
+    string version = root.get<std::string>("version").substr(0, 5);
     string name = root.get<std::string>("shortName");
 
     swClusterInfo.Version = version;
@@ -27,57 +26,61 @@ SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
 
 void SoftwarePackageParser::SwPackageManifestParser(string PackagePath)
 {
-string Path = PackagePath + "/SwPackageManifest.json";
-// Create a root
-pt::ptree root;
-// Load the json file in this ptree
-pt::read_json(Path, root);
+    cout << "Path: " << PackagePath << endl;
+    string Path = PackagePath + "/SwPackageManifest.json";
+    cout << "1" << endl;
+    // Create a root
+    pt::ptree root;
+    // Load the json file in this ptree
+    pt::read_json(Path, root);
+    cout << "2" << endl;
 
-string actionTypeString { root.get<string>("actionType") };
+    string actionTypeString{root.get<string>("actionType")};
+    cout << "3" << endl;
 
-if ( actionTypeString == "Install")
-{  
-    actionType = ara::ucm::ActionType::kInstall;
-}
+    if (actionTypeString == "Install")
+    {
+        actionType = ara::ucm::ActionType::kInstall;
+    }
 
-else if( actionTypeString == "Update" )
-{
-    actionType = ara::ucm::ActionType::kUpdate;   
-}
+    else if (actionTypeString == "Update")
+    {
+        actionType = ara::ucm::ActionType::kUpdate;
+    }
 
-else if( actionTypeString == "Remove" )
-{
-    actionType = ara::ucm::ActionType::kUpdate;   
-}
+    else if (actionTypeString == "Remove")
+    {
+        actionType = ara::ucm::ActionType::kUpdate;
+    }
+    cout << "7" << endl;
 
-activationAction = root.get<std::string>("activationAction");
-//deltaPackageApplicableVersion = root.get<std::string>("deltaPackageApplicableVersion");
+    activationAction = root.get<std::string>("activationAction");
 
+    // deltaPackageApplicableVersion = root.get<std::string>("deltaPackageApplicableVersion");
 }
 
 ActionType SoftwarePackageParser::GetActionType()
 {
-return actionType;
+    return actionType;
 }
 
 string SoftwarePackageParser::GetActivationAction()
 {
-return activationAction;
+    return activationAction;
 }
 
 string SoftwarePackageParser::GetDeltaPackageApplicableVersion()
 {
-return deltaPackageApplicableVersion;
+    return deltaPackageApplicableVersion;
 }
 
 string SoftwarePackageParser::UnzipPackage(string SoftwarePackage)
 {
-
     /* PACKAGE WILL BE A DIRECTORY NOT A ZIPPED FILE  (DISREGARD .ZIP) */
-    string UnzippedPath { SoftwarePackage.substr( 0, SoftwarePackage.length()- 4) };    
+    string UnzippedPath{SoftwarePackage.substr(0, SoftwarePackage.length() - 4)};
 
     /* If Path Doesn't Exist,Then Make Directory */
-    if( IsPathExist(UnzippedPath.c_str()) == false )
+    if (IsPathExist(UnzippedPath.c_str()) == false)
     {
         command = "mkdir " + UnzippedPath;
         system(&command[0]);
@@ -97,4 +100,3 @@ string SoftwarePackageParser::UnzipPackage(string SoftwarePackage)
 
     return UnzippedPath;
 }
-

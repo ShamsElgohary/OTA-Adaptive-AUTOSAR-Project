@@ -12,10 +12,21 @@ namespace ara
         {
             namespace proxy
             {
+                using Functiongroup = std::string;
+                using FunctionGroupList = std::vector<Functiongroup>;
+                enum class SM_ApplicationError : uint8_t
+                {
+                    kPrepared = 1U,
+                    kVerified = 2U,
+                    kRejected = 5U,
+                    kVerifyFailed = 6U,
+                    kPrepareFailed = 7U,
+                    kRollbackFailed = 8U,
+                };
                 /** StartUpdateSession **/
                 struct StartUpdateSessionOutput
                 {
-                    uint8_t AppError;
+                    SM_ApplicationError AppError;
 
                 private:
                     template <typename Archive>
@@ -42,7 +53,7 @@ namespace ara
 
                 struct PrepareUpdateOutput
                 {
-                    uint8_t AppError;
+                    SM_ApplicationError AppError;
 
                 private:
                     template <typename Archive>
@@ -69,7 +80,7 @@ namespace ara
 
                 struct VerifyUpdateOutput
                 {
-                    uint8_t AppError;
+                    SM_ApplicationError AppError;
 
                 private:
                     template <typename Archive>
@@ -83,7 +94,7 @@ namespace ara
                 /** StopUpdateSession **/
                 struct StopUpdateSessionOutput
                 {
-                    uint8_t AppError;
+                    SM_ApplicationError AppError;
 
                 private:
                     template <typename Archive>

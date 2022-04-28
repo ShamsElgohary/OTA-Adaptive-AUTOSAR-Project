@@ -26,7 +26,7 @@ public:
   /* SHOW DATA INSIDE THE STREAM */
   inline void ShowSerializedData(std::stringstream &ss)
   {
-    std::cout<< ss.str() << std::endl;
+    std::cout<< "[serialize] " <<ss.str() << std::endl;
   }
 
 
@@ -57,8 +57,8 @@ public:
     }
     catch(const std::exception &e) 
     {
-      std::cout<< "NOT SUPPORTED IN SERIALIZE \n";
-      std::cout<<e.what()<<std::endl;
+      std::cout<< "[serialize] " << "NOT SUPPORTED IN SERIALIZE \n";
+      std::cout<< "[serialize] " <<e.what()<<std::endl;
     }
   }
 
@@ -244,8 +244,8 @@ public:
     }
     catch(const std::exception &e) 
     {
-      std::cout<< "NOT SUPPORTED IN DESERIALIZE \n";
-      std::cout<<e.what()<<std::endl;
+      std::cout<< "[serialize] " << "NOT SUPPORTED IN DESERIALIZE \n";
+      std::cout<< "[serialize] " << e.what()<<std::endl;
     }
   }
 

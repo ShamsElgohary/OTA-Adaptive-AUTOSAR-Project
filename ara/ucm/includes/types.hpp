@@ -239,6 +239,7 @@ namespace ara
 			kVehicleChecking = 6U
 
 		};
+		
 
 		/* Represents the state of an update from OTA Client perspective.Represents the state of an update from OTA Client perspective */
 		enum class TransferStateType : uint8_t

@@ -38,6 +38,28 @@
                     "InstanceID": 1
                 }
             ]
+        },
+        {
+            "Process": "com_proxy_test",
+            "Elements": [
+                {
+                    "GrantType": "ComGrant",
+                    "PR_Type": "Require",
+                    "ServiceID": 1,
+                    "InstanceID": 1
+                }
+            ]
+        },
+        {
+            "Process": "com_skeleton_test",
+            "Elements": [
+                {
+                    "GrantType": "ComGrant",
+                    "PR_Type": "Provide",
+                    "ServiceID": 1,
+                    "InstanceID": 1
+                }
+            ]
         }
     ]
 }

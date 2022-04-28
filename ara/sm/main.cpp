@@ -9,8 +9,8 @@ int main()
 {
     printf("SM started to work\n");
     /********Report to EM*****/
-    ExecutionClient client{};
-    client.ReportExecutionStaste(ExecutionState::Krunning);
+    // ExecutionClient client{};
+    // client.ReportExecutionStaste(ExecutionState::Krunning);
     /********Test*************/
     UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
     FunctionGroupList function_groups = {"fg1", "fg2"};
