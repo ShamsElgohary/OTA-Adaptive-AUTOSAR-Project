@@ -24,7 +24,7 @@ void ara::iam::AccessManager::RunEventLoop()
         // Receive PID
         int PID = server.getPeerId(sd);
 
-        std::cout << "[RECEIVED] " << PID << std::endl;
+        std::cout << "[iamServer] "  << PID << std::endl;
 
 
         // Send PID to EM
@@ -32,14 +32,14 @@ void ara::iam::AccessManager::RunEventLoop()
 
         // Receive Proc
         std::string P_name = FPC.receiveData();
-        cout<<"IAM: process name "<<P_name<<endl;
+        cout<< "[iamServer] process name: "<<P_name<<endl;
         // RECIEVE GRANT FROM CLIENT 
         ara::iam::Grant G = server.Receive(sd);
 
         // SEARCH GRANTSTORAGE MAP
         bool rtn = ara::iam::GrantStorage::SearchGrantStorage(P_name, G);
 
-        std::cout << "Result: " << rtn << std::endl;
+        std::cout << "[iamServer] Result: " << rtn << std::endl;
 
         // RETURN RESULT TO CLIENT
         server.Send(rtn, sd);

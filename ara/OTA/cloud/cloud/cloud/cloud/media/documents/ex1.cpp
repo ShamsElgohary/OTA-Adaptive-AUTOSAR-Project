@@ -5,7 +5,7 @@ using namespace std;
 int main(){
     while(1)
     {
-    cout<<"hello from executable"<<"\n";
+    cout << "[Executable 1] Startup" << "\n";
     usleep(50000);
     }
     

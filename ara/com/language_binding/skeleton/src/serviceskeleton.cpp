@@ -27,7 +27,7 @@ namespace ara
                         ;
                     }
                 }
-                cout << "Couldn't Find Data from Instance Manifest" << endl;
+                cout << "[com::Skeleton::Parse] Couldn't Find Data from Instance Manifest" << endl;
                 return "";
             }
 
@@ -44,7 +44,7 @@ namespace ara
                         return actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["port"].asInt();
                     }
                 }
-                cout << "Couldn't Find Data from Instance Manifest" << endl;
+                cout << "[com::skeleton::Parse] Couldn't Find Data from Instance Manifest" << endl;
                 return -1;
             }
 
@@ -58,7 +58,7 @@ namespace ara
                     grant_result = IGQ.HasGrant(G);
                     if (!grant_result)
                     {
-                        cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                        cout << "[com::skeleton::skeletonBase] ACCESS FORBIDDEN !!!!!" << endl;
                         return;
                     }
                 }
@@ -76,7 +76,7 @@ namespace ara
                 }
                 else
                 {
-                    cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                    cout << "[com::skeleton::OfferService] ACCESS FORBIDDEN !!!!!" << endl;
                 }
             }
             void skeletonBase::serve()

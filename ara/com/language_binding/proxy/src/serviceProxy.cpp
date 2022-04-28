@@ -25,7 +25,7 @@ namespace ara
                         bool grant_result = IGQ.HasGrant(G);
                         if (!grant_result)
                         {
-                            cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                            cout << "[com::proxy::FindService] ACCESS FORBIDDEN !!!!!" << endl;
                             continue;
                         }
                     }
@@ -56,7 +56,7 @@ namespace ara
                             bool grant_result = IGQ.HasGrant(G);
                             if (!grant_result)
                             {
-                                cout << "ACCESS FORBIDDEN !!!!!" << endl;
+                                cout << "[com::proxy::FindService] ACCESS FORBIDDEN !!!!!" << endl;
                                 continue;
                             }
                         }

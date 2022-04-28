@@ -15,10 +15,10 @@ std::uint8_t ara::iam::IPCclientInterface::Connect()
     int status = connect(ara::iam::IPCclientInterface::clientSd, (sockaddr*) &sendSockAddr, sizeof(sendSockAddr));
     if(status < 0)
     {
-        std::cout << "Error connecting to socket!" << std::endl;
+        std::cout << "[iamClient] " << "Error connecting to socket!" << std::endl;
         return 1;
     }
-    std::cout << "Connected to the server!" << std::endl;
+    std::cout << "[iamClient] " << "Connected to the server!" << std::endl;
 
     return 0;
 }
@@ -32,7 +32,6 @@ void ara::iam::IPCclientInterface::Send(ara::iam::Grant G)
     std::string data = ss.str();
 
     char msg[1500]; 
-    std::cout << ">";
     memset(&msg, 0, sizeof(msg));//clear the buffer
     strcpy(msg, data.c_str());
     if(data == "exit")
@@ -49,8 +48,8 @@ void ara::iam::IPCclientInterface::sendPID(int pid)
 
 bool ara::iam::IPCclientInterface::Receive()
 {
-    std::cout << "Awaiting server response..." << std::endl;
+    std::cout << "[iamClient] " << "Awaiting server response..." << std::endl;
     recv(ara::iam::IPCclientInterface::clientSd, &is_granted, sizeof(bool), 0);
-    std::cout << "Result: " << is_granted << std::endl;
+    std::cout << "[iamClient] " << "Result: " << is_granted << std::endl;
     return is_granted;
 }

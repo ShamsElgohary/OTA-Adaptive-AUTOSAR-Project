@@ -183,7 +183,7 @@ void ApplicationExecutionMgr::IAM_handle()
         while(1){
             id = srv.receiveData();
             process_name = get_process_name(id);
-            cout << "em " << process_name << endl;
+            cout<< "[em] " << process_name << endl;
             srv.sendData(process_name);
         } });
 }

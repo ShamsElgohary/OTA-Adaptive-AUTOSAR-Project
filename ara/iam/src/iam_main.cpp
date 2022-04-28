@@ -9,7 +9,7 @@ int main (void)
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
     iam.RunEventLoop();
 
-    std::cout << "Server End" << std::endl;
+    std::cout << "[iamServer] Server End" << std::endl;
 
     return 0;
 }

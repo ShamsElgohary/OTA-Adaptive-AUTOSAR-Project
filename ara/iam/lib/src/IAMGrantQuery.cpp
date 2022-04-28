@@ -6,7 +6,7 @@ bool ara::iam::IAMGrantQuery::HasGrant(Grant& G)
     if (rtn == 0)
     {
         clientPID = getpid();
-        std::cout << "[SENT PID] " << clientPID << std::endl;
+        std::cout << "[iamClient] " << clientPID << std::endl;
         IPC.sendPID(clientPID);
         IPC.Send(G);
 
@@ -14,7 +14,6 @@ bool ara::iam::IAMGrantQuery::HasGrant(Grant& G)
     }
     else
     {
-        std::cout << "7aga" << std::endl;
         return false;
     }
 }

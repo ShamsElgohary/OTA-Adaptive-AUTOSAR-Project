@@ -14,7 +14,7 @@ ExecutionClient::ExecutionClient()
 void ExecutionClient::ReportExecutionStaste(ExecutionState state)
 {
     this->fd = open("executablesFifo", O_WRONLY);
-    cout<<"reporting state from exuctable\n" ;
+    cout<< "[em] " <<"reporting state from exuctable\n" ;
     write(fd, &state, sizeof(state));
     close(this->fd);
 }

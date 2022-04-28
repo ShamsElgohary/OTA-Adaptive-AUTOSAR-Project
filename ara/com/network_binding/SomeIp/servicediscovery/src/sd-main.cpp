@@ -28,7 +28,7 @@ int main()
 
         std::shared_ptr<someip::someipConnection> serverUser = someip::someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
 
-        std::cout << "Listening For SD Requests..." << std::endl;
+        std::cout << "[servicediscovery] " << "Listening For SD Requests..." << std::endl << std::endl;
 
         serverUser->ServerListen();
 
@@ -76,7 +76,7 @@ int main()
             for (auto itr = rtn.begin(); itr != rtn.end(); ++itr)
             {
                 
-                cout<<itr->Instance_ID<<endl<< itr->ipv4_address<<endl<<itr->port_num<<endl ;
+                cout<< "[servicediscovery] " <<itr->Instance_ID<<endl<< itr->ipv4_address<<endl<<itr->port_num<<endl ;
                 instance_ids.push_back(itr->Instance_ID);
                 addresses.push_back(itr->ipv4_address);
                 port_num.push_back(itr->port_num);
@@ -95,12 +95,12 @@ int main()
             msg1.payload += ss1.str();
             s.Serialize(ss2, port_num);
             msg1.payload += ss2.str();
-            cout<<msg1.payload<<endl;
+            cout<< "[servicediscovery] " <<msg1.payload<<endl;
             serverUser->SendMessage(msg1);
             break;
         }
         default:
-            std::cout << "default" << std::endl;
+            std::cout << "[servicediscovery] " << "default" << std::endl;
         }
     }
 }

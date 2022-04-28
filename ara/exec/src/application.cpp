@@ -29,11 +29,11 @@ void Application::terminate()
 {
     if(kill(id,SIGKILL) == 0)
     {
-         cout<<"terminating "<<name<<"\n\n\n";
+         cout<< "[em] " <<"terminating "<<name<<"\n\n\n";
     }
     else
     {
-         cout<<"couldn't terminate process.... with id = "<<id<<" and named "<<name<<"\n\n\n";
+         cout<< "[em] " <<"couldn't terminate process.... with id = "<<id<<" and named "<<name<<"\n\n\n";
     }
 
     //Update_status();
@@ -51,7 +51,7 @@ void Application::Update_status()
     read(fd,&current_state,sizeof(current_state));
     close(fd);
     if(current_state ==ExecutionState::Krunning)
-        cout<<name << " new state is "<<"Krunning"<<"\n\n\n";
+        cout<< "[em] " <<name << " new state is "<<"Krunning"<<"\n\n\n";
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name , string path)
 {

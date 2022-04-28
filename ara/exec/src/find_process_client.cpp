@@ -6,7 +6,7 @@ using namespace ara::exec;
 FindProcessClient::FindProcessClient() : io_service(), socket_(io_service)
 {
     socket_.connect(tcp::endpoint(boost::asio::ip::address::from_string(EM_IP_ADDRESS), EM_PORT_NUMBER));
-    cout<<"iam connected to em....."<<endl;
+    cout<< "[iam] " << "iam connected to em....."<<endl;
 
 }
 

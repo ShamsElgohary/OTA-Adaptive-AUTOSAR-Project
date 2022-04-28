@@ -17,18 +17,18 @@ namespace someip
 	void OnSendCompleted(boost::system::error_code ec, size_t bytes_transferred)
 	{
 		if (ec)
-			std::cout << "Send failed: " << ec.message() << "\n";
+			std::cout << "[someip] " <<"Send failed: " << ec.message() << "\n";
 		else
-			std::cout << "Send succesful (" << bytes_transferred << " bytes)\n";
+			std::cout << "[someip] " << "Send succesful (" << bytes_transferred << " bytes)\n";
 	}
 
 	/* USED AS A HANDLE IN THE SOCKET FOR ASYNCHRONOUS MESSAGES */
 	void OnReceiveCompleted(boost::system::error_code ec, size_t bytes_transferred)
 	{
 		if (ec)
-			std::cout << "Receive Failed: " << ec.message() << "\n";
+			std::cout << "[someip] " << "Receive Failed: " << ec.message() << "\n";
 		else
-			std::cout << "Receive Successful (" << bytes_transferred << " bytes)\n";
+			std::cout << "[someip] " << "Receive Successful (" << bytes_transferred << " bytes)\n";
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,7 +74,7 @@ namespace someip
 
 			else
 			{
-				cout << " UNDEFINED TYPE OF END USER \n";
+				cout << "[someip] " << " UNDEFINED TYPE OF END USER \n";
 			}
 		}
 
@@ -92,13 +92,13 @@ namespace someip
 
 			else
 			{
-				cout << " UNDEFINED TYPE OF END USER \n";
+				cout << "[someip] " << " UNDEFINED TYPE OF END USER \n";
 			}
 		}
 
 		else
 		{
-			cout << " UNDEFINED TYPE OF TRANSPORT PROTOCOL \n";
+			cout << "[someip] " << " UNDEFINED TYPE OF TRANSPORT PROTOCOL \n";
 		}
 
 		return endUserInstance;
@@ -120,14 +120,14 @@ namespace someip
 	bool someipConnection::ProxyConnect()
 	{
 		// METHOD RELATED TO CLIENTS ONLY
-		std::cout << "WRONG INSTANCE CALLED... \n";
+		std::cout << "[someip] " << "WRONG INSTANCE CALLED... \n";
 		return false;
 	}
 
 	/* SERVER LISTENING */
 	void someipConnection::ServerListen()
 	{
-		std::cout << "WRONG INSTANCE CALLED... \n";
+		std::cout << "[someip] " << "WRONG INSTANCE CALLED... \n";
 		// METHOD RELATED TO SERVER ONLY
 	}
 
