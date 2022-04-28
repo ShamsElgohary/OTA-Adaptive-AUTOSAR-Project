@@ -32,19 +32,13 @@ void ara::iam::GrantStorage::ParseJson(std::string filePath)
 
 bool ara::iam::GrantStorage::SearchGrantStorage(const std::string P_name, const ara::iam::Grant & G)
 {
-    cout<<P_name<<endl;
     auto itr = ara::iam::GrantStorage::AccessMap.find(P_name);
-    for(auto i: AccessMap)
-    {
-        cout<<i.first<<" "<<i.second[0].GType<<endl ;
-    }
+    
     if (itr != AccessMap.end())
     {
-        cout<<"entered!!!!!!!"<<endl;
         std::vector<ara::iam::Grant> GV = itr->second;
         for (auto & E : GV)
         {
-            cout<<"entered2!!!!!!!!!!!"<<endl;
             if (E.IsEqual(G))
             {
                 return true;

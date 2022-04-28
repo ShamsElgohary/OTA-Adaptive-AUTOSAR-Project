@@ -76,7 +76,7 @@ int main()
             for (auto itr = rtn.begin(); itr != rtn.end(); ++itr)
             {
                 
-                cout<< "[servicediscovery] " <<itr->Instance_ID<<endl<< itr->ipv4_address<<endl<<itr->port_num<<endl ;
+                cout<< "[servicediscovery] " <<itr->Instance_ID<<" "<< itr->ipv4_address<<" "<<itr->port_num<<endl ;
                 instance_ids.push_back(itr->Instance_ID);
                 addresses.push_back(itr->ipv4_address);
                 port_num.push_back(itr->port_num);
@@ -95,7 +95,6 @@ int main()
             msg1.payload += ss1.str();
             s.Serialize(ss2, port_num);
             msg1.payload += ss2.str();
-            cout<< "[servicediscovery] " <<msg1.payload<<endl;
             serverUser->SendMessage(msg1);
             break;
         }
