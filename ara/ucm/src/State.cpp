@@ -5,6 +5,8 @@
 
 using namespace ara::ucm::storage;
 using namespace ara::ucm::state;
+using namespace ara::sm::UpdateRequest::proxy;
+using namespace ara::com::proxy;
 
 uint16_t PackageManagerState::ProcessListVersion = 0;
 
@@ -56,6 +58,17 @@ void PackageManagerState::DependencyCheck(void)
 
 ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 {
+    ara::com::ServiceHandleContainer<UpdateRequestproxy::HandleType> handles_container = ara::sm::UpdateRequest::proxy::UpdateRequestproxy::FindService();
+
+    if(handles_container.size() == 0)
+    {
+        return ara::ucm::OperationResultType::kOperationNotPermitted;
+    }
+    else
+    {
+
+        proxy = std::make_shared<UpdateRequestproxy>(handles_container[0]);
+    }
 
     if ((CurrentStatus) != PackageManagerStatusType::kReady)
     {
@@ -82,6 +95,9 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
     /* GET ALL CHANGED PROCESSES */
     SwChangedClusters = SWCLManager::GetSWCLsChangeInfo();
+
+    /*Get Functional Groups of PKG*/
+    FunctionGroupList FG_List = {"fn1","fn2"};
 
     /* SELECT UPDATED OR INSTALLED SW CLUSTERS ONLY */
     for(auto itr = SwChangedClusters.begin(); itr != SwChangedClusters.end(); ++itr)
@@ -117,83 +133,87 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     /*Depenency Missing Error Check*/
     DependencyCheck();
 
-    /*if(SM::StartUpdateSession(functional_Group) == SM_ReceivedStates::kRejected)
+    StartUpdateSessionOutput error_startUpdateSession = proxy->StartUpdateSession();
+    if(error_startUpdateSession.AppError == SM_ApplicationError::kRejected)
         {
-            UpdateSessionRejected Error
+
+            //ADD_Enum_Errors--------------------------------------------------------------//
+            return ara::ucm::OperationResultType::kOperationNotPermitted;
         }
 
-    */
+    
 
-    /*
+ 
+    uint8_t RejectedCounter = 0;
 
-    uint8 RejectedCounter = 0;
 
+    
+
+    PrepareUpdateOutput error_prepareUpdate = proxy->PrepareUpdate(FG_List);
     do
     {
-        SM_ReceivedStates PrepareState = SM::PrepareUpdate(functional_Group);
+        error_prepareUpdate = proxy->PrepareUpdate(FG_List);
 
 
 
-        if(PrepareState == SM_ReceivedStates::kPrepareFailed)
+        if(error_prepareUpdate.AppError == SM_ApplicationError::kPrepareFailed)
         {
             (CurrentStatus) = PackageManagerStatusType::kReady;
 
-            PreActivation Failed Error
-
-            return
+            //ADD_Enum_Errors--------------------------------------------------------------//
+            return ara::ucm::OperationResultType::kOperationNotPermitted;
             
         }
-        else if (PrepareState == SM_ReceivedStates::kRejected)
+        else if (error_prepareUpdate.AppError == SM_ApplicationError::kRejected)
         {
-            if(RejectedCounter == 6 (hash define for rejected counter))
+            if(RejectedCounter == PrepareUpdateCounter)
             {
                 (CurrentStatus) = PackageManagerStatusType::kReady;
 
-                PreActivation Failed Error
 
-                return
+            //ADD_Enum_Errors--------------------------------------------------------------//
+            return ara::ucm::OperationResultType::kOperationNotPermitted;
+
             }
             
             RejectedCounter++;
         }
-    }while(PrepareState != kPrepared);
+    }while(error_prepareUpdate.AppError != SM_ApplicationError::kPrepared);
 
     RejectedCounter = 0;
-    */
 
-    /*
-
+    VerifyUpdateOutput error_verifyupdate = proxy->VerifyUpdate(FG_List);
     do
     {
-        SM_ReceivedStates VerifyState = SM::VerifyUpdate(functional_Group);
-        (CurrentStatus) = PackageManagerStatusType::kVerifing;
+        error_verifyupdate = proxy->VerifyUpdate(FG_List);
+
+        (CurrentStatus) = PackageManagerStatusType::kVerifying;
 
 
-        if(VerifyState == SM_ReceivedStates::kVerifyFailed)
+        if(error_verifyupdate.AppError == SM_ApplicationError::kVerifyFailed)
         {
             (CurrentStatus) = PackageManagerStatusType::kReady;
 
-            VerificationFailed Failed Error
+            //ADD_Enum_Errors--------------------------------------------------------------//
+            return ara::ucm::OperationResultType::kOperationNotPermitted;
 
-            return
             
         }
-        else if (VerifyState == SM_ReceivedStates::kRejected)
+        else if (error_verifyupdate.AppError == SM_ApplicationError::kRejected)
         {
-            if(RejectedCounter == 6 (hash define for rejected counter))
+            if(RejectedCounter == PrepareUpdateCounter)
             {
-                Rollback();
+                //Rollback();
 
-                VerificationFailed Failed Error
+            //ADD_Enum_Errors--------------------------------------------------------------//
+            return ara::ucm::OperationResultType::kOperationNotPermitted;
 
-                return
             }
             RejectedCounter++;
-            `
-        }
-    }while(VerifyState != kVerified);    
 
-    */
+        }
+    }while(error_verifyupdate.AppError != SM_ApplicationError::kVerified);    
+
     (CurrentStatus) = PackageManagerStatusType::kActivated;
 
     return ara::ucm::OperationResultType::kSuccess;
