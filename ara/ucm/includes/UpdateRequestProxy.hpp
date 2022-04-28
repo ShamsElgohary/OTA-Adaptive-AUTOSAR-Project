@@ -165,11 +165,11 @@ namespace ara
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
                     {
-                        return ara::com::proxy::ProxyBase::FindService("../etc/service_manifest.json",1);
+                        return ara::com::proxy::ProxyBase::FindService("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",2);
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
                     {
-                        return ara::com::proxy::ProxyBase::FindService("../etc/service_manifest.json",1, InstanceID);
+                        return ara::com::proxy::ProxyBase::FindService("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",2, InstanceID);
                     }
                     methods::StartUpdateSession StartUpdateSession;
                     methods::PrepareUpdate PrepareUpdate;

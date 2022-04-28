@@ -39,12 +39,6 @@ add_executable(ex2 ${source_excutables_ex2_dir}/ex2.cpp)
 target_link_libraries( ex2 execution_lib )
 install(TARGETS ex2 RUNTIME DESTINATION ${source_excutables_ex2_dir})
 
-###############################SM###############################
-
-set(source_excutables_sm_dir "${CMAKE_SOURCE_DIR}/executables/sm/bin")
-add_executable(sm ${source_excutables_sm_dir}/sm.cpp) 
-target_link_libraries( sm execution_lib )
-install(TARGETS sm RUNTIME DESTINATION ${source_excutables_sm_dir})
 
 ################################IAM#############################
 
@@ -108,6 +102,14 @@ add_executable(ucm ${UCM_SRC_FILES})
 target_link_libraries(ucm execution_lib Boost::filesystem Boost::program_options Boost::serialization com_lib iam_lib)
 target_include_directories( ucm PUBLIC ${UCM_FILES}/includes )
 install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
+
+###############################SM###############################
+
+set(source_excutables_sm_dir "${CMAKE_SOURCE_DIR}/executables/sm/bin")
+set(source_excutables_sm_dir_1 "${CMAKE_SOURCE_DIR}/ara/sm")
+add_executable(sm ${source_excutables_sm_dir_1}/SM.cpp ${source_excutables_sm_dir_1}/main.cpp) 
+target_link_libraries(sm execution_lib Boost::filesystem Boost::program_options Boost::serialization com_lib iam_lib)
+install(TARGETS sm RUNTIME DESTINATION ${source_excutables_sm_dir})
 
 ################################COM_test##########################
 
