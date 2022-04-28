@@ -17,8 +17,6 @@ namespace ara
                 Json::Value actualJson;
                 Json::Reader reader;
                 reader.parse(file, actualJson);
-                cout << "in_id = " << instance_id << " service_id = " << service_id << endl;
-
                 for (int i = 0; i < actualJson["ap_service_instances"]["provided_ap_service_instances"].size(); i++)
                 {
                     if (actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["instance_id"] == instance_id && actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["service_id"] == service_id)

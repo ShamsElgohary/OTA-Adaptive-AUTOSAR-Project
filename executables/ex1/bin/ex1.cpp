@@ -7,7 +7,7 @@ using namespace ara::exec ;
 int main ()
 {
     
-    cout<<"hello from ex1 with pid = " <<getpid()<<"\n" ;
+    cout<<"[Ex1] hello from ex1 with pid = " <<getpid()<<"\n" ;
     usleep(1000000);
     
     ExecutionClient exec;

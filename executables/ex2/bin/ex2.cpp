@@ -5,7 +5,7 @@
 using namespace ara::exec ;
 int main ()
 {
-    std::cout<<"hello from ex2 with pid = " <<getpid()<<"\n"  ;
+    std::cout<<"[Ex2] hello from ex2 with pid = " <<getpid()<<"\n"  ;
     usleep(1000000);
     ExecutionClient exec;
     exec.ReportExecutionStaste(ExecutionState::Krunning);

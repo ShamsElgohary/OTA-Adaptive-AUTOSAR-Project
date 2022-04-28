@@ -17,7 +17,6 @@ int main()
     PackageManagerProxy RecService(handles[0]);
     if (handles.size())
     {
-        cout<<"find service returned 1 or more handle"<<endl;
         // ifstream ifs("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/ara/test/Client/PackageTest.zip", ios::binary | ios::ate);
         // ifstream::pos_type pos = ifs.tellg();
         // vector<char> result(pos);
@@ -53,9 +52,9 @@ int main()
         // // RecService.Rollback();
         // RecService.Finish();
 
-         cout<<RecService.Add(3,4).Sum<<endl;
+        cout << "[Com_Proxy_Test] result is " << RecService.Add(3, 4).Sum << endl;
     }
-    
+
     return 0;
 }
 
