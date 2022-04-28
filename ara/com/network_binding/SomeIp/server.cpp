@@ -1,11 +1,12 @@
-
 #include <cstdlib>
 #include <iostream>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
 
-//////////////////////////
+
+using boost::asio::ip::tcp;
+typedef boost::asio::ssl::stream<boost::asio::ip::tcp::socket> ssl_socket;
 
 
   /* USED AS A HANDLE IN THE SOCKET FOR ASYNCHRONOUS MESSAGES */
@@ -25,14 +26,6 @@ void OnReceiveCompleted(boost::system::error_code ec, size_t bytes_transferred) 
 }
 
 
-/////////////////////
-
-
-using boost::asio::ip::tcp;
-typedef boost::asio::ssl::stream<boost::asio::ip::tcp::socket> ssl_socket;
-
-////////////////////////////
-
 
 class session : public std::enable_shared_from_this<session>
 {
@@ -45,6 +38,7 @@ public:
   void start()
   {
     Handshake();
+    do_read();          
   }
 
 
@@ -58,32 +52,24 @@ private:
         {
           if (!error)
           {
-            do_read();
+            std::cout<< "HANDSHAKE DONE \n ";
           }
         });
   }
 
-  // void do_read()
-  // {
-  //   auto self(shared_from_this());
-  //   socket_.async_read_some(boost::asio::buffer(data_), OnReceiveCompleted);
-    
-  // }
 
   void do_read()
   {
-    // shared ptr of this (to prevent destructor)
-    auto self(shared_from_this());
-    socket_.async_read_some(boost::asio::buffer(data_),
-        [this,self](const boost::system::error_code& ec, std::size_t length)
-        {
-          if (!ec)
-          {
-            do_write(length);
-          }
-        });
-  }
-
+    try
+    {
+      socket_.async_read_some( boost::asio::buffer(inputData), &OnReceiveCompleted );
+    }
+    catch(const std::exception& e)
+    {
+      std::cerr << e.what() << '\n';
+    }
+    
+}
 
   void do_write(std::size_t length)
   {
@@ -102,6 +88,7 @@ private:
   }
 
   boost::asio::ssl::stream<tcp::socket> socket_;
+  std::string inputData;
   char data_[1024];
 };
 
@@ -117,6 +104,7 @@ public:
         boost::asio::ssl::context::default_workarounds
         |boost::asio::ssl::context::no_sslv2
         | boost::asio::ssl::context::single_dh_use);
+
     context_.set_password_callback(boost::bind(&server::get_password, this));
     context_.use_certificate_chain_file("../Certificates/server.crt");
     context_.use_private_key_file("../Certificates/server.key", boost::asio::ssl::context::pem);
