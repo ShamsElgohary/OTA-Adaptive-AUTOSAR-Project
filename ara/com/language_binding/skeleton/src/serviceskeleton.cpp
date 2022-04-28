@@ -17,14 +17,12 @@ namespace ara
                 Json::Value actualJson;
                 Json::Reader reader;
                 reader.parse(file, actualJson);
-                cout << "in_id = " << instance_id << " service_id = " << service_id << endl;
 
                 for (int i = 0; i < actualJson["ap_service_instances"]["provided_ap_service_instances"].size(); i++)
                 {
                     if (actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["instance_id"] == instance_id && actualJson["ap_service_instances"]["provided_ap_service_instances"][i]["service_id"] == service_id)
                     {
                         return actualJson["ap_service_instances"]["provided_ap_service_instances"][i][required].asString();
-                        ;
                     }
                 }
                 cout << "[com::Skeleton::Parse] Couldn't Find Data from Instance Manifest" << endl;
@@ -65,6 +63,8 @@ namespace ara
 
                 string ip = parse(path, instanceID, serviceID, "ipv4") + " ";
                 int port = parse(path, instanceID, serviceID);
+                cout << "IP Address: " << ip << endl;
+                cout << "Port: " << port << endl;
                 this->ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(serviceID, instanceID, ip, port, someip::EndUserType::SERVER);
             }
             void skeletonBase::OfferService()

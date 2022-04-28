@@ -15,7 +15,6 @@ namespace ara
             {
                 ara::com::ServiceHandleContainer<ProxyBase::HandleType> vectorOfHandles;
                 vector<serviceinfo> opVsomeip = ara::com::SomeIpNetworkBinding::FindService_SomeIp(serviceID);
-
                 for (uint8_t i = 0; i < opVsomeip.size(); i++)
                 {
                     if (IAM_ACTIVATED)
