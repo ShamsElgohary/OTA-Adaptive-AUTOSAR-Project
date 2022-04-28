@@ -238,7 +238,7 @@ ara::ucm::OperationResultType PackageManagerState::FinishInternal()
     // system(command.c_str());
 
     /*change UCM status into Kcleaningup*/
-    (CurrentStatus) == PackageManagerStatusType::kIdle;
+    (CurrentStatus) = PackageManagerStatusType::kIdle;
     SWPackagesCounter = 0;
     return ara::ucm::OperationResultType::kSuccess;
 }
