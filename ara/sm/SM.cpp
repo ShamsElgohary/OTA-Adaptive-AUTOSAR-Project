@@ -42,7 +42,7 @@ std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestI
             out.AppError=uint8_t(SM_ApplicationError::kPrepareFailed);
         this->FunctionGroupStates[fg]="Preparing";
     }
-    out.AppError=success;
+    out.AppError=1;
     }
     else
     {
@@ -72,7 +72,7 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
         out.AppError=uint8_t(SM_ApplicationError::kVerifyFailed);
         this->FunctionGroupStates[fg]="Verifying";
     }
-    out.AppError=success;
+    out.AppError=1;
     }
     else
     {

@@ -61,10 +61,8 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     }
     else
     {
-        cout<<proxy<<endl;
         proxy = std::make_shared<UpdateRequestproxy>(handles_container[0]);
     }
-    cout<<"1"<<endl;
 
     if ((CurrentStatus) != PackageManagerStatusType::kReady)
     {
@@ -72,31 +70,23 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         /*Operation Not Permitted*/
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
-    cout<<"2"<<endl;
 
     (CurrentStatus) = PackageManagerStatusType::kActivating;
     /* Get all Clusters with kPresent State */
     vector<ara::ucm::SwClusterInfoType> PresentSWCls = SWCLManager::GetPresentSWCLs();
-    cout<<"3"<<endl;
 
     /* Get all Clusters with kAdded/kRemoved/kUpdated State */
     vector<ara::ucm::SwClusterInfoType> ChangedSWCls = SWCLManager::GetSWCLsChangeInfo();
-    cout<<"4"<<endl;
     /* PROCESSES IN NEW PROCESS LIST */
     vector<ara::ucm::SwClusterInfoType> NewProListSwClusters;
-    cout<<"5"<<endl;
     /* GET UNCHANGED SW CLUSTERS INFORMATION */
     NewProListSwClusters = SWCLManager::GetPresentSWCLs();
-    cout<<"6"<<endl;
     /* ALL CHANGED PROCESSES */
     vector<ara::ucm::SwClusterInfoType> SwChangedClusters;
-    cout<<"7"<<endl;
     /* GET ALL CHANGED PROCESSES */
     SwChangedClusters = SWCLManager::GetSWCLsChangeInfo();
-    cout<<"8"<<endl;
     /*Get Functional Groups of PKG*/
     FunctionGroupList FG_List = {"fn1", "fn2"};
-    cout<<"9"<<endl;
     /* SELECT UPDATED OR INSTALLED SW CLUSTERS ONLY */
     for (auto itr = SwChangedClusters.begin(); itr != SwChangedClusters.end(); ++itr)
     {
@@ -105,8 +95,6 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             NewProListSwClusters.push_back(*itr);
         }
     }
-    cout<<"10"<<endl;
-
     /* CREATE JSON OBJECT FOR PROCESS LIST */
     json processList;
 
@@ -120,12 +108,9 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
         processList[itr->Name] = {{"Version", itr->Version}, {"Path", Path}};
     }
-    cout<<"11"<<endl;
     /* MOVE OLD PROCESS LIST TO BACKUP FOLDER */
     command = "mv " + ProcessListPath + "Process_List.json " + ProcessListPath + "Backup/";
-    cout<<"UCM Command processlist: "<<command<<endl;
     system(command.c_str());
-    cout<<"12"<<endl;
     /* GENERATE THE NEW PROCESS LIST FILE */
     std::ofstream JsonOutStream(ProcessListPath + "Process_List.json");
     JsonOutStream << std::setw(4) << processList << std::endl;
@@ -133,22 +118,17 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     /*Depenency Missing Error Check*/
     DependencyCheck();
 
-    cout<<proxy<<endl;
-    cout<<"Error1"<<endl;
     StartUpdateSessionOutput error_startUpdateSession = proxy->StartUpdateSession();
-    cout<<"Error2"<<endl;
     if (error_startUpdateSession.AppError == SM_ApplicationError::kRejected)
     {
-        cout<<"Error3"<<endl;
         // ADD_Enum_Errors--------------------------------------------------------------//
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
-    cout<<"13"<<endl;
 
     uint8_t RejectedCounter = 0;
 
     PrepareUpdateOutput error_prepareUpdate = proxy->PrepareUpdate(FG_List);
-    do
+    while (error_prepareUpdate.AppError != SM_ApplicationError::kPrepared)
     {
         error_prepareUpdate = proxy->PrepareUpdate(FG_List);
 
@@ -172,14 +152,11 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             RejectedCounter++;
         }
 
-        
-        cout<<"14"<<endl;
-    } while (error_prepareUpdate.AppError != SM_ApplicationError::kPrepared);
-
+    }
     RejectedCounter = 0;
 
     VerifyUpdateOutput error_verifyupdate = proxy->VerifyUpdate(FG_List);
-    do
+    while (error_verifyupdate.AppError != SM_ApplicationError::kVerified)
     {
         error_verifyupdate = proxy->VerifyUpdate(FG_List);
 
@@ -203,11 +180,9 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             }
             RejectedCounter++;
         }
-        cout<<"15"<<endl;
-    } while (error_verifyupdate.AppError != SM_ApplicationError::kVerified);
+    }
 
     (CurrentStatus) = PackageManagerStatusType::kActivated;
-    cout<<"16"<<endl;
     return ara::ucm::OperationResultType::kSuccess;
 }
 
@@ -256,11 +231,11 @@ ara::ucm::OperationResultType PackageManagerState::FinishInternal()
         ara::ucm::storage::SWCLManager::RevertChanges();
     }
 
-    command = "rm " + fileSystemPath + "/" + "Backup/*";
+    command = "rm " + fileSystemPath + "/etc/system/" + "Backup/*";
     system(command.c_str());
 
-    command = "rm " + ProcessListPath + "Backup/Process_List.json";
-    system(command.c_str());
+    // command = "rm " + ProcessListPath + "Backup/Process_List.json";
+    // system(command.c_str());
 
     /*change UCM status into Kcleaningup*/
     (CurrentStatus) == PackageManagerStatusType::kIdle;
@@ -306,31 +281,24 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
     SWPackagePath = SWParser_instance.UnzipPackage(SWPackagePath);
 
     SWParser_instance.SwPackageManifestParser(SWPackagePath);
-    cout << "4" << endl;
 
     /* GET SW CLUSTER INFORMATION FROM PARSING */
     SwClusterInfoType NewSwClusterInfo{SWParser_instance.GetSwClusterInfo(SWPackagePath)};
-    cout << "5" << endl;
 
     /* GET SW ACTION TYPE FROM PARSING */
     ActionType action{SWParser_instance.GetActionType()};
-    cout << "6" << endl;
 
     shared_ptr<ara::ucm::storage::ReversibleAction> actionPtr;
-    cout << "7" << endl;
 
     /* ADD SWCLUSTER & EXECUTE */
     actionPtr = SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo, action, SWPackagePath);
-    cout << "8" << endl;
 
     (CurrentStatus) = PackageManagerStatusType::kReady;
 
     /* CHANGE STATE TO KPROCESSING */
     ptrToSwPkg->SetPackageState(SwPackageStateType::kProcessed);
-    cout << "9" << endl;
 
     ara::ucm::SynchronizedStorage::DeleteItem(id);
-    cout << "10" << endl;
 
     return ara::ucm::OperationResultType::kSuccess;
 }
