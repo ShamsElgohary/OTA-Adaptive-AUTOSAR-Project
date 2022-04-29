@@ -7,6 +7,7 @@
 using namespace std;
 using stream_base = boost::asio::ssl::stream_base;
 using tcp = boost::asio::ip::tcp;
+enum { max_length = 1024 };
 
 
 
@@ -36,15 +37,7 @@ class session :public std::enable_shared_from_this<session>
         switch(handshakeType)
         {
             case(syncType_t::sync_t):
-            cout<<"handshake unDone"<<endl;
                 node.handshake(stream_base::server);
-                cout<<"handshake Done"<<endl;
-
-                receiveData(sync_t);
-                sendData(sync_t,"recived");
-
-                cout<<data_<<endl;
-
                 break;
             case(syncType_t::async_t):
 
@@ -60,15 +53,15 @@ class session :public std::enable_shared_from_this<session>
         }
     }
 
-    void receiveData(syncType_t readType)
+    string receiveData(syncType_t readType)
     {
         
-
+        std::size_t x = 0;
         switch(readType)
         {
             case (syncType_t::sync_t):
-                node.read_some(boost::asio::buffer(data_));
-                /* should we handle error*/
+
+                x = node.read_some(boost::asio::buffer(data_));
             break;
 
             case(syncType_t::async_t):
@@ -84,6 +77,9 @@ class session :public std::enable_shared_from_this<session>
             break;
 
         }
+        data_[x] = '\0';
+
+        return data_;
 
     }
 
@@ -117,7 +113,7 @@ class session :public std::enable_shared_from_this<session>
     }
     private:
     boost::asio::ssl::stream<tcp::socket> node;
-    char data_[1024];
+    char data_[max_length];
 };
 
 
@@ -141,6 +137,19 @@ public:
     acceptConnecation(acceptorType);
   }
 
+      string receiveData(syncType_t readType)
+    {
+        string x = session_instance->receiveData(readType);
+        return x;
+    }
+
+    /*send data as string*/
+
+    void sendData(syncType_t writeType, string data)
+    {
+         session_instance->sendData(writeType,data);
+    }
+
 private:
 //   std::string get_password() const
 //   {
@@ -149,14 +158,16 @@ private:
 
   void acceptConnecation(syncType_t acceptorType)
   {
+      
 
       switch (acceptorType)
       {
         case (syncType_t::sync_t):
 
         /*GET SOCKET FROM ACCEPT TO CONSTRACUT SESSION*/
-        std::make_shared<session>(std::move(acceptor_.accept()), context_)->handshake(tls,acceptorType);
-          break;
+            session_instance = std::make_shared<session>(std::move(acceptor_.accept()), context_);
+            session_instance->handshake(tls,acceptorType);
+            break;
 
         case (syncType_t::async_t):
             acceptor_.async_accept(
@@ -164,22 +175,22 @@ private:
             {
             if (!error)
             {
-                std::make_shared<session>(std::move(socket), context_)->handshake(tls,acceptorType);
+            session_instance = std::make_shared<session>(std::move(socket), context_);
+            session_instance->handshake(tls,acceptorType);
             }
 
-            acceptConnecation(acceptorType);
+            
             });
           break;
 
       }
-
-
-    
-
+      //acceptConnecation(acceptorType);
   }
 
-  boost::asio::ip::tcp::acceptor acceptor_;
-  boost::asio::ssl::context context_;
+  
+    shared_ptr<session> session_instance = nullptr;
+    boost::asio::ip::tcp::acceptor acceptor_;
+    boost::asio::ssl::context context_;
 };
 
 
@@ -192,6 +203,12 @@ int main(int argc, char* argv[])
 
     server s(io_context, 1234,tls,sync_t);
 
+    string x = s.receiveData(sync_t);
+    cout<<x<<endl;
+    s.sendData(sync_t,"recivedasssssssssssssssssssssssssssssssssssssssssssss");
+    string y = s.receiveData(sync_t);
+    cout<<y<<endl;
+    s.sendData(sync_t,"recivedagain");
 
     io_context.run();
   }

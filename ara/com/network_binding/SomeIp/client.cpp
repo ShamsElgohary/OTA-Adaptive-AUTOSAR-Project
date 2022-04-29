@@ -107,16 +107,14 @@ typedef enum securityConfg_t{
         }
     }
 
-    void receiveData(syncType_t readType)
+    string receiveData(syncType_t readType)
     {
         
-
+      int x = 0;
         switch(readType)
         {
             case (syncType_t::sync_t):
-                node.read_some(boost::asio::buffer(data_));
-                /* should we handle error*/
-                cout<<data_;
+                x = node.read_some(boost::asio::buffer(data_));
             break;
 
             case(syncType_t::async_t):
@@ -133,6 +131,9 @@ typedef enum securityConfg_t{
 
         }
 
+        data_[x] = '\0';
+        return data_;
+
     }
 
     /*send data as string*/
@@ -142,7 +143,6 @@ typedef enum securityConfg_t{
         switch(writeType)
         {
             case (syncType_t::sync_t):
-                cout<<data<<endl;
                 node.write_some(boost::asio::buffer(data,data.length()));
                 /* should we handle error*/
             break;
@@ -164,9 +164,8 @@ typedef enum securityConfg_t{
         }
 
     }
-
+    private:
     boost::asio::ssl::stream<tcp::socket> node;
-    char request_[max_length];
     char data_[max_length];
   };
 
@@ -188,8 +187,12 @@ typedef enum securityConfg_t{
       ctx.load_verify_file("../Certificates/server.crt");
 
       client c(io_context, ctx, endpoints,tls,sync_t);
-      c.sendData(sync_t,"Shams & Tabakh");
-      c.receiveData(sync_t);
+      c.sendData(sync_t,"Shams & Tabakhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      string y =c.receiveData(sync_t);
+      cout<<y<<endl;
+      c.sendData(sync_t,"Tabakh & Shams");
+      string x =c.receiveData(sync_t);
+      cout<<x<<endl;
 
       io_context.run();
 
