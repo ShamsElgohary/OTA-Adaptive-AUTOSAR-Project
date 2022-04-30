@@ -5,7 +5,6 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <functional>
-
 #include "someipMessage.hpp"
 
 
@@ -34,11 +33,18 @@ typedef struct
 }SomeIpConfiguration;
 
 
+	////////////////////////////// HANDLES FOR ASYNCH OPERATIONS ///////////////////////////////////////
+
+		/* USED AS A HANDLE IN THE SOCKET FOR ASYNCHRONOUS MESSAGES */
+	void OnSendCompleted(boost::system::error_code ec, size_t bytes_transferred);
+
+			/* USED AS A HANDLE IN THE SOCKET FOR ASYNCHRONOUS MESSAGES */
+	void OnReceiveCompleted(boost::system::error_code ec, size_t bytes_transferred);
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////  SOMEIP CONNECTION    ///////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 class someipConnection{
 	
@@ -47,7 +53,6 @@ class someipConnection{
 		InstanceID instance;
 		TransportProtocol tpType;
 		EndUserType endUserType;
-		static RequestID RequestId;
 	
 	public:
 
@@ -74,7 +79,6 @@ class someipConnection{
 			std::string IPv4 = LOOPBACK_IP	 					// DEFAULT
 		);
 
-
 		/* TCP OR UDP MESSAGES? */
 		TransportProtocol GetTransportProtocolType();
 
@@ -86,9 +90,6 @@ class someipConnection{
 
 		/* CONNECT PROXY TO SERVER */
 		virtual bool ProxyConnect();	
-
-		/* OPEN SOCKET CONNECTION*/
-		virtual bool OpenConnection() = 0;
 
 		/* CLOSE SOCKET CONNECTION */
 		virtual bool CloseConnection() = 0;
@@ -117,192 +118,6 @@ class someipConnection{
 
 		virtual bool SendNotification(someipMessage &msg) = 0;
 };
-
-
-
-
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////  SOMEIP TCP     /////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-
-class someipTCP : public someipConnection {
-	
-	protected:
-	
-	boost::asio::io_service & tcp_io_service;  
-	boost::asio::ip::tcp::endpoint tcpEndPoint;
-	boost::asio::ip::tcp::socket tcpSocket;
-	uint16_t port;
-
-	public:
-
-	/* CONSTRUCTOR */
-	someipTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
-
-	/* CONSTRUCTOR (+ SOMEIP ENDUSER CONSTRUCTOR)*/
-	someipTCP(
-		boost::asio::io_service& io_service, 
-		uint16_t port, 
-		SomeIpConfiguration someipConfig,
-		std::string IPv4 = LOOPBACK_IP);	
-
-
-	/* DESTRUCTOR */
-	~someipTCP();
-
-	/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
-	bool SendMessage(someipMessage &msg) override;
-
-	/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP */
-	someipMessage ReceiveMessage();
-
-	/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP ASYNCH */
-	bool SendMessageAsynch(someipMessage &msg);
-
-	/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP ASYNCH*/
-	someipMessage ReceiveMessageAsynch();
-
-	/* OPEN SOCKET CONNECTION*/
-	bool OpenConnection();
-
-	/* CLOSE SOCKET CONNECTION */
-	bool CloseConnection();
-
-	/* MESSAGE TYPES */
-
-	someipMessage SendRequest(someipMessage &msg);
-
-    bool SendResponse(someipMessage &msg);
-
-	/* REQUEST NO RESPONSE */
-	bool SendFireAndForget(someipMessage &msg);
-
-	bool SendNotification(someipMessage &msg);
-
-};
-
-
-
-    ///////////////////////////////////  SOMEIP TCP SERVER   ////////////////////////////////////////
- 
-class ServerTCP : public someipTCP {
-	
-	private:
-	boost::asio::ip::tcp::acceptor acceptor;  
-
-	public:
-
-	/* CONSTRUCTOR PERFORMS SPECIFIC OPERATIONS (SERVER )*/
-	ServerTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
-
-	/* CONSTRUCTOR (+ SOMEIP ENDUSER )*/
-	ServerTCP(
-		boost::asio::io_service& io_service, 
-		uint16_t port, 
-		SomeIpConfiguration someipConfig,
-		std::string IPv4 = LOOPBACK_IP);	
-
-	/* SERVER LISTENING */
-	void ServerListen();	
-
-};
-
-
-    ///////////////////////////////////  SOMEIP TCP CLIENT   ////////////////////////////////////////
-
-class ClientTCP : public someipTCP {
-	
-	private:
-
-
-	public:
-
-	/* CONSTRUCTOR PERFORMS SPECIFIC OPERATIONS (CLIENT )*/
-	ClientTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
-
-	/* CONSTRUCTOR (+ SOMEIP ENDUSER )*/
-	ClientTCP(
-		boost::asio::io_service& io_service, 
-		uint16_t port, 
-		SomeIpConfiguration someipConfig,
-		std::string IPv4 = LOOPBACK_IP);	
-	
-
-	/* CONNECT PROXY */
-	bool ProxyConnect();	
-
-};
-
-
-
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////  SOMEIP UDP  ////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-
-class someipUDP  : public someipConnection  {
-	
-	protected:
-
-	boost::asio::ip::udp::endpoint udpEndPoint;
-	boost::asio::ip::udp::socket udpSocket;
-	boost::asio::io_service & udp_io_service;  
-	//boost::asio::deadline_timer timer;
-	uint16_t port;
-
-	public:
-
-	/* CONSTRUCTOR */
-	someipUDP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
-
-	/* CONSTRUCTOR (+ SOMEIP ENDUSER CONSTRUCTOR)*/
-	someipUDP(
-		boost::asio::io_service& io_service, 
-		uint16_t port, 
-		SomeIpConfiguration someipConfig,
-		std::string IPv4 = LOOPBACK_IP);	
-
-	/* DESTRUCTOR */
-	~someipUDP();
-
-	/* FUNCTION TO SEND A SOMEIP MESSAGE USING UDP */
-	bool SendMessage(someipMessage &msg);
-
-	/* FUNCTION TO READ A SOMEIP MESSAGE USING UDP */
-	someipMessage ReceiveMessage();
-
-	/* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP ASYNCH */
-	bool SendMessageAsynch(someipMessage &msg);
-
-	/* FUNCTION TO READ A SOMEIP MESSAGE USING TCP ASYNCH*/
-	someipMessage ReceiveMessageAsynch();
-
-	/* OPEN SOCKET CONNECTION*/
-	bool OpenConnection();
-
-	/* CLOSE SOCKET CONNECTION */
-	bool CloseConnection();
-
-	/* SERVER LISTENING */
-	void ServerListen();
-
-	/* CONNECT PROXY TO SERVER */
-	bool ProxyConnect();
-
-
-	someipMessage SendRequest(someipMessage &msg);
-
-    bool SendResponse(someipMessage &msg);
-
-	/* REQUEST NO RESPONSE */
-	bool SendFireAndForget(someipMessage &msg);
-
-	bool SendNotification(someipMessage &msg);
-
-};
-
-
 
 
 } // End of Namespace someip
