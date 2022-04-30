@@ -13,15 +13,14 @@ namespace someip
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-            session::session(tcp::socket socket, boost::asio::ssl::context& ssl_context)
-             : ssl_socket(std::move(socket), ssl_context)
+            session::session(tcp::socket socket, boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context)
+             : ssl_socket(std::move(socket), ssl_context), session_io_context(io_context)
             {
 
             }
 
             session::session(boost::asio::io_context& io_context, boost::asio::ssl::context& ssl_context)
-            : ssl_socket(io_context, ssl_context)
+            : ssl_socket(io_context, ssl_context), session_io_context(io_context)
             {
                 
             }         
@@ -45,7 +44,7 @@ namespace someip
                         {
                         if (!error)
                         {
-                            std::cout<< "HANDSHAKE DONE \n ";
+                            std::cout<< "[someip] HANDSHAKE DONE \n ";
                         }
                         });
                         break;
@@ -53,6 +52,143 @@ namespace someip
             }
 
 
+            /* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
+            bool session::SendMessage(someip_Message &msg)
+            {
+                try {
+                    Serializer serializer;
+                    std::stringstream ss;
+                    // SERIALIZE SOMEIP MESSAGE STRUCT  
+                    serializer.Serialize(ss, &msg);
+                    std::string mssgBuf = ss.str();
+                    ssl_socket.write_some( boost::asio::buffer(mssgBuf) );
+
+                }catch ( boost::system::system_error e) {
+                    std::cout << "[someip] " << e.what() << "\n";
+                    return false; // MESSAGE NOT SENT
+                }
+
+                return true;
+            }
+
+            /* FUNCTION TO READ A SOMEIP MESSAGE USING TCP */
+            someip_Message session::ReceiveMessage()
+            {
+                someip_Message someipMsg;
+
+                try {
+                    char buff[512];
+                    size_t read = ssl_socket.read_some(boost::asio::buffer(buff));
+                    std::string mssgBuf = buff;
+                    std::stringstream ss;
+                    ss<< mssgBuf;
+                    Deserializer deserializer;
+                    // DESERIALIZE SOMEIP MESSAGE STRUCT  
+                    deserializer.Deserialize(ss, &someipMsg);
+
+                }catch ( boost::system::system_error e) {
+                    std::cout << "[someip] " << e.what() << "\n";
+                    someipMsg.header;
+                }
+
+                return someipMsg;
+            }
+
+            /* FUNCTION TO SEND A SOMEIP MESSAGE ASYNCH */
+            bool session::SendMessageAsynch(someip_Message &msg )
+            {
+                try {
+                    Serializer serializer;
+                    std::stringstream ss;
+                    // SERIALIZE SOMEIP MESSAGE STRUCT  
+                    serializer.Serialize(ss, &msg);
+                    std::string mssgBuf = ss.str();
+                    ssl_socket.async_write_some( boost::asio::buffer(mssgBuf), &OnSendCompleted );
+                    // IMPORTANT FOR ASYNCHRONOUS OPERATIONS 
+                    session_io_context.run();
+
+                }catch ( boost::system::system_error e) {
+                    std::cout << "[someip] " << e.what() << "\n";
+                    return false; // MESSAGE NOT SENT
+                }
+
+                return true;
+
+            }
+
+            /* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
+            someip_Message session::ReceiveMessageAsynch()
+            {
+                someip_Message someipMsg;
+
+                try {
+
+                    char buff[512];
+                    ssl_socket.async_read_some(boost::asio::buffer(buff), &OnReceiveCompleted);
+                    
+                    // IMPORTANT FOR ASYNCHRONOUS OPERATIONS 
+                    session_io_context.run();
+                    std::string mssgBuf = buff;
+                    std::stringstream ss;
+                    ss<< mssgBuf;
+                    Deserializer deserializer;
+                    // DESERIALIZE SOMEIP MESSAGE STRUCT  
+                    deserializer.Deserialize(ss, &someipMsg);
+
+                }catch ( boost::system::system_error e) {
+                    std::cout << "[someip] " << e.what() << "\n";
+                    someipMsg.header;
+                    // MESSAGE NOT READ
+                }
+
+            return someipMsg;
+            }
+
+
+            someip_Message session::SendRequest(someip_Message &req)
+            {
+                req.header.setMessageType( MessageType::REQUEST );
+                
+                /* SEND MESSAGE */
+                this->SendMessage(req);
+
+                /* RESPONSE */
+                someip_Message responseMsg = this->ReceiveMessage();
+
+                if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
+                {
+                    std::cout<< "[someip] MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
+                    /* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
+                    //someip_Message msg;
+                    //return msg;
+                }
+
+                return responseMsg;
+            }
+
+
+            bool session::SendResponse(someip_Message &responseMsg)
+            {
+                responseMsg.header.setMessageType( MessageType::RESPONSE );
+                bool operationStatus = this->SendMessage(responseMsg);
+                return operationStatus;
+            }
+
+
+            /* REQUEST NO RESPONSE */
+            bool session::SendFireAndForget(someip_Message &msg)
+            {
+                msg.header.setMessageType( MessageType::REQUEST_NO_RETURN );
+                this->SendMessageAsynch(msg);
+                return true;
+            }
+
+            bool session::SendNotification(someip_Message &msg)
+            {
+                msg.header.setMessageType( MessageType::NOTIFICATION );
+                this->SendMessageAsynch(msg);
+                return true;
+            }
 
             string session::receiveData(syncType_t readType)
             {
@@ -71,7 +207,7 @@ namespace someip
                         {
                             if (!ec)
                             {
-                            std::cout<< "RECEIVE DATA DONE \n ";
+                            std::cout<< "[someip] RECEIVE DATA DONE \n ";
                             }
                         });
                     break;
@@ -100,7 +236,7 @@ namespace someip
                         {
                             if (!ec)
                             {
-                            std::cout<< "Sending DATA DONE \n ";
+                            std::cout<< "[someip] Sending DATA DONE \n ";
                             }
                         });   
                         break;
@@ -131,18 +267,7 @@ namespace someip
 
             ServerListen();
         }
-
-        string server::receiveData(syncType_t readType)
-        {
-            string x = sessionInstance->receiveData(readType);
-            return x;
-        }
-
-        void server::sendData(syncType_t writeType, string data)
-        {
-            sessionInstance->sendData(writeType,data);
-        }
-
+        
         void server::ServerListen()
         {
             /*GET SOCKET FROM ACCEPT TO CONSTRACUT SESSION*/
@@ -161,12 +286,8 @@ namespace someip
             {
                 ssl_socket.set_verify_mode(boost::asio::ssl::verify_peer);
 
-                //  ssl_socket.set_verify_callback(
-                //      std::bind(&client::verify_certificate, this, _1, _2));
-
                 // SET CALL BACK, CALL VERIFY CERTIFICATE WHICH IS A FUNCTION OF THIS GIVING IT 2 PARAMETERS
                 ssl_socket.set_verify_callback([this](bool p, boost::asio::ssl::verify_context& ctx) { return verify_certificate(p, ctx); });
-
 
                 connect(sync_t,endpoints,securityType,handshakeType);
             }
@@ -177,15 +298,14 @@ namespace someip
                 char subject_name[256];
                 X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
                 X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
-                std::cout << "Verifying " << subject_name << "\n";
+                std::cout << "[someip] Verifying " << subject_name << "\n";
 
                 return preverified;
             }
 
             void client::connect(syncType_t connectType,const tcp::resolver::results_type& endpoints,securityConfg_t securityType,syncType_t handshakeType)
-            {
+            {  
 
-                
             switch(connectType)
             {
                 case sync_t:
@@ -211,6 +331,7 @@ namespace someip
                 });
                     break;
             }
+
             }
 
             bool client::CloseConnection()

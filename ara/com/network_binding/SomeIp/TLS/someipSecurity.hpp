@@ -5,7 +5,7 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
-
+#include "someip.hpp"
 
 using namespace std;
 using stream_base = boost::asio::ssl::stream_base;
@@ -27,11 +27,11 @@ namespace someip {
         }securityConfg_t;
 
 
-        class session :public std::enable_shared_from_this<session>
+        class session :public std::enable_shared_from_this<session> , someipConnection
         {
             public:
 
-            session(tcp::socket socket, boost::asio::ssl::context& ssl_context);
+            session(tcp::socket socket, boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context);
 
             session(boost::asio::io_context& io_context, boost::asio::ssl::context& ssl_context);
 
@@ -40,11 +40,38 @@ namespace someip {
                             stream_base::handshake_type baseType ,
                             syncType_t handshakeType); 
 
+            /* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
+            bool SendMessage(someip_Message &msg);
+
+            /* FUNCTION TO READ A SOMEIP MESSAGE USING TCP */
+            someip_Message ReceiveMessage();		
+
+            /* FUNCTION TO SEND A SOMEIP MESSAGE ASYNCH */
+            bool SendMessageAsynch(someip_Message &msg );
+
+            /* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
+            someip_Message ReceiveMessageAsynch();	
+
+
+            /* MESSAGE TYPES */
+
+            someip_Message SendRequest(someip_Message &msg);
+
+            bool SendResponse(someip_Message &msg);
+
+            /* REQUEST NO RESPONSE */
+            bool SendFireAndForget(someip_Message &msg);
+
+            bool SendNotification(someip_Message &msg);   
+
+
+
             string receiveData(syncType_t readType);
 
             void sendData(syncType_t writeType, string data);
 
             protected:
+            boost::asio::io_context& session_io_context;
             boost::asio::ssl::stream<tcp::socket> ssl_socket;
             char data_[max_length];
         };
@@ -60,38 +87,7 @@ namespace someip {
             void sendData(syncType_t writeType, string data);
                 
                 /* SERVER LISTENING */
-            void ServerListen();
-
-            /* OPEN SOCKET CONNECTION*/
-            bool OpenConnection();
-
-            /* CLOSE SOCKET CONNECTION */
-            bool CloseConnection();
-
-            //     /* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
-            // bool SendMessage(someip_Message &msg);
-
-            // /* FUNCTION TO READ A SOMEIP MESSAGE USING TCP */
-            // someip_Message ReceiveMessage();		
-
-            // /* FUNCTION TO SEND A SOMEIP MESSAGE ASYNCH */
-            // bool SendMessageAsynch(someip_Message &msg );
-
-            // /* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
-            // someip_Message ReceiveMessageAsynch();	
-
-
-            // /* MESSAGE TYPES */
-
-            // someip_Message SendRequest(someip_Message &msg);
-
-            // bool SendResponse(someip_Message &msg);
-
-            // /* REQUEST NO RESPONSE */
-            // bool SendFireAndForget(someip_Message &msg);
-
-            // bool SendNotification(someip_Message &msg);    
-            
+            void ServerListen();         
 
         private:
 
