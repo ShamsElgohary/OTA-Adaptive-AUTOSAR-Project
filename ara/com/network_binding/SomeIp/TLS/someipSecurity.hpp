@@ -5,7 +5,7 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
-#include "someip.hpp"
+#include "../someip.hpp"
 
 using namespace std;
 using stream_base = boost::asio::ssl::stream_base;
@@ -31,40 +31,43 @@ namespace someip {
         {
             public:
 
+            
+           // session(tcp::socket socket, boost::asio::ssl::context& ssl_context);
+
             session(tcp::socket socket, boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context);
 
-            session(boost::asio::io_context& io_context, boost::asio::ssl::context& ssl_context);
-
+            session(boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context);
 
             void handshake(securityConfg_t securityType,  
                             stream_base::handshake_type baseType ,
                             syncType_t handshakeType); 
 
             /* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
-            bool SendMessage(someip_Message &msg);
+            bool SendMessage(someipMessage &msg);
 
             /* FUNCTION TO READ A SOMEIP MESSAGE USING TCP */
-            someip_Message ReceiveMessage();		
+            someipMessage ReceiveMessage();		
 
             /* FUNCTION TO SEND A SOMEIP MESSAGE ASYNCH */
-            bool SendMessageAsynch(someip_Message &msg );
+            bool SendMessageAsynch(someipMessage &msg );
 
             /* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
-            someip_Message ReceiveMessageAsynch();	
+            someipMessage ReceiveMessageAsynch();	
 
 
             /* MESSAGE TYPES */
 
-            someip_Message SendRequest(someip_Message &msg);
+            someipMessage SendRequest(someipMessage &msg);
 
-            bool SendResponse(someip_Message &msg);
+            bool SendResponse(someipMessage &msg);
 
             /* REQUEST NO RESPONSE */
-            bool SendFireAndForget(someip_Message &msg);
+            bool SendFireAndForget(someipMessage &msg);
 
-            bool SendNotification(someip_Message &msg);   
+            bool SendNotification(someipMessage &msg);   
 
-
+            /* CLOSE SOCKET CONNECTION */
+            bool CloseConnection();
 
             string receiveData(syncType_t readType);
 
@@ -74,26 +77,23 @@ namespace someip {
             boost::asio::io_context& session_io_context;
             boost::asio::ssl::stream<tcp::socket> ssl_socket;
             char data_[max_length];
+
         };
 
 
-        class server 
+        class server : public session
         {
         public:
+        
             server(boost::asio::io_context& io_context, unsigned short port,securityConfg_t securityType,syncType_t acceptorType);
-
-            string receiveData(syncType_t readType);
-
-            void sendData(syncType_t writeType, string data);
                 
                 /* SERVER LISTENING */
             void ServerListen();         
 
         private:
 
-            shared_ptr<session> sessionInstance = nullptr;
+            boost::asio::ssl::context ssl_context;
             boost::asio::ip::tcp::acceptor acceptor_;
-            boost::asio::ssl::context context_;
         };
 
 
@@ -118,9 +118,6 @@ namespace someip {
                         const tcp::resolver::results_type& endpoints,
                         securityConfg_t securityType,
                         syncType_t handshakeType);
-
-            /* CLOSE SOCKET CONNECTION */
-            bool CloseConnection();
 
             
             private:
