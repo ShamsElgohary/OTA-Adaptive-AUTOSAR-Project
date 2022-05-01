@@ -9,16 +9,17 @@ int main()
 {
     printf("SM started to work\n");
     /********Report to EM*****/
-    // ExecutionClient client{};
-    // client.ReportExecutionStaste(ExecutionState::Krunning);
-    /********Test*************/
+    ExecutionClient client{};
+    client.ReportExecutionStaste(ExecutionState::Krunning);
     UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
+    /********Test*************/
     FunctionGroupList function_groups = {"fg1", "fg2"};
-    /*********Test*******************/
     std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> out=updaterequest.StartUpdateSession();
-    std::cout<<std::endl<<unsigned(out.get().AppError);
-    updaterequest.PrepareUpdate(function_groups);
-    updaterequest.VerifyUpdate(function_groups);
+    std::cout<<"return is"<<static_cast<unsigned>(out.get().AppError)<<std::endl;
+    std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> out1=updaterequest.PrepareUpdate(function_groups);
+    std::cout<<"return is"<<static_cast<unsigned>(out1.get().AppError)<<std::endl;
+    std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> out2=updaterequest.VerifyUpdate(function_groups);
+    std::cout<<"return is"<<static_cast<unsigned>(out2.get().AppError)<<std::endl;
     updaterequest.StopUpdateSession();
     /******Offer_Service*************/
     updaterequest.OfferService();

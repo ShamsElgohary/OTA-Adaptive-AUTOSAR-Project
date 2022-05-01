@@ -9,7 +9,7 @@ std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateReq
     StateClient client{};
     std::promise<UpdateRequestSkeleton::StartUpdateSessionOutput> promise;
     UpdateRequestSkeleton::StartUpdateSessionOutput out;
-    bool success = client.setState(FunctionGroupState({"MachineState", "Updating"}));
+    bool success = client.setState(FunctionGroupState({"MachineState","Updating"}));
     if(success)
     {
     this->FunctionGroupStates["MachineState"]="Updating";
@@ -38,15 +38,22 @@ std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestI
     for (auto fg : FunctionGroups)
     {
         success = client.setState(FunctionGroupState({fg, "Preparing"}));
-        if (!success)
-            out.AppError=uint8_t(SM_ApplicationError::kPrepareFailed);
+        if (success)
+        {
+        out.AppError=success;
         this->FunctionGroupStates[fg]="Preparing";
+        }
+        else
+        {
+        printf("%s not prepared correctly\n",fg.c_str());    
+        out.AppError=uint8_t(SM_ApplicationError::kPrepareFailed);
+        break;
+        }
     }
-    out.AppError=1;
     }
     else
     {
-        throw std::string("StartUpdateSession must be called before\n");
+        printf("StartUpdateSession must be called before\n");
         out.AppError=(uint8_t)SM_ApplicationError::kRejected;
     }
     promise.set_value(out);
@@ -64,19 +71,28 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
     {
         if(this->FunctionGroupStates[fg]!="Preparing")
         {
-        throw std::string("PrepareUpdate must be called before");
+        printf("PrepareUpdate must be called before\n");
         out.AppError=uint8_t(SM_ApplicationError::kRejected);
+        break;
         }
         success = client.setState(FunctionGroupState({fg, "Verifying"}));
-        if (!success)
+        if (success)
+        {
+            out.AppError=success;
+            this->FunctionGroupStates[fg]="Verifying";
+        }
+        else
+        {
+        printf("%s in not verifiyed correctly\n",fg.c_str());
         out.AppError=uint8_t(SM_ApplicationError::kVerifyFailed);
-        this->FunctionGroupStates[fg]="Verifying";
+        break;
+        }
     }
-    out.AppError=1;
+    
     }
     else
     {
-        throw std::string("StartUpdateSession must be called before\n");
+        printf("StartUpdateSession must be called before\n");
         out.AppError=(uint8_t)SM_ApplicationError::kRejected;
     }
     promise.set_value(out);

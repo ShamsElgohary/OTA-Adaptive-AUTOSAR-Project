@@ -74,7 +74,9 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
     }
     FunctionGroupState::CtorToken token = FunctionGroupState::Preconstruct(functionGroup_Name, functionGroup_NewState);
     FunctionGroupState functionGroup(move(token));
-    return setState(functionGroup);
+    bool success=setState(functionGroup);
+    write(smpipe,&success,sizeof(success));
+    return success;
 }
 
 bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
