@@ -1,28 +1,29 @@
 #include "someipSecurity.hpp"
 
+using namespace someip;
+using namespace std;
+using stream_base = boost::asio::ssl::stream_base;
+using tcp = boost::asio::ip::tcp;
+
+
 namespace someip
 {
     namespace security {
-        
-        using namespace std;
-        using stream_base = boost::asio::ssl::stream_base;
-        using tcp = boost::asio::ip::tcp;
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////// SESSION //////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            session::session(tcp::socket socket, boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context)
-             : ssl_socket(std::move(socket), ssl_context), session_io_context(io_context)
-            {
-
-            }
-
             session::session(boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context)
-            : ssl_socket(io_context, ssl_context), session_io_context(io_context)
-            {
-                
+            : ssl_socket(io_context, ssl_context)
+            { 
             }         
+
+            session::session(tcp::socket socket, boost::asio::ssl::context& context)
+            : ssl_socket(std::move(socket), context)
+            {
+            }
 
             void session::handshake(securityConfg_t securityType, 
                                     stream_base::handshake_type baseType ,
@@ -49,6 +50,61 @@ namespace someip
                         break;
                 }
             }
+
+
+            string session::receiveData(syncType_t readType)
+            {
+                
+            int x = 0;
+                switch(readType)
+                {
+                    case (syncType_t::sync_t):
+                        x = (ssl_socket).read_some(boost::asio::buffer(data_));
+                    break;
+
+                    case(syncType_t::async_t):
+                    auto self(shared_from_this());
+                    (ssl_socket).async_read_some(boost::asio::buffer(data_),
+                        [this, self](const boost::system::error_code& ec, std::size_t length)
+                        {
+                            if (!ec)
+                            {
+                            std::cout<< "[someip] RECEIVE DATA DONE \n ";
+                            }
+                        });
+                    break;
+
+                }
+
+                data_[x] = '\0';
+                return data_;
+
+            }
+
+            void session::sendData(syncType_t writeType,string data)
+            {
+                switch(writeType)
+                {
+                    case (syncType_t::sync_t):
+                        
+                        (ssl_socket).write_some(boost::asio::buffer(data,data.length()));
+                        break;
+
+                    case(syncType_t::async_t):
+                    
+                        auto self(shared_from_this());
+                        (ssl_socket).async_write_some(boost::asio::buffer(data,data.length()),
+                        [this, self](const boost::system::error_code& ec, std::size_t length)
+                        {
+                            if (!ec)
+                            {
+                            std::cout<< "[someip] Sending DATA DONE \n ";
+                            }
+                        });   
+                        break;
+                }
+
+            }  
 
 
             /* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
@@ -104,7 +160,7 @@ namespace someip
                     std::string mssgBuf = ss.str();
                     ssl_socket.async_write_some( boost::asio::buffer(mssgBuf), &OnSendCompleted );
                     // IMPORTANT FOR ASYNCHRONOUS OPERATIONS 
-                    session_io_context.run();
+//                    session_io_context.run();
 
                 }catch ( boost::system::system_error e) {
                     std::cout << "[someip] " << e.what() << "\n";
@@ -126,7 +182,7 @@ namespace someip
                     ssl_socket.async_read_some(boost::asio::buffer(buff), &OnReceiveCompleted);
                     
                     // IMPORTANT FOR ASYNCHRONOUS OPERATIONS 
-                    session_io_context.run();
+//                    session_io_context.run();
                     std::string mssgBuf = buff;
                     std::stringstream ss;
                     ss<< mssgBuf;
@@ -189,7 +245,6 @@ namespace someip
                 return true;
             }
 
-
             bool session::CloseConnection()
             {
                 ssl_socket.lowest_layer().cancel();
@@ -199,71 +254,15 @@ namespace someip
             }
 
 
-            string session::receiveData(syncType_t readType)
-            {
-                
-            int x = 0;
-                switch(readType)
-                {
-                    case (syncType_t::sync_t):
-                        x = (ssl_socket).read_some(boost::asio::buffer(data_));
-                    break;
-
-                    case(syncType_t::async_t):
-                    auto self(shared_from_this());
-                    (ssl_socket).async_read_some(boost::asio::buffer(data_),
-                        [this, self](const boost::system::error_code& ec, std::size_t length)
-                        {
-                            if (!ec)
-                            {
-                            std::cout<< "[someip] RECEIVE DATA DONE \n ";
-                            }
-                        });
-                    break;
-
-                }
-
-                data_[x] = '\0';
-                return data_;
-
-            }
-
-            void session::sendData(syncType_t writeType,string data)
-            {
-                switch(writeType)
-                {
-                    case (syncType_t::sync_t):
-                        
-                        (ssl_socket).write_some(boost::asio::buffer(data,data.length()));
-                        break;
-
-                    case(syncType_t::async_t):
-                    
-                        auto self(shared_from_this());
-                        (ssl_socket).async_write_some(boost::asio::buffer(data,data.length()),
-                        [this, self](const boost::system::error_code& ec, std::size_t length)
-                        {
-                            if (!ec)
-                            {
-                            std::cout<< "[someip] Sending DATA DONE \n ";
-                            }
-                        });   
-                        break;
-                }
-
-            }         
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////// SERVER //////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
         server::server(boost::asio::io_context& io_context, unsigned short port,securityConfg_t securityType,syncType_t acceptorType)
             : acceptor_(io_context, tcp::endpoint(tcp::v4(), port)),
-              ssl_context(boost::asio::ssl::context::tls),
-              session(ssl_context, io_context)
+              ssl_context(boost::asio::ssl::context::tls)
          {
             ssl_context.set_options(
                 boost::asio::ssl::context::default_workarounds
@@ -271,20 +270,28 @@ namespace someip
                 | boost::asio::ssl::context::single_dh_use);
 
             //context_.set_password_callback(boost::bind(&server::get_password, this));
-            ssl_context.use_certificate_chain_file("../Certificates/server.crt");
-            ssl_context.use_private_key_file("../Certificates/server.key", boost::asio::ssl::context::pem);
-            ssl_context.use_tmp_dh_file("../Certificates/dh2048.pem");
-
-            ServerListen();
+            ssl_context.use_certificate_chain_file("Certificates/server.crt");
+            ssl_context.use_private_key_file("Certificates/server.key", boost::asio::ssl::context::pem);
+            ssl_context.use_tmp_dh_file("Certificates/dh2048.pem");
         }
         
         void server::ServerListen()
         {
-            //boost::asio::ssl::stream<tcp::socket> new_ssl_socket(acceptor_.accept(), ssl_context);
-            //ssl_socket( std::move(new_ssl_socket) );
-            
-            handshake(tls, stream_base::server, sync_t);           
+            session_instance = std::make_shared<session>(std::move(acceptor_.accept()), ssl_context);
+            session_instance->handshake(tls, stream_base::server, sync_t);           
         }
+
+        string server::receiveData_external(syncType_t readType)
+        {
+            string x = session_instance->receiveData(readType);
+            return x;
+        }
+
+        void server::sendData_external(syncType_t writeType, string data)
+        {
+            session_instance->sendData(writeType,data);
+        }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////// CLIENT ///////////////////////////////////////////////////////////////////////////

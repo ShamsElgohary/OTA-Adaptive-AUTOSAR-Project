@@ -260,7 +260,7 @@ namespace someip {
 		}
 		catch (boost::system::system_error e)
 		{
-			std::cout << "  [someip] " << e.what() << "\n";
+			std::cout << "[someip] " << e.what() << "\n";
 			std::cout << "CLIENT DIDN'T CONNECT TO SERVER \n";
 		}
 	}
@@ -280,7 +280,7 @@ namespace someip {
 		}
 		catch (boost::system::system_error e)
 		{
-			std::cout << "  [someip] " << e.what() << "\n";
+			std::cout << "[someip] " << e.what() << "\n";
 			std::cout << "CLIENT DIDN'T CONNECT TO SERVER \n";
 		}
 	}
@@ -296,7 +296,7 @@ namespace someip {
 		}
 		catch (boost::system::system_error e)
 		{
-			std::cout << "  [someip] " << e.what() << "\n";
+			std::cout << "[someip] " << e.what() << "\n";
 			std::cout << "CLIENT DIDN'T CONNECT TO SERVER (PROXY CONNECT METHOD) \n";
 			opResult = false;
 
