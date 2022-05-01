@@ -124,9 +124,9 @@ namespace someip {
             bool CloseConnection();
 
 
-            string receiveData_external(syncType_t readType);
+            string receiveData(syncType_t readType);
 
-            void sendData_external(syncType_t writeType, string data);      
+            void sendData(syncType_t writeType, string data);      
 
         private:
         

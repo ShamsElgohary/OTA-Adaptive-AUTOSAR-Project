@@ -17,12 +17,8 @@ int main (void)
     string path =  ZIP_PackagesPath + "/PackageTest.zip";
     PackageManagerInstance.OfferService();
     return 0;
-<<<<<<< Updated upstream
 } 
 
 
 
 
-=======
-}
->>>>>>> Stashed changes

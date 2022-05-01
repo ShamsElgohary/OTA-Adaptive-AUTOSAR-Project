@@ -281,13 +281,70 @@ namespace someip
             session_instance->handshake(tls, stream_base::server, sync_t);           
         }
 
-        string server::receiveData_external(syncType_t readType)
+
+        /* FUNCTION TO SEND A SOMEIP MESSAGE  */
+        bool server::SendMessage(someipMessage &msg)
         {
-            string x = session_instance->receiveData(readType);
-            return x;
+            return session_instance->SendMessage(msg);
         }
 
-        void server::sendData_external(syncType_t writeType, string data)
+        /* FUNCTION TO READ A SOMEIP MESSAGE  */
+        someipMessage server::ReceiveMessage()
+        {
+            return session_instance->ReceiveMessage();
+        }
+
+        /* FUNCTION TO SEND A SOMEIP MESSAGE ASYNCH */
+        bool server::SendMessageAsynch(someipMessage &msg )
+        {
+            return session_instance->SendMessageAsynch(msg);
+        }
+
+        /* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
+        someipMessage server::ReceiveMessageAsynch()
+        {
+            return session_instance->ReceiveMessageAsynch();
+        }
+
+
+        /* MESSAGE TYPES */
+
+        someipMessage server::SendRequest(someipMessage &msg)
+        {
+            return session_instance->SendRequest(msg);
+        }
+
+        bool server::SendResponse(someipMessage &msg)
+        {
+            return session_instance->SendResponse(msg);
+        }
+
+        /* REQUEST NO RESPONSE */
+        bool server::SendFireAndForget(someipMessage &msg)
+        {
+            return session_instance->SendFireAndForget(msg);
+        }
+        
+        bool server::SendNotification(someipMessage &msg)
+        {
+            return session_instance->SendNotification(msg);
+        }
+
+        /* CLOSE SOCKET CONNECTION */
+                /* CLOSE SOCKET CONNECTION */
+        bool server::CloseConnection()
+        {
+            return session_instance->CloseConnection();
+        }
+
+
+
+        string server::receiveData(syncType_t readType)
+        {
+            return session_instance->receiveData(readType);
+        }
+
+        void server::sendData(syncType_t writeType, string data)
         {
             session_instance->sendData(writeType,data);
         }
