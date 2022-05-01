@@ -6,7 +6,7 @@
 #include <boost/asio.hpp>
 #include <boost/asio/ssl.hpp>
 
-#include "someip.hpp"
+#include "../someip.hpp"
 
 using namespace std;
 using stream_base = boost::asio::ssl::stream_base;
@@ -17,32 +17,25 @@ namespace someip {
 
         enum{ max_length = 1024 };
 
-
         typedef enum syncType_t{
             sync_t,
             async_t
         }syncType_t;
 
-        typedef enum securityConfg_t{
-            tls,
-        }securityConfg_t;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////// SESSION ///////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        class session : public std::enable_shared_from_this<session> , public someipConnection
+        class SessionTLS : public std::enable_shared_from_this<SessionTLS> , public someipConnection
         {
             public:
-            session(tcp::socket socket, boost::asio::ssl::context& context);
+            SessionTLS(tcp::socket socket, boost::asio::ssl::context& context);
 
-            session(boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context);
+            SessionTLS(boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context);
 
-            void handshake(securityConfg_t securityType,  
-                            stream_base::handshake_type baseType ,
-                            syncType_t handshakeType); 
-
+            void handshake(stream_base::handshake_type baseType , syncType_t handshakeType); 
 
             /* FUNCTION TO SEND A SOMEIP MESSAGE  */
             bool SendMessage(someipMessage &msg);
@@ -55,7 +48,6 @@ namespace someip {
 
             /* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
             someipMessage ReceiveMessageAsynch();	
-
 
             /* MESSAGE TYPES */
 
@@ -70,15 +62,9 @@ namespace someip {
 
             /* CLOSE SOCKET CONNECTION */
             bool CloseConnection();
-
     
-            string receiveData(syncType_t readType);
-
-            void sendData(syncType_t writeType, string data);
-
             protected:
             boost::asio::ssl::stream<tcp::socket> ssl_socket;
-            char data_[max_length];
 
         };
 
@@ -87,13 +73,13 @@ namespace someip {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        class server : public someipConnection
+        class ServerTLS : public someipConnection
         {
         public:
         
-            server(boost::asio::io_context& io_context, unsigned short port,securityConfg_t securityType,syncType_t acceptorType);
+            ServerTLS(boost::asio::io_context& io_context, uint16_t port, std::string CertificateDir , std::string IPv4 = LOOPBACK_IP);
                 
-                /* SERVER LISTENING */
+            /* SERVER LISTENING */
             void ServerListen();  
 
             /* FUNCTION TO SEND A SOMEIP MESSAGE  */
@@ -122,15 +108,11 @@ namespace someip {
 
             /* CLOSE SOCKET CONNECTION */
             bool CloseConnection();
-
-
-            string receiveData(syncType_t readType);
-
-            void sendData(syncType_t writeType, string data);      
+     
 
         private:
         
-            shared_ptr<session> session_instance = nullptr;
+            shared_ptr<SessionTLS> session_instance = nullptr;
             boost::asio::ssl::context ssl_context;
             boost::asio::ip::tcp::acceptor acceptor_;
         };
@@ -141,26 +123,22 @@ namespace someip {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        class client:public std::enable_shared_from_this<client>, public session
+
+        class ClientTLS:public std::enable_shared_from_this<ClientTLS>, public SessionTLS
         {
             public:
-            client(boost::asio::io_context& io_context,
-                boost::asio::ssl::context& context,
-                const tcp::resolver::results_type& endpoints,
-                securityConfg_t securityType,
-                syncType_t handshakeType);
+            ClientTLS(boost::asio::io_context& io_context,
+                        boost::asio::ssl::context& context,
+                        uint16_t port,
+                        std::string clientCertificate, 
+                        std::string IPv4 = LOOPBACK_IP);
+                        
 
             bool verify_certificate(bool preverified,
                 boost::asio::ssl::verify_context& ctx);
 
-            void connect(syncType_t connectType,
-                        const tcp::resolver::results_type& endpoints,
-                        securityConfg_t securityType,
-                        syncType_t handshakeType);
+            void connect(syncType_t connectType,const tcp::resolver::results_type& endpoints);
 
-            
-            private:
-            char data_[max_length];
         };
 
     } // namespace security

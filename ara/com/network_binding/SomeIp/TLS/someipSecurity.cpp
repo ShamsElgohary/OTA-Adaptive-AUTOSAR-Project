@@ -10,26 +10,24 @@ namespace someip
 {
     namespace security {
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////// SESSION //////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////// SESSION //////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            session::session(boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context)
+            SessionTLS::SessionTLS(boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context)
             : ssl_socket(io_context, ssl_context)
             { 
+
             }         
 
-            session::session(tcp::socket socket, boost::asio::ssl::context& context)
+            SessionTLS::SessionTLS(tcp::socket socket, boost::asio::ssl::context& context)
             : ssl_socket(std::move(socket), context)
             {
+                
             }
 
-            void session::handshake(securityConfg_t securityType, 
-                                    stream_base::handshake_type baseType ,
-                                    syncType_t handshakeType)
+            void SessionTLS::handshake(stream_base::handshake_type baseType , syncType_t handshakeType)
             {
-
                 switch(handshakeType)
                 {
                     case(sync_t):
@@ -52,63 +50,8 @@ namespace someip
             }
 
 
-            string session::receiveData(syncType_t readType)
-            {
-                
-            int x = 0;
-                switch(readType)
-                {
-                    case (syncType_t::sync_t):
-                        x = (ssl_socket).read_some(boost::asio::buffer(data_));
-                    break;
-
-                    case(syncType_t::async_t):
-                    auto self(shared_from_this());
-                    (ssl_socket).async_read_some(boost::asio::buffer(data_),
-                        [this, self](const boost::system::error_code& ec, std::size_t length)
-                        {
-                            if (!ec)
-                            {
-                            std::cout<< "[someip] RECEIVE DATA DONE \n ";
-                            }
-                        });
-                    break;
-
-                }
-
-                data_[x] = '\0';
-                return data_;
-
-            }
-
-            void session::sendData(syncType_t writeType,string data)
-            {
-                switch(writeType)
-                {
-                    case (syncType_t::sync_t):
-                        
-                        (ssl_socket).write_some(boost::asio::buffer(data,data.length()));
-                        break;
-
-                    case(syncType_t::async_t):
-                    
-                        auto self(shared_from_this());
-                        (ssl_socket).async_write_some(boost::asio::buffer(data,data.length()),
-                        [this, self](const boost::system::error_code& ec, std::size_t length)
-                        {
-                            if (!ec)
-                            {
-                            std::cout<< "[someip] Sending DATA DONE \n ";
-                            }
-                        });   
-                        break;
-                }
-
-            }  
-
-
             /* FUNCTION TO SEND A SOMEIP MESSAGE USING TCP */
-            bool session::SendMessage(someipMessage &msg)
+            bool SessionTLS::SendMessage(someipMessage &msg)
             {
                 try {
                     Serializer serializer;
@@ -127,7 +70,7 @@ namespace someip
             }
 
             /* FUNCTION TO READ A SOMEIP MESSAGE USING TCP */
-            someipMessage session::ReceiveMessage()
+            someipMessage SessionTLS::ReceiveMessage()
             {
                 someipMessage someipMsg;
 
@@ -150,7 +93,7 @@ namespace someip
             }
 
             /* FUNCTION TO SEND A SOMEIP MESSAGE ASYNCH */
-            bool session::SendMessageAsynch(someipMessage &msg )
+            bool SessionTLS::SendMessageAsynch(someipMessage &msg )
             {
                 try {
                     Serializer serializer;
@@ -172,7 +115,7 @@ namespace someip
             }
 
             /* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
-            someipMessage session::ReceiveMessageAsynch()
+            someipMessage SessionTLS::ReceiveMessageAsynch()
             {
                 someipMessage someipMsg;
 
@@ -200,7 +143,7 @@ namespace someip
             }
 
 
-            someipMessage session::SendRequest(someipMessage &req)
+            someipMessage SessionTLS::SendRequest(someipMessage &req)
             {
                 req.header.setMessageType( MessageType::REQUEST );
                 
@@ -222,7 +165,7 @@ namespace someip
             }
 
 
-            bool session::SendResponse(someipMessage &responseMsg)
+            bool SessionTLS::SendResponse(someipMessage &responseMsg)
             {
                 responseMsg.header.setMessageType( MessageType::RESPONSE );
                 bool operationStatus = this->SendMessage(responseMsg);
@@ -231,21 +174,21 @@ namespace someip
 
 
             /* REQUEST NO RESPONSE */
-            bool session::SendFireAndForget(someipMessage &msg)
+            bool SessionTLS::SendFireAndForget(someipMessage &msg)
             {
                 msg.header.setMessageType( MessageType::REQUEST_NO_RETURN );
                 this->SendMessageAsynch(msg);
                 return true;
             }
 
-            bool session::SendNotification(someipMessage &msg)
+            bool SessionTLS::SendNotification(someipMessage &msg)
             {
                 msg.header.setMessageType( MessageType::NOTIFICATION );
                 this->SendMessageAsynch(msg);
                 return true;
             }
 
-            bool session::CloseConnection()
+            bool SessionTLS::CloseConnection()
             {
                 ssl_socket.lowest_layer().cancel();
                 //node.lowest_layer.shutdown(boost::asio::ip::tcp::socket::shutdown_both, error);
@@ -260,7 +203,7 @@ namespace someip
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        server::server(boost::asio::io_context& io_context, unsigned short port,securityConfg_t securityType,syncType_t acceptorType)
+        ServerTLS::ServerTLS(boost::asio::io_context& io_context, uint16_t port,  std::string CertificateDir, std::string IPv4)
             : acceptor_(io_context, tcp::endpoint(tcp::v4(), port)),
               ssl_context(boost::asio::ssl::context::tls)
          {
@@ -269,39 +212,44 @@ namespace someip
                 |boost::asio::ssl::context::no_sslv2
                 | boost::asio::ssl::context::single_dh_use);
 
+            
+            // std::string serverCertificate = ;
+            // std::string serverKey = ;
+            // std::string dh = ;
+
             //context_.set_password_callback(boost::bind(&server::get_password, this));
             ssl_context.use_certificate_chain_file("Certificates/server.crt");
             ssl_context.use_private_key_file("Certificates/server.key", boost::asio::ssl::context::pem);
             ssl_context.use_tmp_dh_file("Certificates/dh2048.pem");
         }
         
-        void server::ServerListen()
+        void ServerTLS::ServerListen()
         {
-            session_instance = std::make_shared<session>(std::move(acceptor_.accept()), ssl_context);
-            session_instance->handshake(tls, stream_base::server, sync_t);           
+            session_instance = std::make_shared<SessionTLS>(std::move(acceptor_.accept()), ssl_context);
+            session_instance->handshake(stream_base::server, sync_t);           
         }
 
 
         /* FUNCTION TO SEND A SOMEIP MESSAGE  */
-        bool server::SendMessage(someipMessage &msg)
+        bool ServerTLS::SendMessage(someipMessage &msg)
         {
             return session_instance->SendMessage(msg);
         }
 
         /* FUNCTION TO READ A SOMEIP MESSAGE  */
-        someipMessage server::ReceiveMessage()
+        someipMessage ServerTLS::ReceiveMessage()
         {
             return session_instance->ReceiveMessage();
         }
 
         /* FUNCTION TO SEND A SOMEIP MESSAGE ASYNCH */
-        bool server::SendMessageAsynch(someipMessage &msg )
+        bool ServerTLS::SendMessageAsynch(someipMessage &msg )
         {
             return session_instance->SendMessageAsynch(msg);
         }
 
         /* FUNCTION TO READ A SOMEIP MESSAGE ASYNCH */
-        someipMessage server::ReceiveMessageAsynch()
+        someipMessage ServerTLS::ReceiveMessageAsynch()
         {
             return session_instance->ReceiveMessageAsynch();
         }
@@ -309,44 +257,32 @@ namespace someip
 
         /* MESSAGE TYPES */
 
-        someipMessage server::SendRequest(someipMessage &msg)
+        someipMessage ServerTLS::SendRequest(someipMessage &msg)
         {
             return session_instance->SendRequest(msg);
         }
 
-        bool server::SendResponse(someipMessage &msg)
+        bool ServerTLS::SendResponse(someipMessage &msg)
         {
             return session_instance->SendResponse(msg);
         }
 
         /* REQUEST NO RESPONSE */
-        bool server::SendFireAndForget(someipMessage &msg)
+        bool ServerTLS::SendFireAndForget(someipMessage &msg)
         {
             return session_instance->SendFireAndForget(msg);
         }
         
-        bool server::SendNotification(someipMessage &msg)
+        bool ServerTLS::SendNotification(someipMessage &msg)
         {
             return session_instance->SendNotification(msg);
         }
 
         /* CLOSE SOCKET CONNECTION */
                 /* CLOSE SOCKET CONNECTION */
-        bool server::CloseConnection()
+        bool ServerTLS::CloseConnection()
         {
             return session_instance->CloseConnection();
-        }
-
-
-
-        string server::receiveData(syncType_t readType)
-        {
-            return session_instance->receiveData(readType);
-        }
-
-        void server::sendData(syncType_t writeType, string data)
-        {
-            session_instance->sendData(writeType,data);
         }
 
 
@@ -354,76 +290,74 @@ namespace someip
 ///////////////////////////////////////////////// CLIENT ///////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            client::client(boost::asio::io_context& io_context,
-                boost::asio::ssl::context& context,
-                const tcp::resolver::results_type& endpoints,securityConfg_t securityType,syncType_t handshakeType)
-                : session(context, io_context)
-            {
-                ssl_socket.set_verify_mode(boost::asio::ssl::verify_peer);
+        ClientTLS::ClientTLS(boost::asio::io_context& io_context,
+                        boost::asio::ssl::context& context,
+                        uint16_t port,
+                        std::string clientCertificate,
+                        std::string IPv4)
+                : SessionTLS(context, io_context)
+        {
 
-                // SET CALL BACK, CALL VERIFY CERTIFICATE WHICH IS A FUNCTION OF THIS GIVING IT 2 PARAMETERS
-                ssl_socket.set_verify_callback([this](bool p, boost::asio::ssl::verify_context& ctx) { return verify_certificate(p, ctx); });
+            boost::asio::ip::tcp::resolver resolver(io_context);
 
-                connect(sync_t,endpoints,securityType,handshakeType);
-            }
+            boost::asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(IPv4 ,std::to_string(port));
+            
+            // "Certificates/server.crt"
+            context.load_verify_file(clientCertificate);
 
-            bool client::verify_certificate(bool preverified,
-                boost::asio::ssl::verify_context& ctx)
-            {
-                char subject_name[256];
-                X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
-                X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
-                std::cout << "[someip] Verifying " << subject_name << "\n";
+            ssl_socket.set_verify_mode(boost::asio::ssl::verify_peer);
 
-                return preverified;
-            }
+            // SET CALL BACK, CALL VERIFY CERTIFICATE WHICH IS A FUNCTION OF THIS GIVING IT 2 PARAMETERS
+            ssl_socket.set_verify_callback([this](bool p, boost::asio::ssl::verify_context& ctx) { return verify_certificate(p, ctx); });
 
-            void client::connect(syncType_t connectType,const tcp::resolver::results_type& endpoints,securityConfg_t securityType,syncType_t handshakeType)
-            {  
+            connect(sync_t,endpoints);
+        }
 
-            switch(connectType)
-            {
-                case sync_t:
-                
-                    boost::asio::connect(ssl_socket.lowest_layer(), endpoints);
-                    this->handshake(securityType,stream_base::client,handshakeType);
-                    break;
+        bool ClientTLS::verify_certificate(bool preverified,
+            boost::asio::ssl::verify_context& ctx)
+        {
+            char subject_name[256];
+            X509* cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
+            X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
+            std::cout << "[someip] Verifying " << subject_name << "\n";
 
-                case syncType_t::async_t:
+            return preverified;
+        }
 
-                    boost::asio::async_connect(ssl_socket.lowest_layer(), endpoints,
-                    [this,securityType,handshakeType](const boost::system::error_code& error,
-                    const tcp::endpoint& )
-                    {
-                    if (!error)
-                    {
-                        this->handshake(securityType,stream_base::client,handshakeType);
-                      }
-                    else
-                    {
-                        std::cout << "[someip] Connect failed: " << error.message() << "\n";
+        void ClientTLS::connect(syncType_t connectType,const tcp::resolver::results_type& endpoints)
+        {  
+
+            // FUNCTION IS CONFIGURABLE AS WE CAN TAKE INPUT ( CONNECT TYPE WHICH CHOOSES SYNC OR ASYNC )
+            // SAME WITH HANDSHAKE
+
+        switch(connectType)
+        {
+            case sync_t:
+            
+                boost::asio::connect(ssl_socket.lowest_layer(), endpoints);
+                this->handshake(stream_base::client, syncType_t::sync_t);
+                break;
+
+            case syncType_t::async_t:
+
+                boost::asio::async_connect(ssl_socket.lowest_layer(), endpoints,
+                [this](const boost::system::error_code& error,
+                const tcp::endpoint& )
+                {
+                if (!error)
+                {
+                    this->handshake(stream_base::client,syncType_t::async_t);
                     }
-                });
-                    break;
-            }
+                else
+                {
+                    std::cout << "[someip] Connect failed: " << error.message() << "\n";
+                }
+            });
+                break;
+        }
 
-            }
+        }
 
 
    } // namespace security
 }  // namespace someip
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
