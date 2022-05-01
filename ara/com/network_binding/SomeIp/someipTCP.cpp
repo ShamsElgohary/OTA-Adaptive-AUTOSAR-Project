@@ -1,7 +1,6 @@
 #include "someipTCP.hpp"
 
 using namespace boost::asio::ip;
-using boost::asio::ip::udp;
 using boost::asio::ip::address;
 using namespace std;
 
@@ -22,7 +21,7 @@ namespace someip {
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/* CONSTRUCTOR */
-	someipTCP::someipTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4)			
+	someipTCP::someipTCP(boost::asio::io_context& io_service, uint16_t port, std::string IPv4)			
 		: tcpSocket(io_service), tcp_io_service(io_service)
 	{
 		auto ip = address::from_string(IPv4);
@@ -32,7 +31,7 @@ namespace someip {
 
 	/* USED TO CONSTRUCT AN INSTANCE IN THE SOMEIP ENDUSER CLASS */
 	someipTCP::someipTCP(
-		boost::asio::io_service& io_service, 
+		boost::asio::io_context& io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4)		
@@ -63,7 +62,7 @@ namespace someip {
 
 		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
 		{
-			std::cout<< "[someip] MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
+			//std::cout<< "[someip] MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
 			//someipMessage msg;
 			//return msg;
@@ -208,7 +207,7 @@ namespace someip {
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ServerTCP::ServerTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4)			
+	ServerTCP::ServerTCP(boost::asio::io_context& io_service, uint16_t port, std::string IPv4)			
 		: 
 		acceptor(io_service, boost::asio::ip::tcp::endpoint(address::from_string(IPv4), port)), 			
 		someipTCP(io_service, port, IPv4)
@@ -219,7 +218,7 @@ namespace someip {
 
 	/* USED TO CONSTRUCT AN INSTANCE IN THE SOMEIP ENDUSER CLASS */
 	ServerTCP::ServerTCP(
-		boost::asio::io_service& io_service, 
+		boost::asio::io_context& io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4)		
@@ -239,8 +238,8 @@ namespace someip {
       		acceptor.accept(this->tcpSocket);
 		}
 		catch( boost::system::system_error e) {
-			std::cout << "  [someip] " << e.what() << "\n";
-			std::cout << " [someip] ERROR ACCEPTING CONNECTION \n";
+			std::cout << "[someip] " << e.what() << "\n";
+			std::cout << "[someip] ERROR ACCEPTING CONNECTION \n";
 		}
 	
 	}
@@ -251,7 +250,7 @@ namespace someip {
     /////////////////////////////////// SOMEIP TCP CLIENT   /////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ClientTCP::ClientTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4)			
+	ClientTCP::ClientTCP(boost::asio::io_context& io_service, uint16_t port, std::string IPv4)			
 		: someipTCP(io_service, port, IPv4)
 	{
 		try{
@@ -261,14 +260,14 @@ namespace someip {
 		catch (boost::system::system_error e)
 		{
 			std::cout << "[someip] " << e.what() << "\n";
-			std::cout << "CLIENT DIDN'T CONNECT TO SERVER \n";
+			std::cout << "[someip] CLIENT DIDN'T CONNECT TO SERVER \n";
 		}
 	}
 
 
 	/* USED TO CONSTRUCT AN INSTANCE IN THE SOMEIP ENDUSER CLASS */
 	ClientTCP::ClientTCP(
-		boost::asio::io_service& io_service, 
+		boost::asio::io_context& io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4)		
@@ -281,7 +280,7 @@ namespace someip {
 		catch (boost::system::system_error e)
 		{
 			std::cout << "[someip] " << e.what() << "\n";
-			std::cout << "CLIENT DIDN'T CONNECT TO SERVER \n";
+			std::cout << "[someip] CLIENT DIDN'T CONNECT TO SERVER \n";
 		}
 	}
 
@@ -297,7 +296,7 @@ namespace someip {
 		catch (boost::system::system_error e)
 		{
 			std::cout << "[someip] " << e.what() << "\n";
-			std::cout << "CLIENT DIDN'T CONNECT TO SERVER (PROXY CONNECT METHOD) \n";
+			std::cout << "[someip] CLIENT DIDN'T CONNECT TO SERVER (PROXY CONNECT METHOD) \n";
 			opResult = false;
 
 		}

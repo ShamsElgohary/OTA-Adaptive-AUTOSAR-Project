@@ -24,7 +24,7 @@ namespace someip{
 
 	/* CONSTRUCTOR (+ SOMEIP ENDUSER CONSTRUCTOR)*/
 	someipUDP::someipUDP(
-		boost::asio::io_service& io_service, 
+		boost::asio::io_context& io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4)
@@ -48,13 +48,7 @@ namespace someip{
 
 	someipMessage someipUDP::SendRequest(someipMessage &req)
 	{
-		if( req.header.getMessageType() != MessageType::REQUEST )
-		{
-			std::cout<< " MESSAGE TYPE ISN'T REQUEST MESSAGE " << std::endl;
-			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
-			// someipMessage msg;
-			// return msg;
-		}
+		req.header.setMessageType( MessageType::REQUEST );
 
 		/* SEND MESSAGE */
 		this->SendMessage(req);
@@ -64,7 +58,7 @@ namespace someip{
 
 		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
 		{
-			std::cout<< " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
+			//std::cout<< "[someip] MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
 			// someipMessage msg;
 			// return msg;
@@ -78,7 +72,7 @@ namespace someip{
 	{
 		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
 		{
-			std::cout<< " MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
+			std::cout<< "[someip] MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
 			//return false;
 		}
 
@@ -91,7 +85,7 @@ namespace someip{
 	{
 		if( msg.header.getMessageType() != MessageType::REQUEST_NO_RETURN )
 		{
-			std::cout<< " MESSAGE TYPE ISN'T REQUEST NO RETURN MESSAGE " << std::endl;
+			std::cout<< "[someip] MESSAGE TYPE ISN'T REQUEST NO RETURN MESSAGE " << std::endl;
 		}
 
 		this->SendMessage(msg);
@@ -102,7 +96,7 @@ namespace someip{
 	{
 		if( msg.header.getMessageType() != MessageType::NOTIFICATION )
 		{
-			std::cout<< " MESSAGE TYPE ISN'T NOTIFICATION " << std::endl;
+			std::cout<< "[someip] MESSAGE TYPE ISN'T NOTIFICATION " << std::endl;
 		}
 
 		this->SendMessage(msg);
@@ -122,7 +116,7 @@ namespace someip{
 			udpSocket.send_to(boost::asio::buffer(mssgBuf), this->udpEndPoint);
 
 		}catch ( boost::system::system_error e) {
-			std::cout << e.what() << "\n";
+			std::cout << "[someip] " << e.what() << "\n";
 			return false; // MESSAGE NOT SENT
 		}
 
@@ -145,7 +139,7 @@ namespace someip{
 			// DESERIALIZE SOMEIP MESSAGE STRUCT  
 			deserializer.Deserialize(ss, &someipMsg);
 		}catch ( boost::system::system_error e) {
-			std::cout << e.what() << "\n";
+			std::cout << "[someip] " << e.what() << "\n";
 			someipMsg.header;
 			// MESSAGE NOT READ
 		}
@@ -178,7 +172,7 @@ namespace someip{
 			// DESERIALIZE SOMEIP MESSAGE STRUCT  
 			deserializer.Deserialize(ss, &someipMsg);
 		}catch ( boost::system::system_error e) {
-			std::cout << e.what() << "\n";
+			std::cout << "[someip] " << e.what() << "\n";
 			someipMsg.header;
 			// MESSAGE NOT READ
 		}

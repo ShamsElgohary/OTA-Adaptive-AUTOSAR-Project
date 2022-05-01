@@ -1,15 +1,14 @@
 #include "someipUDP.hpp"
 #include "someipTCP.hpp"
+#include "someipSecurity.hpp"
 #include "someip.hpp"
 
-
-using namespace boost::asio::ip;
 using boost::asio::ip::udp;
 using boost::asio::ip::address;
 using namespace std;
+using namespace someip::security;
+using namespace boost::asio::ip;
 
-// class someipConnection
-// class someipUDP;
 
 namespace someip 
 {
@@ -56,7 +55,7 @@ namespace someip
 	}
 
 	std::shared_ptr<someipConnection> someipConnection::SetSomeIpConfiguration(
-		boost::asio::io_service& io_service, 
+		boost::asio::io_context& io_service, 
 		uint16_t port, 	 
 		SomeIpConfiguration someipConfig, 
 		std::string IPv4 )
@@ -64,45 +63,53 @@ namespace someip
 	{
 		shared_ptr<someipConnection> endUserInstance;
 
+
+	///////////////////// RAW ////////////////////////
+	if(someipConfig.securityType == SecurityType::RAW)
+	{
 		if (someipConfig.tpType == TransportProtocol::TCP)
 		{
 			if (someipConfig.endUserType == EndUserType::CLIENT)
-			{
 				endUserInstance = make_shared<ClientTCP>(io_service, port, someipConfig, IPv4);
-			}
-
+			
 			else if (someipConfig.endUserType == EndUserType::SERVER)
-			{
 				endUserInstance = make_shared<ServerTCP>(io_service, port, someipConfig, IPv4);
-			}
-
-			else
-			{
-				cout << " [someip] UNDEFINED TYPE OF END USER \n";
-			}
+			
 		}
 
 		else if (someipConfig.tpType == TransportProtocol::UDP)
 		{
 			if (someipConfig.endUserType == EndUserType::CLIENT)
-			{
 				endUserInstance = make_shared<someipUDP>(io_service, port, someipConfig, IPv4);
-			}
+		
 
 			else if (someipConfig.endUserType == EndUserType::SERVER)
-			{
 				endUserInstance = make_shared<someipUDP>(io_service, port, someipConfig, IPv4);
-			}
-
-			else
-			{
-				cout << " [someip] UNDEFINED TYPE OF END USER \n";
-			}
 		}
+	}
 
+	///////////////////// TLS ////////////////////////
+	else if (someipConfig.securityType == SecurityType::TLS)
+	{
+		if (someipConfig.endUserType == EndUserType::CLIENT)
+			{	
+				std::string CertificatePath = "Certificates/server.crt"; // TESTING
+
+				boost::asio::ssl::context ctx(boost::asio::ssl::context::tls);
+				endUserInstance = make_shared<ClientTLS>(io_service, ctx , port, CertificatePath, IPv4);
+			}
+
+		else if (someipConfig.endUserType == EndUserType::SERVER)
+			{
+				std::string CertificateDir = "Certificates/"; // TESTING
+
+				endUserInstance = make_shared<ServerTLS>(io_service, port, CertificateDir, IPv4);
+			}
+		
+	}
 		else
 		{
-			cout << " [someip] UNDEFINED TYPE OF TRANSPORT PROTOCOL \n";
+			cout << "[someip] UNDEFINED TYPE OF TRANSPORT PROTOCOL \n";
 		}
 
 		return endUserInstance;

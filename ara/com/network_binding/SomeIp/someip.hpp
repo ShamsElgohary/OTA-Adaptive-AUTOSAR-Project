@@ -10,7 +10,7 @@
 
 namespace someip {
 					
-static const std::string LOOPBACK_IP = "127.0.0.1";
+static const std::string LOOPBACK_IP = "127.0.0.1";		
 static const std::string MULTICAST_IP = "239.255.0.1";	// mulicast address to use. see: http://en.wikipedia.org/wiki/Multicast_address
 static const int MULTICAST_PORT = 3000;					// Service Discovery PORT
 
@@ -25,11 +25,16 @@ enum EndUserType{
 	CLIENT,SERVER
 };
 
+enum SecurityType{
+	RAW,TLS,IPSec
+};
+
 
 typedef struct
 {
 	TransportProtocol tpType; 
 	EndUserType endUserType;
+	SecurityType securityType;
 }SomeIpConfiguration;
 
 
@@ -73,7 +78,7 @@ class someipConnection{
 		// io_service TO USE
 		
 		static std::shared_ptr<someipConnection> SetSomeIpConfiguration(
-			boost::asio::io_service& io_service, 
+			boost::asio::io_context& io_service, 
 			uint16_t port, 	 
 			SomeIpConfiguration someipConfig,					// DEFAULT VALUES INSIDE
 			std::string IPv4 = LOOPBACK_IP	 					// DEFAULT

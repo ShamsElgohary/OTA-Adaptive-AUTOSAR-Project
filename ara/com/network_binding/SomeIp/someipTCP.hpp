@@ -14,7 +14,7 @@ class someipTCP : public someipConnection {
 	
 	protected:
 	
-	boost::asio::io_service & tcp_io_service;  
+	boost::asio::io_context & tcp_io_service;  
 	boost::asio::ip::tcp::endpoint tcpEndPoint;
 	boost::asio::ip::tcp::socket tcpSocket;
 	uint16_t port;
@@ -22,11 +22,11 @@ class someipTCP : public someipConnection {
 	public:
 
 	/* CONSTRUCTOR */
-	someipTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
+	someipTCP(boost::asio::io_context& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
 
 	/* CONSTRUCTOR (+ SOMEIP ENDUSER CONSTRUCTOR)*/
 	someipTCP(
-		boost::asio::io_service& io_service, 
+		boost::asio::io_context& io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4 = LOOPBACK_IP);	
@@ -75,11 +75,11 @@ class ServerTCP : public someipTCP {
 	public:
 
 	/* CONSTRUCTOR PERFORMS SPECIFIC OPERATIONS (SERVER )*/
-	ServerTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
+	ServerTCP(boost::asio::io_context& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
 
 	/* CONSTRUCTOR (+ SOMEIP ENDUSER )*/
 	ServerTCP(
-		boost::asio::io_service& io_service, 
+		boost::asio::io_context& io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4 = LOOPBACK_IP);	
@@ -100,11 +100,11 @@ class ClientTCP : public someipTCP {
 	public:
 
 	/* CONSTRUCTOR PERFORMS SPECIFIC OPERATIONS (CLIENT )*/
-	ClientTCP(boost::asio::io_service& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
+	ClientTCP(boost::asio::io_context& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
 
 	/* CONSTRUCTOR (+ SOMEIP ENDUSER )*/
 	ClientTCP(
-		boost::asio::io_service& io_service, 
+		boost::asio::io_context& io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4 = LOOPBACK_IP);	
