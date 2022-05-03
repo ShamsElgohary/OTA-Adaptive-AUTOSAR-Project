@@ -12,11 +12,7 @@ namespace ara
 
             public:
               typedef struct{
-                    vector<string> dependency ;
-                    vector<string> arguments ;
-                    vector<string> environments ;
-                    string scheduling_policy ;
-                    string scheduling_priority ;
+                    map<string,string> dependency ;
                     map<string,vector<string>>function_group_states ;
                     vector<string> machine_states ; 
             }startUpConfiguration; 

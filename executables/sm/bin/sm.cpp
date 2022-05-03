@@ -32,9 +32,6 @@ int main ()
     FunctionGroupState fgs6(FunctionGroupState::Preconstruct("fn2", "end"));
     x.setState(fgs6);
     usleep(5*1000000);
-    FunctionGroupState fgs7(FunctionGroupState::Preconstruct("fn3", "idle"));
-    x.setState(fgs7);
-    usleep(5*1000000);
     FunctionGroupState fgs8(FunctionGroupState::Preconstruct("fn3", "run"));
     x.setState(fgs8);
     usleep(5*1000000);

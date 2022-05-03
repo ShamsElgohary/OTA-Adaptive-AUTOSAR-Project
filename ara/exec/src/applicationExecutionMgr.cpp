@@ -104,7 +104,7 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
                 transitionChanges_.toTerminate_.push_back(app);
         }
     }
-    function_groups_[fgs.fg_name]->currentState_  =   fgs.fg_newState ;
+    function_groups_[fgs.fg_name]->currentState_ = fgs.fg_newState;
     return true;
 }
 
@@ -114,10 +114,10 @@ void ApplicationExecutionMgr::initialize()
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
-    IAM_handle();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
     Execute();
+    IAM_handle();
     transitionChanges_.toStart_.clear();
     transitionChanges_.toTerminate_.clear();
 }
@@ -148,13 +148,36 @@ bool ApplicationExecutionMgr::Terminate()
 }
 bool ApplicationExecutionMgr::Execute()
 {
+    map<string, ara::exec::ExecutionState> apps_state;
+    queue<Application *> apps;
     for (auto app : transitionChanges_.toStart_)
     {
-        app->start();
-        app->Update_status();
-        if (app->current_state != ExecutionState::Krunning)
-            return false;
+        apps_state[app->name] = app->current_state;
+        apps.push(app);
     }
+    bool flag =true;
+    while (!apps.empty())
+    {
+        auto *app = apps.front();
+        apps.pop();
+        for (auto depend : app->configuration_.dependency)
+        {
+            if (apps_state[depend.first] != ExecutionState::Krunning )
+            {
+                apps.push(app);
+                flag = false;
+                break;
+            }
+        }
+        if (flag)
+        {
+            app->start();
+            app->Update_status();
+            apps_state[app->name] = ExecutionState::Krunning;
+        }
+        flag =true;
+    }
+    return true;
 }
 
 string ApplicationExecutionMgr::get_process_name(int test_id)
@@ -176,7 +199,7 @@ string ApplicationExecutionMgr::get_process_name(int test_id)
 void ApplicationExecutionMgr::IAM_handle()
 {
     iam_future = async(launch::async, [this]()
-        {
+                       {
         FindProcessServer srv;
         int id;
         string process_name;

@@ -4,7 +4,7 @@
 	{
 		"Config 1": 
 		{
-			"depends": {},
+			"depends": {"com_skeleton_test":"Krunning"},
 			"machine_states": [],
 			"function_group_states": {"fn3" : ["run"]},
 			"scheduling_policy": "Round Robin",
