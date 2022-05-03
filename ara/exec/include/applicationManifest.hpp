@@ -20,7 +20,6 @@ namespace ara
             string name;
             string executable_path;
             bool platform_application;
-            vector<string> applicationStates;
             vector<startUpConfiguration> startUpConfigurations;
             ApplicationManifest(string manifestPath);
             

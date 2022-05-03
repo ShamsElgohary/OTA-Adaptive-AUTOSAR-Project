@@ -28,7 +28,6 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
             }
             con.machine_states.push_back(machine_states.second.data());
             con.function_group_states["machineFG"].push_back(machine_states.second.data());
-            applicationStates.push_back(machine_states.second.data());
         }
         flag = true;
         for (auto &function_group_states : confg.second.get_child("function_group_states"))
@@ -42,7 +41,6 @@ ApplicationManifest::ApplicationManifest(string executionManifestPath)
                     flag = false;
                 }
                 con.function_group_states[function_group_states.first.data()].push_back(function_group.second.data());
-                applicationStates.push_back(function_group.second.data());
             }
         }
         for (auto &dependency : confg.second.get_child("depends"))

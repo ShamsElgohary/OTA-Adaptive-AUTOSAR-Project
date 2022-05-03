@@ -71,7 +71,7 @@ namespace ara
             bool Execute();
             string get_process_name(int test_id);
             void IAM_handle();
-
+            void reportConfig_simulation();
         };
     }
 }

@@ -114,6 +114,7 @@ void ApplicationExecutionMgr::initialize()
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
+    reportConfig_simulation();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
     Execute();
@@ -156,14 +157,14 @@ bool ApplicationExecutionMgr::Execute()
         apps_state[app->name] = app->current_state;
         apps.push(app);
     }
-    bool flag =true;
+    bool flag = true;
     while (!apps.empty())
     {
         auto *app = apps.front();
         apps.pop();
         for (auto depend : app->configuration_.dependency)
         {
-            if (apps_state[depend.first] != ExecutionState::Krunning )
+            if (apps_state[depend.first] != ExecutionState::Krunning)
             {
                 apps.push(app);
                 flag = false;
@@ -176,17 +177,17 @@ bool ApplicationExecutionMgr::Execute()
             app->Update_status();
             apps_state[app->name] = ExecutionState::Krunning;
         }
-        flag =true;
+        flag = true;
     }
     return true;
 }
 bool ApplicationExecutionMgr::updateProcessState()
 {
-    for(auto fng: function_groups_)
+    for (auto fng : function_groups_)
     {
-        for(auto app :function_groups_[fng.first]->startupConfigurations_[function_groups_[fng.first]->currentState_])
+        for (auto app : function_groups_[fng.first]->startupConfigurations_[function_groups_[fng.first]->currentState_])
         {
-            if(app->current_state ==ExecutionState::Krunning)
+            if (app->current_state == ExecutionState::Krunning)
             {
                 app->Update_status();
             }
@@ -223,4 +224,51 @@ void ApplicationExecutionMgr::IAM_handle()
             cout<< "[em] " << process_name << endl;
             srv.sendData(process_name);
         } });
+}
+
+void ApplicationExecutionMgr::reportConfig_simulation()
+{
+    Json::Value machine_manifest_json;
+    Json::Reader reader;
+    std::ifstream input_file("../../etc/system/machine_manifest.json");
+    reader.parse(input_file, machine_manifest_json);
+
+    Json::Value root;
+    Json::Value vec(Json::arrayValue);
+    Json::Value vec2(Json::arrayValue);
+    Json::Value obj(Json::objectValue);
+    Json::Value obj2(Json::objectValue);
+    Json::Value obj3(Json::objectValue);
+
+    Json::StyledStreamWriter writer;
+    std::ofstream output_file("../etc/executables_config.json");
+    root["function_groups"] = machine_manifest_json["function_groups"];
+    for (auto app : executables_)
+    {
+        for (auto confg : app.manifest_.startUpConfigurations)
+        {
+            for (auto fg : confg.function_group_states)
+            {
+                for (auto state : fg.second)
+                {
+                    vec2.append(Json::Value(state));
+                }
+                obj2[fg.first] = vec2;
+            }
+            for (auto depends : confg.dependency)
+            {
+                obj3[depends.first] = depends.second;
+            }
+        }
+        obj["function_group"] = obj2;
+        obj["name"] = app.manifest_.name;
+        obj["depends"] = obj3;
+        vec.append(obj);
+        obj.clear();
+        obj2.clear();
+        obj3.clear();
+        vec2.clear();
+    }
+    root["executables"] = vec;
+    writer.write(output_file, root);
 }

@@ -1,0 +1,21 @@
+{
+    "executables": [
+        {
+            "name": "ex1",
+            "current_state": "Krunning"
+        },
+        {
+            "name": "ex2",
+            "current_state": "ideal"
+        }
+    ],
+    "sm_reported_state": {
+        "function_group_name": "fn1",
+        "function_group_state": "run"
+    },
+    "iam_pid":
+    {
+        "pid":"10",
+        "process_name":"sm"
+    }
+}
