@@ -66,6 +66,7 @@ namespace ara
             bool loadMachineConfigrations();
             bool loadExecutablesConfigrations();
             bool ProcessStateClientRequest();
+            bool updateProcessState();
             bool Terminate();
             bool Execute();
             string get_process_name(int test_id);

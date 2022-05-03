@@ -132,6 +132,7 @@ bool ApplicationExecutionMgr::run()
     while (true)
     {
         ProcessStateClientRequest();
+        updateProcessState();
         Terminate();
         Execute();
         transitionChanges_.toStart_.clear();
@@ -178,6 +179,19 @@ bool ApplicationExecutionMgr::Execute()
         flag =true;
     }
     return true;
+}
+bool ApplicationExecutionMgr::updateProcessState()
+{
+    for(auto fng: function_groups_)
+    {
+        for(auto app :function_groups_[fng.first]->startupConfigurations_[function_groups_[fng.first]->currentState_])
+        {
+            if(app->current_state ==ExecutionState::Krunning)
+            {
+                app->Update_status();
+            }
+        }
+    }
 }
 
 string ApplicationExecutionMgr::get_process_name(int test_id)

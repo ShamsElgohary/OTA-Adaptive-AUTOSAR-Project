@@ -9,7 +9,7 @@
 #include <boost/asio.hpp>
 
 #define EM_IP_ADDRESS "127.0.0.1"
-#define EM_PORT_NUMBER 8084
+#define EM_PORT_NUMBER 8080
 
 using namespace boost::asio;
 using ip::tcp;

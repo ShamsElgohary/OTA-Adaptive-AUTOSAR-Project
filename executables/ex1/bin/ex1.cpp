@@ -1,20 +1,20 @@
 #include <iostream>
 #include "execution_client.hpp"
-#include<unistd.h>
+#include <unistd.h>
 using namespace std;
-using namespace ara::exec ;
+using namespace ara::exec;
 
-int main ()
+int main()
 {
-    
-    cout<<"[Ex1] hello from ex1 with pid = " <<getpid()<<"\n" ;
+
+    cout << "[Ex1] hello from ex1 with pid = " << getpid() << "\n";
     usleep(1000000);
-    
+
     ExecutionClient exec;
 
     exec.ReportExecutionStaste(ExecutionState::Krunning);
 
-    while(1);
-    return 0;
+    exec.ReportExecutionStaste(ExecutionState::Kterminate);
 
+    return 0;
 }
