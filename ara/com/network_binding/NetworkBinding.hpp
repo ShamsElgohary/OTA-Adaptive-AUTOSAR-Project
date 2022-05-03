@@ -41,7 +41,7 @@ namespace ara
             InstanceID InstanceId;
             uint16_t port;
             std::string ip;
-            boost::asio::io_service io_service;
+            boost::asio::io_contex io_service;
             someip::SomeIpConfiguration someipConfig;
             std::shared_ptr<someip::someipConnection> clientInstance = nullptr;
 

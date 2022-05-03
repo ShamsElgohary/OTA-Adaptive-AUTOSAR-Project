@@ -29,8 +29,8 @@ void servicediscovery::offer_service(uint16_t service_id, uint16_t instance_id, 
     std::unique_ptr<ipv4_endpoint_option> ptr4 = unique_ptr<ipv4_endpoint_option>(new ipv4_endpoint_option(option1));
     message1.AddOption(ptr4);
     // message1
-    SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::CLIENT};
-    boost::asio::io_service io_service;
+    SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::CLIENT, SecurityType::RAW};
+    boost::asio::io_contex io_service;
     shared_ptr<someipConnection> clientUser = someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
     clientUser->SendMessage(message1);
 }
@@ -46,8 +46,8 @@ std::vector<serviceinfo> servicediscovery::find_service(uint16_t service_id, uin
     service_entry s2 = *ptr;
     std::unique_ptr<service_entry> ptr3 = unique_ptr<service_entry>(new service_entry(s2));
     message1.AddEntry(ptr3);
-    SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::CLIENT};
-    boost::asio::io_service io_service;
+    SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::CLIENT, SecurityType::RAW};
+    boost::asio::io_contex io_service;
     shared_ptr<someipConnection> clientUser = someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
     clientUser->SendMessage(message1);
     ss << clientUser->ReceiveMessage().payload;
@@ -92,8 +92,8 @@ void servicediscovery::stop_offer_service(uint16_t service_id, uint16_t instance
     std::unique_ptr<service_entry> ptr3 = unique_ptr<service_entry>(new service_entry(s2));
     message1.AddEntry(ptr3);
     // message1
-    SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::CLIENT};
-    boost::asio::io_service io_service;
+    SomeIpConfiguration someipConfig{TransportProtocol::TCP, EndUserType::CLIENT, SecurityType::RAW};
+    boost::asio::io_contex io_service;
     shared_ptr<someipConnection> clientUser = someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
     clientUser->SendMessage(message1);
 }

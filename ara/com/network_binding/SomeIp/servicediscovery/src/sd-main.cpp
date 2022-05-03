@@ -22,9 +22,9 @@ int main()
         uint32_t ttl;
         someip::someipMessage msg1;
 
-        someip::SomeIpConfiguration someipConfig{someip::TransportProtocol::TCP, someip::EndUserType::SERVER};
+        someip::SomeIpConfiguration someipConfig{someip::TransportProtocol::TCP, someip::EndUserType::SERVER, someip::SecurityType::RAW};
 
-        boost::asio::io_service io_service;
+        boost::asio::io_contex io_service;
 
         std::shared_ptr<someip::someipConnection> serverUser = someip::someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
 
