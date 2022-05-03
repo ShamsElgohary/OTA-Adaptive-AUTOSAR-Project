@@ -12,10 +12,12 @@ namespace ara
         SomeIpNetworkBinding::SomeIpNetworkBinding(string ip, uint16_t port) : ip{ip}, port{port} {}
 
         SomeIpNetworkBinding::SomeIpNetworkBinding(serviceIdentifierType service_id, InstanceIdentifier instance_id,
-                                                   string ip, uint16_t port, someip::EndUserType type) : ip{ip}, port{port},
-                                                                                                         serviceId{service_id}, InstanceId{instance_id}, someipConfig{someip::TransportProtocol::TCP, type}
+                                                   string ip, uint16_t port, someip::EndUserType type)
+        : ip{ip}, port{port}, serviceId{service_id}, InstanceId{instance_id}, someipConfig{someip::TransportProtocol::TCP, type, someip::SecurityType::RAW}
         {
+
         }
+        
         void SomeIpNetworkBinding::SendRequest(uint32_t methodID, stringstream &s)
         {
             if (!clientInstance)
