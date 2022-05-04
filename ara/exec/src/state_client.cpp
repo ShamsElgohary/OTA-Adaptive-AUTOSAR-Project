@@ -18,10 +18,12 @@ bool StateClient::setState(const FunctionGroupState &state){
 
     write(fd, &size_newState, sizeof(int));
     write(fd, state.fg_newState.c_str(), size_newState+1);
+    close(this->fd);
 
-    read(fd,&result,sizeof(result));
-    close(this->fd); 
-
+    this->fd = open("smFifo", O_RDONLY);
+    read(fd,&result,sizeof(bool));
+    close(this->fd);
+    
     return result;
 }
 
