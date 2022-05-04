@@ -18,7 +18,7 @@ namespace ara
             class UpdateRequestSkeleton : public ara::com::skeleton::skeletonBase
             {
             public:
-               UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("../etc/service_manifest.json",1, I_id, mode)
+               UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("/home/youssef/Documents/OTA-Adaptive-AUTOSAR-Project/executables/sm/etc/service_manifest.json",2, I_id, mode)
                {
                }
                 /** StartUpdateSession **/
@@ -121,7 +121,7 @@ namespace ara
                     VerifyUpdateInput verifyUpdateInput;
                     std::future<VerifyUpdateOutput> verifyUpdateOutput;
                     std::future<StopUpdateSessionOutput> stopUpdateSessionOutput;
-
+                    cout << "[SM Skeleton] handle: " << methodID << endl;
                     switch (methodID)
                     {
                     case 1:
@@ -160,6 +160,7 @@ namespace ara
                         break;
                     }
                     }
+                    this->ptr2bindingProtocol -> CloseConnection();
                 }
             };
         }

@@ -11,14 +11,15 @@ int main()
     /********Report to EM*****/
     ExecutionClient client{};
     client.ReportExecutionStaste(ExecutionState::Krunning);
-    /********Test*************/
     UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
-    FunctionGroupList function_groups = {"fg1", "fg2"};
-    /*********Test*******************/
+    /********Test*************/
+    FunctionGroupList function_groups = {"fn1", "fn2"};
     std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> out=updaterequest.StartUpdateSession();
-    std::cout<<std::endl<<unsigned(out.get().AppError);
-    updaterequest.PrepareUpdate(function_groups);
-    updaterequest.VerifyUpdate(function_groups);
+    std::cout<<"return is "<<static_cast<unsigned>(out.get().AppError)<<std::endl;
+    std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> out1=updaterequest.PrepareUpdate(function_groups);
+    std::cout<<"return is "<<static_cast<unsigned>(out1.get().AppError)<<std::endl;
+    std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> out2=updaterequest.VerifyUpdate(function_groups);
+    std::cout<<"return is "<<static_cast<unsigned>(out2.get().AppError)<<std::endl;
     updaterequest.StopUpdateSession();
     /******Offer_Service*************/
     updaterequest.OfferService();

@@ -8,7 +8,6 @@
 #include <future>
 #include "UpdateRequestSkeleton.hpp"
 #include "types.hpp"
-
 namespace ara
 {
     namespace sm

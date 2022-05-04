@@ -1,5 +1,6 @@
 #include "SM.hpp"
 #include "../exec/include/state_client.hpp"
+#include "../../utility/simulation/include/sm_logger.hpp"
 using namespace ara::sm;
 using namespace ara::exec;
 using namespace std;
@@ -9,23 +10,34 @@ std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateReq
     StateClient client{};
     std::promise<UpdateRequestSkeleton::StartUpdateSessionOutput> promise;
     UpdateRequestSkeleton::StartUpdateSessionOutput out;
-    bool success = client.setState(FunctionGroupState({"MachineState", "Updating"}));
+    FunctionGroupState state=FunctionGroupState::Preconstruct("machineFG","Updating");
+    bool success = client.setState(state);
     if(success)
     {
-    this->FunctionGroupStates["MachineState"]="Updating";
+    this->FunctionGroupStates[state.fg_name]=state.fg_newState;
     out.AppError=success;
     }
     else
     out.AppError=uint8_t(SM_ApplicationError::kRejected);
 
     promise.set_value(out);
+    
+    sm_logger log(8088);
+    sm_functions functions={.sm_StartUpdateSession=(1),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(0)};
+    log.update_logger(functions,this->FunctionGroupStates);
+    
     return promise.get_future();
 }
 void UpdateRequestImpl::StopUpdateSession()
 {
     StateClient client{};
-    bool success = client.setState(FunctionGroupState({"MachineState", "Running"}));
-    this->FunctionGroupStates["MachineState"]="Running";
+    FunctionGroupState state=FunctionGroupState::Preconstruct("machineFG", "running");
+    bool success = client.setState(state);
+    if(success)
+    this->FunctionGroupStates[state.fg_name]=state.fg_newState;
+    sm_logger log(8088);
+    sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(1),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(0)};
+    log.update_logger(functions,this->FunctionGroupStates);
 }
 std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
 {
@@ -33,23 +45,36 @@ std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestI
     StateClient client{};
     std::promise<UpdateRequestSkeleton::PrepareUpdateOutput> promise;
     UpdateRequestSkeleton::PrepareUpdateOutput out;
-    if(this->FunctionGroupStates["MachineState"]=="Updating")
+    if(this->FunctionGroupStates["machineFG"]=="Updating")
     {
     for (auto fg : FunctionGroups)
     {
-        success = client.setState(FunctionGroupState({fg, "Preparing"}));
-        if (!success)
-            out.AppError=uint8_t(SM_ApplicationError::kPrepareFailed);
-        this->FunctionGroupStates[fg]="Preparing";
+        FunctionGroupState state=FunctionGroupState::Preconstruct(fg,"off");
+        success = client.setState(state);
+        if (success)
+        {
+        out.AppError=success;
+        this->FunctionGroupStates[state.fg_name]=state.fg_newState;
+        }
+        else
+        {
+        printf("%s not prepared correctly\n",fg.c_str());    
+        out.AppError=uint8_t(SM_ApplicationError::kPrepareFailed);
+        break;
+        }
     }
-    out.AppError=success;
     }
     else
     {
-        throw std::string("StartUpdateSession must be called before\n");
+        printf("StartUpdateSession must be called before\n");
         out.AppError=(uint8_t)SM_ApplicationError::kRejected;
     }
     promise.set_value(out);
+
+    sm_logger log(8088);
+    sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(1),.sm_VerifyUpdate=(0)};
+    log.update_logger(functions,this->FunctionGroupStates);
+
     return promise.get_future();
 }
 std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
@@ -58,27 +83,42 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
     StateClient client{};
     std::promise<UpdateRequestSkeleton::VerifyUpdateOutput> promise;
     UpdateRequestSkeleton::VerifyUpdateOutput out;
-    if(this->FunctionGroupStates["MachineState"]=="Updating")
+    if(this->FunctionGroupStates["machineFG"]=="Updating")
     {
     for (auto fg : FunctionGroups)
     {
-        if(this->FunctionGroupStates[fg]!="Preparing")
+        if(this->FunctionGroupStates[fg]!="off")
         {
-        throw std::string("PrepareUpdate must be called before");
+        printf("PrepareUpdate must be called before\n");
         out.AppError=uint8_t(SM_ApplicationError::kRejected);
+        break;
         }
-        success = client.setState(FunctionGroupState({fg, "Verifying"}));
-        if (!success)
+        FunctionGroupState state = FunctionGroupState::Preconstruct(fg,"verify");
+        success = client.setState(state);
+        if (success)
+        {
+            out.AppError=success;
+            this->FunctionGroupStates[state.fg_name]=state.fg_newState;
+        }
+        else
+        {
+        printf("%s in not verifiyed correctly\n",fg.c_str());
         out.AppError=uint8_t(SM_ApplicationError::kVerifyFailed);
-        this->FunctionGroupStates[fg]="Verifying";
+        break;
+        }
     }
-    out.AppError=success;
+    
     }
     else
     {
-        throw std::string("StartUpdateSession must be called before\n");
+        printf("StartUpdateSession must be called before\n");
         out.AppError=(uint8_t)SM_ApplicationError::kRejected;
     }
     promise.set_value(out);
+    
+    sm_logger log(8088);
+    sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(1)};
+    log.update_logger(functions,this->FunctionGroupStates);
+
     return promise.get_future();
 }
