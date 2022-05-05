@@ -4,13 +4,14 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include "sstream"
 using namespace CryptoPP;
 using namespace ara::crypto;
 using namespace std;
 
 int main()
 {
-    std::string path =  "/home/youssef/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/ara/crypto/cryp/src/test1.txt";
+    std::string path =  "/home/youssef/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/ara/crypto/cryp/src/ex1.txt";
     
     ifstream ifs(path, ios::binary | ios::ate);
     ifstream::pos_type pos = ifs.tellg();
@@ -35,8 +36,13 @@ int main()
 
     Digest=hash->Finish();
     
+    std::stringstream ss;
+    
     for (int i = 0; i < Digest.size(); i++)
     {
         std::cout << static_cast<unsigned>(Digest[i]) << "    ";
+        ss<< std::hex<<int(Digest[i]);
     }
+    std::string res(ss.str());
+    std::cout<<res<<endl;
 }
