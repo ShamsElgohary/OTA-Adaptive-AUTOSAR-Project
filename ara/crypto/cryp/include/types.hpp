@@ -9,6 +9,6 @@ namespace ara
     namespace crypto
     {
         typedef uint64_t AlgId;
-        typedef const byte* ReadOnlyMemRegion;
+        typedef const unsigned char* ReadOnlyMemRegion;
     }
 }
