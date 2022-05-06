@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QDialog>
+#include "simulation.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,8 +15,12 @@ class MainWindow : public QDialog
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+public slots:
+    void handle_sm();
 
 private:
     Ui::MainWindow *ui;
+    simulation* s=nullptr;
+    bool sim=1;
 };
 #endif // MAINWINDOW_H

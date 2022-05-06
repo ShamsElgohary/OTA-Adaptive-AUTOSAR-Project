@@ -1,0 +1,12 @@
+{
+	"sm_json" : 
+	{
+		"UpdateRequest" : 
+		{
+                        "PrepareUpdate" : false,
+                        "StartUpdateSession" : true,
+			"StopUpdateSession" : false,
+			"VerifyUpdate" : false
+		}
+	}
+}
