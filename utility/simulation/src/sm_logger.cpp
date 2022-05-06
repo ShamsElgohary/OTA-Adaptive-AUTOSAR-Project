@@ -2,6 +2,7 @@
 #include "../../jsoncpp/header/json.h"
 #include <fstream>
 #include <iostream>
+#include <unistd.h>
 
 sm_logger::sm_logger(int server_port)
 {
@@ -24,11 +25,17 @@ void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states
  json_file<<sm_json;
  json_file.close();
  reset();
+ sleep(2);
  
  /*connect to server*/
- this->sim->creat_socket();
  this->sim->connect_to_socket();
- this->sim->send_file("sm.json");
+ char current_dir[256];
+ getcwd(current_dir,256);
+ std::string path(current_dir);
+ path+="/sm.json";
+ std::cout<<path<<std::endl;
+ this->sim->send_file((char *)(path.c_str()));
+ sleep(5);
 }
 void sm_logger::reset()
 {

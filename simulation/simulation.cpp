@@ -1,4 +1,6 @@
 #include "simulation.hpp"
+#include "thread"
+#include "iostream"
 
 simulation::simulation(int port)
 {
@@ -52,18 +54,28 @@ void simulation::listen_l()
         exit(1);
     }
     addr_size = sizeof(new_addr);
+    while(1)
+    {
     new_sock = accept(sockfd_s, (struct sockaddr *)&new_addr, &addr_size);
+    std::thread t(&simulation::recive_file,this,new_sock);
+    t.detach();
+    }
 }
 
-void simulation::recive_file()
+void simulation::recive_file(int client_socket)
 {
+    //mtx.lock();
+   std::thread::id thread_id=std::this_thread::get_id();
+   std::cout<<"thread id is"<<thread_id<<std::endl; 
+
     ofstream f("file2.json");
+    f.clear();
     char buffer[SIZE];
 
     int n;
     while (1)
     {
-        n = recv(new_sock, buffer, SIZE, 0);
+        n = recv(client_socket, buffer, SIZE, 0);
         if (n <= 0)
         {
             break;
@@ -72,6 +84,13 @@ void simulation::recive_file()
         f << buffer;
         bzero(buffer, SIZE);
     }
+    std::cout<<"file recieved"<<std::endl;
+    f.flush();
+    f.close();
+    close(client_socket);
+    //mtx.unlock();
+    sleep(5);
+    
 }
 
 void simulation::connect_to_socket()
@@ -120,4 +139,5 @@ void simulation::send_file(char *file_path)
         }
         bzero(data, SIZE);
     }
+    close(sockfd_c);
 }

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "simulation.hpp"
+#include "QThread"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,6 +22,6 @@ public slots:
 private:
     Ui::MainWindow *ui;
     simulation* s=nullptr;
-    bool sim=1;
+    QThread* sm_thread;
 };
 #endif // MAINWINDOW_H

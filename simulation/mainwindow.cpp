@@ -3,6 +3,7 @@
 #include "iostream"
 #include "jsoncpp/header/json.h"
 #include "map"
+#include "QThread"
 
 void MainWindow::handle_sm()
 {
@@ -11,6 +12,9 @@ void MainWindow::handle_sm()
     s->listen_l();
     s->recive_file();*/
 
+    //sm_thread=QThread::create([this]{
+    //while(1)
+    //{
     //parse json
     std::ifstream file_input("sm.json"); //path to be updated
     Json::Reader reader;
@@ -39,6 +43,7 @@ void MainWindow::handle_sm()
     std::map<std::string,std::string>FG_states;
     Json::Value states=root["sm_json"]["function_group_states"];
     int size=states.size();
+    ui->tableWidget_4->clear();
     ui->tableWidget_4->setRowCount(size);
     ui->tableWidget_4->setColumnCount(2);
     int i=0;
@@ -48,7 +53,9 @@ void MainWindow::handle_sm()
         ui->tableWidget_4->setItem(i,1,new QTableWidgetItem(QString(states[fg].asCString())));
         i++;
     }
-
+    //}
+    //});
+    //sm_thread->start();
 
 }
 MainWindow::MainWindow(QWidget *parent)

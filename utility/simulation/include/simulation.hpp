@@ -6,6 +6,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <string>
+#include <mutex>
 using namespace std;
 #define SIZE 1024
 
@@ -18,13 +19,14 @@ private:
     int sockfd_s;
     int sockfd_c;
     int new_sock;
+    std::mutex mtx;
 
 public:
     simulation(int port);
     void creat_socket();
     void connect_to_socket();
     void send_file(char *file_path);
-    void recive_file();
+    void recive_file(int client_socket);
     void listen_l();
     ~simulation();
 };
