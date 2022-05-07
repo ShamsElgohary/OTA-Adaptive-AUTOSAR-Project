@@ -17,11 +17,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 public slots:
+    void sock_listen();
     void handle_sm();
 
 private:
     Ui::MainWindow *ui;
     simulation* s=nullptr;
-    QThread* sm_thread;
+    QThread* sm_thread=nullptr;
 };
 #endif // MAINWINDOW_H

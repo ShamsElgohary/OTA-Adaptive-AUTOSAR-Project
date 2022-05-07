@@ -4,19 +4,10 @@
 #include "jsoncpp/header/json.h"
 #include "map"
 #include "QThread"
-
+#include "functional"
 void MainWindow::handle_sm()
 {
-    // receive json file
-    /*s->creat_socket();
-    s->listen_l();
-    s->recive_file();*/
-
-    //sm_thread=QThread::create([this]{
-    //while(1)
-    //{
-    //parse json
-    std::ifstream file_input("sm.json"); //path to be updated
+    std::ifstream file_input("file2.json"); //path to be updated
     Json::Reader reader;
     Json::Value root;
     reader.parse(file_input, root);
@@ -42,8 +33,8 @@ void MainWindow::handle_sm()
     }
     std::map<std::string,std::string>FG_states;
     Json::Value states=root["sm_json"]["function_group_states"];
+    ui->tableWidget_4->setRowCount(0);
     int size=states.size();
-    ui->tableWidget_4->clear();
     ui->tableWidget_4->setRowCount(size);
     ui->tableWidget_4->setColumnCount(2);
     int i=0;
@@ -53,18 +44,24 @@ void MainWindow::handle_sm()
         ui->tableWidget_4->setItem(i,1,new QTableWidgetItem(QString(states[fg].asCString())));
         i++;
     }
-    //}
-    //});
-    //sm_thread->start();
-
+}
+void MainWindow::sock_listen()
+{
+    sm_thread=QThread::create([this]{
+    this->s->creat_socket();
+    std::function<void()>handler=[this](){this->handle_sm();};
+    this->s->listen_l(handler);
+    });
+    sm_thread->start();
 }
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    MainWindow::connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(handle_sm()));
+    MainWindow::connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(sock_listen()));
     s=new simulation(8088);
+    //sm_thread=QThread::create([this]{handle_sm();});
 }
 MainWindow::~MainWindow()
 {

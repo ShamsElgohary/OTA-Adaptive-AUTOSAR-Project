@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <string>
 #include <mutex>
+#include "functional"
 using namespace std;
 #define SIZE 1024
 
@@ -26,7 +27,7 @@ public:
     void creat_socket();
     void connect_to_socket();
     void send_file(char *file_path);
-    void recive_file(int client_socket);
-    void listen_l();
+    void recive_file(int client_socket,std::function<void()>handler);
+    void listen_l(std::function<void()>handler);
     ~simulation();
 };
