@@ -16,9 +16,11 @@ class MainWindow : public QDialog
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void handle_sm();
+    void choose_handler();
 public slots:
     void sock_listen();
-    void handle_sm();
+
 
 private:
     Ui::MainWindow *ui;

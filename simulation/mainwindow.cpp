@@ -11,6 +11,7 @@ void MainWindow::handle_sm()
     Json::Reader reader;
     Json::Value root;
     reader.parse(file_input, root);
+    ui->progressBar->setValue(0);
     if(root["sm_json"]["UpdateRequest"]["StartUpdateSession"]==true)
     {
     ui->label_17->setText("StartUpdateSession");
@@ -45,11 +46,21 @@ void MainWindow::handle_sm()
         i++;
     }
 }
+void MainWindow::choose_handler()
+{
+    std::ifstream file_input("file2.json"); //path to be updated
+    Json::Reader reader;
+    Json::Value root;
+    reader.parse(file_input, root);
+    string x=root["Cluster_name"].asString();
+    if(x=="sm_json")
+        this->handle_sm();
+}
 void MainWindow::sock_listen()
 {
     sm_thread=QThread::create([this]{
     this->s->creat_socket();
-    std::function<void()>handler=[this](){this->handle_sm();};
+    std::function<void()>handler = [this](){this->choose_handler();};
     this->s->listen_l(handler);
     });
     sm_thread->start();

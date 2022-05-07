@@ -1,8 +1,8 @@
-
 #include "simulation.hpp"
 #include "thread"
 #include "iostream"
 #include <QApplication>
+#include "mainwindow.h"
 
 simulation::simulation(int port)
 {
@@ -87,11 +87,14 @@ void simulation::recive_file(int client_socket,std::function<void()>handler)
         bzero(buffer, SIZE);
     }
     std::cout<<"file recieved"<<std::endl;
+
     f.flush();
     f.close();
     close(client_socket);
     //mtx.unlock();
     handler();
+    //MainWindow m;
+    //m.handle_sm();
     sleep(5);
     
 }
