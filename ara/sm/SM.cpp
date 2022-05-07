@@ -1,5 +1,6 @@
 #include "SM.hpp"
 #include "../exec/include/state_client.hpp"
+#include "../../utility/simulation/include/sm_logger.hpp"
 using namespace ara::sm;
 using namespace ara::exec;
 using namespace std;
@@ -9,17 +10,22 @@ std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateReq
     StateClient client{};
     std::promise<UpdateRequestSkeleton::StartUpdateSessionOutput> promise;
     UpdateRequestSkeleton::StartUpdateSessionOutput out;
-    FunctionGroupState state=FunctionGroupState::Preconstruct("machineFG","Updating");
+    FunctionGroupState state=FunctionGroupState::Preconstruct("machineFG","running");
     bool success = client.setState(state);
     if(success)
     {
-    this->FunctionGroupStates[state.fg_name]=state.fg_newState;
+    this->FunctionGroupStates[state.fg_name]="Updating";
     out.AppError=success;
     }
     else
     out.AppError=uint8_t(SM_ApplicationError::kRejected);
 
     promise.set_value(out);
+    
+    sm_logger log(8088);
+    sm_functions functions={.sm_StartUpdateSession=(1),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(0)};
+    log.update_logger(functions,this->FunctionGroupStates);
+    
     return promise.get_future();
 }
 void UpdateRequestImpl::StopUpdateSession()
@@ -29,6 +35,9 @@ void UpdateRequestImpl::StopUpdateSession()
     bool success = client.setState(state);
     if(success)
     this->FunctionGroupStates[state.fg_name]=state.fg_newState;
+    sm_logger log(8088);
+    sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(1),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(0)};
+    log.update_logger(functions,this->FunctionGroupStates);
 }
 std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
 {
@@ -61,6 +70,11 @@ std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestI
         out.AppError=(uint8_t)SM_ApplicationError::kRejected;
     }
     promise.set_value(out);
+
+    sm_logger log(8088);
+    sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(1),.sm_VerifyUpdate=(0)};
+    log.update_logger(functions,this->FunctionGroupStates);
+
     return promise.get_future();
 }
 std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
@@ -101,5 +115,10 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
         out.AppError=(uint8_t)SM_ApplicationError::kRejected;
     }
     promise.set_value(out);
+    
+    sm_logger log(8088);
+    sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(1)};
+    log.update_logger(functions,this->FunctionGroupStates);
+
     return promise.get_future();
 }

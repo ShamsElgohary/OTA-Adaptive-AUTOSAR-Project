@@ -13,13 +13,13 @@ int main()
     client.ReportExecutionStaste(ExecutionState::Krunning);
     UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
     /********Test*************/
-    FunctionGroupList function_groups = {"fg1", "fg2"};
+    FunctionGroupList function_groups = {"fn1", "fn2"};
     std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> out=updaterequest.StartUpdateSession();
-    std::cout<<"return is"<<static_cast<unsigned>(out.get().AppError)<<std::endl;
+    std::cout<<"return is "<<static_cast<unsigned>(out.get().AppError)<<std::endl;
     std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> out1=updaterequest.PrepareUpdate(function_groups);
-    std::cout<<"return is"<<static_cast<unsigned>(out1.get().AppError)<<std::endl;
+    std::cout<<"return is "<<static_cast<unsigned>(out1.get().AppError)<<std::endl;
     std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> out2=updaterequest.VerifyUpdate(function_groups);
-    std::cout<<"return is"<<static_cast<unsigned>(out2.get().AppError)<<std::endl;
+    std::cout<<"return is "<<static_cast<unsigned>(out2.get().AppError)<<std::endl;
     updaterequest.StopUpdateSession();
     /******Offer_Service*************/
     updaterequest.OfferService();

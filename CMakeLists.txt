@@ -108,8 +108,9 @@ install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
 
 set(source_excutables_sm_dir "${CMAKE_SOURCE_DIR}/executables/sm/bin")
 set(source_excutables_sm_dir_1 "${CMAKE_SOURCE_DIR}/ara/sm")
-add_executable(sm ${source_excutables_sm_dir_1}/SM.cpp ${source_excutables_sm_dir_1}/main.cpp) 
-target_link_libraries(sm execution_lib Boost::filesystem Boost::program_options Boost::serialization com_lib iam_lib)
+set(source_simulation_dir "${CMAKE_SOURCE_DIR}/utility/simulation/src")
+add_executable(sm ${source_excutables_sm_dir_1}/main.cpp ${source_excutables_sm_dir_1}/SM.cpp ${source_excutables_sm_dir_1}/sm_logger.cpp ${source_simulation_dir}/simulation.cpp) 
+target_link_libraries( sm execution_lib jsoncpp_lib com_lib iam_lib)
 install(TARGETS sm RUNTIME DESTINATION ${source_excutables_sm_dir})
 
 ################################COM_test##########################

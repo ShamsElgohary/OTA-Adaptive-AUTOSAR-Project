@@ -1,6 +1,8 @@
 #include "simulation.hpp"
 #include "thread"
 #include "iostream"
+#include <QApplication>
+#include "mainwindow.h"
 
 simulation::simulation(int port)
 {
@@ -38,7 +40,7 @@ void simulation::creat_socket()
     printf("[+]Binding Successfull.\n");
 }
 
-void simulation::listen_l()
+void simulation::listen_l(std::function<void()>handler)
 {
     struct sockaddr_in new_addr;
     socklen_t addr_size;
@@ -57,12 +59,12 @@ void simulation::listen_l()
     while(1)
     {
     new_sock = accept(sockfd_s, (struct sockaddr *)&new_addr, &addr_size);
-    std::thread t(&simulation::recive_file,this,new_sock);
+    std::thread t(&simulation::recive_file,this,new_sock,handler);
     t.detach();
     }
 }
 
-void simulation::recive_file(int client_socket)
+void simulation::recive_file(int client_socket,std::function<void()>handler)
 {
     //mtx.lock();
    std::thread::id thread_id=std::this_thread::get_id();
@@ -85,10 +87,14 @@ void simulation::recive_file(int client_socket)
         bzero(buffer, SIZE);
     }
     std::cout<<"file recieved"<<std::endl;
+
     f.flush();
     f.close();
     close(client_socket);
     //mtx.unlock();
+    handler();
+    //MainWindow m;
+    //m.handle_sm();
     sleep(5);
     
 }

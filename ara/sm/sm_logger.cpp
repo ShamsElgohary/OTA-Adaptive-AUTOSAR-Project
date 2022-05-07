@@ -1,4 +1,4 @@
-#include "../include/sm_logger.hpp"
+#include "sm_logger.hpp"
 #include "../../jsoncpp/header/json.h"
 #include <fstream>
 #include <iostream>
@@ -12,7 +12,10 @@ this->functions_state={};
 void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states)
 {
  /*create updated json file*/
+
  Json::Value sm_json;
+ sm_json["Cluster_name"]="sm_json";
+ 
  sm_json["sm_json"]["UpdateRequest"]["StartUpdateSession"]=Json::Value(functions.sm_StartUpdateSession);
  sm_json["sm_json"]["UpdateRequest"]["PrepareUpdate"]=Json::Value(functions.sm_PrepareUpdate);
  sm_json["sm_json"]["UpdateRequest"]["VerifyUpdate"]=Json::Value(functions.sm_VerifyUpdate);
@@ -25,7 +28,6 @@ void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states
  json_file<<sm_json;
  json_file.close();
  reset();
- sleep(2);
  
  /*connect to server*/
  this->sim->connect_to_socket();
@@ -35,7 +37,7 @@ void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states
  path+="/sm.json";
  std::cout<<path<<std::endl;
  this->sim->send_file((char *)(path.c_str()));
- sleep(5);
+ sleep(3);
 }
 void sm_logger::reset()
 {
