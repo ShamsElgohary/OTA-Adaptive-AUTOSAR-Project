@@ -18,7 +18,7 @@ namespace ara
             {
             public:
                 PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : 
-                skeletonBase("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",1, I_id, mode)
+                skeletonBase("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",1, I_id, mode)
                 {}
                 /** TransferStart **/
                 struct TransferStartInput
@@ -272,6 +272,7 @@ namespace ara
                 void handleMethod() override
                 {
                     int methodID;
+                    string methodName;
                     this->ptr2bindingProtocol->ServerListen();
                     stringstream payload = this->ptr2bindingProtocol->ReceiveMessage(methodID);
                     cout << "[UCM Skeleton] handle: " << methodID << endl;
@@ -279,6 +280,7 @@ namespace ara
                     {
                     case 1:
                     {
+                        methodName = "TransferStart";
                         TransferStartInput ip;
                         Deserializer2 D;
                         D.deserialize(payload, ip);
@@ -294,6 +296,7 @@ namespace ara
                     }
                     case 2:
                     {
+                        methodName = "TransferData";
                         TransferDataInput ip;
                         Deserializer2 D;
                         D.deserialize(payload, ip);
@@ -309,6 +312,7 @@ namespace ara
                     }
                     case 3:
                     {
+                        methodName = "TransferExit";
                         TransferExitInput ip;
                         Deserializer2 D;
                         D.deserialize(payload, ip);
@@ -324,6 +328,7 @@ namespace ara
                     }
                     case 4:
                     {
+                        methodName = "TransferDelete";
                         TransferDeleteInput ip;
                         Deserializer2 D;
                         D.deserialize(payload, ip);
@@ -339,6 +344,7 @@ namespace ara
                     }
                     case 5:
                     {
+                        methodName = "ProcessSwPackage";
                         ProcessSwPackageInput ip;
                         Deserializer2 D;
                         D.deserialize(payload, ip);
@@ -354,6 +360,7 @@ namespace ara
                     }
                     case 6:
                     {
+                        methodName = "Activate";
                         std::future<ActivateOutput> F_op = Activate();
 
                         Serializer2 S;
@@ -366,6 +373,7 @@ namespace ara
                     }
                     case 7:
                     {
+                        methodName = "GetSwClusterInfo";
                         std::future<GetSwClusterInfoOutput> F_op = GetSwClusterInfo();
 
                         Serializer2 S;
@@ -378,6 +386,7 @@ namespace ara
                     }
                     case 8:
                     {
+                        methodName = "Rollback";
                         std::future<RollbackOutput> F_op = Rollback();
 
                         Serializer2 S;
@@ -390,6 +399,7 @@ namespace ara
                     }
                     case 9:
                     {
+                        methodName = "RevertProcessedSwPackages";
                         std::future<RevertProcessedSwPackagesOutput> F_op = RevertProcessedSwPackages();
 
                         Serializer2 S;
@@ -402,7 +412,7 @@ namespace ara
                     }
                     case 10:
                     {
-
+                        methodName = "Finish";
                         std::future<FinishOutput> F_op = Finish();
 
                         Serializer2 S;
@@ -415,7 +425,7 @@ namespace ara
                     }
                     case 11:
                     {
-
+                        methodName = "GetCurrentStatus";
                         std::future<GetCurrentStatusField> F_op = GetCurrentStatus();
 
                         Serializer2 S;
@@ -428,6 +438,7 @@ namespace ara
                     }
                     }
                     this->ptr2bindingProtocol -> CloseConnection();
+                    ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method);
                 }
             };
         }

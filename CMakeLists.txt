@@ -63,11 +63,12 @@ target_include_directories(iam_lib PUBLIC  ${iam_source_dir}/lib/include )
 set(com_source_dir "${CMAKE_SOURCE_DIR}/ara/com")
 file(GLOB_RECURSE COM_Proxy_SRC_FILES ${com_source_dir}/language_binding/proxy/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE COM_Skeleton_SRC_FILES ${com_source_dir}/language_binding/skeleton/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
+file(GLOB_RECURSE COM_GUI_Report_SRC_FILES ${com_source_dir}/language_binding/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE COM_NetworkBinding_SRC_FILES ${com_source_dir}/network_binding/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE COM_SomeIp_SRC_FILES ${com_source_dir}/network_binding/SomeIp/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE COM_serviceDiscovery_SRC_FILES ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 
-add_library(com_lib STATIC ${COM_Proxy_SRC_FILES} ${COM_Skeleton_SRC_FILES} ${COM_NetworkBinding_SRC_FILES} ${COM_SomeIp_SRC_FILES} ${COM_serviceDiscovery_SRC_FILES} )
+add_library(com_lib STATIC ${COM_Proxy_SRC_FILES} ${COM_Skeleton_SRC_FILES} ${COM_NetworkBinding_SRC_FILES} ${COM_SomeIp_SRC_FILES} ${COM_serviceDiscovery_SRC_FILES} ${COM_GUI_Report_SRC_FILES})
 target_link_libraries(com_lib Boost::filesystem Boost::program_options Boost::serialization jsoncpp_lib)
 
 target_include_directories(

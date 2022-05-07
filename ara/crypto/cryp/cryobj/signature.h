@@ -1,4 +1,5 @@
 #pragma once 
+#include "crypto_object.h"
 
 namespace ara
 {

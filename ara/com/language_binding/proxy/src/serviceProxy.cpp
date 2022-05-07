@@ -25,6 +25,7 @@ namespace ara
                         if (!grant_result)
                         {
                             cout << "[com::proxy::FindService] ACCESS FORBIDDEN !!!!!" << endl;
+                            ara::com::AddServiceDiscoveryRequest(serviceID, opVsomeip[i].Instance_ID, ServiceDiscoveryMethodType::Find_Method, false);
                             continue;
                         }
                     }
@@ -34,6 +35,7 @@ namespace ara
                     h.InstanceID = opVsomeip[i].Instance_ID;
                     h.ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(1, 1, opVsomeip[i].ipv4_address, opVsomeip[i].port_num, someip::EndUserType::CLIENT);
                     vectorOfHandles.push_back(h);
+                    ara::com::AddServiceDiscoveryRequest(serviceID, opVsomeip[i].Instance_ID, ServiceDiscoveryMethodType::Find_Method, true);
                 }
 
                 return vectorOfHandles;
@@ -56,6 +58,7 @@ namespace ara
                             if (!grant_result)
                             {
                                 cout << "[com::proxy::FindService] ACCESS FORBIDDEN !!!!!" << endl;
+                                ara::com::AddServiceDiscoveryRequest(serviceID, opVsomeip[i].Instance_ID, ServiceDiscoveryMethodType::Find_Method, false);
                                 continue;
                             }
                         }
@@ -64,6 +67,7 @@ namespace ara
                         h.InstanceID = opVsomeip[i].Instance_ID;
                         h.ptr2bindingProtocol = std::make_shared<SomeIpNetworkBinding>(1, 1, opVsomeip[i].ipv4_address, opVsomeip[i].port_num, someip::EndUserType::CLIENT);
                         vectorOfHandles.push_back(h);
+                        ara::com::AddServiceDiscoveryRequest(serviceID, opVsomeip[i].Instance_ID, ServiceDiscoveryMethodType::Find_Method, true);
                     }
                 }
 

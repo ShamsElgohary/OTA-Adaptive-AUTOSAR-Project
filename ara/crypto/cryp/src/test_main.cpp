@@ -8,7 +8,6 @@
 using namespace CryptoPP;
 using namespace ara::crypto;
 using namespace std;
-
 int main()
 {
     std::string path =  "/home/youssef/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/ara/crypto/cryp/src/ex1.txt";

@@ -71,11 +71,13 @@ namespace ara
                 if (grant_result || IAM_ACTIVATED)
                 {
                     this->ptr2bindingProtocol->OfferService();
+                    ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Offer_Method, true);
                     serve();
                 }
                 else
                 {
                     cout << "[com::skeleton::OfferService] ACCESS FORBIDDEN !!!!!" << endl;
+                    ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Offer_Method, false);
                 }
             }
             void skeletonBase::serve()
@@ -92,6 +94,7 @@ namespace ara
             void skeletonBase::StopOfferService()
             {
                 this->ptr2bindingProtocol->StopOfferService();
+                ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Stop_Method, true);
             }
         }
     }
