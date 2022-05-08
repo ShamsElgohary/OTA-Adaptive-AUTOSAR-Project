@@ -78,7 +78,7 @@ class someipConnection{
 		// io_service TO USE
 		
 		static std::shared_ptr<someipConnection> SetSomeIpConfiguration(
-			boost::asio::io_context& io_service, 
+			boost::asio::io_context & io_service, 
 			uint16_t port, 	 
 			SomeIpConfiguration someipConfig,					// DEFAULT VALUES INSIDE
 			std::string IPv4 = LOOPBACK_IP	 					// DEFAULT

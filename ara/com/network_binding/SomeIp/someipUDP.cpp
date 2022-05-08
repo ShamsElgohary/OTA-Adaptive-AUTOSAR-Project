@@ -24,7 +24,7 @@ namespace someip{
 
 	/* CONSTRUCTOR (+ SOMEIP ENDUSER CONSTRUCTOR)*/
 	someipUDP::someipUDP(
-		boost::asio::io_context& io_service, 
+		boost::asio::io_context & io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4)

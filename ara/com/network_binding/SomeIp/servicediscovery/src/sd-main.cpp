@@ -24,7 +24,7 @@ int main()
 
         someip::SomeIpConfiguration someipConfig{someip::TransportProtocol::TCP, someip::EndUserType::SERVER, someip::SecurityType::RAW};
 
-        boost::asio::io_context io_service;
+        boost::asio::io_context  io_service;
 
         std::shared_ptr<someip::someipConnection> serverUser = someip::someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
 

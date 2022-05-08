@@ -21,7 +21,7 @@ namespace someip {
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/* CONSTRUCTOR */
-	someipTCP::someipTCP(boost::asio::io_context& io_service, uint16_t port, std::string IPv4)			
+	someipTCP::someipTCP(boost::asio::io_context & io_service, uint16_t port, std::string IPv4)			
 		: tcpSocket(io_service), tcp_io_service(io_service)
 	{
 		auto ip = address::from_string(IPv4);
@@ -31,7 +31,7 @@ namespace someip {
 
 	/* USED TO CONSTRUCT AN INSTANCE IN THE SOMEIP ENDUSER CLASS */
 	someipTCP::someipTCP(
-		boost::asio::io_context& io_service, 
+		boost::asio::io_context & io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4)		
@@ -207,7 +207,7 @@ namespace someip {
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	ServerTCP::ServerTCP(boost::asio::io_context& io_service, uint16_t port, std::string IPv4)			
+	ServerTCP::ServerTCP(boost::asio::io_context & io_service, uint16_t port, std::string IPv4)			
 		: 
 		acceptor(io_service, boost::asio::ip::tcp::endpoint(address::from_string(IPv4), port)), 			
 		someipTCP(io_service, port, IPv4)
@@ -218,7 +218,7 @@ namespace someip {
 
 	/* USED TO CONSTRUCT AN INSTANCE IN THE SOMEIP ENDUSER CLASS */
 	ServerTCP::ServerTCP(
-		boost::asio::io_context& io_service, 
+		boost::asio::io_context & io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4)		
@@ -250,7 +250,7 @@ namespace someip {
     /////////////////////////////////// SOMEIP TCP CLIENT   /////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-	ClientTCP::ClientTCP(boost::asio::io_context& io_service, uint16_t port, std::string IPv4)			
+	ClientTCP::ClientTCP(boost::asio::io_context & io_service, uint16_t port, std::string IPv4)			
 		: someipTCP(io_service, port, IPv4)
 	{
 		try{
@@ -267,7 +267,7 @@ namespace someip {
 
 	/* USED TO CONSTRUCT AN INSTANCE IN THE SOMEIP ENDUSER CLASS */
 	ClientTCP::ClientTCP(
-		boost::asio::io_context& io_service, 
+		boost::asio::io_context & io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4)		

@@ -33,7 +33,7 @@ namespace someip {
             public:
             SessionTLS(tcp::socket socket, boost::asio::ssl::context& context);
 
-            SessionTLS(boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context);
+            SessionTLS(boost::asio::ssl::context& ssl_context, boost::asio::io_context & io_context);
 
             void handshake(stream_base::handshake_type baseType , syncType_t handshakeType); 
 
@@ -77,7 +77,7 @@ namespace someip {
         {
         public:
         
-            ServerTLS(boost::asio::io_context& io_context, uint16_t port, std::string CertificateDir , std::string IPv4 = LOOPBACK_IP);
+            ServerTLS(boost::asio::io_context & io_context, uint16_t port, std::string CertificateDir , std::string IPv4 = LOOPBACK_IP);
                 
             /* SERVER LISTENING */
             void ServerListen();  
@@ -127,7 +127,7 @@ namespace someip {
         class ClientTLS:public std::enable_shared_from_this<ClientTLS>, public SessionTLS
         {
             public:
-            ClientTLS(boost::asio::io_context& io_context,
+            ClientTLS(boost::asio::io_context & io_context,
                         boost::asio::ssl::context& context,
                         uint16_t port,
                         std::string clientCertificate, 

@@ -14,7 +14,7 @@ namespace someip
 ///////////////////////////////////////////////// SESSION //////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            SessionTLS::SessionTLS(boost::asio::ssl::context& ssl_context, boost::asio::io_context& io_context)
+            SessionTLS::SessionTLS(boost::asio::ssl::context& ssl_context, boost::asio::io_context & io_context)
             : ssl_socket(io_context, ssl_context)
             { 
 
@@ -203,7 +203,7 @@ namespace someip
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        ServerTLS::ServerTLS(boost::asio::io_context& io_context, uint16_t port,  std::string CertificateDir, std::string IPv4)
+        ServerTLS::ServerTLS(boost::asio::io_context & io_context, uint16_t port,  std::string CertificateDir, std::string IPv4)
             : acceptor_(io_context, tcp::endpoint(tcp::v4(), port)),
               ssl_context(boost::asio::ssl::context::tls)
          {
@@ -290,7 +290,7 @@ namespace someip
 ///////////////////////////////////////////////// CLIENT ///////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        ClientTLS::ClientTLS(boost::asio::io_context& io_context,
+        ClientTLS::ClientTLS(boost::asio::io_context & io_context,
                         boost::asio::ssl::context& context,
                         uint16_t port,
                         std::string clientCertificate,

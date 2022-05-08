@@ -55,7 +55,7 @@ namespace someip
 	}
 
 	std::shared_ptr<someipConnection> someipConnection::SetSomeIpConfiguration(
-		boost::asio::io_context& io_service, 
+		boost::asio::io_context & io_service, 
 		uint16_t port, 	 
 		SomeIpConfiguration someipConfig, 
 		std::string IPv4 )

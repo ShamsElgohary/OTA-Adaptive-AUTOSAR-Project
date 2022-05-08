@@ -16,18 +16,18 @@ class someipUDP  : public someipConnection  {
 
 	boost::asio::ip::udp::endpoint udpEndPoint;
 	boost::asio::ip::udp::socket udpSocket;
-	boost::asio::io_context & udp_io_service;  
+	boost::asio::io_context  & udp_io_service;  
 	//boost::asio::deadline_timer timer;
 	uint16_t port;
 
 	public:
 
 	/* CONSTRUCTOR */
-	someipUDP(boost::asio::io_context& io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
+	someipUDP(boost::asio::io_context & io_service, uint16_t port, std::string IPv4 = LOOPBACK_IP);	
 
 	/* CONSTRUCTOR (+ SOMEIP ENDUSER CONSTRUCTOR)*/
 	someipUDP(
-		boost::asio::io_context& io_service, 
+		boost::asio::io_context & io_service, 
 		uint16_t port, 
 		SomeIpConfiguration someipConfig,
 		std::string IPv4 = LOOPBACK_IP);	
