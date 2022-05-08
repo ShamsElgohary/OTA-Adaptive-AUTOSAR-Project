@@ -1,6 +1,6 @@
 #pragma once
 
-#include "crypto_context.h"
+#include "crypto_context.hpp"
 
 namespace ara
 {

@@ -18,7 +18,7 @@ namespace ara
             class UpdateRequestSkeleton : public ara::com::skeleton::skeletonBase
             {
             public:
-               UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/sm/etc/service_manifest.json",2, I_id, mode)
+               UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/sm/etc/service_manifest.json",1 , I_id, mode)
                {
                }
                 /** StartUpdateSession **/

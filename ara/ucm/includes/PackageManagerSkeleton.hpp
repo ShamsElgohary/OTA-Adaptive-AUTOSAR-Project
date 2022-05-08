@@ -18,7 +18,7 @@ namespace ara
             {
             public:
                 PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : 
-                skeletonBase("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",1, I_id, mode)
+                skeletonBase("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",2, I_id, mode)
                 {}
                 /** TransferStart **/
                 struct TransferStartInput
@@ -438,7 +438,7 @@ namespace ara
                     }
                     }
                     this->ptr2bindingProtocol -> CloseConnection();
-                    ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method);
+                    ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method, "UCM", 2);
                 }
             };
         }
