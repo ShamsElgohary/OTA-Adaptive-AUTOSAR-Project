@@ -113,7 +113,7 @@ namespace ara
                         {
                             StartUpdateSessionOutput out;
                             process_method_call<StartUpdateSessionOutput>(out);
-                            ara::com::AddMethodCall(1, "StartUpdateSession", ara::com::MethodType::Proxy_Method);
+                            ara::com::AddMethodCall(1, "StartUpdateSession", ara::com::MethodType::Proxy_Method, 1);
                             return out;
                         }
                     };
@@ -128,7 +128,7 @@ namespace ara
                             in.FunctionGroups = fg;
                             PrepareUpdateOutput out;
                             process_method_call<PrepareUpdateOutput, PrepareUpdateInput>(in, out);
-                            ara::com::AddMethodCall(2, "PrepareUpdate", ara::com::MethodType::Proxy_Method);
+                            ara::com::AddMethodCall(2, "PrepareUpdate", ara::com::MethodType::Proxy_Method, 1);
                             return out;
                         }
                     };
@@ -143,7 +143,7 @@ namespace ara
                             in.FunctionGroups = fg;
                             VerifyUpdateOutput out;
                             process_method_call<VerifyUpdateOutput, VerifyUpdateInput>(in, out);
-                            ara::com::AddMethodCall(3, "VerifyUpdate", ara::com::MethodType::Proxy_Method);
+                            ara::com::AddMethodCall(3, "VerifyUpdate", ara::com::MethodType::Proxy_Method, 1);
                             return out;
                         }
                     };
@@ -154,7 +154,7 @@ namespace ara
                         void operator()()
                         {
                             // fire and forget
-                            ara::com::AddMethodCall(4, "StopUpdateSession", ara::com::MethodType::Proxy_Method);
+                            ara::com::AddMethodCall(4, "StopUpdateSession", ara::com::MethodType::Proxy_Method, 1);
                         }
                     };
                 }

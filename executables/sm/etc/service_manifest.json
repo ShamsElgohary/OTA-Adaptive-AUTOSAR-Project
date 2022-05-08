@@ -3,11 +3,11 @@
 		"required_ap_service_instances": [],
 		"provided_ap_service_instances": [
 			{
-				"service_id": 2,
+				"service_id": 1,
 				"type": "SOME/IP",
 				"instance_id": 1,
 				"ipv4": "127.0.0.1",
-				"port": 2223
+				"port": 2222
 			}
 		]
 	}

@@ -75,7 +75,7 @@ namespace someip
                 someipMessage someipMsg;
 
                 try {
-                    char buff[512];
+                    char buff[SOMEIP_BUFFER_SIZE];
                     size_t read = ssl_socket.read_some(boost::asio::buffer(buff));
                     std::string mssgBuf = buff;
                     std::stringstream ss;
@@ -121,7 +121,7 @@ namespace someip
 
                 try {
 
-                    char buff[512];
+                    char buff[SOMEIP_BUFFER_SIZE];
                     ssl_socket.async_read_some(boost::asio::buffer(buff), &OnReceiveCompleted);
                     
                     // IMPORTANT FOR ASYNCHRONOUS OPERATIONS 

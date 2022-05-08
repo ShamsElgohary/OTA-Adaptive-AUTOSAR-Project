@@ -7,6 +7,7 @@
 #include <functional>
 #include "someipMessage.hpp"
 
+const uint32_t SOMEIP_BUFFER_SIZE = 4096;
 
 namespace someip {
 					

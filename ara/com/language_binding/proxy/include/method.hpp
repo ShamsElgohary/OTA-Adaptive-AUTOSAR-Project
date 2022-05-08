@@ -28,6 +28,7 @@ namespace ara
                         stringstream payload;
                         Serializer2 S;
                         S.serialize(payload, in);
+                        usleep(5000);
                         this->Delegate->SendRequest(this->ID, payload);
                         stringstream out_ss = this->Delegate->ReceiveMessage();
                         Deserializer2 D;
@@ -38,6 +39,7 @@ namespace ara
                     void process_method_call(output &out)
                     {
                         stringstream payload;
+                        usleep(5000);
                         this->Delegate->SendRequest(this->ID, payload);
                         stringstream out_ss = this->Delegate->ReceiveMessage();
                         Deserializer2 D;

@@ -9,6 +9,12 @@ set(jsoncpp_dir "${CMAKE_SOURCE_DIR}/utility/jsoncpp")
 add_library(jsoncpp_lib STATIC ${jsoncpp_dir}/src/jsoncpp.cpp)
 target_include_directories(jsoncpp_lib PUBLIC ${jsoncpp_dir}/jsoncpp/header)
 
+################################sim_sock_lib##########################
+
+set(sim_sock_dir "${CMAKE_SOURCE_DIR}/utility/simulation")
+add_library(sim_sock_lib STATIC ${sim_sock_dir}/src/simulation.cpp)
+target_include_directories(sim_sock_lib PUBLIC ${sim_sock_dir}/include)
+
 ###############################EM###############################
 
 set(exec_source_dir "${CMAKE_SOURCE_DIR}/ara/exec")
@@ -67,10 +73,10 @@ file(GLOB_RECURSE COM_NetworkBinding_SRC_FILES ${com_source_dir}/network_binding
 file(GLOB_RECURSE COM_SomeIp_SRC_FILES ${com_source_dir}/network_binding/SomeIp/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE COM_serviceDiscovery_SRC_FILES ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/src/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE COM_someip_TLS_FILES ${com_source_dir}/network_binding/SomeIp/TLS/*.cpp  CMAKE_CONFIGURE_DEPENDS)
-file(GLOB_RECURSE COM_GUI_Report_SRC_FILES ${com_source_dir}/language_binding/*.cpp  CMAKE_CONFIGURE_DEPENDS)
+file(GLOB_RECURSE COM_GUI_Report_SRC_FILES ${com_source_dir}/*.cpp  CMAKE_CONFIGURE_DEPENDS)
 
 add_library(com_lib STATIC ${COM_Proxy_SRC_FILES} ${COM_Skeleton_SRC_FILES} ${COM_NetworkBinding_SRC_FILES} ${COM_SomeIp_SRC_FILES} ${COM_serviceDiscovery_SRC_FILES} ${COM_someip_TLS_FILES} ${COM_GUI_Report_SRC_FILES})
-target_link_libraries(com_lib Boost::filesystem Boost::program_options Boost::serialization jsoncpp_lib ssl crypto boost_thread pthread  )
+target_link_libraries(com_lib Boost::filesystem Boost::program_options Boost::serialization jsoncpp_lib ssl crypto boost_thread pthread sim_sock_lib)
 
 
 target_include_directories(
@@ -111,8 +117,10 @@ install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
 
 set(source_excutables_sm_dir "${CMAKE_SOURCE_DIR}/executables/sm/bin")
 set(source_excutables_sm_dir_1 "${CMAKE_SOURCE_DIR}/ara/sm")
-set(source_simulation_dir "${CMAKE_SOURCE_DIR}/utility/simulation/src")
-add_executable(sm ${source_excutables_sm_dir_1}/main.cpp ${source_excutables_sm_dir_1}/SM.cpp ${source_excutables_sm_dir_1}/sm_logger.cpp ${source_simulation_dir}/simulation.cpp) 
+# set(source_simulation_dir "${CMAKE_SOURCE_DIR}/utility/simulation/src")
+# add_executable(sm ${source_excutables_sm_dir_1}/main.cpp ${source_excutables_sm_dir_1}/SM.cpp ${source_excutables_sm_dir_1}/sm_logger.cpp ${source_simulation_dir}/simulation.cpp) 
+# To Return Original Remove Nexe line & uncomment the previous 2 lines
+add_executable(sm ${source_excutables_sm_dir_1}/main.cpp ${source_excutables_sm_dir_1}/SM.cpp) 
 target_link_libraries( sm execution_lib jsoncpp_lib com_lib iam_lib)
 install(TARGETS sm RUNTIME DESTINATION ${source_excutables_sm_dir})
 

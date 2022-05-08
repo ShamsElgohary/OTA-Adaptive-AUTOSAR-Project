@@ -130,7 +130,7 @@ namespace someip{
 		someipMessage someipMsg;
 
 		try {
-			char buff[512];
+			char buff[SOMEIP_BUFFER_SIZE];
 			size_t read = udpSocket.receive_from(boost::asio::buffer(buff), this->udpEndPoint);
 			std::string mssgBuf = buff;
 			std::stringstream ss;
@@ -163,7 +163,7 @@ namespace someip{
 		someipMessage someipMsg;
 
 		try {
-			char buff[512];
+			char buff[SOMEIP_BUFFER_SIZE];
 			size_t read = udpSocket.receive_from(boost::asio::buffer(buff), this->udpEndPoint);
 			std::string mssgBuf = buff;
 			std::stringstream ss;

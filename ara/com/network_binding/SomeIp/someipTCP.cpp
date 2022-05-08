@@ -123,7 +123,7 @@ namespace someip {
 
 		try {
 
-			char buff[512];
+			char buff[SOMEIP_BUFFER_SIZE];
 			size_t read = tcpSocket.read_some(boost::asio::buffer(buff));
 			std::string mssgBuf = buff;
 			std::stringstream ss;
@@ -173,7 +173,7 @@ namespace someip {
 
 		try {
 
-			char buff[512];
+			char buff[SOMEIP_BUFFER_SIZE];
 			tcpSocket.async_read_some(boost::asio::buffer(buff), &OnReceiveCompleted);
 			// IMPORTANT FOR ASYNCHRONOUS OPERATIONS 
 			tcp_io_service.run();

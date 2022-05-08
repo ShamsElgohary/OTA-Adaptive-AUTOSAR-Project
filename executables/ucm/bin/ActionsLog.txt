@@ -1,3 +1,5 @@
+
+[Transfer Start] 		 Result : kSuccess
 [Transfer Start] 		 Result : kSuccess
 [Transfer Data] 		 Result : kSuccess
 [Transfer Data] 		 Result : kSuccess
@@ -11,23 +13,6 @@
 [Transfer Data] 		 Result : kSuccess
 [Transfer Data] 		 Result : kSuccess
 [Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Exit] 		 Result : kSuccess
-[Transfer Start] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Data] 		 Result : kSuccess
-[Transfer Exit] 		 Result : kSuccess
 [Transfer Start] 		 Result : kSuccess
 [Transfer Data] 		 Result : kSuccess
 [Transfer Data] 		 Result : kSuccess

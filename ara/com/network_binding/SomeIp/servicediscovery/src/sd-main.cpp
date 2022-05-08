@@ -55,9 +55,7 @@ int main()
             }
             else if (TTL == (uint32_t)0x000000) // stop offer  //only remove from map
             {
-               
                 servicestorage::RemoveService(SID, IID); // stop offer
-
             }
             break;
         }

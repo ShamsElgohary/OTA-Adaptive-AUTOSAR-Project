@@ -16,7 +16,7 @@ int main()
 
     
     ara::com::ServiceHandleContainer<ProxyBase::HandleType> handles = PackageManagerProxy::FindService(1);
-    PackageManagerProxy RecService(handles[0]);
+
     if (handles.size())
     {
         PackageManagerProxy RecService(handles[0]);
@@ -43,14 +43,15 @@ int main()
             {
                 ByteData.push_back(result[i + j]);
             }
-
             RecService.TransferData(Startrtn.id, ByteData, BlockCounter);
+
             BlockCounter++;
             ByteData.clear();
             i += BlockSize;
         }
 
         RecService.TransferExit(Startrtn.id);
+
 
         RecService.ProcessSwPackage(Startrtn.id);
         RecService.Activate();

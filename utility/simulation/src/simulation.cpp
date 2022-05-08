@@ -1,8 +1,8 @@
-#include "simulation.hpp"
+#include "../include/simulation.hpp"
 #include "thread"
 #include "iostream"
-#include <QApplication>
-#include "mainwindow.h"
+// #include <QApplication>
+// #include "mainwindow.h"
 
 simulation::simulation(int port)
 {

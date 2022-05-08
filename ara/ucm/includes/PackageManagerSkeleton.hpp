@@ -438,7 +438,7 @@ namespace ara
                     }
                     }
                     this->ptr2bindingProtocol -> CloseConnection();
-                    ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method, "UCM", 2);
+                    ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method, 2);
                 }
             };
         }

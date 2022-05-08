@@ -466,11 +466,11 @@ namespace ara
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
                     {
-                        return ara::com::proxy::ProxyBase::FindService("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/com_proxy_test/etc/service_manifest.json",1);
+                        return ara::com::proxy::ProxyBase::FindService("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/com_proxy_test/etc/service_manifest.json",2);
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
                     {
-                        return ara::com::proxy::ProxyBase::FindService("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/com_proxy_test/etc/service_manifest.json",1, InstanceID);
+                        return ara::com::proxy::ProxyBase::FindService("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/com_proxy_test/etc/service_manifest.json",2, InstanceID);
                     }
 
                     methods::TransferStart TransferStart;

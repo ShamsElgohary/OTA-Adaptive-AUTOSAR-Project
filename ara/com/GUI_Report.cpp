@@ -5,11 +5,12 @@ namespace ara
 {
     namespace com
     {
-        void AddMethodCall(int methodID, string methodName, MethodType Type, string Exe_Name, uint16_t ServiceID)
+        void AddMethodCall(int methodID, string methodName, MethodType Type, uint16_t ServiceID)
         {
             // Test
             string Typestr = (Type == MethodType::Skeleton_Method) ? "Skeleton" : "Proxy";
             cout << "[GUI REPORT] Method ID: " << methodID << ", Method Name: " << methodName << ", Method Type: " << Typestr << endl;
+            
             // Read JSON File
             Json::Value event;
             ifstream f("com.json");
@@ -17,7 +18,7 @@ namespace ara
             R.parse(f, event);
             if (!event)
             {
-                event["Cluster_name"] = "COM_" + Exe_Name;
+                event["Cluster_name"] = "DIST_COM";
                 event["com_json"]["Service_Discovery_Request"] = Json::arrayValue;
                 event["com_json"]["Skeleton_Provided_Method"] = Json::arrayValue;
                 event["com_json"]["Proxy_Required_Method"] = Json::arrayValue;
@@ -44,12 +45,12 @@ namespace ara
             json_file.close();
 
             // Report
-            simulation s(8080);
-            s.connect_to_socket();
-            s.send_file("com.json");
+            // simulation s(8080);
+            // s.connect_to_socket();
+            // s.send_file("com.json");
         }
 
-        void AddServiceDiscoveryRequest(uint16_t ServiceID, uint16_t InstanceID, ServiceDiscoveryMethodType Type, bool GrantResult, string Exe_Name)
+        void AddServiceDiscoveryRequest(uint16_t ServiceID, uint16_t InstanceID, ServiceDiscoveryMethodType Type, bool GrantResult)
         {
             // Test
             string Typestr = "";
@@ -75,7 +76,7 @@ namespace ara
             R.parse(f, event);
             if (!event)
             {
-                event["Cluster_name"] = "COM_" + Exe_Name;
+                event["Cluster_name"] = "DIST_COM";
                 event["com_json"]["Service_Discovery_Request"] = Json::arrayValue;
                 event["com_json"]["Skeleton_Provided_Method"] = Json::arrayValue;
                 event["com_json"]["Proxy_Required_Method"] = Json::arrayValue;
@@ -96,9 +97,9 @@ namespace ara
             json_file.close();
 
             // Report
-            simulation s(8080);
-            s.connect_to_socket();
-            s.send_file("com.json");
+            // simulation s(8080);
+            // s.connect_to_socket();
+            // s.send_file("com.json");
         }
     }
 }
