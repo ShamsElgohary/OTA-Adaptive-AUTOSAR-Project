@@ -1,0 +1,22 @@
+# ninja log v5
+201	1799	1651876210536237268	CMakeFiles/adaptive_autosar_simulation.dir/ota.cpp.o	5db98015bcb23284
+201	1816	1651876210552237268	CMakeFiles/adaptive_autosar_simulation.dir/ucm.cpp.o	6eaffe14e12d9fa9
+21	3235	1651949285148062125	CMakeFiles/adaptive_autosar_simulation.dir/mainwindow.cpp.o	51ed5113d9a2a93d
+403	3900	1651943207226505889	CMakeFiles/adaptive_autosar_simulation.dir/adaptive_autosar_simulation_autogen/mocs_compilation.cpp.o	a433797f5a31c9e3
+3	20	1651949281936062053	/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop_Qt_5_15_2_GCC_64bit-Debug/adaptive_autosar_simulation_autogen/mocs_compilation.cpp	6d27bd0363fdcb33
+3235	3552	1651949285464062132	adaptive_autosar_simulation	9906790a50e92fc6
+403	5165	1651943208490505917	CMakeFiles/adaptive_autosar_simulation.dir/main.cpp.o	43a1a78fd737929d
+398	1647	1651877369568263195	CMakeFiles/adaptive_autosar_simulation.dir/iam.cpp.o	25c9b945234baf02
+3	20	1651949281936062053	adaptive_autosar_simulation_autogen/mocs_compilation.cpp	6d27bd0363fdcb33
+34	1142	1651936159642348235	CMakeFiles/adaptive_autosar_simulation.dir/sm.cpp.o	11429c2bd2cbd486
+201	1816	1651876210552237268	CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.o	6c07cb9eb9726760
+22	3218	1651949285132062124	CMakeFiles/adaptive_autosar_simulation.dir/exec.cpp.o	79d578656b9571dc
+3	20	1651949281936062053	adaptive_autosar_simulation_autogen/timestamp	6d27bd0363fdcb33
+3	20	1651949281936062053	/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop_Qt_5_15_2_GCC_64bit-Debug/adaptive_autosar_simulation_autogen/timestamp	6d27bd0363fdcb33
+4	20	1651949347928063529	adaptive_autosar_simulation_autogen/timestamp	6d27bd0363fdcb33
+4	20	1651949347928063529	adaptive_autosar_simulation_autogen/mocs_compilation.cpp	6d27bd0363fdcb33
+4	20	1651949347928063529	/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop_Qt_5_15_2_GCC_64bit-Debug/adaptive_autosar_simulation_autogen/timestamp	6d27bd0363fdcb33
+4	20	1651949347928063529	/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop_Qt_5_15_2_GCC_64bit-Debug/adaptive_autosar_simulation_autogen/mocs_compilation.cpp	6d27bd0363fdcb33
+22	3177	1651949351084063600	CMakeFiles/adaptive_autosar_simulation.dir/exec.cpp.o	79d578656b9571dc
+22	3226	1651949351136063601	CMakeFiles/adaptive_autosar_simulation.dir/mainwindow.cpp.o	51ed5113d9a2a93d
+3227	3548	1651949351452063608	adaptive_autosar_simulation	9906790a50e92fc6
