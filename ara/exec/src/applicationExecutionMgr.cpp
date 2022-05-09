@@ -149,11 +149,11 @@ bool ApplicationExecutionMgr::Terminate()
 }
 bool ApplicationExecutionMgr::Execute()
 {
-    map<string, ara::exec::ExecutionState> apps_state;
+    map<string, Application *> apps_state;
     queue<Application *> apps;
     for (auto app : transitionChanges_.toStart_)
     {
-        apps_state[app->name] = app->current_state;
+        apps_state[app->name] = app;
         apps.push(app);
     }
     bool flag = true;
@@ -163,7 +163,7 @@ bool ApplicationExecutionMgr::Execute()
         apps.pop();
         for (auto depend : app->configuration_.dependency)
         {
-            if (apps_state[depend.first] != ExecutionState::Krunning)
+            if (apps_state[depend.first]->current_state != ExecutionState::Krunning)
             {
                 apps.push(app);
                 flag = false;
@@ -173,8 +173,6 @@ bool ApplicationExecutionMgr::Execute()
         if (flag)
         {
             app->start();
-            app->Update_status();
-            apps_state[app->name] = ExecutionState::Krunning;
         }
         flag = true;
     }
@@ -187,17 +185,14 @@ future<void> ApplicationExecutionMgr::updateProcessState()
                  {
         while(1)
         {
-            usleep(1*1000000);
             for (auto fng : function_groups_)
             {
                 for (auto app : function_groups_[fng.first]->startupConfigurations_[function_groups_[fng.first]->currentState_])
                 {
-                    if (app->current_state == ExecutionState::Krunning)
-                    {
-                        app->Update_status();
-                    }
+                    app->Update_status();
                 }
             }
+             std::this_thread::sleep_for(100ms);
         } });
 }
 

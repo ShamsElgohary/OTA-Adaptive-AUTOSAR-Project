@@ -21,6 +21,8 @@ void Application::start()
 {
     mkfifo(this->name.c_str(), 0777);
     fd = open(this->name.c_str(), O_RDWR);
+    fcntl(fd, F_SETFL, O_NONBLOCK);
+
     this->id = fork();
     if (this->id == 0)
     {
@@ -30,43 +32,41 @@ void Application::start()
 }
 void Application::terminate()
 {
-    if (kill(id, SIGKILL) == 0)
+    if (this->current_state != ExecutionState::Kterminate)
     {
-        cout << "[em] "
-             << "terminating " << name << "\n\n\n";
+        if (kill(id, SIGKILL) == 0)
+        {
+            cout << "[em] "
+                 << "terminating " << name << "\n\n\n";
+            id = NULL;
+            this->current_state = ExecutionState::Kterminate;
+        }
+        else
+        {
+            cout << "[em] "
+                 << "couldn't terminate process.... with id = " << id << " and named " << name << "\n\n\n";
+        }
     }
     else
     {
-        cout << "[em] "
-             << "couldn't terminate process.... with id = " << id << " and named " << name << "\n\n\n";
+        cout << "process" << name << " terminated by it's own\n";
     }
-
-    // Update_status();
-    //  if(this->current_state!=ExecutionState::Kterminate){
-    //     //wait time in microseconds
-    //      usleep(100000);
-    //      kill(id,SIGKILL);
-    //  }
+    
 }
 
 void Application::Update_status()
 {
-    ExecutionState newstate =ExecutionState::Kidle; 
+    ExecutionState newstate = ExecutionState::Kidle;
     read(fd, &newstate, sizeof(current_state));
     if (newstate == ExecutionState::Krunning)
     {
-        current_state =newstate;
-        cout << "[em] " << name << " new state is "
-             << "Krunning"
-             << "\n\n\n";
-        fcntl(fd, F_SETFL, O_NONBLOCK);
+        current_state = newstate;
+        cout << "[em] " << name << " new state is Krunning\n\n\n";
     }
     else if (newstate == ExecutionState::Kterminate)
     {
-        current_state =newstate;
-        cout << "[em] " << name << " new state is "
-             << "Kterminate"
-             << "\n\n\n";
+        current_state = newstate;
+        cout << "[em] " << name << " new state is Kterminate\n\n\n";
     }
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name, string path)

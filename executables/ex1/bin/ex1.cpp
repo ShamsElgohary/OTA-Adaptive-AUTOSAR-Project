@@ -8,7 +8,7 @@ int main()
 {
 
     cout << "[Ex1] hello from ex1 with pid = " << getpid() << "\n";
-    usleep(1000000);
+    usleep(100000);
 
     ExecutionClient exec;
 
