@@ -10,7 +10,7 @@ std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateReq
     StateClient client{};
     std::promise<UpdateRequestSkeleton::StartUpdateSessionOutput> promise;
     UpdateRequestSkeleton::StartUpdateSessionOutput out;
-    FunctionGroupState state=FunctionGroupState::Preconstruct("machineFG","running");
+    FunctionGroupState state = FunctionGroupState::Preconstruct("machineFG","running");
     bool success = client.setState(state);
     if(success)
     {
