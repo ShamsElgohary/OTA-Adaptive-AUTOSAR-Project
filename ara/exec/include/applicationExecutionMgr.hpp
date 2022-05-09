@@ -53,6 +53,8 @@ namespace ara
 
         public:
             future<void> iam_future;
+            future<void> process_state_update_future;
+
             vector<Executable> executables_;
             unique_ptr<MachineManifest> manifest_;
             map<string, FunctionGroup *> function_groups_;
@@ -66,11 +68,11 @@ namespace ara
             bool loadMachineConfigrations();
             bool loadExecutablesConfigrations();
             bool ProcessStateClientRequest();
-            bool updateProcessState();
+            future<void> updateProcessState();
             bool Terminate();
             bool Execute();
             string get_process_name(int test_id);
-            void IAM_handle();
+            future<void>  IAM_handle();
             void reportConfig_simulation();
         };
     }

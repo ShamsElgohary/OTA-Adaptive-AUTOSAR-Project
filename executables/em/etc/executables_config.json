@@ -8,13 +8,10 @@
 				"fn1" : [ "idle", "play" ]
 			},
 			"name" : "ex1"
+			
 		},
 		{
-			"depends" : 
-			{
-				"ex1" : "Krunning",
-				"ex2" : "Krunning"
-			},
+			"depends" : {},
 			"function_group" : 
 			{
 				"fn2" : [ "idle", "run" ]

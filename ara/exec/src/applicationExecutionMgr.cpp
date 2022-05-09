@@ -110,7 +110,6 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 
 void ApplicationExecutionMgr::initialize()
 {
-    mkfifo("executablesFifo", 0777);
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
@@ -118,7 +117,8 @@ void ApplicationExecutionMgr::initialize()
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
     Execute();
-    IAM_handle();
+    iam_future = IAM_handle();
+    process_state_update_future = updateProcessState();
     transitionChanges_.toStart_.clear();
     transitionChanges_.toTerminate_.clear();
 }
@@ -133,7 +133,6 @@ bool ApplicationExecutionMgr::run()
     while (true)
     {
         ProcessStateClientRequest();
-        updateProcessState();
         Terminate();
         Execute();
         transitionChanges_.toStart_.clear();
@@ -181,18 +180,24 @@ bool ApplicationExecutionMgr::Execute()
     }
     return true;
 }
-bool ApplicationExecutionMgr::updateProcessState()
+future<void> ApplicationExecutionMgr::updateProcessState()
 {
-    for (auto fng : function_groups_)
-    {
-        for (auto app : function_groups_[fng.first]->startupConfigurations_[function_groups_[fng.first]->currentState_])
+
+    return async(launch::async, [this]()
+                 {
+        while(1)
         {
-            if (app->current_state == ExecutionState::Krunning)
+            for (auto fng : function_groups_)
             {
-                app->Update_status();
+                for (auto app : function_groups_[fng.first]->startupConfigurations_[function_groups_[fng.first]->currentState_])
+                {
+                    if (app->current_state == ExecutionState::Krunning)
+                    {
+                        app->Update_status();
+                    }
+                }
             }
-        }
-    }
+        } });
 }
 
 string ApplicationExecutionMgr::get_process_name(int test_id)
@@ -211,10 +216,10 @@ string ApplicationExecutionMgr::get_process_name(int test_id)
     }
 }
 
-void ApplicationExecutionMgr::IAM_handle()
+future<void> ApplicationExecutionMgr::IAM_handle()
 {
-    iam_future = async(launch::async, [this]()
-                       {
+    return async(launch::async, [this]()
+                 {
         FindProcessServer srv;
         int id;
         string process_name;
