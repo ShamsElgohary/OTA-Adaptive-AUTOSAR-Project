@@ -1,5 +1,5 @@
 #include "sm_logger.hpp"
-#include "../../utility/jsoncpp/header/json.h"
+#include "../../jsoncpp/header/json.h"
 #include <fstream>
 #include <iostream>
 #include <unistd.h>
@@ -35,7 +35,6 @@ void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states
  getcwd(current_dir,256);
  std::string path(current_dir);
  path+="/sm.json";
- std::cout<<path<<std::endl;
  this->sim->send_file((char *)(path.c_str()));
  sleep(3);
 }
