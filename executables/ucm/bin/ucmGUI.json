@@ -1,0 +1,35 @@
+{
+	"Cluster_name" : "ucm",
+	"ucm_json" : 
+	{
+		"GUI" : 
+		{
+			"Activate" : 
+			{
+				"PrepareUpdate" : false,
+				"StartUpdateSession" : false,
+				"StopUpdateSession" : false,
+				"VerifyUpdate" : false
+			},
+			"Files" : "",
+			"PackageManagerStatus" : "Idle",
+			"ProcessList" : "",
+			"ProcessedActionType" : "Install",
+			"TransferFinishRate" : 0
+		},
+		"PackageManager" : 
+		{
+			"Activate" : "",
+			"Finish" : "",
+			"GetCurrentStatus" : "",
+			"GetSwClusterInfo" : "",
+			"ProcessSwPackage" : "",
+			"RevertProcessedSwPackages" : "",
+			"Rollback" : "",
+			"TransferData" : "",
+			"TransferDelete" : "",
+			"TransferExit" : "",
+			"TransferStart" : ""
+		}
+	}
+}

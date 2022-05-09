@@ -18,6 +18,7 @@ namespace ara
 					uint32_t expectedBlocks;
 					uint32_t receivedBlocks = 0;
 					uint32_t blockSize = 512;
+					float 	 TransferFinishRate = 0;
 					string path;
 					ara::ucm::SwPackageStateType TransferState;
 					TransferIdType transferId;
@@ -31,6 +32,8 @@ namespace ara
 					void SetTransferPath(string path);
 					void SetTransferState(SwPackageStateType TransferState);
 					void SetTransferId(TransferIdType transferId);
+					void UpdateFinishRate();
+
 
 					uint64_t GetExpectedBytes();
 					uint64_t GetReceivedBytes();
@@ -39,7 +42,9 @@ namespace ara
 					uint32_t GetBlockSize ();
 					string GetTransferPath();
 					SwPackageStateType GetTransferState();
-					TransferIdType GetTransferId();			
+					TransferIdType GetTransferId();	
+					float GetFinishRate();
+		
 				
 			};
 
@@ -73,6 +78,7 @@ namespace ara
 				void SetPackagePath(string path);
 				void SetPackageState(SwPackageStateType State);
 				void SetPackageId(TransferIdType Id);
+				void UpdateFinishRate();
 
 				uint64_t GetPackageExpectedBytes();
 				uint64_t GetPackageReceivedBytes();
@@ -82,6 +88,7 @@ namespace ara
 				string GetPackagePath();
 				SwPackageStateType GetPackageState();
 				TransferIdType GetPackageId(); 
+				float GetFinishRate();
 				
 			};
 

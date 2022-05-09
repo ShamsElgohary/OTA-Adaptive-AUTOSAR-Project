@@ -21,7 +21,7 @@ namespace ara::ucm::pkgmgr
 
         promise.set_value(StartReturn);
 
-        logger.ActionsLog("[Transfer Start] \t\t Result : ", static_cast<unsigned char>(StartReturn.TransferStartResult));
+        logger.ActionsLog("[TransferStart] \t\t Result : ", static_cast<unsigned char>(StartReturn.TransferStartResult));
 
         return promise.get_future();
     }
@@ -35,7 +35,7 @@ namespace ara::ucm::pkgmgr
 
         promise.set_value(DataReturn);
 
-        logger.ActionsLog("[Transfer Data] \t\t Result : ", static_cast<unsigned char>(DataReturn.OperationReturn));
+        logger.ActionsLog("[TransferData] \t\t Result : ", static_cast<unsigned char>(DataReturn.OperationReturn));
 
         return promise.get_future();
     }
@@ -48,7 +48,7 @@ namespace ara::ucm::pkgmgr
 
         promise.set_value(ExitReturn);
 
-        logger.ActionsLog("[Transfer Exit] \t\t Result : ", static_cast<unsigned char>(ExitReturn.OperationReturn));
+        logger.ActionsLog("[TransferExit] \t\t Result : ", static_cast<unsigned char>(ExitReturn.OperationReturn));
 
         return promise.get_future();
     }
@@ -61,7 +61,7 @@ namespace ara::ucm::pkgmgr
 
         promise.set_value(DeleteReturn);
 
-        logger.ActionsLog("[Transfer Delete] \t\t Result : ", static_cast<unsigned char>(DeleteReturn.OperationReturn));
+        logger.ActionsLog("[TransferDelete] \t\t Result : ", static_cast<unsigned char>(DeleteReturn.OperationReturn));
 
         return promise.get_future();
     }
@@ -85,7 +85,7 @@ namespace ara::ucm::pkgmgr
 
         promise.set_value(ProcessReturn);
 
-        logger.ActionsLog("[Process SwPackage] \t\t Result : ", static_cast<unsigned char>(ProcessReturn.OperationReturn));
+        logger.ActionsLog("[ProcessSwPackage] \t\t Result : ", static_cast<unsigned char>(ProcessReturn.OperationReturn));
 
         return promise.get_future();
     }

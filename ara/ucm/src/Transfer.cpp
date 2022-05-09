@@ -49,6 +49,10 @@ namespace ara::ucm::transfer
 
         StartTransferOutput.BlockSize = NewPackagePtr->TransferInfo.GetBlockSize();
         StartTransferOutput.TransferStartResult = OperationResultType::kSuccess;
+
+
+
+
         return StartTransferOutput;
     }
 
@@ -100,6 +104,12 @@ namespace ara::ucm::transfer
         /* Increment ConsecutiveBytesReceived & ConsecutiveBlocksReceived */
         SwPkg->SetPackageReceivedBytes(data.size() + (SwPkg->GetPackageReceivedBytes()));
         SwPkg->SetPackageReceivedBlocks(1 + (SwPkg->GetPackageReceivedBlocks()));
+
+        SwPkg->UpdateFinishRate();
+        
+        // GUI SIMULATION
+        std::cout<<SwPkg->GetFinishRate();
+        // DELAY TO SHOW RATE?
 
         return ara::ucm::OperationResultType::kSuccess;
     }
@@ -214,6 +224,11 @@ namespace ara::ucm::transfer
         TransferInfo.SetTransferId(Id);
     }
 
+    void SoftwarePackage::UpdateFinishRate()
+    {
+        TransferInfo.UpdateFinishRate();
+    }
+
     uint64_t SoftwarePackage::GetPackageExpectedBytes()
     {
         return TransferInfo.GetExpectedBytes();
@@ -251,6 +266,11 @@ namespace ara::ucm::transfer
     TransferIdType SoftwarePackage::GetPackageId()
     {
         return TransferInfo.GetTransferId();
+    }
+
+    float SoftwarePackage::GetFinishRate()
+    {
+        return TransferInfo.GetFinishRate();
     }
 
     /*////////////////////////////////////////////////////////////////////////////
@@ -300,6 +320,11 @@ namespace ara::ucm::transfer
         this->transferId = transferId;
     }
 
+    void TransferInstance::UpdateFinishRate()
+    {
+        TransferFinishRate = (float)receivedBytes / expectedBytes;
+    }
+
     uint64_t TransferInstance::GetExpectedBytes()
     {
         return expectedBytes;
@@ -339,5 +364,11 @@ namespace ara::ucm::transfer
     {
         return transferId;
     }
+
+    float TransferInstance::GetFinishRate()
+    {
+        return TransferFinishRate;
+    }
+
 
 } // End of namespace ara::ucm::transfer
