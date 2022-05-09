@@ -187,6 +187,7 @@ future<void> ApplicationExecutionMgr::updateProcessState()
                  {
         while(1)
         {
+            usleep(1*1000000);
             for (auto fng : function_groups_)
             {
                 for (auto app : function_groups_[fng.first]->startupConfigurations_[function_groups_[fng.first]->currentState_])
