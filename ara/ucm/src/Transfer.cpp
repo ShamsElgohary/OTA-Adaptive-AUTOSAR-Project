@@ -50,9 +50,6 @@ namespace ara::ucm::transfer
         StartTransferOutput.BlockSize = NewPackagePtr->TransferInfo.GetBlockSize();
         StartTransferOutput.TransferStartResult = OperationResultType::kSuccess;
 
-
-
-
         return StartTransferOutput;
     }
 

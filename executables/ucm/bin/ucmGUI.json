@@ -19,17 +19,17 @@
 		},
 		"PackageManager" : 
 		{
-			"Activate" : "",
+			"Activate" : "kOperationNotPermitted",
 			"Finish" : "",
 			"GetCurrentStatus" : "",
 			"GetSwClusterInfo" : "",
-			"ProcessSwPackage" : "",
+			"ProcessSwPackage" : "kSuccess",
 			"RevertProcessedSwPackages" : "",
 			"Rollback" : "",
-			"TransferData" : "",
+			"TransferData" : "kSuccess",
 			"TransferDelete" : "",
-			"TransferExit" : "",
-			"TransferStart" : ""
+			"TransferExit" : "kSuccess",
+			"TransferStart" : "kSuccess"
 		}
 	}
 }

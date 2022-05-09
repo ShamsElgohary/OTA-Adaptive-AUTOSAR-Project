@@ -93,7 +93,7 @@ namespace ara::ucm::pkgmgr
     std::future<ara::ucm::pkgmgr::PackageManagerImpl::ActivateOutput> PackageManagerImpl::Activate()
     {
         std::promise<ara::ucm::pkgmgr::PackageManagerImpl::ActivateOutput> promise;
-        cout << "Activate" << endl;
+
         ara::ucm::pkgmgr::PackageManagerImpl::ActivateOutput ActivateReturn{PackageManagerStateinstance->ActivateInternal()};
 
         promise.set_value(ActivateReturn);

@@ -26,17 +26,13 @@ SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
 
 void SoftwarePackageParser::SwPackageManifestParser(string PackagePath)
 {
-    cout << "Path: " << PackagePath << endl;
     string Path = PackagePath + "/SwPackageManifest.json";
-    cout << "1" << endl;
     // Create a root
     pt::ptree root;
     // Load the json file in this ptree
     pt::read_json(Path, root);
-    cout << "2" << endl;
 
     string actionTypeString{root.get<string>("actionType")};
-    cout << "3" << endl;
 
     if (actionTypeString == "Install")
     {
@@ -52,7 +48,6 @@ void SoftwarePackageParser::SwPackageManifestParser(string PackagePath)
     {
         actionType = ara::ucm::ActionType::kUpdate;
     }
-    cout << "7" << endl;
 
     activationAction = root.get<std::string>("activationAction");
 
@@ -86,6 +81,8 @@ string SoftwarePackageParser::UnzipPackage(string SoftwarePackage)
         system(&command[0]);
     }
 
+    std::string latestCurrentDirectory = GetCurrentDirectory();
+
     /* UNZIP IN NEW PATH ( DIRECTORY WITH THE SAME NAME (TRANSFER ID : --) ) */
     chdir(UnzippedPath.c_str());
     command = "unzip " + SoftwarePackage;
@@ -96,7 +93,7 @@ string SoftwarePackageParser::UnzipPackage(string SoftwarePackage)
     system(command.c_str());
 
     /* RETURN TO THE PARENT PROCESS */
-    chdir(UCM_Path.c_str());
+    chdir(latestCurrentDirectory.c_str());
 
     return UnzippedPath;
 }
