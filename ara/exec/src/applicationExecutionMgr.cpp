@@ -192,7 +192,7 @@ future<void> ApplicationExecutionMgr::updateProcessState()
                     app->Update_status();
                 }
             }
-             std::this_thread::sleep_for(100ms);
+             std::this_thread::sleep_for(10ms);
         } });
 }
 
