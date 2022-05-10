@@ -1,0 +1,2 @@
+[GetSwClusterInfo] 		 Result : kSuccess
+[GetSwClusterInfo] 		 Result : kSuccess

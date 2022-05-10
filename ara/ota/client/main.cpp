@@ -39,7 +39,8 @@ public:
     string hash(string packagename)
     {
         // string filename = packagename + ".zip";
-        string url_final = "http://127.0.0.1:8000/hash/" + packagename + ".zip";
+        cout << packagename << endl;
+        string url_final = "https://secure-otaserver.herokuapp.com/hash/" + packagename + ".zip";
         auto responce = cpr::Get(cpr::Url{url_final});
         // std::cout<<responce.text<<std::endl;
         return responce.text;
@@ -47,7 +48,7 @@ public:
 
     string crypto_get_hash(string packagename)
     {
-        std::string path = "/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/ara/ota/client/ex1.zip";
+        std::string path = "/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/ota/bin/" + packagename + ".zip";
 
         ifstream ifs(path, ios::binary | ios::ate);
         ifstream::pos_type pos = ifs.tellg();
@@ -91,9 +92,9 @@ public:
     bool compare_hash(string packagename)
     {
         std::string hash_server = hash(packagename);
+        cout << "Server Hash: " << hash_server << endl;
         std::string hash_cryp = crypto_get_hash(packagename);
-        // cout << hash_server<< endl;
-        // cout << hash_cryp << endl;
+        cout << "Crypto Hash: " << hash_cryp << endl;
         if (hash_server == hash_cryp)
         {
             return 1;
@@ -123,24 +124,18 @@ public:
                 int it = myline.find("#");
                 string file_name = myline.substr(0, it);
                 string number = myline.substr(it + 1);
-                cout << "number:" << number << endl;
                 int num = stoi(number);
-                cout << "num:" << num << endl;
                 x.Name = file_name;
-                x.Version = IntToString(num);;
+                x.Version = IntToString(num);
+                ;
                 trail.push_back(x);
             }
-        }
-
-        for (auto x : trail)
-        {
-            cout << "cluster name:" << x.Name << "          version: " << x.Version << endl;
         }
     }
 
     void get_meta_data()
     {
-        string url_final = "http://127.0.0.1:8000/meta_data_send";
+        string url_final = "https://secure-otaserver.herokuapp.com/meta_data_send";
         auto responce = cpr::Get(cpr::Url{url_final});
         // std::cout<<responce.text<<std::endl;
         std::ofstream myfile;
@@ -152,8 +147,7 @@ public:
     void download(string packagename)
     {
         string filename = packagename + ".zip";
-        string url_final = "http://127.0.0.1:8000/download/" + packagename + ".zip";
-        cout << "URL_Final: " << url_final << endl;
+        string url_final = "https://secure-otaserver.herokuapp.com/download/" + packagename + ".zip";
         auto responce = cpr::Get(cpr::Url{url_final});
         //  std::cout<<responce.text<<std::endl;
         std::ofstream myfile;
@@ -217,27 +211,31 @@ public:
                     }
                     else
                     {
-
-                        // string pckg = cluster.Name + "#" + cluster.Version;
                         string pckg = cluster.Name + cluster.Version;
-                        // if (compare_hash(pckg))
-                        // {
                         download(pckg);
-                        this->Transfer2UCM(pckg);
-                        // }
-                        // else
-                        // {
-                        //     cout << "Error: Different hash " << endl;
-                        // }
+                        if (compare_hash(pckg))
+                        {
+                            this->Transfer2UCM(pckg);
+                        }
+                        else
+                        {
+                            cout << "Error: Different hash " << endl;
+                        }
                     }
                 }
             }
             if (test = true)
             {
-                // string pckg = cluster.Name + "#" + cluster.Version;
                 string pckg = cluster.Name + cluster.Version;
                 download(pckg);
-                this->Transfer2UCM(pckg);
+                if (compare_hash(pckg))
+                {
+                    this->Transfer2UCM(pckg);
+                }
+                else
+                {
+                    cout << "Error: Different hash " << endl;
+                }
             }
         }
     }

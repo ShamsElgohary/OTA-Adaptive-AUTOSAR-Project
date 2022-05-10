@@ -1,0 +1,29 @@
+{
+	"Cluster_name" : "DIST_COM",
+	"com_json" : 
+	{
+		"Proxy_Required_Method" : [],
+		"Service_Discovery_Request" : 
+		[
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 2,
+				"Type" : "Offer"
+			}
+		],
+		"Skeleton_Provided_Method" : 
+		[
+			{
+				"Method_ID" : 7,
+				"Method_Name" : "GetSwClusterInfo",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 7,
+				"Method_Name" : "GetSwClusterInfo",
+				"Service_ID" : 2
+			}
+		]
+	}
+}
