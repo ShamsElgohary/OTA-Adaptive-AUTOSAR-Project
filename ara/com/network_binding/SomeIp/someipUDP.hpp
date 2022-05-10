@@ -16,7 +16,7 @@ class someipUDP  : public someipConnection  {
 
 	boost::asio::ip::udp::endpoint udpEndPoint;
 	boost::asio::ip::udp::socket udpSocket;
-	boost::asio::io_context  & udp_io_service;  
+	boost::asio::io_context& udp_io_service;  
 	//boost::asio::deadline_timer timer;
 	uint16_t port;
 

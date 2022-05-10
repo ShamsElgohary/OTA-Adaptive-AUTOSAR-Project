@@ -14,7 +14,7 @@ class someipTCP : public someipConnection {
 	
 	protected:
 	
-	boost::asio::io_context  & tcp_io_service;  
+	boost::asio::io_context& tcp_io_service;  
 	boost::asio::ip::tcp::endpoint tcpEndPoint;
 	boost::asio::ip::tcp::socket tcpSocket;
 	uint16_t port;

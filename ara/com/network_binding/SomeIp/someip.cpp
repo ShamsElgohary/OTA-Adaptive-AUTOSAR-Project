@@ -93,7 +93,7 @@ namespace someip
 	{
 		if (someipConfig.endUserType == EndUserType::CLIENT)
 			{	
-				std::string CertificatePath = "Certificates/server.crt"; // TESTING
+				std::string CertificatePath = "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/ara/com/network_binding/SomeIp/TLS/Certificates/server.crt"; 
 
 				boost::asio::ssl::context ctx(boost::asio::ssl::context::tls);
 				endUserInstance = make_shared<ClientTLS>(io_service, ctx , port, CertificatePath, IPv4);
@@ -101,7 +101,7 @@ namespace someip
 
 		else if (someipConfig.endUserType == EndUserType::SERVER)
 			{
-				std::string CertificateDir = "Certificates/"; // TESTING
+				std::string CertificateDir = "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/ara/com/network_binding/SomeIp/TLS/Certificates"; 
 
 				endUserInstance = make_shared<ServerTLS>(io_service, port, CertificateDir, IPv4);
 			}

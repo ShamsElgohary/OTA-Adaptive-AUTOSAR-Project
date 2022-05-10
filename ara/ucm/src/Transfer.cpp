@@ -1,5 +1,6 @@
 #include "../includes/Transfer.hpp"
 #include "../includes/SynchronizedStorage.hpp"
+#include "../../log/log.hpp"
 
 using namespace ara::ucm;
 
@@ -105,7 +106,9 @@ namespace ara::ucm::transfer
         SwPkg->UpdateFinishRate();
         
         // GUI SIMULATION
+        ara::log logger;
         std::cout<<SwPkg->GetFinishRate();
+        logger.ReportJsonGUI( "TransferFinishRate" , SwPkg->GetFinishRate());
         // DELAY TO SHOW RATE?
 
         return ara::ucm::OperationResultType::kSuccess;

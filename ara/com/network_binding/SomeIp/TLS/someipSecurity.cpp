@@ -218,9 +218,9 @@ namespace someip
             // std::string dh = ;
 
             //context_.set_password_callback(boost::bind(&server::get_password, this));
-            ssl_context.use_certificate_chain_file("Certificates/server.crt");
-            ssl_context.use_private_key_file("Certificates/server.key", boost::asio::ssl::context::pem);
-            ssl_context.use_tmp_dh_file("Certificates/dh2048.pem");
+            ssl_context.use_certificate_chain_file(CertificateDir + "/server.crt");
+            ssl_context.use_private_key_file(CertificateDir + "/server.key", boost::asio::ssl::context::pem);
+            ssl_context.use_tmp_dh_file(CertificateDir + "/dh2048.pem");
         }
         
         void ServerTLS::ServerListen()

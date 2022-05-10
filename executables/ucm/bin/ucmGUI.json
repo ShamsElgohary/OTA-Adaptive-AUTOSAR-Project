@@ -11,7 +11,7 @@
 				"StopUpdateSession" : false,
 				"VerifyUpdate" : false
 			},
-			"Files" : "",
+			"Clusters" : "",
 			"PackageManagerStatus" : "Idle",
 			"ProcessList" : "",
 			"ProcessedActionType" : "Install",
