@@ -23,6 +23,7 @@
 #include <sys/stat.h>
 #include "types.hpp"
 #include "nlohmann/json.hpp"
+#include "../../log/log.hpp"
 
 using json = nlohmann::json;
 

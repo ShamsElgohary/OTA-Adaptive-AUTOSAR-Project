@@ -1,7 +1,7 @@
 /*****************************************************************************/
 /* Functional Cluster : UCM
 /*
-/* File Name: UCM_Types.h
+/* File Name: types.h
 /*
 /* Description: Header file that lists all types provided by the UCM.
 /*

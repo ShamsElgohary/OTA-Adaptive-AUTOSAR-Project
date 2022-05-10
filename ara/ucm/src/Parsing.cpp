@@ -2,6 +2,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
+
 namespace pt = boost::property_tree;
 
 using namespace ara::ucm::parsing;
@@ -51,6 +52,10 @@ void SoftwarePackageParser::SwPackageManifestParser(string PackagePath)
 
     activationAction = root.get<std::string>("activationAction");
 
+    // LOGGING & GUI SIMULATION
+    ara::log logger;
+    logger.ReportJsonGUI("ProcessedActionType", actionTypeString);
+    
     // deltaPackageApplicableVersion = root.get<std::string>("deltaPackageApplicableVersion");
 }
 

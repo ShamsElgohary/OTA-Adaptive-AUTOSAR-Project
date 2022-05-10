@@ -22,6 +22,7 @@ namespace ara::ucm::pkgmgr
         promise.set_value(StartReturn);
 
         logger.ActionsLog("[TransferStart] \t\t Result : ", static_cast<unsigned char>(StartReturn.TransferStartResult));
+        logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
 
         return promise.get_future();
     }
@@ -86,6 +87,7 @@ namespace ara::ucm::pkgmgr
         promise.set_value(ProcessReturn);
 
         logger.ActionsLog("[ProcessSwPackage] \t\t Result : ", static_cast<unsigned char>(ProcessReturn.OperationReturn));
+        logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
 
         return promise.get_future();
     }
@@ -99,6 +101,7 @@ namespace ara::ucm::pkgmgr
         promise.set_value(ActivateReturn);
 
         logger.ActionsLog("[Activate] \t\t Result : ", static_cast<unsigned char>(ActivateReturn.OperationReturn));
+        logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
 
         return promise.get_future();
     }
@@ -116,6 +119,7 @@ namespace ara::ucm::pkgmgr
         promise.set_value(getSwCLuserReturn);
 
         logger.ActionsLog("[GetSwClusterInfo] \t\t Result : ", 0);
+        logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
 
         return promise.get_future();
     }
@@ -129,6 +133,7 @@ namespace ara::ucm::pkgmgr
         promise.set_value(RollbackResult);
 
         logger.ActionsLog("[Rollback] \t\t Result : ", static_cast<unsigned char>(RollbackResult.OperationReturn));
+        logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
 
         return promise.get_future();
     }
@@ -142,6 +147,7 @@ namespace ara::ucm::pkgmgr
         promise.set_value(RevertResult);
 
         logger.ActionsLog("[RevertProcessedSwPackages] \t\t Result : ", static_cast<unsigned char>(RevertResult.OperationReturn));
+        logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
 
         return promise.get_future();
     }
@@ -155,6 +161,7 @@ namespace ara::ucm::pkgmgr
         promise.set_value(FinishResult);
 
         logger.ActionsLog("[Finish] \t\t Result : ", static_cast<unsigned char>(FinishResult.OperationReturn));
+        logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
 
         return promise.get_future();
     }
@@ -169,6 +176,7 @@ namespace ara::ucm::pkgmgr
         promise.set_value(StatusResult);
 
         logger.ActionsLog("[GetCurrentStatus] \t\t Result : ", 0);
+        logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
 
         return promise.get_future();
     }

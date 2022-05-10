@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "../../utility/jsoncpp/header/json.h"
 
 
 using namespace std;
@@ -21,7 +22,7 @@ namespace ara
 
 
         /* REPORTS ALL ACTIONS THAT OCCURED*/
-        void ActionsLog( string Action, int Result = 5)
+        void ActionsLog( string Action, uint8_t Result )
         {
             try
             {
@@ -54,6 +55,23 @@ namespace ara
             
         }   
 
+        void ReportStatus(uint8_t statusId) 
+        {
+            // Read JSON File
+            Json::Value event;
+            ifstream inputFile("ucmGUI.json");
+            Json::Reader R;
+            R.parse(inputFile, event);
+
+            event["ucm_json"]["GUI"]["PackageManagerStatus"]=Json::Value(CurrentStatusTypes[statusId]);
+
+            std::ofstream json_file("ucmGUI.json");
+            json_file<<event;
+            json_file.close();            
+
+        }
+
+
         template <typename T>
         void ReportJsonGUI( string section, T value, bool ActivateCase = false )
         {
@@ -71,7 +89,6 @@ namespace ara
             else
             {
                 event["ucm_json"]["GUI"]["Activate"][section]=Json::Value(value);
-
             }
 
             std::ofstream json_file("ucmGUI.json");
@@ -81,11 +98,17 @@ namespace ara
         }
 
 
+
+
         private:
 
         /* USED TO CONVERT THE UCM OPERATION RESULTS INTO A STRING */
         string OperationResult[7] =
             { "kSuccess", "kInsufficientMemory", "kIncorrectBlock", "kIncorrectSize", "kInvalidTransferId", "kOperationNotPermitted", "kInsufficientData" };
+
+        /* USED TO CONVERT THE UCM CURRENT STATUS RESULTS INTO A STRING */        
+        string CurrentStatusTypes[9] =
+            { "kIdle", "kReady", "kProcessing", "kActivating", "kActivated", "kRollingBack", "kRolledBack", "kCleaningUp", "kVerifying" };
 
 
     };

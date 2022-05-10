@@ -1,6 +1,5 @@
 #include "../includes/Transfer.hpp"
 #include "../includes/SynchronizedStorage.hpp"
-#include "../../log/log.hpp"
 
 using namespace ara::ucm;
 
