@@ -20,9 +20,9 @@
 		"PackageManager" : 
 		{
 			"Activate" : "kOperationNotPermitted",
-			"Finish" : "",
+			"Finish" : "kOperationNotPermitted",
 			"GetCurrentStatus" : "",
-			"GetSwClusterInfo" : "",
+			"GetSwClusterInfo" : "kSuccess",
 			"ProcessSwPackage" : "kSuccess",
 			"RevertProcessedSwPackages" : "",
 			"Rollback" : "",
