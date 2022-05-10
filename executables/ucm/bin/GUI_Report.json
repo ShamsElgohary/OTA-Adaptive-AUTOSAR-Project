@@ -7,13 +7,13 @@
 			"Activate" : 
 			{
 				"PrepareUpdate" : false,
-				"StartUpdateSession" : false,
+				"StartUpdateSession" : "kRejected",
 				"VerifyUpdate" : false
 			},
 			"PackageManagerStatus" : "kReady",
 			"ProcessList" : "",
 			"ProcessedActionType" : "Install",
-			"TransferFinishRate" : 1.0
+			"TransferFinishRate" : 100.0
 		},
 		"PackageManager" : 
 		{

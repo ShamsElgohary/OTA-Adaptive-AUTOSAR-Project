@@ -59,13 +59,13 @@ namespace ara
         {
             // Read JSON File
             Json::Value event;
-            ifstream inputFile("ucmGUI.json");
+            ifstream inputFile("GUI_Report.json");
             Json::Reader R;
             R.parse(inputFile, event);
 
             event["ucm_json"]["GUI"]["PackageManagerStatus"]=Json::Value(CurrentStatusTypes[statusId]);
 
-            std::ofstream json_file("ucmGUI.json");
+            std::ofstream json_file("GUI_Report.json");
             json_file<<event;
             json_file.close();            
 

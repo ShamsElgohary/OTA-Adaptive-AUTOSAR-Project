@@ -105,9 +105,9 @@ namespace ara::ucm::transfer
         SwPkg->UpdateFinishRate();
         
         // GUI SIMULATION
-        ara::log logger;
+        ara::log guiLogger;
         std::cout<<SwPkg->GetFinishRate();
-        logger.ReportJsonGUI( "TransferFinishRate" , SwPkg->GetFinishRate()*100);
+        guiLogger.ReportJsonGUI( "TransferFinishRate" , SwPkg->GetFinishRate()*100);
         // DELAY TO SHOW RATE?
 
         return ara::ucm::OperationResultType::kSuccess;

@@ -78,7 +78,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
 
 
-        guiLogger.ReportJsonGUI( "StartUpdateSession", SM_ApplicationError::kRejected, true );
+        guiLogger.ReportJsonGUI( "StartUpdateSession", "kRejected", true );
         // ADD_Enum_Errors--------------------------------------------------------------//
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
@@ -96,7 +96,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         {
             (CurrentStatus) = PackageManagerStatusType::kReady;
 
-            guiLogger.ReportJsonGUI( "PrepareUpdate", SM_ApplicationError::kPrepareFailed, true );
+            guiLogger.ReportJsonGUI( "PrepareUpdate", "Prepare Failed", true );
 
             // ADD_Enum_Errors--------------------------------------------------------------//
             return ara::ucm::OperationResultType::kOperationNotPermitted;
@@ -107,7 +107,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             {
                 (CurrentStatus) = PackageManagerStatusType::kReady;
 
-                guiLogger.ReportJsonGUI( "PrepareUpdate", SM_ApplicationError::kRejected, true );
+                guiLogger.ReportJsonGUI( "PrepareUpdate", "Rejected" , true );
 
                 // ADD_Enum_Errors--------------------------------------------------------------//
                 return ara::ucm::OperationResultType::kOperationNotPermitted;
@@ -118,7 +118,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
     }
 
-    guiLogger.ReportJsonGUI( "PrepareUpdate", SM_ApplicationError::kPrepared, true );
+    guiLogger.ReportJsonGUI( "PrepareUpdate", "Prepared" , true );
 
 
     (CurrentStatus) = PackageManagerStatusType::kActivating;
@@ -180,7 +180,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             (CurrentStatus) = PackageManagerStatusType::kReady;
 
 
-            guiLogger.ReportJsonGUI( "VerifyUpdate", SM_ApplicationError::kVerifyFailed, true );
+            guiLogger.ReportJsonGUI( "VerifyUpdate", "Verify Failed", true );
 
             // ADD_Enum_Errors--------------------------------------------------------------//
             return ara::ucm::OperationResultType::kOperationNotPermitted;
@@ -190,7 +190,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             if (RejectedCounter == PrepareUpdateCounter)
             {
                 // Rollback();
-                guiLogger.ReportJsonGUI( "VerifyUpdate", SM_ApplicationError::kRejected, true );
+                guiLogger.ReportJsonGUI( "VerifyUpdate", "Rejected", true );
                 // ADD_Enum_Errors--------------------------------------------------------------//
                 return ara::ucm::OperationResultType::kOperationNotPermitted;
             }
@@ -198,7 +198,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         }
     }
 
-    guiLogger.ReportJsonGUI( "VerifyUpdate", SM_ApplicationError::kVerified, true );
+    guiLogger.ReportJsonGUI( "VerifyUpdate", "Verified", true );
 
     (CurrentStatus) = PackageManagerStatusType::kActivated;
     return ara::ucm::OperationResultType::kSuccess;
