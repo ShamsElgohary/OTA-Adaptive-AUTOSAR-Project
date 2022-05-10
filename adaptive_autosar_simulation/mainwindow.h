@@ -7,6 +7,7 @@
 #include "sm.h"
 #include "ucm.h"
 #include "iam.h"
+#include "QThread"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void connect_fun();
+    void choose_handler();
 
 private slots:
     void on_simulation_button_clicked();
@@ -39,6 +41,9 @@ private:
 
     QTabWidget *tabWidget =new QTabWidget ;
     QPushButton * simulation_button =new QPushButton;
+
+    simulation* s=nullptr;
+    QThread* socket_thread=nullptr;
 
 };
 #endif // MAINWINDOW_H

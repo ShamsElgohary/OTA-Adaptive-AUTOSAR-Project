@@ -1,10 +1,8 @@
 #pragma once
 
-#include <vector>
-#include <array>
+#include "types.hpp"
 #include "serviceskeleton.hpp"
 #include "serialization_simple.hpp"
-#include "types.hpp"
 
 using namespace std;
 

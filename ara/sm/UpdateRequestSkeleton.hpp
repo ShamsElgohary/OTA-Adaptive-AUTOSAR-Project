@@ -1,13 +1,10 @@
 #pragma once
-#include "../../sm/types.hpp"
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/string.hpp>
-#include "../../com/language_binding/skeleton/include/serviceskeleton.hpp"
-#include "../../com/include/types.hpp"
+
+#include "types.hpp"
+#include "serviceskeleton.hpp"
 #include "serialization_simple.hpp"
+
+using namespace std;
 
 namespace ara
 {
@@ -109,6 +106,7 @@ namespace ara
                 void handleMethod() override
                 {
                     int methodID;
+                    string methodName;
                     this->ptr2bindingProtocol->ServerListen();
                     stringstream payload = this->ptr2bindingProtocol->ReceiveMessage(methodID);
                     Deserializer2 D;
@@ -126,6 +124,7 @@ namespace ara
                     {
                     case 1:
                     {
+                        methodName = "StartUpdateSession";
                         startUpdateSessionOutput = StartUpdateSession();
                         StartUpdateSessionOutput out1=startUpdateSessionOutput.get();
                         S.serialize(result, out1);
@@ -134,6 +133,7 @@ namespace ara
                     }
                     case 2:
                     {
+                        methodName = "PrepareUpdate";
                         D.deserialize(payload, prepareUpdateInput);
                         prepareUpdateOutput = PrepareUpdate(prepareUpdateInput.FunctionGroups);
                         PrepareUpdateOutput out2=prepareUpdateOutput.get();
@@ -143,6 +143,7 @@ namespace ara
                     } 
                     case 3:
                     {
+                        methodName = "VerifyUpdate";
                         D.deserialize(payload, verifyUpdateInput);
                         verifyUpdateOutput = VerifyUpdate(verifyUpdateInput.FunctionGroups);
                         VerifyUpdateOutput out3=verifyUpdateOutput.get();
@@ -152,6 +153,7 @@ namespace ara
                     }
                     case 4:
                     {
+                        methodName = "StopUpdateSession";
                         /*fire and forget function*/
                         StopUpdateSession();
                         //stopUpdateSessionOutput = StopUpdateSession();
@@ -161,6 +163,7 @@ namespace ara
                     }
                     }
                     this->ptr2bindingProtocol -> CloseConnection();
+                    ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method, 1);
                 }
             };
         }

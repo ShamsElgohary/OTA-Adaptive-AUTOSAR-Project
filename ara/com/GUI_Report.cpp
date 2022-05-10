@@ -39,7 +39,7 @@ namespace ara
                 event["com_json"]["Proxy_Required_Method"].append(Temp);
             }
 
-            std::cout << event << std::endl;
+            // std::cout << event << std::endl;
             std::ofstream json_file("com.json");
             json_file << event;
             json_file.close();
@@ -91,7 +91,7 @@ namespace ara
 
             event["com_json"]["Service_Discovery_Request"].append(Temp);
 
-            std::cout << event << std::endl;
+            // std::cout << event << std::endl;
             std::ofstream json_file("com.json");
             json_file << event;
             json_file.close();

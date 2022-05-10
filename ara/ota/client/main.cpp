@@ -7,24 +7,21 @@
 #include "fstream"
 #include <string>
 #include <vector>
-using std::filesystem::current_path;
+// using std::filesystem::current_path;
 using namespace std;
 using namespace ara::ucm::pkgmgr::proxy;
 using namespace ara::com::proxy;
 using namespace ara::crypto;
 
-
 class CLIENT_OTA
 {
-    
+
 private:
     vector<SwClusterInfoType> trail;
     vector<SwClusterInfoType> UCM_trail;
     PackageManagerProxy *RecService = nullptr;
-    
 
 public:
-    
     CLIENT_OTA()
     {
         ara::com::ServiceHandleContainer<ProxyBase::HandleType> handles = PackageManagerProxy::FindService();
@@ -34,14 +31,16 @@ public:
         }
         else
         {
-            cout<<"NO UCM";
+            cout << "NO UCM" << endl;
+            exit(1);
         }
     }
-    
+
     string hash(string packagename)
     {
-        //string filename = packagename + ".zip";
-        string url_final = "http://127.0.0.1:8000/hash/" + packagename + ".zip";
+        // string filename = packagename + ".zip";
+        cout << packagename << endl;
+        string url_final = "https://cloud-ota-server.herokuapp.com/hash/" + packagename + ".zip";
         auto responce = cpr::Get(cpr::Url{url_final});
         // std::cout<<responce.text<<std::endl;
         return responce.text;
@@ -49,61 +48,59 @@ public:
 
     string crypto_get_hash(string packagename)
     {
-        std::string path =  "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/ara/ota/client/ex1.zip";
+        std::string path = "/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/ota/bin/" + packagename + ".zip";
 
         ifstream ifs(path, ios::binary | ios::ate);
         ifstream::pos_type pos = ifs.tellg();
         std::vector<char> result(pos);
         ifs.seekg(0, ios::beg);
         ifs.read(&result[0], pos);
-        
-        char* result_arr=nullptr;
-        result_arr=&result[0];
 
-        std::vector <unsigned char> Digest;
+        char *result_arr = nullptr;
+        result_arr = &result[0];
+
+        std::vector<unsigned char> Digest;
 
         cryp::CryptoProvider cryp_provider;
         cryp::HashFunctionCtx::Uptr hash = cryp_provider.CreateHashFunctionCtx(cryp::HashCtx_AlgID::SHA1_ID);
         hash->Start();
         hash->Update(ReadOnlyMemRegion(result_arr), result.size());
-        
-        //std::cout << "Message: " << msg << std::endl;
 
-        Digest=hash->Finish();
-        
+        // std::cout << "Message: " << msg << std::endl;
+
+        Digest = hash->Finish();
+
         std::stringstream ss;
-        
+
         for (int i = 0; i < Digest.size(); i++)
         {
-            //std::cout << static_cast<unsigned>(Digest[i]) << "    ";
-            if(Digest[i]>=0 && Digest[i] <= 15)
+            // std::cout << static_cast<unsigned>(Digest[i]) << "    ";
+            if (Digest[i] >= 0 && Digest[i] <= 15)
             {
-                ss<<"0"<< std::hex<<int(Digest[i]);
+                ss << "0" << std::hex << int(Digest[i]);
             }
             else
             {
-                ss<< std::hex<<int(Digest[i]);
+                ss << std::hex << int(Digest[i]);
             }
-            
-            
-            
         }
 
         std::string res(ss.str());
-        
+
         return res;
-
-
     }
     bool compare_hash(string packagename)
     {
-        std::string hash_server= hash(packagename);
-        std::string hash_cryp=crypto_get_hash(packagename);
-        //cout << hash_server<< endl;
-        //cout << hash_cryp << endl;
-        if(hash_server == hash_cryp)
-        {return 1;}
-        else{
+        std::string hash_server = hash(packagename);
+        cout << "Server Hash: " << hash_server << endl;
+        std::string hash_cryp = crypto_get_hash(packagename);
+        cout << "Crypto Hash: " << hash_cryp << endl;
+        if (hash_server == hash_cryp)
+        {
+            return 1;
+        }
+        else
+        {
             return 0;
         }
     }
@@ -129,16 +126,16 @@ public:
                 string number = myline.substr(it + 1);
                 int num = stoi(number);
                 x.Name = file_name;
-                x.Version = num;
+                x.Version = IntToString(num);
+                ;
                 trail.push_back(x);
             }
         }
     }
-    
 
     void get_meta_data()
     {
-        string url_final = "https://coretestsystem.herokuapp.com/meta_data_send";
+        string url_final = "https://cloud-ota-server.herokuapp.com/meta_data_send";
         auto responce = cpr::Get(cpr::Url{url_final});
         // std::cout<<responce.text<<std::endl;
         std::ofstream myfile;
@@ -150,9 +147,9 @@ public:
     void download(string packagename)
     {
         string filename = packagename + ".zip";
-        string url_final = "https://coretestsystem.herokuapp.com/download/" + packagename + ".zip";
+        string url_final = "https://cloud-ota-server.herokuapp.com/download/" + packagename + ".zip";
         auto responce = cpr::Get(cpr::Url{url_final});
-        // std::cout<<responce.text<<std::endl;
+        //  std::cout<<responce.text<<std::endl;
         std::ofstream myfile;
         myfile.open(filename);
         myfile << responce.text;
@@ -195,10 +192,17 @@ public:
     }
     void Compare()
     {
+
         for (auto cluster : trail)
         {
+            bool test = false;
+
             for (auto UCM_Cluster : UCM_trail)
             {
+                if (cluster.Name != UCM_Cluster.Name)
+                {
+                    test = true;
+                }
                 if (cluster.Name == UCM_Cluster.Name)
                 {
                     if (stoi(cluster.Version) <= stoi(UCM_Cluster.Version))
@@ -207,18 +211,30 @@ public:
                     }
                     else
                     {
-                        
-                        string pckg = cluster.Name + "#" + cluster.Version;
-                        if(compare_hash(pckg))
-                        {
+                        string pckg = cluster.Name + cluster.Version;
                         download(pckg);
-                        this->Transfer2UCM(pckg);
+                        if (compare_hash(pckg))
+                        {
+                            this->Transfer2UCM(pckg);
                         }
                         else
                         {
-                            cout << "Error: Different hash "
+                            cout << "Error: Different hash " << endl;
                         }
                     }
+                }
+            }
+            if (test = true)
+            {
+                string pckg = cluster.Name + cluster.Version;
+                download(pckg);
+                if (compare_hash(pckg))
+                {
+                    this->Transfer2UCM(pckg);
+                }
+                else
+                {
+                    cout << "Error: Different hash " << endl;
                 }
             }
         }
@@ -239,18 +255,14 @@ public:
         Get_UCM_Clusters();
         cout << "3" << endl;
         Compare();
+        cout << "4" << endl;
     }
-    
-    
 };
 
 int main()
 {
     CLIENT_OTA x;
     x.run();
-    
 
-    
-    
     return 0;
 }

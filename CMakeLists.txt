@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.0)
 set (CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache) # Less useful to do it for linking, see edit2
+endif(CCACHE_FOUND)
 
 project(Adaptive_platform)
+
 ################################jsoncpp_lib##########################
 
 set(jsoncpp_dir "${CMAKE_SOURCE_DIR}/utility/jsoncpp")
@@ -140,23 +146,25 @@ target_include_directories( com_proxy_test PUBLIC ${test_client_source_dir})
 target_link_libraries(com_proxy_test com_lib iam_lib execution_lib)
 install(TARGETS com_proxy_test RUNTIME DESTINATION ${test_client_install_dir})
 
-######################### ota ##########################
-#project(ota)
-# set(ota_source_dir "${CMAKE_SOURCE_DIR}/ara/ota/client")
-# set(ota_install_dir "${CMAKE_SOURCE_DIR}/executables/ota/bin")
-# add_executable(ota ${ota_source_dir}/main.cpp ) 
-# target_link_libraries(ota com_lib iam_lib execution_lib cpr crypto_lib)
-# install(TARGETS ota RUNTIME DESTINATION ${ota_install_dir})
 
 ################################CRYPTO_LIB#################################
-# project(crypto)
-# set(crypto_source_dir "${CMAKE_SOURCE_DIR}/ara/crypto/cryp")
-# file(GLOB_RECURSE CRYPTO_LIB_SRC_FILES ${crypto_source_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
-# add_library(crypto_lib STATIC ${CRYPTO_LIB_SRC_FILES} )
-# target_link_libraries(crypto_lib cryptopp)
-# target_include_directories(crypto_lib PUBLIC  ${crypto_source_dir}/include)
-# add_executable(crypto_test ${CRYPTO_LIB_SRC_FILES})
-# target_link_libraries(crypto_test crypto_lib)
+
+set(crypto_source_dir "${CMAKE_SOURCE_DIR}/ara/crypto/cryp")
+file(GLOB_RECURSE CRYPTO_LIB_SRC_FILES ${crypto_source_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
+add_library(crypto_lib STATIC ${CRYPTO_LIB_SRC_FILES} )
+target_link_libraries(crypto_lib cryptopp)
+target_include_directories(crypto_lib PUBLIC  ${crypto_source_dir}/include)
+add_executable(crypto_test ${CRYPTO_LIB_SRC_FILES})
+target_link_libraries(crypto_test crypto_lib)
+
+######################### ota ##########################
+
+set(ota_source_dir "${CMAKE_SOURCE_DIR}/ara/ota/client")
+set(ota_install_dir "${CMAKE_SOURCE_DIR}/executables/ota/bin")
+add_executable(ota ${ota_source_dir}/main.cpp ) 
+target_link_libraries(ota com_lib iam_lib execution_lib cpr crypto_lib)
+install(TARGETS ota RUNTIME DESTINATION ${ota_install_dir})
+
 
 
 

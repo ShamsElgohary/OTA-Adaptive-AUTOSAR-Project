@@ -4,6 +4,7 @@
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    s=new simulation(8088);
 
     vertical_layout_tabs->addWidget(tabWidget);
 
@@ -32,6 +33,26 @@ void MainWindow::on_simulation_button_clicked()
 
     sm_tab = new sm();
     tabWidget ->addTab(sm_tab,"state manager");
+
+
+    /* thread to lister on socket*/
+    socket_thread=QThread::create([this]{
+        this->s->creat_socket();
+        std::function<void()>handler = [this](){this->choose_handler();};
+        this->s->listen_l(handler);
+        });
+    socket_thread->start();
+}
+void MainWindow::choose_handler()
+{
+    std::ifstream file_input("file2.json"); //path to be updated
+        Json::Reader reader;
+        Json::Value root;
+        reader.parse(file_input, root);
+        string x=root["Cluster_name"].asString();
+
+        if(x=="sm_json")
+            this->sm_tab->sm_handler();
 }
 MainWindow::~MainWindow()
 {

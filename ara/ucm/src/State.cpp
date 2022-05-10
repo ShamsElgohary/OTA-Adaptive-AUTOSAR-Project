@@ -71,6 +71,45 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
 
+    StartUpdateSessionOutput error_startUpdateSession = proxy->StartUpdateSession();
+    if (error_startUpdateSession.AppError == SM_ApplicationError::kRejected)
+    {
+        // ADD_Enum_Errors--------------------------------------------------------------//
+        return ara::ucm::OperationResultType::kOperationNotPermitted;
+    }
+
+    uint8_t RejectedCounter = 0;
+    /*Get Functional Groups of PKG*/
+    FunctionGroupList FG_List = {"fn1", "fn2"};
+
+    PrepareUpdateOutput error_prepareUpdate = proxy->PrepareUpdate(FG_List);
+    while (error_prepareUpdate.AppError != SM_ApplicationError::kPrepared)
+    {
+        error_prepareUpdate = proxy->PrepareUpdate(FG_List);
+
+        if (error_prepareUpdate.AppError == SM_ApplicationError::kPrepareFailed)
+        {
+            (CurrentStatus) = PackageManagerStatusType::kReady;
+
+            // ADD_Enum_Errors--------------------------------------------------------------//
+            return ara::ucm::OperationResultType::kOperationNotPermitted;
+        }
+        else if (error_prepareUpdate.AppError == SM_ApplicationError::kRejected)
+        {
+            if (RejectedCounter == PrepareUpdateCounter)
+            {
+                (CurrentStatus) = PackageManagerStatusType::kReady;
+
+                // ADD_Enum_Errors--------------------------------------------------------------//
+                return ara::ucm::OperationResultType::kOperationNotPermitted;
+            }
+
+            RejectedCounter++;
+        }
+
+    }
+
+
     (CurrentStatus) = PackageManagerStatusType::kActivating;
     /* Get all Clusters with kPresent State */
     vector<ara::ucm::SwClusterInfoType> PresentSWCls = SWCLManager::GetPresentSWCLs();
@@ -85,8 +124,6 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     vector<ara::ucm::SwClusterInfoType> SwChangedClusters;
     /* GET ALL CHANGED PROCESSES */
     SwChangedClusters = SWCLManager::GetSWCLsChangeInfo();
-    /*Get Functional Groups of PKG*/
-    FunctionGroupList FG_List = {"fn1", "fn2"};
     /* SELECT UPDATED OR INSTALLED SW CLUSTERS ONLY */
     for (auto itr = SwChangedClusters.begin(); itr != SwChangedClusters.end(); ++itr)
     {
@@ -118,41 +155,6 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     /*Depenency Missing Error Check*/
     DependencyCheck();
 
-    StartUpdateSessionOutput error_startUpdateSession = proxy->StartUpdateSession();
-    if (error_startUpdateSession.AppError == SM_ApplicationError::kRejected)
-    {
-        // ADD_Enum_Errors--------------------------------------------------------------//
-        return ara::ucm::OperationResultType::kOperationNotPermitted;
-    }
-
-    uint8_t RejectedCounter = 0;
-
-    PrepareUpdateOutput error_prepareUpdate = proxy->PrepareUpdate(FG_List);
-    while (error_prepareUpdate.AppError != SM_ApplicationError::kPrepared)
-    {
-        error_prepareUpdate = proxy->PrepareUpdate(FG_List);
-
-        if (error_prepareUpdate.AppError == SM_ApplicationError::kPrepareFailed)
-        {
-            (CurrentStatus) = PackageManagerStatusType::kReady;
-
-            // ADD_Enum_Errors--------------------------------------------------------------//
-            return ara::ucm::OperationResultType::kOperationNotPermitted;
-        }
-        else if (error_prepareUpdate.AppError == SM_ApplicationError::kRejected)
-        {
-            if (RejectedCounter == PrepareUpdateCounter)
-            {
-                (CurrentStatus) = PackageManagerStatusType::kReady;
-
-                // ADD_Enum_Errors--------------------------------------------------------------//
-                return ara::ucm::OperationResultType::kOperationNotPermitted;
-            }
-
-            RejectedCounter++;
-        }
-
-    }
     RejectedCounter = 0;
 
     VerifyUpdateOutput error_verifyupdate = proxy->VerifyUpdate(FG_List);

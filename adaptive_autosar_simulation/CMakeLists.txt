@@ -14,6 +14,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
+set(jsoncpp_dir "${CMAKE_SOURCE_DIR}/jsoncpp")
+add_library(jsoncpp_lib STATIC ${jsoncpp_dir}/src/jsoncpp.cpp)
+target_include_directories(jsoncpp_lib PUBLIC ${jsoncpp_dir}/jsoncpp/header)
+
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -31,6 +35,8 @@ set(PROJECT_SOURCES
         iam.h
         service_discovery.cpp
         service_discovery.h
+        simulation.hpp
+        simulation.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -56,7 +62,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(adaptive_autosar_simulation PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(adaptive_autosar_simulation PRIVATE Qt${QT_VERSION_MAJOR}::Widgets jsoncpp_lib)
 
 set_target_properties(adaptive_autosar_simulation PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

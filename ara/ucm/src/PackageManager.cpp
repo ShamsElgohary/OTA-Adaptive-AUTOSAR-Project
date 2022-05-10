@@ -154,7 +154,7 @@ namespace ara::ucm::pkgmgr
 
         promise.set_value(FinishResult);
 
-        logger.ActionsLog("[Activate] \t\t Result : ", static_cast<unsigned char>(FinishResult.OperationReturn));
+        logger.ActionsLog("[Finish] \t\t Result : ", static_cast<unsigned char>(FinishResult.OperationReturn));
 
         return promise.get_future();
     }
