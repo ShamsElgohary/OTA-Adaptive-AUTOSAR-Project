@@ -40,7 +40,7 @@ public:
     {
         // string filename = packagename + ".zip";
         cout << packagename << endl;
-        string url_final = "https://secure-otaserver.herokuapp.com/hash/" + packagename + ".zip";
+        string url_final = "https://cloud-ota-server.herokuapp.com/hash/" + packagename + ".zip";
         auto responce = cpr::Get(cpr::Url{url_final});
         // std::cout<<responce.text<<std::endl;
         return responce.text;
@@ -135,7 +135,7 @@ public:
 
     void get_meta_data()
     {
-        string url_final = "https://secure-otaserver.herokuapp.com/meta_data_send";
+        string url_final = "https://cloud-ota-server.herokuapp.com/meta_data_send";
         auto responce = cpr::Get(cpr::Url{url_final});
         // std::cout<<responce.text<<std::endl;
         std::ofstream myfile;
@@ -147,7 +147,7 @@ public:
     void download(string packagename)
     {
         string filename = packagename + ".zip";
-        string url_final = "https://secure-otaserver.herokuapp.com/download/" + packagename + ".zip";
+        string url_final = "https://cloud-ota-server.herokuapp.com/download/" + packagename + ".zip";
         auto responce = cpr::Get(cpr::Url{url_final});
         //  std::cout<<responce.text<<std::endl;
         std::ofstream myfile;

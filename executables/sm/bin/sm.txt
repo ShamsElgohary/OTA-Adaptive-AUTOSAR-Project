@@ -12,3 +12,10 @@ Stop Updating Session
 machineFG
 running
 [GUI REPORT] Service ID: 1, Instance ID: 1, Method Type: Offer, Grant Result: 1
+[SM Skeleton] handle: 1
+Starting Update Session
+[sm] setting new state from sm
+machineFG
+running
+Updating Machine is not allowed
+[GUI REPORT] Method ID: 1, Method Name: StartUpdateSession, Method Type: Skeleton
