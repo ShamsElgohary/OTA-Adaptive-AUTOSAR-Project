@@ -2,6 +2,7 @@
 #include "../includes/Storage.hpp"
 #include "../includes/SynchronizedStorage.hpp"
 #include "../includes/Parsing.hpp"
+#include "../includes/UCM_Common.hpp"
 
 using namespace ara::ucm::storage;
 using namespace ara::ucm::state;
@@ -74,6 +75,10 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     StartUpdateSessionOutput error_startUpdateSession = proxy->StartUpdateSession();
     if (error_startUpdateSession.AppError == SM_ApplicationError::kRejected)
     {
+
+
+
+        guiLogger.ReportJsonGUI( "StartUpdateSession", SM_ApplicationError::kRejected, true );
         // ADD_Enum_Errors--------------------------------------------------------------//
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
@@ -91,6 +96,8 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         {
             (CurrentStatus) = PackageManagerStatusType::kReady;
 
+            guiLogger.ReportJsonGUI( "PrepareUpdate", SM_ApplicationError::kPrepareFailed, true );
+
             // ADD_Enum_Errors--------------------------------------------------------------//
             return ara::ucm::OperationResultType::kOperationNotPermitted;
         }
@@ -100,6 +107,8 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             {
                 (CurrentStatus) = PackageManagerStatusType::kReady;
 
+                guiLogger.ReportJsonGUI( "PrepareUpdate", SM_ApplicationError::kRejected, true );
+
                 // ADD_Enum_Errors--------------------------------------------------------------//
                 return ara::ucm::OperationResultType::kOperationNotPermitted;
             }
@@ -108,6 +117,8 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         }
 
     }
+
+    guiLogger.ReportJsonGUI( "PrepareUpdate", SM_ApplicationError::kPrepared, true );
 
 
     (CurrentStatus) = PackageManagerStatusType::kActivating;
@@ -168,6 +179,9 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         {
             (CurrentStatus) = PackageManagerStatusType::kReady;
 
+
+            guiLogger.ReportJsonGUI( "VerifyUpdate", SM_ApplicationError::kVerifyFailed, true );
+
             // ADD_Enum_Errors--------------------------------------------------------------//
             return ara::ucm::OperationResultType::kOperationNotPermitted;
         }
@@ -176,13 +190,15 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             if (RejectedCounter == PrepareUpdateCounter)
             {
                 // Rollback();
-
+                guiLogger.ReportJsonGUI( "VerifyUpdate", SM_ApplicationError::kRejected, true );
                 // ADD_Enum_Errors--------------------------------------------------------------//
                 return ara::ucm::OperationResultType::kOperationNotPermitted;
             }
             RejectedCounter++;
         }
     }
+
+    guiLogger.ReportJsonGUI( "VerifyUpdate", SM_ApplicationError::kVerified, true );
 
     (CurrentStatus) = PackageManagerStatusType::kActivated;
     return ara::ucm::OperationResultType::kSuccess;
