@@ -166,8 +166,21 @@
 				"Instance_ID" : 1,
 				"Service_ID" : 1,
 				"Type" : "Offer"
+			},
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 1,
+				"Type" : "Offer"
 			}
 		],
-		"Skeleton_Provided_Method" : []
+		"Skeleton_Provided_Method" : 
+		[
+			{
+				"Method_ID" : 1,
+				"Method_Name" : "StartUpdateSession",
+				"Service_ID" : 1
+			}
+		]
 	}
 }

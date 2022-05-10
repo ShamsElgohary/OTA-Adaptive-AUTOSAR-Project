@@ -8,14 +8,12 @@
 			{
 				"PrepareUpdate" : false,
 				"StartUpdateSession" : false,
-				"StopUpdateSession" : false,
 				"VerifyUpdate" : false
 			},
-			"Clusters" : "",
-			"PackageManagerStatus" : "Idle",
+			"PackageManagerStatus" : "kReady",
 			"ProcessList" : "",
 			"ProcessedActionType" : "Install",
-			"TransferFinishRate" : 0
+			"TransferFinishRate" : 1.0
 		},
 		"PackageManager" : 
 		{
