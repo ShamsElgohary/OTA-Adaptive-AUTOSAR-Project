@@ -24,6 +24,7 @@
 #include "types.hpp"
 #include "nlohmann/json.hpp"
 #include "../../log/log.hpp"
+#include "../../../utility/simulation/include/simulation.hpp"
 
 using json = nlohmann::json;
 

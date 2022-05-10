@@ -261,6 +261,7 @@ public:
 
 int main()
 {
+    ClearJSONReport();
     CLIENT_OTA x;
     x.run();
 

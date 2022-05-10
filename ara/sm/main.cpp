@@ -7,6 +7,7 @@ using namespace ara::exec;
 
 int main()
 {
+    ClearJSONReport();
     printf("SM started to work\n");
     /********Report to EM*****/
     ExecutionClient client{};

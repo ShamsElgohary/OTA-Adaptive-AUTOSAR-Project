@@ -1,3 +1,5 @@
+
+[GetSwClusterInfo] 		 Result : kSuccess
 [TransferStart] 		 Result : kSuccess
 [TransferData] 		 Result : kSuccess
 [TransferData] 		 Result : kSuccess
