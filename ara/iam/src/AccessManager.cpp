@@ -43,6 +43,41 @@ void ara::iam::AccessManager::RunEventLoop()
 
         // RETURN RESULT TO CLIENT
         server.Send(rtn, sd);
+
+
+        Json::Value request;
+        //m7taga ageb path el iam_json file hena
+        ifstream f("iam_access.json");
+        Json::Reader R;
+        R.parse(f, request);
+        Json::Value t;
+    
+        // Add To JSON FILE
+        request["Cluster_name"] = "iam_json";
+        request["Requests"] = Json::arrayValue;
+        t["Result"] = Json::stringValue;
+        t["Process_id"] = Json::stringValue;
+        t["Process_name"] = Json::stringValue;
+        t["info"]["GrantType"] = Json::stringValue;
+        t["info"]["PR_Type"] = Json::stringValue;
+        t["info"]["Service_ID"] = Json::stringValue;
+        t["info"]["Instance_ID"] = Json::stringValue;
+
+        t["Grant_Result"] = rtn;
+        t["Process_id"] = PID;
+        t["Process_name"] = P_name;
+        t["info"]["GrantType"] = G.GType;
+        t["info"]["PR_Type"] = G.PR_T;
+        t["info"]["Service_ID"] = G.S_id;
+        t["info"]["Instance_ID"] = G.In_id;
+
+        request["Requests"].append(t);
+
+        std::cout << request << std::endl;
+        //matnsesh path el file
+        std::ofstream json_f("iam_access.json");
+        json_f << request;
+        json_f.close();
     }
 }
 

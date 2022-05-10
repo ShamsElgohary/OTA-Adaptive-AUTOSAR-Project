@@ -5,6 +5,16 @@
 #include "GrantStorage.hpp"
 #include "IPCserverInterface.hpp"
 #include "../../exec/include/find_process_client.hpp"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <bits/stdc++.h>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <string>
+#include <boost/filesystem.hpp>
+#include "../../../utility/jsoncpp/header/json.h"
+#include "../../../utility/simulation/include/simulation.hpp"
 
 
 namespace ara

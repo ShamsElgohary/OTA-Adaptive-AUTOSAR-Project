@@ -28,6 +28,56 @@ void ara::iam::GrantStorage::ParseJson(std::string filePath)
         }
         AccessMap.insert({P_Name, VG});
     }
+
+
+    Json::Value access;
+    ifstream f("iam_access.json");
+    Json::Reader R;
+    R.parse(f, access);
+    Json::Value tmp;
+    if (!access)
+    {
+        access["Cluster_name"] = "iam_json";
+        access["Processes"] = Json::arrayValue;
+        tmp["Process"] = Json::stringValue;
+        tmp["info"]["GrantType"] = Json::stringValue;
+        tmp["info"]["PR_Type"] = Json::stringValue;
+        tmp["info"]["Service_ID"] = Json::stringValue;
+        tmp["info"]["Instance_ID"] = Json::stringValue;
+    }
+
+    // Add To JSON FILE
+    std::map<std::string, std::vector<ara::iam::Grant>>::iterator it = AccessMap.begin();
+    while (it != AccessMap.end())
+    {
+
+        tmp["Process"] = Json::stringValue;
+        tmp["info"]["GrantType"] = Json::stringValue;
+        tmp["info"]["PR_Type"] = Json::stringValue;
+        tmp["info"]["Service_ID"] = Json::stringValue;
+        tmp["info"]["Instance_ID"] = Json::stringValue;
+
+        tmp["Process"] = it->first;
+
+        for(auto i = std::begin(it->second); i != std::end(it->second); ++i)
+        {
+            ara::iam::Grant GG = *i;
+            tmp["info"]["GrantType"] = GG.GType;
+            tmp["info"]["PR_Type"] = GG.PR_T;
+            tmp["info"]["Service_ID"] = GG.S_id;
+            tmp["info"]["Instance_ID"] = GG.In_id;
+
+            access["Processes"].append(tmp);
+        }        
+
+        it++;
+    }
+    
+    std::cout << access << std::endl;
+    std::ofstream json_file("iam_access.json");
+    json_file << access;
+    json_file.close();
+
 }
 
 bool ara::iam::GrantStorage::SearchGrantStorage(const std::string P_name, const ara::iam::Grant & G)
