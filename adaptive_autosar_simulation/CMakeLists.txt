@@ -37,6 +37,8 @@ set(PROJECT_SOURCES
         service_discovery.h
         simulation.hpp
         simulation.cpp
+        sd.h
+        sd.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
