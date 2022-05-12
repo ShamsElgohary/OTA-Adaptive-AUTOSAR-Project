@@ -32,26 +32,10 @@ void Application::start()
 }
 void Application::terminate()
 {
-    if (this->current_state != ExecutionState::Kterminate)
+    if(kill(id, SIGTERM))
     {
-        if (kill(id, SIGKILL) == 0)
-        {
-            cout << "[em] "
-                 << "terminating " << name << "\n\n\n";
-            id = NULL;
-            this->current_state = ExecutionState::Kterminate;
-        }
-        else
-        {
-            cout << "[em] "
-                 << "couldn't terminate process.... with id = " << id << " and named " << name << "\n\n\n";
-        }
+        cout << "[em] couldn't terminate process.... with id = " << id << " and named " << name << "\n\n\n";
     }
-    else
-    {
-        cout << "process" << name << " terminated by it's own\n";
-    }
-    
 }
 
 void Application::Update_status()
@@ -61,12 +45,14 @@ void Application::Update_status()
     if (newstate == ExecutionState::Krunning)
     {
         current_state = newstate;
-        cout << "[em] " << name << " new state is Krunning\n\n\n";
+        cout << "[em] " << name << " new state is Krunning "<<id<<"\n\n\n";
     }
     else if (newstate == ExecutionState::Kterminate)
     {
         current_state = newstate;
-        cout << "[em] " << name << " new state is Kterminate\n\n\n";
+        cout << "[em] " << name << " new state is Kterminate "<<id<<"\n\n\n";
+        close(fd);
+        id=NULL;
     }
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name, string path)

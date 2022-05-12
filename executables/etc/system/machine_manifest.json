@@ -9,10 +9,6 @@
     {
       "states": ["idle","play","terminate"]
     },
-    "fn2": 
-    {
-      "states": ["idle","run","end"]
-    },
     "fn3": 
     {
       "states": ["idle","run","end"]

@@ -113,12 +113,11 @@ void ApplicationExecutionMgr::initialize()
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
-    reportConfig_simulation();
+    iam_future = IAM_handle();
+    process_state_update_future = updateProcessState();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
     Execute();
-    iam_future = IAM_handle();
-    process_state_update_future = updateProcessState();
     transitionChanges_.toStart_.clear();
     transitionChanges_.toTerminate_.clear();
 }
@@ -132,6 +131,7 @@ bool ApplicationExecutionMgr::run()
     int size;
     while (true)
     {
+        reportConfig_simulation();
         ProcessStateClientRequest();
         Terminate();
         Execute();
@@ -163,7 +163,7 @@ bool ApplicationExecutionMgr::Execute()
         apps.pop();
         for (auto depend : app->configuration_.dependency)
         {
-            if (apps_state[depend.first]->current_state != ExecutionState::Krunning)
+            if (apps_state[depend.first]->current_state != (depend.second=="Krunning"? ExecutionState::Krunning : ExecutionState::Kterminate))
             {
                 apps.push(app);
                 flag = false;
@@ -187,12 +187,16 @@ future<void> ApplicationExecutionMgr::updateProcessState()
         {
             for (auto fng : function_groups_)
             {
-                for (auto app : function_groups_[fng.first]->startupConfigurations_[function_groups_[fng.first]->currentState_])
+                for (auto state : function_groups_[fng.first]->startupConfigurations_)
                 {
-                    app->Update_status();
+                    for(auto app: state.second)
+                    {
+                        if(app->id !=NULL)
+                            app->Update_status();
+                    }
                 }
             }
-             std::this_thread::sleep_for(10ms);
+             std::this_thread::sleep_for(500ms);
         } });
 }
 
@@ -233,43 +237,37 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     Json::Reader reader;
     std::ifstream input_file("../../etc/system/machine_manifest.json");
     reader.parse(input_file, machine_manifest_json);
-
-    Json::Value root;
-    Json::Value vec(Json::arrayValue);
-    Json::Value vec2(Json::arrayValue);
-    Json::Value obj(Json::objectValue);
-    Json::Value obj2(Json::objectValue);
-    Json::Value obj3(Json::objectValue);
-
-    Json::StyledStreamWriter writer;
+    input_file.close();
     std::ofstream output_file("../etc/executables_config.json");
-    root["function_groups"] = machine_manifest_json["function_groups"];
-    for (auto app : executables_)
-    {
-        for (auto confg : app.manifest_.startUpConfigurations)
-        {
-            for (auto fg : confg.function_group_states)
-            {
-                for (auto state : fg.second)
-                {
-                    vec2.append(Json::Value(state));
-                }
-                obj2[fg.first] = vec2;
-            }
-            for (auto depends : confg.dependency)
-            {
-                obj3[depends.first] = depends.second;
-            }
-        }
-        obj["function_group"] = obj2;
-        obj["name"] = app.manifest_.name;
-        obj["depends"] = obj3;
-        vec.append(obj);
-        obj.clear();
-        obj2.clear();
-        obj3.clear();
-        vec2.clear();
-    }
-    root["executables"] = vec;
-    writer.write(output_file, root);
+    output_file<<machine_manifest_json["function_groups"];
+    output_file.close();
+    // root["function_groups"] = machine_manifest_json["function_groups"];
+    // for (auto app : executables_)
+    // {
+    //     for (auto confg : app.manifest_.startUpConfigurations)
+    //     {
+    //         for (auto fg : confg.function_group_states)
+    //         {
+    //             for (auto state : fg.second)
+    //             {
+    //                 vec2.append(Json::Value(state));
+    //             }
+    //             obj2[fg.first] = vec2;
+    //         }
+    //         for (auto depends : confg.dependency)
+    //         {
+    //             obj3[depends.first] = depends.second;
+    //         }
+    //     }
+    //     obj["function_group"] = obj2;
+    //     obj["name"] = app.manifest_.name;
+    //     obj["depends"] = obj3;
+    //     vec.append(obj);
+    //     obj.clear();
+    //     obj2.clear();
+    //     obj3.clear();
+    //     vec2.clear();
+    // }
+    // root["executables"] = vec;
+    // writer.write(output_file, root);
 }

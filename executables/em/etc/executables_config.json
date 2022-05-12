@@ -1,86 +1,31 @@
 {
-	"executables" : 
-	[
-		{
-			"depends" : 
-			{
-				"com_skeleton_test" : "Krunning"
-			},
-			"function_group" : 
-			{
-				"fn3" : [ "run" ]
-			},
-			"name" : "com_proxy_test"
-		},
-		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"fn3" : [ "run" ]
-			},
-			"name" : "com_skeleton_test"
-		},
-		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"fn1" : [ "idle", "play" ]
-			},
-			"name" : "ex1"
-		},
-		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"fn2" : [ "idle", "run" ]
-			},
-			"name" : "ex2"
-		},
-		{
-			"depends" : 
-			{
-				"someip_sd" : "Krunning"
-			},
-			"function_group" : 
-			{
-				"machineFG" : [ "running" ]
-			},
-			"name" : "iam"
-		},
-		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"machineFG" : [ "startup", "running" ]
-			},
-			"name" : "sm"
-		},
-		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"machineFG" : [ "running" ]
-			},
-			"name" : "someip_sd"
-		}
-	],
-	"function_groups" : 
+	"fn1" : 
 	{
-		"fn1" : 
-		{
-			"states" : [ "idle", "play", "terminate" ]
-		},
-		"fn2" : 
-		{
-			"states" : [ "idle", "run", "end" ]
-		},
-		"fn3" : 
-		{
-			"states" : [ "idle", "run", "end" ]
-		},
-		"machineFG" : 
-		{
-			"states" : [ "off", "startup", "running", "restart", "sleep" ]
-		}
+		"states" : 
+		[
+			"idle",
+			"play",
+			"terminate"
+		]
+	},
+	"fn3" : 
+	{
+		"states" : 
+		[
+			"idle",
+			"run",
+			"end"
+		]
+	},
+	"machineFG" : 
+	{
+		"states" : 
+		[
+			"off",
+			"startup",
+			"running",
+			"restart",
+			"sleep"
+		]
 	}
 }

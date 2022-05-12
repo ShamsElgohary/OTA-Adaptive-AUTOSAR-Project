@@ -19,7 +19,7 @@ namespace ara
             } CtorToken;
 
         public:
-            pid_t id;
+            pid_t id{NULL};
             int fd;
             string name;
             string executable_path;

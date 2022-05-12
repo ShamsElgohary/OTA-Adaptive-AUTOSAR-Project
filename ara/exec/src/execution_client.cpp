@@ -13,7 +13,6 @@ ExecutionClient::ExecutionClient()
 
 void ExecutionClient::ReportExecutionStaste(ExecutionState state)
 {
-    cout<< "[em] " <<"reporting state from exuctable\n" ;
     write(0, &state, sizeof(state));
 }
 
