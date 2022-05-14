@@ -278,20 +278,18 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     }
     root["executables_configurations"] = vec;
     vec.clear();
-    for (auto fng : function_groups_)
+    for (auto exe : executables_)
     {
-        for (auto state : function_groups_[fng.first]->startupConfigurations_)
+        for (auto app : exe.startupConfigurations_)
         {
-            for (auto app : state.second)
+
+            if (app.id != 0)
             {
-                if (app->id != 0)
-                {
-                    obj["name"] = app->name;
-                    obj["current_state"] = (app->current_state == ExecutionState::Krunning ? "Krunning" : "Kterminate");
-                    obj["pid"] = app->id;
-                    vec.append(obj);
-                    obj.clear();
-                }
+                obj["name"] = app.name;
+                obj["current_state"] = (app.current_state == ExecutionState::Krunning ? "Krunning" : "Kterminate");
+                obj["pid"] = app.id;
+                vec.append(obj);
+                obj.clear();
             }
         }
     }
