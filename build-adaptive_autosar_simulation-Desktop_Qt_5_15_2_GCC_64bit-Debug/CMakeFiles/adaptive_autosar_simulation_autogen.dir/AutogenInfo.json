@@ -85,6 +85,12 @@
 	"HEADERS" : 
 	[
 		[
+			"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/com.h",
+			"MU",
+			"EWIEGA46WW/moc_com.cpp",
+			null
+		],
+		[
 			"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/exec.h",
 			"MU",
 			"EWIEGA46WW/moc_exec.cpp",
@@ -109,9 +115,15 @@
 			null
 		],
 		[
-			"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.h",
+			"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sd.h",
 			"MU",
-			"EWIEGA46WW/moc_service_discovery.cpp",
+			"EWIEGA46WW/moc_sd.cpp",
+			null
+		],
+		[
+			"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/simulation.hpp",
+			"MU",
+			"EWIEGA46WW/moc_simulation.cpp",
 			null
 		],
 		[
@@ -142,6 +154,7 @@
 	[
 		"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop_Qt_5_15_2_GCC_64bit-Debug",
 		"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation",
+		"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/jsoncpp/jsoncpp/header",
 		"/home/loay/Qt/5.15.2/gcc_64/include",
 		"/home/loay/Qt/5.15.2/gcc_64/include/QtWidgets",
 		"/home/loay/Qt/5.15.2/gcc_64/include/QtGui",
@@ -180,6 +193,11 @@
 	"SOURCES" : 
 	[
 		[
+			"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/com.cpp",
+			"MU",
+			null
+		],
+		[
 			"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/exec.cpp",
 			"MU",
 			null
@@ -205,7 +223,12 @@
 			null
 		],
 		[
-			"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.cpp",
+			"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sd.cpp",
+			"MU",
+			null
+		],
+		[
+			"/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/simulation.cpp",
 			"MU",
 			null
 		],
