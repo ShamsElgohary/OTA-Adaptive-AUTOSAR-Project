@@ -35,6 +35,10 @@ void MainWindow::on_simulation_button_clicked()
     tabWidget ->addTab(sm_tab,"state manager");
 
 
+    ucm_tab = new ucm();
+    tabWidget ->addTab(ucm_tab,"UCM");
+
+
     /* thread to lister on socket*/
     socket_thread=QThread::create([this]{
         this->s->creat_socket();
