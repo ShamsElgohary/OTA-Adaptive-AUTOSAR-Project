@@ -16,7 +16,7 @@ namespace ara
             {
             public:
                 PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : 
-                skeletonBase("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",2, I_id, mode)
+                skeletonBase("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",2, I_id, mode)
                 {
 
                 }

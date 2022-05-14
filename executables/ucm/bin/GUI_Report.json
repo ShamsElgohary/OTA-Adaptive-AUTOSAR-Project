@@ -11,9 +11,20 @@
 				"VerifyUpdate" : false
 			},
 			"PackageManagerStatus" : "kReady",
-			"ProcessList" : "",
 			"ProcessedActionType" : "Install",
 			"TransferFinishRate" : 100.0
+		},
+		"PKGDetails" : 
+		{
+			"Action" : "Install",
+			"Clusters" : 
+			{
+				"sw1" : 
+				{
+					"name" : "SWCL_TEST1_VENDOR_A",
+					"version" : "0.1.0"
+				}
+			}
 		},
 		"PackageManager" : 
 		{

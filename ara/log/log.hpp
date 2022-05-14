@@ -53,7 +53,43 @@ namespace ara
                 std::cout << e.what() << '\n';
             }
             
-        }   
+        }  
+
+
+
+        void pkgAction(string actiontype)
+        {
+            // Read JSON File
+            Json::Value event;
+            ifstream inputFile("GUI_Report.json");
+            Json::Reader R;
+            R.parse(inputFile, event);
+
+            event["ucm_json"]["PKGDetails"]["Action"]=Json::Value(actiontype);
+
+
+            std::ofstream json_file("GUI_Report.json");
+            json_file<<event;
+            json_file.close();
+        } 
+
+
+        void newPkgCluster(string name,string version)
+        {
+            // Read JSON File
+            Json::Value event;
+            ifstream inputFile("GUI_Report.json");
+            Json::Reader R;
+            R.parse(inputFile, event);
+
+            event["ucm_json"]["PKGDetails"]["Clusters"]["sw1"]["name"] = name;
+            event["ucm_json"]["PKGDetails"]["Clusters"]["sw1"]["version"] = version;
+
+
+            std::ofstream json_file("GUI_Report.json");
+            json_file<<event;
+            json_file.close();
+        } 
 
         void ReportStatus(uint8_t statusId) 
         {
