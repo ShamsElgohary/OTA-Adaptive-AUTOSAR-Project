@@ -1857,12 +1857,11 @@ CMakeFiles/adaptive_autosar_simulation.dir/mainwindow.cpp.o
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QCommonStyle
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QHeaderView
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QLayout
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QListWidget
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMainWindow
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QScrollerProperties
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QStatusBar
- /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QTreeWidget
+ /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QTreeView
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QtWidgets
  /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QtWidgetsDepends

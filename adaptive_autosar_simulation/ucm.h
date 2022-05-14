@@ -21,10 +21,18 @@ private:
      QGroupBox *mid = new QGroupBox("MID");
      QGroupBox *clusters = new QGroupBox("CLUSTERS");
 
+
      //MID Colume setup
      QGroupBox *status = new QGroupBox("STATUS");
      QGroupBox *newSwPkg = new QGroupBox("New Software Package Details");
      QGroupBox *activate = new QGroupBox("Activate Details");
+
+
+     //New SW PKG Details
+     QTableWidget *detailsTable= new QTableWidget;
+     QLabel *actionText = new QLabel;
+     QStringList detailsTableXLabels;
+
 
 
      //Add lists to mid colume

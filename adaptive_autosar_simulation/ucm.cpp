@@ -28,8 +28,26 @@ ucm::ucm(QWidget *parent)
     mid->layout()->addWidget(newSwPkg);
     mid->layout()->addWidget(activate);
 
+    mid->setMaximumWidth(500);
+    status->setMaximumHeight(160);
+
+    //New SW PKG Details Implimentaion
+
+    detailsTable->setRowCount(4);
+    detailsTable->setColumnCount(1);
+    detailsTableXLabels<<"Cluster Name"<<"Version"<<"Action"<<"Status";
+    detailsTable->setVerticalHeaderLabels(detailsTableXLabels);
+    detailsTable->horizontalHeader()->setVisible(0);
+    detailsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    detailsTable->verticalHeader()->setSectionResizeMode (QHeaderView::Fixed);
+    detailsTable->setSelectionMode(QAbstractItemView::NoSelection);
+    detailsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    detailsTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    detailsTable->setItem(0,0,new QTableWidgetItem(QString("Hello")));
 
 
+    status->layout()->addWidget(detailsTable);
     //add widget conf(y,x,col,row)
 
     main_layout->addWidget(comBox,0,4,1,1);
