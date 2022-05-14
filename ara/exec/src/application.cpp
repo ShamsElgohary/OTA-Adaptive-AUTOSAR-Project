@@ -21,7 +21,7 @@ void Application::start()
 {
     mkfifo(this->name.c_str(), 0777);
     fd = open(this->name.c_str(), O_RDWR);
-    fcntl(fd, F_SETFL, O_NONBLOCK);
+    // fcntl(fd, F_SETFL, O_NONBLOCK);
 
     this->id = fork();
     if (this->id == 0)
@@ -32,28 +32,32 @@ void Application::start()
 }
 void Application::terminate()
 {
-    if(kill(id, SIGTERM))
+    if (kill(id, SIGTERM))
     {
         cout << "[em] couldn't terminate process.... with id = " << id << " and named " << name << "\n\n\n";
     }
 }
 
-void Application::Update_status()
+future<void> Application::Update_status()
 {
-    ExecutionState newstate = ExecutionState::Kidle;
-    read(fd, &newstate, sizeof(current_state));
-    if (newstate == ExecutionState::Krunning)
-    {
-        current_state = newstate;
-        cout << "[em] " << name << " new state is Krunning "<<id<<"\n\n\n";
-    }
-    else if (newstate == ExecutionState::Kterminate)
-    {
-        current_state = newstate;
-        cout << "[em] " << name << " new state is Kterminate "<<id<<"\n\n\n";
-        close(fd);
-        id=NULL;
-    }
+    return async(launch::async, [this]()
+                                {
+                    ExecutionState newstate = ExecutionState::Kidle;
+                    read(fd, &newstate, sizeof(current_state));
+                    if (newstate == ExecutionState::Krunning)
+                    {
+                        current_state = newstate;
+                        cout << "[em] " << name << " new state is Krunning "<<id<<"\n\n\n";
+                    }
+                    newstate = ExecutionState::Kidle;
+                    read(fd, &newstate, sizeof(current_state));
+                    if (newstate == ExecutionState::Kterminate)
+                    {
+                        current_state = newstate;
+                        cout << "[em] " << name << " new state is Kterminate "<<id<<"\n\n\n";
+                        close(fd);
+                        id=0;
+                    } });
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name, string path)
 {
@@ -66,3 +70,4 @@ Application::~Application()
 {
     close(fd);
 }
+

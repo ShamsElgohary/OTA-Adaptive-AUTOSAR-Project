@@ -115,7 +115,6 @@ void ApplicationExecutionMgr::initialize()
     loadExecutablesConfigrations();
     reportConfig_simulation();
     iam_future = IAM_handle();
-    process_state_update_future = updateProcessState();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
     Execute();
@@ -133,6 +132,7 @@ bool ApplicationExecutionMgr::run()
     while (true)
     {
         ProcessStateClientRequest();
+        reportConfig_simulation();
         Terminate();
         Execute();
         transitionChanges_.toStart_.clear();
@@ -145,6 +145,7 @@ bool ApplicationExecutionMgr::Terminate()
     for (auto &app : transitionChanges_.toTerminate_)
     {
         app->terminate();
+        process_state_update_future.push_back(app->Update_status());
     }
 }
 bool ApplicationExecutionMgr::Execute()
@@ -173,32 +174,33 @@ bool ApplicationExecutionMgr::Execute()
         if (flag)
         {
             app->start();
+            process_state_update_future.push_back(app->Update_status());
         }
         flag = true;
     }
     return true;
 }
-future<void> ApplicationExecutionMgr::updateProcessState()
-{
+// future<void> ApplicationExecutionMgr::updateProcessState()
+// {
 
-    return async(launch::async, [this]()
-                 {
-        while(1)
-        {
-            for (auto fng : function_groups_)
-            {
-                for (auto state : function_groups_[fng.first]->startupConfigurations_)
-                {
-                    for(auto app: state.second)
-                    {
-                        if(app->id !=NULL)
-                            app->Update_status();
-                    }
-                }
-            }
-             std::this_thread::sleep_for(500ms);
-        } });
-}
+//     return async(launch::async, [this]()
+//                  {
+//         while(1)
+//         {
+//             for (auto fng : function_groups_)
+//             {
+//                 for (auto state : function_groups_[fng.first]->startupConfigurations_)
+//                 {
+//                     for(auto app: state.second)
+//                     {
+//                         if(app->id !=NULL)
+//                             app->Update_status();
+//                     }
+//                 }
+//             }
+//              std::this_thread::sleep_for(100ms);
+//         } });
+// }
 
 string ApplicationExecutionMgr::get_process_name(int test_id)
 {
@@ -246,7 +248,7 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     Json::Value obj(Json::objectValue);
     Json::Value obj2(Json::objectValue);
     Json::Value obj3(Json::objectValue);
-    root["function_groups"] =machine_manifest_json["function_groups"];
+    root["function_groups"] = machine_manifest_json["function_groups"];
     for (auto app : executables_)
     {
 
@@ -274,8 +276,39 @@ void ApplicationExecutionMgr::reportConfig_simulation()
         obj3.clear();
         vec2.clear();
     }
-    root["executables"] = vec;
+    root["executables_configurations"] = vec;
+    vec.clear();
+    for (auto fng : function_groups_)
+    {
+        for (auto state : function_groups_[fng.first]->startupConfigurations_)
+        {
+            for (auto app : state.second)
+            {
+                if (app->id != 0)
+                {
+                    obj["name"] = app->name;
+                    obj["current_state"] = (app->current_state == ExecutionState::Krunning ? "Krunning" : "Kterminate");
+                    obj["pid"] = app->id;
+                    vec.append(obj);
+                    obj.clear();
+                }
+            }
+        }
+    }
+    root["running_executables"] = vec;
+
+    vec.clear();
+    for (auto run : this->transitionChanges_.toStart_)
+    {
+        vec.append(run->name);
+    }
+    root["to_run"] = vec;
+    for (auto term : this->transitionChanges_.toTerminate_)
+    {
+        vec.append(term->name);
+    }
+    vec.clear();
+    root["to_term"] = vec;
     output_file << root;
     output_file.close();
-
 }

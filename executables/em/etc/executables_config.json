@@ -1,5 +1,5 @@
 {
-	"executables" : 
+	"executables_configurations" : 
 	[
 		{
 			"depends" : 
@@ -122,5 +122,40 @@
 				"sleep"
 			]
 		}
-	}
+	},
+	"running_executables" : 
+	[
+		{
+			"current_state" : "Krunning",
+			"name" : "com_proxy_test",
+			"pid" : 15837
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "com_skeleton_test",
+			"pid" : 15835
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "iam",
+			"pid" : 15724
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "sm",
+			"pid" : 15706
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "someip_sd",
+			"pid" : 15722
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "sm",
+			"pid" : 15706
+		}
+	],
+	"to_run" : [],
+	"to_term" : []
 }

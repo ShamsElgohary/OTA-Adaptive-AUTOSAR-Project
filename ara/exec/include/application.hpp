@@ -19,7 +19,7 @@ namespace ara
             } CtorToken;
 
         public:
-            pid_t id{NULL};
+            pid_t id{0};
             int fd;
             string name;
             string executable_path;
@@ -30,7 +30,7 @@ namespace ara
             ~Application();
             void start();
             void terminate();
-            void Update_status();
+            future<void> Update_status();
         };
     }
 }

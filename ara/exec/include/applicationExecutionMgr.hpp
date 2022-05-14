@@ -53,7 +53,7 @@ namespace ara
 
         public:
             future<void> iam_future;
-            future<void> process_state_update_future;
+            vector<future<void>> process_state_update_future;
 
             vector<Executable> executables_;
             unique_ptr<MachineManifest> manifest_;
