@@ -34,7 +34,67 @@ exec::exec(QWidget *parent): QWidget{parent}
 
     setLayout(main_layout);
 }
-voidexec::update_exec()
+void exec::parse_exec_json()
+{
+
+    ifstream file_input("/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/etc/executables_config.json");
+    Json::Reader reader;
+    Json::Value root;
+    reader.parse(file_input, root);
+
+    exe_configuartions exe_conf;
+    for(auto exe : root["executables_configurations"])
+    {
+        exe_conf.name =  exe["name"].asString();
+        exe_conf.funtion_group =  exe["function_group"].getMemberNames()[0];
+        for(auto state :  exe["function_group"][exe_conf.funtion_group])
+        {
+            exe_conf.states.push_back(state.asString());
+        }
+        auto deps = exe["function_group"]["depends"].getMemberNames();
+        for(auto dep : deps )
+        {
+            exe_conf.dependancy[dep] = (exe["function_group"]["depends"][dep].asString());
+        }
+        exes_conf.push_back(exe_conf);
+        exe_conf.states.clear();
+    }
+    //--------------------------------------------------------
+    auto fns = root["function_groups"].getMemberNames();
+    vector<string> states;
+    for(auto fn :fns)
+    {
+        for(auto state : root["function_groups"][fn]["states"])
+        {
+            states.push_back(state.asString());
+        }
+        fng[fn] = states;
+        states.clear();
+    }
+    //--------------------------------------------------------
+    running_exec executable ;
+    for(auto exe : root["running_executables"])
+    {
+        executable.name = exe["name"].asString();
+        executable.current_state = exe["current_state"].asString();
+        executable.pid = exe["pid"].asInt();
+        r_exe.push_back(executable);
+    }
+    //--------------------------------------------------------
+    for(auto exe : root["to_run"])
+    {
+       to_run.push_back(exe.asString());
+    }
+    //--------------------------------------------------------
+    for(auto exe : root["to_term"])
+    {
+       to_term.push_back(exe.asString());
+    }
+}
+
+
+void exec::update_exec()
 {
 
 }
+
