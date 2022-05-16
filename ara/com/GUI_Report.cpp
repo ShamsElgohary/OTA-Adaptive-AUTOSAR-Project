@@ -5,20 +5,22 @@ namespace ara
 {
     namespace com
     {
-        void AddMethodCall(int methodID, string methodName, MethodType Type, uint16_t ServiceID)
+        void AddMethodCall(int methodID, string methodName, MethodType Type, uint16_t ServiceID, string Cluster_Name)
         {
             // Test
             string Typestr = (Type == MethodType::Skeleton_Method) ? "Skeleton" : "Proxy";
             cout << "[GUI REPORT] Method ID: " << methodID << ", Method Name: " << methodName << ", Method Type: " << Typestr << endl;
-            
+
             // Read JSON File
             Json::Value event;
-            ifstream f("com.json");
+            string file_name = "GUI_Report.json";
+            string cluster_name = Cluster_Name;
+            ifstream f(file_name);
             Json::Reader R;
             R.parse(f, event);
             if (!event)
             {
-                event["Cluster_name"] = "DIST_COM";
+                event["Cluster_name"] = cluster_name;
                 event["com_json"]["Service_Discovery_Request"] = Json::arrayValue;
                 event["com_json"]["Skeleton_Provided_Method"] = Json::arrayValue;
                 event["com_json"]["Proxy_Required_Method"] = Json::arrayValue;
@@ -40,17 +42,17 @@ namespace ara
             }
 
             // std::cout << event << std::endl;
-            std::ofstream json_file("com.json");
+            std::ofstream json_file(file_name);
             json_file << event;
             json_file.close();
 
             // Report
             // simulation s(8080);
             // s.connect_to_socket();
-            // s.send_file("com.json");
+            // s.send_file(file_name);
         }
 
-        void AddServiceDiscoveryRequest(uint16_t ServiceID, uint16_t InstanceID, ServiceDiscoveryMethodType Type, bool GrantResult)
+        void AddServiceDiscoveryRequest(uint16_t ServiceID, uint16_t InstanceID, ServiceDiscoveryMethodType Type, bool GrantResult, string Cluster_Name)
         {
             // Test
             string Typestr = "";
@@ -67,16 +69,17 @@ namespace ara
                 Typestr = "Stop";
             }
             cout << "[GUI REPORT] Service ID: " << ServiceID << ", Instance ID: " << InstanceID << ", Method Type: " << Typestr << ", Grant Result: " << GrantResult << endl;
-            
+
             // Read JSON File
             Json::Value event;
-
-            ifstream f("com.json");
+            string file_name = "GUI_Report.json";
+            string cluster_name = Cluster_Name;
+            ifstream f(file_name);
             Json::Reader R;
             R.parse(f, event);
             if (!event)
             {
-                event["Cluster_name"] = "DIST_COM";
+                event["Cluster_name"] = cluster_name;
                 event["com_json"]["Service_Discovery_Request"] = Json::arrayValue;
                 event["com_json"]["Skeleton_Provided_Method"] = Json::arrayValue;
                 event["com_json"]["Proxy_Required_Method"] = Json::arrayValue;
@@ -92,14 +95,14 @@ namespace ara
             event["com_json"]["Service_Discovery_Request"].append(Temp);
 
             // std::cout << event << std::endl;
-            std::ofstream json_file("com.json");
+            std::ofstream json_file(file_name);
             json_file << event;
             json_file.close();
 
             // Report
             // simulation s(8080);
             // s.connect_to_socket();
-            // s.send_file("com.json");
+            // s.send_file(file_name);
         }
     }
 }

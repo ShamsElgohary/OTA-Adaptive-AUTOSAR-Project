@@ -33,10 +33,12 @@ set(PROJECT_SOURCES
         ota.h
         iam.cpp
         iam.h
-        service_discovery.cpp
-        service_discovery.h
         simulation.hpp
         simulation.cpp
+        sd.h
+        sd.cpp
+        com.h
+        com.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

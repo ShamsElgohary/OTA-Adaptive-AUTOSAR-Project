@@ -25,13 +25,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 51,
+				"line" : 61,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 57,
+				"line" : 67,
 				"parent" : 0
 			}
 		]
@@ -81,6 +81,10 @@
 				},
 				{
 					"backtrace" : 2,
+					"path" : "/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/jsoncpp/jsoncpp/header"
+				},
+				{
+					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/home/loay/Qt/5.15.2/gcc_64/include"
 				},
@@ -123,12 +127,19 @@
 				8,
 				9,
 				11,
-				13
+				13,
+				16,
+				18,
+				20
 			]
 		}
 	],
 	"dependencies" : 
 	[
+		{
+			"backtrace" : 2,
+			"id" : "jsoncpp_lib::@6890427a1f51a3e7e1df"
+		},
 		{
 			"id" : "adaptive_autosar_simulation_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
 		},
@@ -157,6 +168,11 @@
 			{
 				"backtrace" : 2,
 				"fragment" : "/home/loay/Qt/5.15.2/gcc_64/lib/libQt5Widgets.so.5.15.2",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "libjsoncpp_lib.a",
 				"role" : "libraries"
 			},
 			{
@@ -190,7 +206,10 @@
 				8,
 				9,
 				11,
-				13
+				13,
+				16,
+				18,
+				20
 			]
 		},
 		{
@@ -203,7 +222,10 @@
 				10,
 				12,
 				14,
-				15
+				15,
+				17,
+				19,
+				21
 			]
 		},
 		{
@@ -211,14 +233,14 @@
 			"sourceIndexes" : 
 			[
 				4,
-				16
+				22
 			]
 		},
 		{
 			"name" : "CMake Rules",
 			"sourceIndexes" : 
 			[
-				17
+				23
 			]
 		}
 	],
@@ -300,13 +322,46 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "service_discovery.cpp",
+			"path" : "iam.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"path" : "service_discovery.h",
+			"path" : "iam.h",
 			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "simulation.hpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "simulation.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "sd.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "sd.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "com.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "com.cpp",
+			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 0,

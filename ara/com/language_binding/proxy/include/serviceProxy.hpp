@@ -29,13 +29,14 @@ namespace ara
                     ~HandleType() noexcept = default;
                     friend class ProxyBase;
                 };
-                static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(string path, int serviceID);
-                static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(string path, int serviceID, ara::com::InstanceIdentifier instanceId);
+                static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(string path, string C_name , int serviceID);
+                static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(string path, string C_name , int serviceID, ara::com::InstanceIdentifier instanceId);
                 ProxyBase(HandleType handle);
                 ProxyBase(ProxyBase &other) = delete;
                 ProxyBase &operator=(const ProxyBase &other) = delete;
                 HandleType ProxyHandle;
                 static string parse(string x, int service_id, int instance_id);
+                static string C_Name; 
             };
         }
     }

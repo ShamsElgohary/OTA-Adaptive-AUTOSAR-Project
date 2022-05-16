@@ -1,32 +1,14 @@
 {
-	"Cluster_name" : "DIST_COM",
+	"Cluster_name" : "ota",
 	"com_json" : 
 	{
 		"Proxy_Required_Method" : 
 		[
 			{
-				"Method_ID" : 1,
-				"Method_Name" : "StartUpdateSession",
-				"Service_ID" : 1
-			}
-		],
-		"Service_Discovery_Request" : 
-		[
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 2,
-				"Type" : "Offer"
+				"Method_ID" : 7,
+				"Method_Name" : "GetSwClusterInfo",
+				"Service_ID" : 2
 			},
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 1,
-				"Type" : "Find"
-			}
-		],
-		"Skeleton_Provided_Method" : 
-		[
 			{
 				"Method_ID" : 1,
 				"Method_Name" : "TransferStart",
@@ -117,6 +99,16 @@
 				"Method_Name" : "Finish",
 				"Service_ID" : 2
 			}
-		]
+		],
+		"Service_Discovery_Request" : 
+		[
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 2,
+				"Type" : "Find"
+			}
+		],
+		"Skeleton_Provided_Method" : []
 	}
 }

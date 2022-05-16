@@ -1,0 +1,24 @@
+{
+	"Cluster_name" : "sm",
+	"com_json" : 
+	{
+		"Proxy_Required_Method" : [],
+		"Service_Discovery_Request" : 
+		[
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 1,
+				"Type" : "Offer"
+			}
+		],
+		"Skeleton_Provided_Method" : 
+		[
+			{
+				"Method_ID" : 1,
+				"Method_Name" : "StartUpdateSession",
+				"Service_ID" : 1
+			}
+		]
+	}
+}

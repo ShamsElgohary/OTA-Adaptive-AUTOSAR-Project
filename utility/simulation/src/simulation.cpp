@@ -1,6 +1,9 @@
 #include "../include/simulation.hpp"
 #include "thread"
 #include "iostream"
+#include<iostream>
+#include<stdio.h>
+using namespace std;
 // #include <QApplication>
 // #include "mainwindow.h"
 
@@ -147,3 +150,9 @@ void simulation::send_file(char *file_path)
     }
     close(sockfd_c);
 }
+
+void ClearJSONReport()
+{
+    remove("GUI_Report.json");
+}
+

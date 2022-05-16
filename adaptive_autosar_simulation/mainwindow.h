@@ -7,6 +7,7 @@
 #include "sm.h"
 #include "ucm.h"
 #include "iam.h"
+#include "sd.h"
 #include "QThread"
 
 using namespace std;
@@ -38,6 +39,7 @@ private:
     sm * sm_tab =new sm ;
     iam*  iam_tab =new iam ;
     ucm* ucm_tab=new ucm  ;
+    sd* sd_tab=new sd;
 
     QTabWidget *tabWidget =new QTabWidget ;
     QPushButton * simulation_button =new QPushButton;

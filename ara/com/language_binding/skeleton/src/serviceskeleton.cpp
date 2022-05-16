@@ -45,8 +45,8 @@ namespace ara
                 return -1;
             }
 
-            skeletonBase::skeletonBase(string path, ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceID, ara::com::MethodCallProcessingMode mode)
-                : instanceID{instanceID}, serviceID{serviceID}, mode{mode}
+            skeletonBase::skeletonBase(string path, ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceID, string C_name, ara::com::MethodCallProcessingMode mode)
+                : instanceID{instanceID}, serviceID{serviceID}, mode{mode}, C_Name{C_name}
             {
                 if (IAM_ACTIVATED)
                 {
@@ -68,16 +68,16 @@ namespace ara
             }
             void skeletonBase::OfferService()
             {
-                if (grant_result || IAM_ACTIVATED)
+                if (grant_result || !IAM_ACTIVATED)
                 {
                     this->ptr2bindingProtocol->OfferService();
-                    ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Offer_Method, true);
+                    ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Offer_Method, true, C_Name);
                     serve();
                 }
                 else
                 {
                     cout << "[com::skeleton::OfferService] ACCESS FORBIDDEN !!!!!" << endl;
-                    ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Offer_Method, false);
+                    ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Offer_Method, false, C_Name);
                 }
             }
             void skeletonBase::serve()
@@ -94,7 +94,7 @@ namespace ara
             void skeletonBase::StopOfferService()
             {
                 this->ptr2bindingProtocol->StopOfferService();
-                ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Stop_Method, true);
+                ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Stop_Method, true, C_Name);
             }
         }
     }
