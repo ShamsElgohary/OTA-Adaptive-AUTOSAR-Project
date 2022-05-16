@@ -9,31 +9,31 @@ int main ()
     std::cout<<"[SM] hello from sm with pid = " <<getpid()<<"\n" ;
     ExecutionClient y;
     y.ReportExecutionStaste(ExecutionState::Krunning);
-    usleep(2000000);
+    usleep(3000000);
     StateClient x ;
     FunctionGroupState fgs0(FunctionGroupState::Preconstruct("machineFG", "running"));
     x.setState(fgs0);
-    usleep(2000000);
+    usleep(3000000);
     FunctionGroupState fgs1(FunctionGroupState::Preconstruct("fn1", "idle"));
     x.setState(fgs1);
-     usleep(2000000);
+     usleep(3000000);
     FunctionGroupState fgs2(FunctionGroupState::Preconstruct("fn1", "play"));
     x.setState(fgs2);
-    usleep(2000000);
+    usleep(3000000);
     FunctionGroupState fgs5(FunctionGroupState::Preconstruct("fn1", "terminate"));
     x.setState(fgs5);
-    usleep(2000000);
+    usleep(3000000);
     
     FunctionGroupState fgs8(FunctionGroupState::Preconstruct("fn3", "run"));
     x.setState(fgs8);
-    usleep(2000000);
+    usleep(3000000);
 
 
     FunctionGroupState fgs9(FunctionGroupState::Preconstruct("fn3", "end"));
     x.setState(fgs9);
-    usleep(2000000);
+    usleep(3000000);
     FunctionGroupState fgs10(FunctionGroupState::Preconstruct("machineFG", "sleep"));
     x.setState(fgs10);
-    usleep(2000000);
+    usleep(3000000);
     while(1);
 }
