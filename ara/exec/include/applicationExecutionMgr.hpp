@@ -38,7 +38,7 @@ namespace ara
         typedef struct
         {
             ApplicationManifest manifest_;
-            vector<Application> startupConfigurations_;
+            vector<Application*> startupConfigurations_;
         } Executable;
 
         typedef struct

@@ -17,47 +17,74 @@ Application::Application(Application::CtorToken &&token)
     name = token.name;
     executable_path = token.executable_path;
 }
-void Application::start()
+future<void> Application::start()
 {
-    mkfifo(this->name.c_str(), 0777);
-    fd = open(this->name.c_str(), O_RDWR);
-    // fcntl(fd, F_SETFL, O_NONBLOCK);
+    return async(launch::async, [this]()
+                 {
+        for (auto &app_name : configuration_.dependency)
+        {
+            Application* app =depend[app_name.first] ;
+            unique_lock<mutex>  locker(app->mur);
 
-    this->id = fork();
-    if (this->id == 0)
-    {
-        dup2(fd, 0);
-        execl(executable_path.c_str(), nullptr);
-    }
+            if(app_name.second == "Krunning")
+            {
+                if(app->current_state !=ExecutionState::Krunning)
+                    app->condr.wait(locker);
+            }
+            else{
+                if(app->current_state !=ExecutionState::Kterminate)
+                    app->condt.wait(locker);
+            }
+
+        }
+        unique_lock<mutex>  locker(mur);
+        mkfifo(this->name.c_str(), 0777);
+        fd = open(this->name.c_str(), O_RDWR);
+        this->id = fork();
+        if (this->id == 0)
+        {
+            dup2(fd, 0);
+            execl(executable_path.c_str(), nullptr);
+        }
+        locker.unlock();
+        Update_status(); });
 }
 void Application::terminate()
 {
+    unique_lock<mutex> locker(mur);
     if (kill(id, SIGTERM))
     {
         cout << "[em] couldn't terminate process.... with id = " << id << " and named " << name << "\n\n\n";
     }
+    locker.unlock();
 }
 
-future<void> Application::Update_status()
+void Application::Update_status()
 {
-    return async(launch::async, [this]()
-                                {
-                    ExecutionState newstate = ExecutionState::Kidle;
-                    read(fd, &newstate, sizeof(current_state));
-                    if (newstate == ExecutionState::Krunning)
-                    {
-                        current_state = newstate;
-                        cout << "[em] " << name << " new state is Krunning "<<id<<"\n\n\n";
-                    }
-                    newstate = ExecutionState::Kidle;
-                    read(fd, &newstate, sizeof(current_state));
-                    if (newstate == ExecutionState::Kterminate)
-                    {
-                        current_state = newstate;
-                        cout << "[em] " << name << " new state is Kterminate "<<id<<"\n\n\n";
-                        close(fd);
-                        id=0;
-                    } });
+    thread([this]()
+           {
+        ExecutionState newstate = ExecutionState::Kidle;
+        read(fd, &newstate, sizeof(current_state));
+        if (newstate == ExecutionState::Krunning)
+        {
+            unique_lock<mutex>  locker(mur);
+            current_state = newstate;
+            locker.unlock();
+            condr.notify_one();
+            cout << "[em] " << name << " new state is Krunning " << id << "\n\n\n";
+        }
+        newstate = ExecutionState::Kidle;
+        read(fd, &newstate, sizeof(current_state));
+        if (newstate == ExecutionState::Kterminate)
+        {
+            unique_lock<mutex>  locker(mur);
+            current_state = newstate;
+            cout << "[em] " << name << " new state is Kterminate " << id << "\n\n\n";
+            close(fd);
+            id = 0;
+            locker.unlock();
+            condt.notify_one();
+        } }).detach();
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name, string path)
 {
@@ -66,8 +93,8 @@ Application::Application(ApplicationManifest::startUpConfiguration con, string n
     executable_path = path + "/" + name;
     current_state = ExecutionState::Kidle;
 }
+
 Application::~Application()
 {
     close(fd);
 }
-

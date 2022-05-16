@@ -25,19 +25,19 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 
     for (auto &x : p)
     {
-        string p2 = x.string() + "/etc/execution_manifest.json";
-        executables_.push_back(Executable{ApplicationManifest(p2), vector<Application>()});
+        string p2 = x.string() + "etc/execution_manifest.json";
+        executables_.push_back(Executable{ApplicationManifest(p2), vector<Application *>()});
         for (auto &app : executables_.back().manifest_.startUpConfigurations)
         {
-            executables_.back().startupConfigurations_.push_back(Application(app, executables_.back().manifest_.name, executables_.back().manifest_.executable_path));
+            executables_.back().startupConfigurations_.push_back(new Application{app, executables_.back().manifest_.name, executables_.back().manifest_.executable_path});
         }
         for (auto &app : executables_.back().startupConfigurations_)
         {
-            for (auto function_group : app.configuration_.function_group_states)
+            for (auto function_group : app->configuration_.function_group_states)
             {
                 for (auto state : function_group.second)
                 {
-                    function_groups_[function_group.first]->startupConfigurations_[state].push_back(&app);
+                    function_groups_[function_group.first]->startupConfigurations_[state].push_back(app);
                 }
             }
         }
@@ -79,7 +79,7 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
 
 bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 {
-    auto apps = function_groups_[fgs.fg_name]->startupConfigurations_[fgs.fg_newState];
+    auto &apps = function_groups_[fgs.fg_name]->startupConfigurations_[fgs.fg_newState];
     for (auto &app : apps)
     {
         if (app->current_state != ExecutionState::Krunning)
@@ -145,62 +145,26 @@ bool ApplicationExecutionMgr::Terminate()
     for (auto &app : transitionChanges_.toTerminate_)
     {
         app->terminate();
-        process_state_update_future.push_back(app->Update_status());
     }
 }
 bool ApplicationExecutionMgr::Execute()
 {
     map<string, Application *> apps_state;
-    queue<Application *> apps;
-    for (auto app : transitionChanges_.toStart_)
+    for (auto &app : transitionChanges_.toStart_)
     {
         apps_state[app->name] = app;
-        apps.push(app);
     }
-    bool flag = true;
-    while (!apps.empty())
+    for (auto &app : transitionChanges_.toStart_)
     {
-        auto *app = apps.front();
-        apps.pop();
-        for (auto depend : app->configuration_.dependency)
-        {
-            if (apps_state[depend.first]->current_state != (depend.second == "Krunning" ? ExecutionState::Krunning : ExecutionState::Kterminate))
-            {
-                apps.push(app);
-                flag = false;
-                break;
-            }
-        }
-        if (flag)
-        {
-            app->start();
-            process_state_update_future.push_back(app->Update_status());
-        }
-        flag = true;
+        app->depend = apps_state;
+        process_state_update_future.push_back(app->start());
+    }
+    for (auto &f : process_state_update_future)
+    {
+        f.wait();
     }
     return true;
 }
-// future<void> ApplicationExecutionMgr::updateProcessState()
-// {
-
-//     return async(launch::async, [this]()
-//                  {
-//         while(1)
-//         {
-//             for (auto fng : function_groups_)
-//             {
-//                 for (auto state : function_groups_[fng.first]->startupConfigurations_)
-//                 {
-//                     for(auto app: state.second)
-//                     {
-//                         if(app->id !=NULL)
-//                             app->Update_status();
-//                     }
-//                 }
-//             }
-//              std::this_thread::sleep_for(100ms);
-//         } });
-// }
 
 string ApplicationExecutionMgr::get_process_name(int test_id)
 {
@@ -209,11 +173,14 @@ string ApplicationExecutionMgr::get_process_name(int test_id)
     {
         for (auto &y : x.startupConfigurations_)
         {
-            if (test_id == y.id)
+            unique_lock<mutex> locker(y->mur);
+
+            if (test_id == y->id)
             {
-                p_name = y.name;
+                p_name = y->name;
                 return p_name;
             }
+            locker.unlock();
         }
     }
 }
@@ -249,7 +216,7 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     Json::Value obj2(Json::objectValue);
     Json::Value obj3(Json::objectValue);
     root["function_groups"] = machine_manifest_json["function_groups"];
-    for (auto app : executables_)
+    for (auto &app : executables_)
     {
 
         for (auto confg : app.manifest_.startUpConfigurations)
@@ -278,16 +245,16 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     }
     root["executables_configurations"] = vec;
     vec.clear();
-    for (auto exe : executables_)
+    for (auto &exe : executables_)
     {
-        for (auto app : exe.startupConfigurations_)
+        for (auto &app : exe.startupConfigurations_)
         {
 
-            if (app.id != 0)
+            if (app->id != 0)
             {
-                obj["name"] = app.name;
-                obj["current_state"] = (app.current_state == ExecutionState::Krunning ? "Krunning" : "Kterminate");
-                obj["pid"] = app.id;
+                obj["name"] = app->name;
+                obj["current_state"] = (app->current_state == ExecutionState::Krunning ? "Krunning" : "Kterminate");
+                obj["pid"] = app->id;
                 vec.append(obj);
                 obj.clear();
             }

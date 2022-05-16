@@ -2,7 +2,6 @@
 #include <bits/stdc++.h>
 #include "applicationManifest.hpp"
 #include "execution_client.hpp"
-
 using namespace std;
 namespace ara
 {
@@ -24,13 +23,17 @@ namespace ara
             string name;
             string executable_path;
             ExecutionState current_state;
+            mutex mur;
+            condition_variable condr;
+            condition_variable condt;
+            map<string, Application *> depend;
             ApplicationManifest::startUpConfiguration configuration_;
             Application(Application::CtorToken &&token);
             Application(ApplicationManifest::startUpConfiguration con, string name, string path);
             ~Application();
-            void start();
+            future<void> start();
             void terminate();
-            future<void> Update_status();
+            void Update_status();
         };
     }
 }
