@@ -3,7 +3,7 @@
   {
     "machineFG": 
     {
-      "states": ["off","startup","running","restart","sleep"] 
+      "states": ["off","startup","running","sleep"] 
     },
     "fn1": 
     {

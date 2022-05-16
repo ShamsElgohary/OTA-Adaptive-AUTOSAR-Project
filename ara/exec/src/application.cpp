@@ -52,9 +52,13 @@ future<void> Application::start()
 void Application::terminate()
 {
     unique_lock<mutex> locker(mur);
-    if (kill(id, SIGTERM))
+    if (kill(id, SIGTERM)==-1)
     {
         cout << "[em] couldn't terminate process.... with id = " << id << " and named " << name << "\n\n\n";
+    }
+    else{
+        cout << "[em] terminateing "<< name << "\n";
+        id=0;
     }
     locker.unlock();
 }
@@ -65,26 +69,20 @@ void Application::Update_status()
            {
         ExecutionState newstate = ExecutionState::Kidle;
         read(fd, &newstate, sizeof(current_state));
-        if (newstate == ExecutionState::Krunning)
-        {
-            unique_lock<mutex>  locker(mur);
-            current_state = newstate;
-            locker.unlock();
-            condr.notify_one();
-            cout << "[em] " << name << " new state is Krunning " << id << "\n\n\n";
-        }
-        newstate = ExecutionState::Kidle;
+        unique_lock<mutex>  locker(mur);
+        current_state = newstate;
+        locker.unlock();
+        condr.notify_one();
+        cout << "[em] " << name << " new state is Krunning " << id << "\n\n\n";
+    
         read(fd, &newstate, sizeof(current_state));
-        if (newstate == ExecutionState::Kterminate)
-        {
-            unique_lock<mutex>  locker(mur);
-            current_state = newstate;
-            cout << "[em] " << name << " new state is Kterminate " << id << "\n\n\n";
-            close(fd);
-            id = 0;
-            locker.unlock();
-            condt.notify_one();
-        } }).detach();
+        locker.lock();
+        current_state = newstate;
+        close(fd);
+        locker.unlock();
+        cout << "[em] " << name << " new state is Kterminate"<<"\n\n\n";
+        condt.notify_one();
+         }).detach();
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name, string path)
 {

@@ -82,15 +82,18 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
     auto &apps = function_groups_[fgs.fg_name]->startupConfigurations_[fgs.fg_newState];
     for (auto &app : apps)
     {
+        unique_lock<mutex> locker(app->mur);
         if (app->current_state != ExecutionState::Krunning)
         {
             transitionChanges_.toStart_.push_back(app);
         }
+        locker.unlock();
     }
-    apps = function_groups_[fgs.fg_name]->startupConfigurations_[function_groups_[fgs.fg_name]->currentState_];
+    auto &apps_term =  function_groups_[fgs.fg_name]->startupConfigurations_[function_groups_[fgs.fg_name]->currentState_];
     bool flag = true;
-    for (auto &app : apps)
+    for (auto &app : apps_term)
     {
+        unique_lock<mutex> locker(app->mur);
         if (app->current_state == ExecutionState::Krunning)
         {
             for (auto state : app->configuration_.function_group_states[fgs.fg_name])
@@ -101,8 +104,12 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
                 }
             }
             if (flag)
+            {
                 transitionChanges_.toTerminate_.push_back(app);
+            }
+                
         }
+        locker.unlock();
     }
     function_groups_[fgs.fg_name]->currentState_ = fgs.fg_newState;
     return true;
@@ -132,9 +139,9 @@ bool ApplicationExecutionMgr::run()
     while (true)
     {
         ProcessStateClientRequest();
-        reportConfig_simulation();
         Terminate();
         Execute();
+        reportConfig_simulation();
         transitionChanges_.toStart_.clear();
         transitionChanges_.toTerminate_.clear();
     }
@@ -152,6 +159,7 @@ bool ApplicationExecutionMgr::Execute()
     map<string, Application *> apps_state;
     for (auto &app : transitionChanges_.toStart_)
     {
+
         apps_state[app->name] = app;
     }
     for (auto &app : transitionChanges_.toStart_)

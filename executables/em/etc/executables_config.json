@@ -41,7 +41,7 @@
 		{
 			"depends" : 
 			{
-				"ex1" : "Krunning"
+				"ex1" : "Kterminate"
 			},
 			"function_group" : 
 			{
@@ -118,7 +118,6 @@
 				"off",
 				"startup",
 				"running",
-				"restart",
 				"sleep"
 			]
 		}
@@ -126,34 +125,9 @@
 	"running_executables" : 
 	[
 		{
-			"current_state" : "Krunning",
-			"name" : "com_proxy_test",
-			"pid" : 16354
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "com_skeleton_test",
-			"pid" : 16352
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "ex2",
-			"pid" : 16309
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "iam",
-			"pid" : 16254
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "sm",
-			"pid" : 16235
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "someip_sd",
-			"pid" : 16252
+			"current_state" : "Kterminate",
+			"name" : "ex1",
+			"pid" : 6122
 		}
 	],
 	"to_run" : [],

@@ -28,7 +28,6 @@ int main ()
     x.setState(fgs8);
     sleep(1);
 
-
     FunctionGroupState fgs9(FunctionGroupState::Preconstruct("fn3", "end"));
     x.setState(fgs9);
     sleep(1);
