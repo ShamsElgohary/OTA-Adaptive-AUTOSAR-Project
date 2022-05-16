@@ -34,21 +34,14 @@ void MainWindow::on_simulation_button_clicked()
     sm_tab = new sm();
     tabWidget ->addTab(sm_tab,"state manager");
 
-    sd_tab= new sd();
-    tabWidget ->addTab(sd_tab,"service_discovery");
 
-    //sd_tab->update_sd();
-    exec_tab->parse_exec_json();
     /* thread to lister on socket*/
-
-//    socket_thread=QThread::create([this]{
-//        this->s->creat_socket();
-//        std::function<void()>handler = [this](){this->choose_handler();};
-//        this->s->listen_l(handler);
-//        });
-//    socket_thread->start();
-
-
+    socket_thread=QThread::create([this]{
+        this->s->creat_socket();
+        std::function<void()>handler = [this](){this->choose_handler();};
+        this->s->listen_l(handler);
+        });
+    socket_thread->start();
 }
 void MainWindow::choose_handler()
 {

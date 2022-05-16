@@ -12,12 +12,9 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include <string>
 #include "serialization_simple.hpp"
 
 using namespace std;
-
-const string Cluster_Name = "ucm";
 
 namespace ara
 {

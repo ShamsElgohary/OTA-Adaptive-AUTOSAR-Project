@@ -39,8 +39,6 @@ int main()
         D.Deserialize(ss, ipv4_address);
         D.Deserialize(ss, port_num);
 
-        addmsgtoGUI(service_id,instance_id,TTL,TYPE,port_num,ipv4_address);
-
         uint16_t SID = service_id;
         uint16_t IID = instance_id;
         std::string Address = ipv4_address;

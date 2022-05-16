@@ -28,14 +28,13 @@ namespace ara
                 uint32_t port;
                 string ip;
                 virtual void handleMethod() = 0;
-                skeletonBase(string path, ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceId, std::string C_name ,ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
+                skeletonBase(string path, ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceId, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent);
                 skeletonBase(const skeletonBase &other) = delete;
                 skeletonBase &operator=(const skeletonBase &other) = delete;
                 skeletonBase() = delete;
                 ~skeletonBase(){};
                 void OfferService();
                 void StopOfferService();
-                string C_Name; 
             };
         }
     }

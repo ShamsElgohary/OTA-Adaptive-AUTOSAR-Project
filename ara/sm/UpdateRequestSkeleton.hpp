@@ -15,7 +15,7 @@ namespace ara
             class UpdateRequestSkeleton : public ara::com::skeleton::skeletonBase
             {
             public:
-               UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/sm/etc/service_manifest.json",1 , I_id, Cluster_Name, mode)
+               UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/executables/sm/etc/service_manifest.json",1 , I_id, mode)
                {
                }
                 /** StartUpdateSession **/
@@ -163,7 +163,7 @@ namespace ara
                     }
                     }
                     this->ptr2bindingProtocol -> CloseConnection();
-                    ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method, 1, Cluster_Name);
+                    ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method, 1);
                 }
             };
         }

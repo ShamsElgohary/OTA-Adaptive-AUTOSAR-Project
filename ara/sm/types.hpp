@@ -1,7 +1,4 @@
 #pragma once
-#include <string>
-
-const std::string Cluster_Name = "sm";
 
 namespace ara
 {

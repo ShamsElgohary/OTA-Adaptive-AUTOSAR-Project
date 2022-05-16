@@ -8,7 +8,6 @@
 #include <string>
 #include <mutex>
 #include "functional"
-#include "../../jsoncpp/header/json.h"
 using namespace std;
 #define SIZE 1024
 
@@ -32,6 +31,3 @@ public:
     void listen_l(std::function<void()>handler);
     ~simulation();
 };
-
-
-void ClearJSONReport();

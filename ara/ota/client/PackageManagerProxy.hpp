@@ -4,7 +4,6 @@
 #include <array>
 #include "serviceProxy.hpp"
 #include "method.hpp"
-#include "types.hpp"
 
 using namespace std;
 
@@ -311,7 +310,7 @@ namespace ara
                             in.Size = Size;
                             TransferStartOutput out;
                             process_method_call<TransferStartOutput, TransferStartInput>(in, out);
-                            ara::com::AddMethodCall(1, "TransferStart", ara::com::MethodType::Proxy_Method, 2,Cluster_Name);
+                            ara::com::AddMethodCall(1, "TransferStartInput", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -328,7 +327,7 @@ namespace ara
                             in.blockCounter = blockCounter;
                             TransferDataOutput out;
                             process_method_call<TransferDataOutput, TransferDataInput>(in, out);
-                            ara::com::AddMethodCall(2, "TransferData", ara::com::MethodType::Proxy_Method, 2, Cluster_Name);
+                            ara::com::AddMethodCall(2, "TransferData", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -343,7 +342,7 @@ namespace ara
                             in.id = id;
                             TransferExitOutput out;
                             process_method_call<TransferExitOutput, TransferExitInput>(in, out);
-                            ara::com::AddMethodCall(3, "TransferExit", ara::com::MethodType::Proxy_Method, 2, Cluster_Name);
+                            ara::com::AddMethodCall(3, "TransferExit", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -358,7 +357,7 @@ namespace ara
                             in.id = id;
                             TransferDeleteOutput out;
                             process_method_call<TransferDeleteOutput, TransferDeleteInput>(in, out);
-                            ara::com::AddMethodCall(4, "TransferDelete", ara::com::MethodType::Proxy_Method, 2, Cluster_Name);
+                            ara::com::AddMethodCall(4, "TransferDelete", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -373,7 +372,7 @@ namespace ara
                             in.id = id;
                             ProcessSwPackageOutput out;
                             process_method_call<ProcessSwPackageOutput, ProcessSwPackageInput>(in, out);
-                            ara::com::AddMethodCall(5, "ProcessSwPackage", ara::com::MethodType::Proxy_Method, 2, Cluster_Name);
+                            ara::com::AddMethodCall(5, "ProcessSwPackage", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -386,7 +385,7 @@ namespace ara
                         {
                             ActivateOutput out;
                             process_method_call<ActivateOutput>(out);
-                            ara::com::AddMethodCall(6, "Activate", ara::com::MethodType::Proxy_Method, 2, Cluster_Name);
+                            ara::com::AddMethodCall(6, "Activate", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -399,7 +398,7 @@ namespace ara
                         {
                             GetSwClusterInfoOutput out;
                             process_method_call<GetSwClusterInfoOutput>(out);
-                            ara::com::AddMethodCall(7, "GetSwClusterInfo", ara::com::MethodType::Proxy_Method, 2, Cluster_Name);
+                            ara::com::AddMethodCall(7, "GetSwClusterInfo", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -412,7 +411,7 @@ namespace ara
                         {
                             RollbackOutput out;
                             process_method_call<RollbackOutput>(out);
-                            ara::com::AddMethodCall(8, "Rollback", ara::com::MethodType::Proxy_Method, 2, Cluster_Name);
+                            ara::com::AddMethodCall(8, "Rollback", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -425,7 +424,7 @@ namespace ara
                         {
                             RevertProcessedSwPackagesOutput out;
                             process_method_call<RevertProcessedSwPackagesOutput>(out);
-                            ara::com::AddMethodCall(9, "RevertProcessedSwPackages", ara::com::MethodType::Proxy_Method, 2, Cluster_Name);
+                            ara::com::AddMethodCall(9, "RevertProcessedSwPackages", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -438,7 +437,7 @@ namespace ara
                         {
                             FinishOutput out;
                             process_method_call<FinishOutput>(out);
-                            ara::com::AddMethodCall(10, "Finish", ara::com::MethodType::Proxy_Method, 2, Cluster_Name);
+                            ara::com::AddMethodCall(10, "Finish", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -453,7 +452,7 @@ namespace ara
                         {
                             GetCurrentStatusField out;
                             process_method_call<GetCurrentStatusField>(out);
-                            ara::com::AddMethodCall(11, "GetCurrentStatus", ara::com::MethodType::Proxy_Method, 2, Cluster_Name);
+                            ara::com::AddMethodCall(11, "GetCurrentStatus", ara::com::MethodType::Proxy_Method, 2);
                             return out;
                         }
                     };
@@ -478,11 +477,11 @@ namespace ara
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
                     {
-                        return ara::com::proxy::ProxyBase::FindService("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/ota/etc/service_manifest.json", Cluster_Name, 2);
+                        return ara::com::proxy::ProxyBase::FindService("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/executables/ota/etc/service_manifest.json",2);
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
                     {
-                        return ara::com::proxy::ProxyBase::FindService("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/ota/etc/service_manifest.json", Cluster_Name, 2, InstanceID);
+                        return ara::com::proxy::ProxyBase::FindService("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/executables/ota/etc/service_manifest.json",2, InstanceID);
                     }
 
                     methods::TransferStart TransferStart;

@@ -10,7 +10,6 @@ using namespace ara::ucm;
 
 int main (void)
 {
-    ClearJSONReport();
     // ara::exec::ExecutionClient exec;
     // exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
     

@@ -4,8 +4,6 @@
 #include "../../com/include/types.hpp"
 #include "serialization_simple.hpp"
 using namespace std;
-
-const string Cluster_Name = "com_skeleton_test";
 namespace ara
 {
     namespace ucm
@@ -74,7 +72,7 @@ namespace ara
                     }
                     this->ptr2bindingProtocol->CloseConnection();
                 }
-                PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/com_skeleton_test/etc/service_manifest.json",1, I_id, Cluster_Name, mode)
+                PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/executables/com_skeleton_test/etc/service_manifest.json",1, I_id, mode)
                 {
                 }
             };

@@ -12,13 +12,15 @@ namespace ara
     {
         namespace pkgmgr
         {
-            
             class PackageManagerSkeleton : public ara::com::skeleton::skeletonBase
             {
             public:
                 PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : 
-                skeletonBase("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",2, I_id, Cluster_Name, mode)
-                {}
+                skeletonBase("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",2, I_id, mode)
+                {
+
+                }
+                
                 /** TransferStart **/
                 struct TransferStartInput
                 {
@@ -437,7 +439,7 @@ namespace ara
                     }
                     }
                     this->ptr2bindingProtocol -> CloseConnection();
-                    ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method, 2, Cluster_Name);
+                    ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method, 2);
                 }
             };
         }

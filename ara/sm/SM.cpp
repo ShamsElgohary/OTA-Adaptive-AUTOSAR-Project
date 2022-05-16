@@ -5,7 +5,7 @@ using namespace std;
 
 std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateRequestImpl::StartUpdateSession()
 {
-    // sm_functions functions={.sm_StartUpdateSession=(1),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(0)};
+    //sm_functions functions={.sm_StartUpdateSession=(1),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(0)};
     std::cout<<"Starting Update Session"<<std::endl;
 
     std::promise<UpdateRequestSkeleton::StartUpdateSessionOutput> promise;
@@ -26,7 +26,7 @@ std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateReq
 
     promise.set_value(out);
     
-    // log->update_logger(functions,this->FunctionGroupStates);
+    //log->update_logger(functions,this->FunctionGroupStates);
     
     return promise.get_future();
 }
