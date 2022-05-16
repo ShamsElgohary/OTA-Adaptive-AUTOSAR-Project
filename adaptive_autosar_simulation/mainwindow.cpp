@@ -37,6 +37,9 @@ void MainWindow::on_simulation_button_clicked()
     sd_tab= new sd();
     tabWidget ->addTab(sd_tab,"service_discovery");
 
+    ota_tab = new ota();
+    tabWidget ->addTab(ota_tab,"OTA");
+
     //sd_tab->update_sd();
     exec_tab->parse_exec_json();
     /* thread to lister on socket*/

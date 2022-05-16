@@ -6,6 +6,7 @@
 #include "exec.h"
 #include "sm.h"
 #include "ucm.h"
+#include "ota.h"
 #include "iam.h"
 #include "sd.h"
 #include "QThread"
