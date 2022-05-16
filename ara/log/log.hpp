@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "../ucm/includes/types.hpp"
 #include "../../utility/jsoncpp/header/json.h"
 
 
@@ -73,7 +74,6 @@ namespace ara
             json_file.close();
         } 
 
-
         void newPkgCluster(string name,string version)
         {
             // Read JSON File
@@ -133,8 +133,29 @@ namespace ara
 
         }
 
+        void ReportPresentSWClusters(vector<ara::ucm::SwClusterInfoType> presentClusters)
+        {
+            // Read JSON File
+            Json::Value event;
+            ifstream inputFile("GUI_Report.json");
+            Json::Reader R;
+            R.parse(inputFile, event);
 
+            std::string swClusterString = "Cluster";
+            char clusterNumb = '1';
 
+            for (int i = 0; i < presentClusters.size(); i++)
+            {
+                std::string swClusterIndex = swClusterString + clusterNumb;
+                event["ucm_json"]["PresentClusters"][swClusterIndex]["Name"]=Json::Value(presentClusters[i].Name);
+                event["ucm_json"]["PresentClusters"][swClusterIndex]["Version"]=Json::Value(presentClusters[i].Version);
+                clusterNumb ++;
+            }
+
+            std::ofstream json_file("GUI_Report.json");
+            json_file<<event;
+            json_file.close();
+        }
 
         private:
 

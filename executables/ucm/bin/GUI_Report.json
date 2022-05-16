@@ -39,6 +39,44 @@
 			"TransferDelete" : "",
 			"TransferExit" : "kSuccess",
 			"TransferStart" : "kSuccess"
+		},
+		"PresentClusters" : 
+		{
+			"Cluster1" : 
+			{
+				"Name" : "com_proxy_test",
+				"Version" : "0.1"
+			},
+			"Cluster2" : 
+			{
+				"Name" : "com_skeleton_test",
+				"Version" : "0.1"
+			},
+			"Cluster3" : 
+			{
+				"Name" : "ex1",
+				"Version" : "0.1"
+			},
+			"Cluster4" : 
+			{
+				"Name" : "ex2",
+				"Version" : "0.1"
+			},
+			"Cluster5" : 
+			{
+				"Name" : "iam",
+				"Version" : "0.1"
+			},
+			"Cluster6" : 
+			{
+				"Name" : "sm",
+				"Version" : "0.1"
+			},
+			"Cluster7" : 
+			{
+				"Name" : "someip_sd",
+				"Version" : "0.1"
+			}
 		}
 	}
 }

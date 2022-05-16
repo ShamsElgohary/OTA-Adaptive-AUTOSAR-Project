@@ -33,6 +33,9 @@ PackageManagerState::PackageManagerState(PackageManagerStatusType pkgmgr_Current
 
             SWCLManager::PushInSWCLusters(SWCluster);
         }
+    
+    guiLogger.ReportPresentSWClusters(SWCLManager::GetPresentSWCLs());
+    
     }
     catch (const std::exception &e)
     {
@@ -199,6 +202,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     }
 
     guiLogger.ReportJsonGUI( "VerifyUpdate", "Verified", true );
+    guiLogger.ReportPresentSWClusters(SWCLManager::GetPresentSWCLs());
 
     (CurrentStatus) = PackageManagerStatusType::kActivated;
     return ara::ucm::OperationResultType::kSuccess;

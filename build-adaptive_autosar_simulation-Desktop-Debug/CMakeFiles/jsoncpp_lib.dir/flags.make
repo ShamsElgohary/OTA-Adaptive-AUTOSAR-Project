@@ -6,5 +6,5 @@ CXX_FLAGS =  -pthread -g   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug -I/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation -I/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/jsoncpp_lib_autogen/include -I/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/jsoncpp/jsoncpp/header 
+CXX_INCLUDES = -I/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug -I/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation -I/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/jsoncpp_lib_autogen/include -I/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/jsoncpp/jsoncpp/header 
 

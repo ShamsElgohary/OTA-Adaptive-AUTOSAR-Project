@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation
+CMAKE_SOURCE_DIR = /home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug
+CMAKE_BINARY_DIR = /home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug
 
 # Utility rule file for adaptive_autosar_simulation_autogen.
 
@@ -54,8 +54,8 @@ CMAKE_BINARY_DIR = /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/buil
 include CMakeFiles/adaptive_autosar_simulation_autogen.dir/progress.make
 
 CMakeFiles/adaptive_autosar_simulation_autogen:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target adaptive_autosar_simulation"
-	/usr/bin/cmake -E cmake_autogen /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/adaptive_autosar_simulation_autogen.dir/AutogenInfo.json Debug
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target adaptive_autosar_simulation"
+	/usr/bin/cmake -E cmake_autogen /home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/adaptive_autosar_simulation_autogen.dir/AutogenInfo.json Debug
 
 adaptive_autosar_simulation_autogen: CMakeFiles/adaptive_autosar_simulation_autogen
 adaptive_autosar_simulation_autogen: CMakeFiles/adaptive_autosar_simulation_autogen.dir/build.make
@@ -72,6 +72,6 @@ CMakeFiles/adaptive_autosar_simulation_autogen.dir/clean:
 .PHONY : CMakeFiles/adaptive_autosar_simulation_autogen.dir/clean
 
 CMakeFiles/adaptive_autosar_simulation_autogen.dir/depend:
-	cd /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/adaptive_autosar_simulation_autogen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation /home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation /home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug /home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug /home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/adaptive_autosar_simulation_autogen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/adaptive_autosar_simulation_autogen.dir/depend
 
