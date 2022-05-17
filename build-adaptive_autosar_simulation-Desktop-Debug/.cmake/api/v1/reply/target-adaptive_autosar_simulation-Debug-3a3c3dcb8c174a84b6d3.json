@@ -70,18 +70,18 @@
 			"includes" : 
 			[
 				{
-					"path" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug"
+					"path" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug"
 				},
 				{
-					"path" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation"
+					"path" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation"
 				},
 				{
 					"backtrace" : 0,
-					"path" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen/include"
+					"path" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen/include"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/jsoncpp/jsoncpp/header"
+					"path" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/jsoncpp/jsoncpp/header"
 				},
 				{
 					"backtrace" : 2,
@@ -223,7 +223,7 @@
 			"backtrace" : 0,
 			"compileGroupIndex" : 0,
 			"isGenerated" : true,
-			"path" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen/mocs_compilation.cpp",
+			"path" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen/mocs_compilation.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{

@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug"
+			"value" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -539,7 +539,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation"
+			"value" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1251,7 +1251,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug"
+			"value" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug"
 		},
 		{
 			"name" : "adaptive_autosar_simulation_SOURCE_DIR",
@@ -1263,7 +1263,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation"
+			"value" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation"
 		}
 	],
 	"kind" : "cache",

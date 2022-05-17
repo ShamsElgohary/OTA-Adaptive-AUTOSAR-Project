@@ -1,4 +1,4 @@
-# Install script for directory: /home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation
+# Install script for directory: /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

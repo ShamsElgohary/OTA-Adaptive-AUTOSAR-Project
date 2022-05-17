@@ -7,7 +7,7 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/CMakeLists.txt"
+  "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/CMakeLists.txt"
   "CMakeFiles/3.16.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.16.3/CMakeSystem.cmake"
   "/usr/lib/x86_64-linux-gnu/cmake/Qt5/Qt5Config.cmake"

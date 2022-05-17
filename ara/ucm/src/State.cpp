@@ -86,6 +86,8 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
 
+    guiLogger.ReportJsonGUI( "StartUpdateSession", "Start", true );
+
     uint8_t RejectedCounter = 0;
     /*Get Functional Groups of PKG*/
     FunctionGroupList FG_List = {"fn1", "fn2"};

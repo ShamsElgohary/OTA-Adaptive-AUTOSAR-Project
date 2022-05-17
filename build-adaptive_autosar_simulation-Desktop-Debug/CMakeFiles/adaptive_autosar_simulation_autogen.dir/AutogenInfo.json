@@ -1,56 +1,56 @@
 {
-	"BUILD_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen",
-	"CMAKE_BINARY_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug",
-	"CMAKE_CURRENT_BINARY_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug",
-	"CMAKE_CURRENT_SOURCE_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation",
+	"BUILD_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen",
+	"CMAKE_BINARY_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation",
 	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
-	"CMAKE_SOURCE_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation",
+	"CMAKE_SOURCE_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation",
 	"HEADERS" : 
 	[
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/exec.h",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/exec.h",
 			"MU",
 			"EWIEGA46WW/moc_exec.cpp"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/iam.h",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/iam.h",
 			"MU",
 			"EWIEGA46WW/moc_iam.cpp"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/mainwindow.h",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/mainwindow.h",
 			"MU",
 			"EWIEGA46WW/moc_mainwindow.cpp"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/ota.h",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/ota.h",
 			"MU",
 			"EWIEGA46WW/moc_ota.cpp"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/service_discovery.h",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.h",
 			"MU",
 			"EWIEGA46WW/moc_service_discovery.cpp"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/simulation.hpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/simulation.hpp",
 			"MU",
 			"EWIEGA46WW/moc_simulation.cpp"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/sm.h",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sm.h",
 			"MU",
 			"EWIEGA46WW/moc_sm.cpp"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/ucm.h",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/ucm.h",
 			"MU",
 			"EWIEGA46WW/moc_ucm.cpp"
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen/include",
-	"MOC_COMPILATION_FILE" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_WIDGETS_LIB" ],
 	"MOC_DEPEND_FILTERS" : 
 	[
@@ -61,9 +61,9 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug",
-		"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation",
-		"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/jsoncpp/jsoncpp/header",
+		"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug",
+		"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation",
+		"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/jsoncpp/jsoncpp/header",
 		"/usr/include/x86_64-linux-gnu/qt5",
 		"/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
 		"/usr/include/x86_64-linux-gnu/qt5/QtGui",
@@ -88,52 +88,52 @@
 		"-c",
 		"/usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/adaptive_autosar_simulation_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 6,
-	"PARSE_CACHE_FILE" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/adaptive_autosar_simulation_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/adaptive_autosar_simulation_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "/usr/lib/qt5/bin/moc",
 	"QT_UIC_EXECUTABLE" : "/usr/lib/qt5/bin/uic",
 	"QT_VERSION_MAJOR" : 5,
-	"SETTINGS_FILE" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/adaptive_autosar_simulation_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/adaptive_autosar_simulation_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/exec.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/exec.cpp",
 			"MU"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/iam.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/iam.cpp",
 			"MU"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/main.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/main.cpp",
 			"MU"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/mainwindow.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/mainwindow.cpp",
 			"MU"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/ota.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/ota.cpp",
 			"MU"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/service_discovery.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.cpp",
 			"MU"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/simulation.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/simulation.cpp",
 			"MU"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/sm.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sm.cpp",
 			"MU"
 		],
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/ucm.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/ucm.cpp",
 			"MU"
 		]
 	],

@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    ApplicationExecutionMgr app("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/");
+    ApplicationExecutionMgr app("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/");
     app.initialize();
     app.run();
     return 0;

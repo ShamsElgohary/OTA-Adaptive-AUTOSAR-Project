@@ -1,14 +1,14 @@
 {
-	"BUILD_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/jsoncpp_lib_autogen",
-	"CMAKE_BINARY_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug",
-	"CMAKE_CURRENT_BINARY_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug",
-	"CMAKE_CURRENT_SOURCE_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation",
+	"BUILD_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/jsoncpp_lib_autogen",
+	"CMAKE_BINARY_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation",
 	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
-	"CMAKE_SOURCE_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation",
+	"CMAKE_SOURCE_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation",
 	"HEADERS" : [],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/jsoncpp_lib_autogen/include",
-	"MOC_COMPILATION_FILE" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/jsoncpp_lib_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/jsoncpp_lib_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/jsoncpp_lib_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : [],
 	"MOC_DEPEND_FILTERS" : 
 	[
@@ -19,9 +19,9 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug",
-		"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation",
-		"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/jsoncpp/jsoncpp/header",
+		"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug",
+		"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation",
+		"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/jsoncpp/jsoncpp/header",
 		"/usr/include/c++/9",
 		"/usr/include/x86_64-linux-gnu/c++/9",
 		"/usr/include/c++/9/backward",
@@ -41,20 +41,20 @@
 		"-c",
 		"/usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/jsoncpp_lib_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/jsoncpp_lib_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 6,
-	"PARSE_CACHE_FILE" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/jsoncpp_lib_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/jsoncpp_lib_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "/usr/lib/qt5/bin/moc",
 	"QT_UIC_EXECUTABLE" : "/usr/lib/qt5/bin/uic",
 	"QT_VERSION_MAJOR" : 5,
-	"SETTINGS_FILE" : "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/jsoncpp_lib_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/jsoncpp_lib_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
 		[
-			"/home/shams/Github/OTA-Adaptive-AUTOSAR-Project//adaptive_autosar_simulation/jsoncpp/src/jsoncpp.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/jsoncpp/src/jsoncpp.cpp",
 			"MU"
 		]
 	],

@@ -15,6 +15,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QWidget>
 
@@ -25,6 +26,7 @@ class Ui_MainWindow
 public:
     QWidget *centralwidget;
     QTreeView *Table;
+    QTableView *tableView;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -39,6 +41,9 @@ public:
         Table->setObjectName(QString::fromUtf8("Table"));
         Table->setGeometry(QRect(30, 20, 381, 211));
         Table->setStyleSheet(QString::fromUtf8("ss"));
+        tableView = new QTableView(centralwidget);
+        tableView->setObjectName(QString::fromUtf8("tableView"));
+        tableView->setGeometry(QRect(130, 160, 256, 192));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
