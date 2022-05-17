@@ -1,6 +1,0 @@
-/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/rebuild_cache.dir
-/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/edit_cache.dir
-/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/adaptive_autosar_simulation.dir
-/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/jsoncpp_lib.dir
-/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/adaptive_autosar_simulation_autogen.dir
-/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles/jsoncpp_lib_autogen.dir

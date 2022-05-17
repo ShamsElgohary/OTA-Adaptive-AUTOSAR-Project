@@ -22,9 +22,6 @@ SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
     swClusterInfo.Version = version;
     swClusterInfo.Name = name;
 
-    guiLogger.newPkgCluster(name,version);
-
-
     return swClusterInfo;
 }
 
@@ -50,12 +47,10 @@ void SoftwarePackageParser::SwPackageManifestParser(string PackagePath)
 
     else if (actionTypeString == "Remove")
     {
-        actionType = ara::ucm::ActionType::kRemove;
+        actionType = ara::ucm::ActionType::kUpdate;
     }
 
     activationAction = root.get<std::string>("activationAction");
-
-    guiLogger.pkgAction(actionTypeString);
 
     // LOGGING & GUI SIMULATION
     ara::log logger;

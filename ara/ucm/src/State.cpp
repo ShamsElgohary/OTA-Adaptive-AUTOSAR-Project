@@ -33,9 +33,6 @@ PackageManagerState::PackageManagerState(PackageManagerStatusType pkgmgr_Current
 
             SWCLManager::PushInSWCLusters(SWCluster);
         }
-    
-    guiLogger.ReportPresentSWClusters(SWCLManager::GetPresentSWCLs());
-    
     }
     catch (const std::exception &e)
     {
@@ -85,8 +82,6 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         // ADD_Enum_Errors--------------------------------------------------------------//
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
-
-    guiLogger.ReportJsonGUI( "StartUpdateSession", "Start", true );
 
     uint8_t RejectedCounter = 0;
     /*Get Functional Groups of PKG*/
@@ -204,7 +199,6 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     }
 
     guiLogger.ReportJsonGUI( "VerifyUpdate", "Verified", true );
-    guiLogger.ReportPresentSWClusters(SWCLManager::GetPresentSWCLs());
 
     (CurrentStatus) = PackageManagerStatusType::kActivated;
     return ara::ucm::OperationResultType::kSuccess;
