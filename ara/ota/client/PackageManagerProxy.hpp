@@ -478,11 +478,11 @@ namespace ara
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
                     {
-                        return ara::com::proxy::ProxyBase::FindService("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/ota/etc/service_manifest.json", Cluster_Name, 2);
+                        return ara::com::proxy::ProxyBase::FindService("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ota/etc/service_manifest.json", Cluster_Name, 2);
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
                     {
-                        return ara::com::proxy::ProxyBase::FindService("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/ota/etc/service_manifest.json", Cluster_Name, 2, InstanceID);
+                        return ara::com::proxy::ProxyBase::FindService("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ota/etc/service_manifest.json", Cluster_Name, 2, InstanceID);
                     }
 
                     methods::TransferStart TransferStart;

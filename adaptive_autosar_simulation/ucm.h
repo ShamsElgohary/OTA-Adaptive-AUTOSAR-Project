@@ -24,6 +24,10 @@ public slots:
     void readActivateNewCluster();
     void updateTransferRate();
     void updateActivateRate();
+    void ucm_handler();
+
+signals:
+    void update_ucm();
 
 private:
      QGridLayout *main_layout = new QGridLayout;
@@ -73,7 +77,7 @@ private:
 
      //Add lists to mid colume
 
-    string guiReportPath = "/home/tabakh/Desktop/json/GUI_Report.json";
+    string guiReportPath = "file2.json";
     QString activeLogPath = "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/ActionsLog.txt";
 
     //COM GridBox setup

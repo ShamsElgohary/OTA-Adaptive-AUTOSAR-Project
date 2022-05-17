@@ -189,6 +189,33 @@ adaptive_autosar_simulation_autogen/mocs_compilation.cpp.s:
 	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/adaptive_autosar_simulation_autogen/mocs_compilation.cpp.s
 .PHONY : adaptive_autosar_simulation_autogen/mocs_compilation.cpp.s
 
+com.o: com.cpp.o
+
+.PHONY : com.o
+
+# target to build an object file
+com.cpp.o:
+	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.o
+.PHONY : com.cpp.o
+
+com.i: com.cpp.i
+
+.PHONY : com.i
+
+# target to preprocess a source file
+com.cpp.i:
+	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.i
+.PHONY : com.cpp.i
+
+com.s: com.cpp.s
+
+.PHONY : com.s
+
+# target to generate assembly for a file
+com.cpp.s:
+	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.s
+.PHONY : com.cpp.s
+
 exec.o: exec.cpp.o
 
 .PHONY : exec.o
@@ -378,32 +405,32 @@ ota.cpp.s:
 	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/ota.cpp.s
 .PHONY : ota.cpp.s
 
-service_discovery.o: service_discovery.cpp.o
+sd.o: sd.cpp.o
 
-.PHONY : service_discovery.o
+.PHONY : sd.o
 
 # target to build an object file
-service_discovery.cpp.o:
-	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.o
-.PHONY : service_discovery.cpp.o
+sd.cpp.o:
+	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.o
+.PHONY : sd.cpp.o
 
-service_discovery.i: service_discovery.cpp.i
+sd.i: sd.cpp.i
 
-.PHONY : service_discovery.i
+.PHONY : sd.i
 
 # target to preprocess a source file
-service_discovery.cpp.i:
-	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.i
-.PHONY : service_discovery.cpp.i
+sd.cpp.i:
+	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.i
+.PHONY : sd.cpp.i
 
-service_discovery.s: service_discovery.cpp.s
+sd.s: sd.cpp.s
 
-.PHONY : service_discovery.s
+.PHONY : sd.s
 
 # target to generate assembly for a file
-service_discovery.cpp.s:
-	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.s
-.PHONY : service_discovery.cpp.s
+sd.cpp.s:
+	$(MAKE) -f CMakeFiles/adaptive_autosar_simulation.dir/build.make CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.s
+.PHONY : sd.cpp.s
 
 simulation.o: simulation.cpp.o
 
@@ -501,6 +528,9 @@ help:
 	@echo "... adaptive_autosar_simulation_autogen/mocs_compilation.o"
 	@echo "... adaptive_autosar_simulation_autogen/mocs_compilation.i"
 	@echo "... adaptive_autosar_simulation_autogen/mocs_compilation.s"
+	@echo "... com.o"
+	@echo "... com.i"
+	@echo "... com.s"
 	@echo "... exec.o"
 	@echo "... exec.i"
 	@echo "... exec.s"
@@ -522,9 +552,9 @@ help:
 	@echo "... ota.o"
 	@echo "... ota.i"
 	@echo "... ota.s"
-	@echo "... service_discovery.o"
-	@echo "... service_discovery.i"
-	@echo "... service_discovery.s"
+	@echo "... sd.o"
+	@echo "... sd.i"
+	@echo "... sd.s"
 	@echo "... simulation.o"
 	@echo "... simulation.i"
 	@echo "... simulation.s"

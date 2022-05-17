@@ -178,6 +178,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/com.cpp">
+			<Option target="adaptive_autosar_simulation"/>
+		</Unit>
+		<Unit filename="/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/com.h">
+			<Option target="adaptive_autosar_simulation"/>
+		</Unit>
 		<Unit filename="/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/exec.cpp">
 			<Option target="adaptive_autosar_simulation"/>
 		</Unit>
@@ -211,10 +217,10 @@
 		<Unit filename="/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/ota.h">
 			<Option target="adaptive_autosar_simulation"/>
 		</Unit>
-		<Unit filename="/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.cpp">
+		<Unit filename="/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sd.cpp">
 			<Option target="adaptive_autosar_simulation"/>
 		</Unit>
-		<Unit filename="/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.h">
+		<Unit filename="/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sd.h">
 			<Option target="adaptive_autosar_simulation"/>
 		</Unit>
 		<Unit filename="/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/simulation.cpp">

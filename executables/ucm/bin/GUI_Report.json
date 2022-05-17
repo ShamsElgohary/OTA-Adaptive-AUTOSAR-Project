@@ -28,11 +28,6 @@
 		"Skeleton_Provided_Method" : 
 		[
 			{
-				"Method_ID" : 7,
-				"Method_Name" : "GetSwClusterInfo",
-				"Service_ID" : 2
-			},
-			{
 				"Method_ID" : 1,
 				"Method_Name" : "TransferStart",
 				"Service_ID" : 2
@@ -111,90 +106,7 @@
 				"Method_ID" : 5,
 				"Method_Name" : "ProcessSwPackage",
 				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 6,
-				"Method_Name" : "Activate",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 10,
-				"Method_Name" : "Finish",
-				"Service_ID" : 2
 			}
 		]
-	},
-	"ucm_json" : 
-	{
-		"GUI" : 
-		{
-			"Activate" : 
-			{
-				"StartUpdateSession" : "kRejected"
-			},
-			"PackageManagerStatus" : "kReady",
-			"ProcessedActionType" : "Install",
-			"TransferFinishRate" : 80.0
-		},
-		"PKGDetails" : 
-		{
-			"Action" : "Install",
-			"Clusters" : 
-			{
-				"sw1" : 
-				{
-					"name" : "SWCL_TEST1_VENDOR_A",
-					"version" : "0.1.0"
-				}
-			}
-		},
-		"PackageManager" : 
-		{
-			"Activate" : "kOperationNotPermitted",
-			"Finish" : "kOperationNotPermitted",
-			"GetSwClusterInfo" : "kSuccess",
-			"ProcessSwPackage" : "kSuccess",
-			"TransferData" : "kSuccess",
-			"TransferExit" : "kSuccess",
-			"TransferStart" : "kSuccess"
-		},
-		"PresentClusters" : 
-		{
-			"Cluster1" : 
-			{
-				"Name" : "com_proxy_test",
-				"Version" : "0.1"
-			},
-			"Cluster2" : 
-			{
-				"Name" : "com_skeleton_test",
-				"Version" : "0.1"
-			},
-			"Cluster3" : 
-			{
-				"Name" : "ex1",
-				"Version" : "0.1"
-			},
-			"Cluster4" : 
-			{
-				"Name" : "ex2",
-				"Version" : "0.1"
-			},
-			"Cluster5" : 
-			{
-				"Name" : "iam",
-				"Version" : "0.1"
-			},
-			"Cluster6" : 
-			{
-				"Name" : "sm",
-				"Version" : "0.1"
-			},
-			"Cluster7" : 
-			{
-				"Name" : "someip_sd",
-				"Version" : "0.1"
-			}
-		}
 	}
 }

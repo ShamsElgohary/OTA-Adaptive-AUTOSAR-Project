@@ -87,12 +87,14 @@ ucm::ucm(QWidget *parent)
     //Activate Progress Bar
     activateProgressBar->setStyleSheet("value:20;");
     activate->layout()->addWidget(activateProgressBar);
+    activateProgressBar->setValue(0);
 
 
 
     //transfer Progress Bar
     transferProgressBar->setStyleSheet("value:20;");
     transferRate->layout()->addWidget(transferProgressBar);
+    transferProgressBar->setValue(0);
 
 
 
@@ -144,14 +146,22 @@ ucm::ucm(QWidget *parent)
     main_layout->addWidget(comBox,0,4,1,1);
 
 
-    updateActivateRate();
-    updateTransferRate();
-    updateLog();
-    prjMangerStatus();
-    allClusters();
-    readActivateNewCluster();
+//    updateActivateRate();
+//    updateTransferRate();
+//    updateLog();
+//    prjMangerStatus();
+//    allClusters();
+//    readActivateNewCluster();
 
     setLayout(main_layout);
+
+    connect(this,SIGNAL(update_ucm()),this,SLOT(updateLog()));
+    connect(this,SIGNAL(update_ucm()),this,SLOT(allClusters()));
+    connect(this,SIGNAL(update_ucm()),this,SLOT(prjMangerStatus()));
+    connect(this,SIGNAL(update_ucm()),this,SLOT(readActivateNewCluster()));
+    connect(this,SIGNAL(update_ucm()),this,SLOT(updateTransferRate()));
+    connect(this,SIGNAL(update_ucm()),this,SLOT(updateActivateRate()));
+
 }
 
 
@@ -265,5 +275,12 @@ void ucm::updateActivateRate()
     {
         activateProgressBar->setValue(100);
     }
+
+}
+
+
+void ucm::ucm_handler()
+{
+    emit update_ucm();
 
 }

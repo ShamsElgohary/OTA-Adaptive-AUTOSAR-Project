@@ -161,22 +161,9 @@ CMakeFiles/adaptive_autosar_simulation.dir/iam.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/adaptive_autosar_simulation.dir/iam.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/iam.cpp -o CMakeFiles/adaptive_autosar_simulation.dir/iam.cpp.s
 
-CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.o: CMakeFiles/adaptive_autosar_simulation.dir/flags.make
-CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.o: /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.o -c /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.cpp
-
-CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.cpp > CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.i
-
-CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.cpp -o CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.s
-
 CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.o: CMakeFiles/adaptive_autosar_simulation.dir/flags.make
 CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.o: /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/simulation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.o -c /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/simulation.cpp
 
 CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.i: cmake_force
@@ -186,6 +173,32 @@ CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.i: cmake_force
 CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/simulation.cpp -o CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.s
+
+CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.o: CMakeFiles/adaptive_autosar_simulation.dir/flags.make
+CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.o: /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sd.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.o -c /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sd.cpp
+
+CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sd.cpp > CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.i
+
+CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sd.cpp -o CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.s
+
+CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.o: CMakeFiles/adaptive_autosar_simulation.dir/flags.make
+CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.o: /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/com.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.o -c /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/com.cpp
+
+CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/com.cpp > CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.i
+
+CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/com.cpp -o CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.s
 
 # Object files for target adaptive_autosar_simulation
 adaptive_autosar_simulation_OBJECTS = \
@@ -197,8 +210,9 @@ adaptive_autosar_simulation_OBJECTS = \
 "CMakeFiles/adaptive_autosar_simulation.dir/ucm.cpp.o" \
 "CMakeFiles/adaptive_autosar_simulation.dir/ota.cpp.o" \
 "CMakeFiles/adaptive_autosar_simulation.dir/iam.cpp.o" \
-"CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.o" \
-"CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.o"
+"CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.o" \
+"CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.o" \
+"CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.o"
 
 # External object files for target adaptive_autosar_simulation
 adaptive_autosar_simulation_EXTERNAL_OBJECTS =
@@ -211,15 +225,16 @@ adaptive_autosar_simulation: CMakeFiles/adaptive_autosar_simulation.dir/sm.cpp.o
 adaptive_autosar_simulation: CMakeFiles/adaptive_autosar_simulation.dir/ucm.cpp.o
 adaptive_autosar_simulation: CMakeFiles/adaptive_autosar_simulation.dir/ota.cpp.o
 adaptive_autosar_simulation: CMakeFiles/adaptive_autosar_simulation.dir/iam.cpp.o
-adaptive_autosar_simulation: CMakeFiles/adaptive_autosar_simulation.dir/service_discovery.cpp.o
 adaptive_autosar_simulation: CMakeFiles/adaptive_autosar_simulation.dir/simulation.cpp.o
+adaptive_autosar_simulation: CMakeFiles/adaptive_autosar_simulation.dir/sd.cpp.o
+adaptive_autosar_simulation: CMakeFiles/adaptive_autosar_simulation.dir/com.cpp.o
 adaptive_autosar_simulation: CMakeFiles/adaptive_autosar_simulation.dir/build.make
 adaptive_autosar_simulation: /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.12.8
 adaptive_autosar_simulation: libjsoncpp_lib.a
 adaptive_autosar_simulation: /usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.12.8
 adaptive_autosar_simulation: /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.12.8
 adaptive_autosar_simulation: CMakeFiles/adaptive_autosar_simulation.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable adaptive_autosar_simulation"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop-Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable adaptive_autosar_simulation"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/adaptive_autosar_simulation.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

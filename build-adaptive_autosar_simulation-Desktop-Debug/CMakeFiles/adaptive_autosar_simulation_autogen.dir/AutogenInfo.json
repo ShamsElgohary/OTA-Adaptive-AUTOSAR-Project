@@ -8,6 +8,11 @@
 	"HEADERS" : 
 	[
 		[
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/com.h",
+			"MU",
+			"EWIEGA46WW/moc_com.cpp"
+		],
+		[
 			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/exec.h",
 			"MU",
 			"EWIEGA46WW/moc_exec.cpp"
@@ -28,9 +33,9 @@
 			"EWIEGA46WW/moc_ota.cpp"
 		],
 		[
-			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.h",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sd.h",
 			"MU",
-			"EWIEGA46WW/moc_service_discovery.cpp"
+			"EWIEGA46WW/moc_sd.cpp"
 		],
 		[
 			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/simulation.hpp",
@@ -101,6 +106,10 @@
 	"SOURCES" : 
 	[
 		[
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/com.cpp",
+			"MU"
+		],
+		[
 			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/exec.cpp",
 			"MU"
 		],
@@ -121,7 +130,7 @@
 			"MU"
 		],
 		[
-			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/service_discovery.cpp",
+			"/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/sd.cpp",
 			"MU"
 		],
 		[

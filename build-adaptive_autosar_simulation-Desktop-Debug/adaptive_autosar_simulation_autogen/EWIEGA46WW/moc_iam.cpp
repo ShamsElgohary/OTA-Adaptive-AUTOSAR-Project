@@ -54,7 +54,7 @@ static const uint qt_meta_data_iam[] = {
        0        // eod
 };
 
-void iam::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void IAM::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     Q_UNUSED(_o);
     Q_UNUSED(_id);
@@ -62,7 +62,7 @@ void iam::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **
     Q_UNUSED(_a);
 }
 
-QT_INIT_METAOBJECT const QMetaObject iam::staticMetaObject = { {
+QT_INIT_METAOBJECT const QMetaObject IAM::staticMetaObject = { {
     &QWidget::staticMetaObject,
     qt_meta_stringdata_iam.data,
     qt_meta_data_iam,
@@ -72,12 +72,12 @@ QT_INIT_METAOBJECT const QMetaObject iam::staticMetaObject = { {
 } };
 
 
-const QMetaObject *iam::metaObject() const
+const QMetaObject *IAM::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *iam::qt_metacast(const char *_clname)
+void *IAM::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_iam.stringdata0))
@@ -85,7 +85,7 @@ void *iam::qt_metacast(const char *_clname)
     return QWidget::qt_metacast(_clname);
 }
 
-int iam::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int IAM::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QWidget::qt_metacall(_c, _id, _a);
     return _id;

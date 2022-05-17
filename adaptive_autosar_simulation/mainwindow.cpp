@@ -49,12 +49,12 @@ void MainWindow::on_simulation_button_clicked()
     exec_tab->parse_exec_json();
     /* thread to lister on socket*/
 
-//    socket_thread=QThread::create([this]{
-//        this->s->creat_socket();
-//        std::function<void()>handler = [this](){this->choose_handler();};
-//        this->s->listen_l(handler);
-//        });
-//  socket_thread->start();
+    socket_thread=QThread::create([this]{
+        this->s->creat_socket();
+        std::function<void()>handler = [this](){this->choose_handler();};
+        this->s->listen_l(handler);
+        });
+  socket_thread->start();
 
 
 }
@@ -69,9 +69,11 @@ void MainWindow::choose_handler()
         if(x=="sm_json")
             this->sm_tab->sm_handler();
         if(x=="ServiceDiscovery")
-            this->sd_tab->sd_handler();
+            //this->sd_tab->sd_handler();
         if(x=="iam_json")
             this->iam_tab->iam_handler();
+        if(x=="ucm")
+            this->ucm_tab->ucm_handler();
 
 }
 MainWindow::~MainWindow()

@@ -1,0 +1,74 @@
+{
+	"Cluster_name" : "ucm",
+	"ucm_json" : 
+	{
+		"GUI" : 
+		{
+			"Activate" : 
+			{
+				"StartUpdateSession" : "kRejected"
+			},
+			"PackageManagerStatus" : "kReady",
+			"ProcessedActionType" : "Install",
+			"TransferFinishRate" : 100.0
+		},
+		"PKGDetails" : 
+		{
+			"Action" : "Install",
+			"Clusters" : 
+			{
+				"sw1" : 
+				{
+					"name" : "SWCL_TEST1_VENDOR_A",
+					"version" : "0.1.0"
+				}
+			}
+		},
+		"PackageManager" : 
+		{
+			"Finish" : "kOperationNotPermitted",
+			"ProcessSwPackage" : "kSuccess",
+			"TransferData" : "kSuccess",
+			"TransferExit" : "kSuccess",
+			"TransferStart" : "kSuccess"
+		},
+		"PresentClusters" : 
+		{
+			"Cluster1" : 
+			{
+				"Name" : "com_proxy_test",
+				"Version" : "0.1"
+			},
+			"Cluster2" : 
+			{
+				"Name" : "com_skeleton_test",
+				"Version" : "0.1"
+			},
+			"Cluster3" : 
+			{
+				"Name" : "ex1",
+				"Version" : "0.1"
+			},
+			"Cluster4" : 
+			{
+				"Name" : "ex2",
+				"Version" : "0.1"
+			},
+			"Cluster5" : 
+			{
+				"Name" : "iam",
+				"Version" : "0.1"
+			},
+			"Cluster6" : 
+			{
+				"Name" : "sm",
+				"Version" : "0.1"
+			},
+			"Cluster7" : 
+			{
+				"Name" : "someip_sd",
+				"Version" : "0.1"
+			}
+		}
+	}
+}
