@@ -4,7 +4,10 @@
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    s=new simulation(8089);
+    s=new simulation(8088);
+
+    char path[]="/home/youssef/Documents/OTA-Adaptive-AUTOSAR-Project/gui_sm";
+    mkfifo(path,0777);
 
     vertical_layout_tabs->addWidget(tabWidget);
 
@@ -12,6 +15,12 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 
     simulation_button->setText("start simulation");
     vertical_layout_control->addWidget(simulation_button);
+
+    ota_button->setText("OTA Run");
+    vertical_layout_control->addWidget(ota_button);
+
+    ucm_button->setText("UCM Run");
+    vertical_layout_control->addWidget(ucm_button);
 
     main_layout->addLayout(vertical_layout_control);
     main_layout->addLayout(vertical_layout_tabs);
@@ -27,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 void MainWindow::connect_fun()
 {
     connect(simulation_button,SIGNAL(clicked()),this,SLOT(on_simulation_button_clicked()));
+    connect(ota_button,SIGNAL(clicked()),this,SLOT(on_ota_button_clicked()));
+    connect(ucm_button,SIGNAL(clicked()),this,SLOT(on_ucm_button_clicked()));
 }
 void MainWindow::on_simulation_button_clicked()
 {
@@ -75,6 +86,26 @@ void MainWindow::choose_handler()
         if(x=="ucm")
             this->ucm_tab->ucm_handler();
 
+}
+void MainWindow::on_ota_button_clicked()
+{
+    QThread*th=QThread::create([this]{
+        sm_tab->run_cluster(sm::clusters::OTA);
+        sm_tab->sm_handler();
+        });
+    th->start();
+    ota_tab = new ota();
+    tabWidget ->addTab(ota_tab,"OTA");
+}
+void MainWindow::on_ucm_button_clicked()
+{
+    QThread*th=QThread::create([this]{
+        sm_tab->run_cluster(sm::clusters::UCM);
+        sm_tab->sm_handler();
+        });
+    th->start();
+    ucm_tab = new ucm();
+    tabWidget ->addTab(ucm_tab,"UCM");
 }
 MainWindow::~MainWindow()
 {

@@ -29,6 +29,8 @@ public:
 
 private slots:
     void on_simulation_button_clicked();
+    void on_ota_button_clicked();
+    void on_ucm_button_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -42,9 +44,12 @@ private:
     ucm* ucm_tab=new ucm  ;
     sd* sd_tab=new sd;
     ota* ota_tab=new ota  ;
+    
     QTabWidget *tabWidget =new QTabWidget ;
     QPushButton * simulation_button =new QPushButton;
-
+    QPushButton * ota_button =new QPushButton;
+    QPushButton * ucm_button =new QPushButton;
+    
     simulation* s=nullptr;
     QThread* socket_thread=nullptr;
 

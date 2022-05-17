@@ -95,7 +95,7 @@ void simulation::recive_file(int client_socket,std::function<void()>handler)
     handler();
     //MainWindow m;
     //m.handle_sm();
-    sleep(5);
+    //sleep(5);
     
 }
 

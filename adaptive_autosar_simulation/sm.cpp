@@ -1,4 +1,14 @@
 #include "sm.h"
+#include <fstream>
+#include <iostream>
+#include <unistd.h>
+#include <stdint.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#include <bits/stdc++.h>
 
 sm::sm(QWidget *parent): QWidget{parent}
 {
@@ -95,7 +105,7 @@ void sm::update_sm()
             function_group_state_table->setItem(i,1,new QTableWidgetItem(QString(states[fg].asCString())));
             i++;
         }
-}
+    }
 void sm::update_terminal()
 {
         console_text->clear();
@@ -104,4 +114,12 @@ void sm::update_terminal()
         QTextStream in(&file);
         console_text->setText(in.readAll());
         //console_text->setTextColor(QColor(Qt::white));
+}
+void sm::run_cluster(sm::clusters cluster)
+{
+    char path[]="/home/youssef/Documents/OTA-Adaptive-AUTOSAR-Project/gui_sm";
+    int fd=open(path, O_WRONLY);
+    write(fd,&cluster,sizeof(cluster));
+    std::cout<<"connected"<<std::endl;
+    ::close(fd);
 }

@@ -5,6 +5,13 @@
 #include <QtWidgets>
 #include "simulation.hpp"
 #include "./jsoncpp/header/json.h"
+#include <stdint.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#include <bits/stdc++.h>
 
 class sm: public QWidget
 {
@@ -12,9 +19,11 @@ class sm: public QWidget
 public:
     explicit sm(QWidget *parent = nullptr);
     void sm_handler();
+    enum clusters{OTA,UCM};
 public slots:
     void update_sm();
     void update_terminal();
+    void run_cluster(clusters cluster);
 signals:
     void sm_signal();
 private:
