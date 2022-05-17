@@ -35,6 +35,15 @@ void MainWindow::on_simulation_button_clicked()
     tabWidget ->addTab(sm_tab,"state manager");
 
 
+    ota_tab = new ota();
+    tabWidget ->addTab(ota_tab,"OTA");
+
+    //sd_tab->update_sd();
+    exec_tab->parse_exec_json();
+    ucm_tab = new ucm();
+    tabWidget ->addTab(ucm_tab,"UCM");
+
+
     /* thread to lister on socket*/
     socket_thread=QThread::create([this]{
         this->s->creat_socket();

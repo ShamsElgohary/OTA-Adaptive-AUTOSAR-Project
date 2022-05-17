@@ -1,0 +1,2 @@
+/usr/bin/ar qc libjsoncpp_lib.a  CMakeFiles/jsoncpp_lib.dir/jsoncpp_lib_autogen/mocs_compilation.cpp.o CMakeFiles/jsoncpp_lib.dir/jsoncpp/src/jsoncpp.cpp.o
+/usr/bin/ranlib libjsoncpp_lib.a

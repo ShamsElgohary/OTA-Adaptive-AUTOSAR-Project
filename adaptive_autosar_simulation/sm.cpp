@@ -4,7 +4,8 @@ sm::sm(QWidget *parent): QWidget{parent}
 {
 
     main_layout->addWidget(state_management, 0, 0, 2, 1);
-    main_layout->addWidget(console, 2, 0, 2, 1);
+    main_layout->addWidget(com, 0 ,1, 4, 1);
+    main_layout->addWidget(console,  2 ,0, 2, 1);
 
 
 
@@ -37,6 +38,9 @@ sm::sm(QWidget *parent): QWidget{parent}
     main_layout->addWidget(console, 2, 0, 2, 1);
 
     console->layout()->addWidget(console_text);
+
+    com->setLayout(new QVBoxLayout);
+    com->layout()->addWidget(console_text);
 
     setLayout(main_layout);
 
