@@ -146,6 +146,7 @@ void simulation::send_file(char *file_path)
             perror("[-] Error in sendung data");
             exit(1);
         }
+        usleep(5);
         bzero(data, SIZE);
     }
     close(sockfd_c);
