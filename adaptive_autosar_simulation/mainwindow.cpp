@@ -62,6 +62,10 @@ void MainWindow::choose_handler()
 
         if(x=="sm_json")
             this->sm_tab->sm_handler();
+            
+        if(x=="iam_json")
+            this->iam_tab->iam_handler();
+
 }
 MainWindow::~MainWindow()
 {
