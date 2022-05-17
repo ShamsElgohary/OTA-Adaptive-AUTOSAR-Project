@@ -36,8 +36,9 @@ private:
     QWidget *widget =new QWidget ;
     exec * exec_tab =new exec ;
     sm * sm_tab =new sm ;
-    iam*  iam_tab =new iam ;
+    IAM* iam_tab =new IAM ;
     ucm* ucm_tab=new ucm  ;
+    ota* ota_tab=new ota  ;
 
     QTabWidget *tabWidget =new QTabWidget ;
     QPushButton * simulation_button =new QPushButton;

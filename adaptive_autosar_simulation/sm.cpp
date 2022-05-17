@@ -46,7 +46,7 @@ sm::sm(QWidget *parent): QWidget{parent}
 }
 void sm::sm_handler()
 {
-    emit sm_signal();
+    //emit sm_signal();
 }
 void sm::update_sm()
 {
