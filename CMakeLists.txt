@@ -59,7 +59,7 @@ set(iam_source_dir "${CMAKE_SOURCE_DIR}/ara/iam")
 file(GLOB_RECURSE IAM_SRC_FILES ${iam_source_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
 add_executable(iam ${IAM_SRC_FILES} ${iam_source_dir}/lib/src/Grant.cpp) 
 target_include_directories(iam PUBLIC  ${iam_source_dir}/include  ${iam_source_dir}/lib/include )
-target_link_libraries(iam execution_lib Boost::filesystem Boost::program_options Boost::serialization)
+target_link_libraries(iam execution_lib Boost::filesystem Boost::program_options Boost::serialization jsoncpp_lib sim_sock_lib)
 install(TARGETS iam RUNTIME DESTINATION ${iam_install_dir})
 
 ################################IAM_LIB##########################
@@ -107,7 +107,7 @@ target_link_libraries(someip_sd com_lib execution_lib)
 target_include_directories(someip_sd  PUBLIC ${com_source_dir}/network_binding/SomeIp/servicediscovery/lib/include ) 
 install(TARGETS someip_sd RUNTIME DESTINATION ${someIp_SD_install_dir})
 
-################################UCM#############################
+###############################UCM#############################
 
 set(UCM_FILES "${CMAKE_SOURCE_DIR}/ara/ucm/")
 set(ucm_install_dir "${CMAKE_SOURCE_DIR}/executables/ucm/bin")
@@ -157,13 +157,13 @@ install(TARGETS com_proxy_test RUNTIME DESTINATION ${test_client_install_dir})
 # add_executable(crypto_test ${CRYPTO_LIB_SRC_FILES})
 # target_link_libraries(crypto_test crypto_lib)
 
-# ######################### ota ##########################
+######################### ota ##########################
 
-# set(ota_source_dir "${CMAKE_SOURCE_DIR}/ara/ota/client")
-# set(ota_install_dir "${CMAKE_SOURCE_DIR}/executables/ota/bin")
-# add_executable(ota ${ota_source_dir}/main.cpp ) 
-# target_link_libraries(ota com_lib iam_lib execution_lib cpr crypto_lib)
-# install(TARGETS ota RUNTIME DESTINATION ${ota_install_dir})
+set(ota_source_dir "${CMAKE_SOURCE_DIR}/ara/ota/client")
+set(ota_install_dir "${CMAKE_SOURCE_DIR}/executables/ota/bin")
+add_executable(ota ${ota_source_dir}/main.cpp ) 
+target_link_libraries(ota com_lib iam_lib execution_lib cpr )
+install(TARGETS ota RUNTIME DESTINATION ${ota_install_dir})
 
 
 

@@ -1,7 +1,7 @@
 #include "cpr/cpr.h"
 #include "iostream"
 #include <filesystem>
-#include "../../crypto/cryp/include/crypto_provider.hpp"
+//#include "../../crypto/cryp/include/crypto_provider.hpp"
 #include "PackageManagerProxy.hpp"
 #include "execution_client.hpp"
 #include "fstream"
@@ -11,7 +11,7 @@
 using namespace std;
 using namespace ara::ucm::pkgmgr::proxy;
 using namespace ara::com::proxy;
-using namespace ara::crypto;
+// using namespace ara::crypto;
 
 class CLIENT_OTA
 {
@@ -19,6 +19,7 @@ class CLIENT_OTA
 private:
     vector<SwClusterInfoType> trail;
     vector<SwClusterInfoType> UCM_trail;
+    vector<SwClusterInfoType> download_trail;
     PackageManagerProxy *RecService = nullptr;
 
 public:
@@ -46,64 +47,64 @@ public:
         return responce.text;
     }
 
-    string crypto_get_hash(string packagename)
-    {
-        std::string path = "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project//executables/ota/bin/" + packagename + ".zip";
+    // string crypto_get_hash(string packagename)
+    // {
+    //     std::string path = "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project//executables/ota/bin/" + packagename + ".zip";
 
-        ifstream ifs(path, ios::binary | ios::ate);
-        ifstream::pos_type pos = ifs.tellg();
-        std::vector<char> result(pos);
-        ifs.seekg(0, ios::beg);
-        ifs.read(&result[0], pos);
+    //     ifstream ifs(path, ios::binary | ios::ate);
+    //     ifstream::pos_type pos = ifs.tellg();
+    //     std::vector<char> result(pos);
+    //     ifs.seekg(0, ios::beg);
+    //     ifs.read(&result[0], pos);
 
-        char *result_arr = nullptr;
-        result_arr = &result[0];
+    //     char *result_arr = nullptr;
+    //     result_arr = &result[0];
 
-        std::vector<unsigned char> Digest;
+    //     std::vector<unsigned char> Digest;
 
-        cryp::CryptoProvider cryp_provider;
-        cryp::HashFunctionCtx::Uptr hash = cryp_provider.CreateHashFunctionCtx(cryp::HashCtx_AlgID::SHA1_ID);
-        hash->Start();
-        hash->Update(ReadOnlyMemRegion(result_arr), result.size());
+    //     cryp::CryptoProvider cryp_provider;
+    //     cryp::HashFunctionCtx::Uptr hash = cryp_provider.CreateHashFunctionCtx(cryp::HashCtx_AlgID::SHA1_ID);
+    //     hash->Start();
+    //     hash->Update(ReadOnlyMemRegion(result_arr), result.size());
 
-        // std::cout << "Message: " << msg << std::endl;
+    //     // std::cout << "Message: " << msg << std::endl;
 
-        Digest = hash->Finish();
+    //     Digest = hash->Finish();
 
-        std::stringstream ss;
+    //     std::stringstream ss;
 
-        for (int i = 0; i < Digest.size(); i++)
-        {
-            // std::cout << static_cast<unsigned>(Digest[i]) << "    ";
-            if (Digest[i] >= 0 && Digest[i] <= 15)
-            {
-                ss << "0" << std::hex << int(Digest[i]);
-            }
-            else
-            {
-                ss << std::hex << int(Digest[i]);
-            }
-        }
+    //     for (int i = 0; i < Digest.size(); i++)
+    //     {
+    //         // std::cout << static_cast<unsigned>(Digest[i]) << "    ";
+    //         if (Digest[i] >= 0 && Digest[i] <= 15)
+    //         {
+    //             ss << "0" << std::hex << int(Digest[i]);
+    //         }
+    //         else
+    //         {
+    //             ss << std::hex << int(Digest[i]);
+    //         }
+    //     }
 
-        std::string res(ss.str());
+    //     std::string res(ss.str());
 
-        return res;
-    }
-    bool compare_hash(string packagename)
-    {
-        std::string hash_server = hash(packagename);
-        cout << "Server Hash: " << hash_server << endl;
-        std::string hash_cryp = crypto_get_hash(packagename);
-        cout << "Crypto Hash: " << hash_cryp << endl;
-        if (hash_server == hash_cryp)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
-    }
+    //     return res;
+    // }
+    // bool compare_hash(string packagename)
+    // {
+    //     std::string hash_server = hash(packagename);
+    //     cout << "Server Hash: " << hash_server << endl;
+    //     std::string hash_cryp = crypto_get_hash(packagename);
+    //     cout << "Crypto Hash: " << hash_cryp << endl;
+    //     if (hash_server == hash_cryp)
+    //     {
+    //         return 1;
+    //     }
+    //     else
+    //     {
+    //         return 0;
+    //     }
+    // }
 
     void parse_meta_data()
     {
@@ -116,18 +117,15 @@ public:
         {
             SwClusterInfoType x;
             getline(myfile, myline);
-            if (myline == "")
-            {
-            }
+            if (myline == ""){}
             else
             {
                 int it = myline.find("#");
                 string file_name = myline.substr(0, it);
                 string number = myline.substr(it + 1);
-                int num = stoi(number);
+                float num = stof(number);
                 x.Name = file_name;
-                x.Version = IntToString(num);
-                ;
+                x.Version = std::to_string(num);
                 trail.push_back(x);
             }
         }
@@ -190,6 +188,7 @@ public:
         // RecService.Rollback();
         RecService->Finish();
     }
+
     void Compare()
     {
 
@@ -203,40 +202,47 @@ public:
                 {
                     test = true;
                 }
-                if (cluster.Name == UCM_Cluster.Name)
+                else if (cluster.Name == UCM_Cluster.Name)
                 {
-                    if (stoi(cluster.Version) <= stoi(UCM_Cluster.Version))
+                    if (stof(cluster.Version) <= stof(UCM_Cluster.Version))
                     {
                         continue;
                     }
                     else
                     {
-                        string pckg = cluster.Name + cluster.Version;
-                        download(pckg);
-                        if (compare_hash(pckg))
-                        {
-                            this->Transfer2UCM(pckg);
-                        }
-                        else
-                        {
-                            cout << "Error: Different hash " << endl;
-                        }
+                        download_trail.push_back(cluster);
+
+                        // if (compare_hash(pckg))
+                        // {
+                        //     this->Transfer2UCM(pckg);
+                        // }
+                        // else
+                        // {
+                        //     cout << "Error: Different hash " << endl;
+                        // }
                     }
                 }
             }
             if (test = true)
             {
-                string pckg = cluster.Name + cluster.Version;
-                download(pckg);
-                if (compare_hash(pckg))
-                {
-                    this->Transfer2UCM(pckg);
-                }
-                else
-                {
-                    cout << "Error: Different hash " << endl;
-                }
+                download_trail.push_back(cluster);
+                // if (compare_hash(pckg))
+                // {
+                //     this->Transfer2UCM(pckg);
+                // }
+                // else
+                // {
+                //     cout << "Error: Different hash " << endl;
+                // }
             }
+        }
+
+        for (auto y : download_trail)
+        {
+
+            string pckg = y.Name + y.Version;
+            download(pckg);
+            this->Transfer2UCM(pckg);
         }
     }
     void Get_UCM_Clusters()
@@ -246,6 +252,44 @@ public:
     }
     ~CLIENT_OTA() {}
 
+    void sim_json()
+    {
+
+        std::ofstream json_file("GUI_Report.json");
+        Json::Value event;
+        event["Cluster_name"] = "ota";
+        event["Server_packages_counter"] = trail.size();
+        int n = 1;
+        for (auto x : trail)
+        {
+            string counter = "Package" + std::to_string(n);
+            event["server_Packages"][counter]["Name"] = x.Name;
+            event["server_Packages"][counter]["Version"] = x.Version;
+            n++;
+        }
+        event["ECU_packages_counter"] = UCM_trail.size();
+
+        n = 1;
+        for (auto x : UCM_trail)
+        {
+            string counter = "Package" + std::to_string(n);
+            event["ECU_Packages"][counter]["Name"] = x.Name;
+            event["ECU_Packages"][counter]["Version"] = x.Version;
+            n++;
+        }
+         event["Packges_2b_downloader_counter"] = download_trail.size();
+
+        n = 1;
+        for (auto x : download_trail)
+        {
+            string counter = "Package" + std::to_string(n);
+            event["download_Packages"][counter]["Name"] = x.Name;
+            event["download_Packages"][counter]["Version"] = x.Version;
+            n++;
+        }
+        json_file << event;
+        json_file.close();
+    }
     void run()
     {
         get_meta_data();
@@ -256,6 +300,8 @@ public:
         cout << "3" << endl;
         Compare();
         cout << "4" << endl;
+        sim_json();
+        cout << "5" << endl;
     }
 };
 
@@ -264,6 +310,10 @@ int main()
     ClearJSONReport();
     CLIENT_OTA x;
     x.run();
-
+    // while (1)
+    // {
+    //     x.run();
+    //     usleep(8000000);
+    // }
     return 0;
 }
