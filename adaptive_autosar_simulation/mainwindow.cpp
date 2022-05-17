@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    s=new simulation(8088);
+    s=new simulation(8089);
 
     vertical_layout_tabs->addWidget(tabWidget);
 
@@ -32,21 +32,21 @@ void MainWindow::on_simulation_button_clicked()
 {
     ucm_tab = new ucm();
     tabWidget ->addTab(ucm_tab,"UCM");
-    
+
     sm_tab = new sm();
     tabWidget ->addTab(sm_tab,"state manager");
 
     sd_tab= new sd();
     tabWidget ->addTab(sd_tab,"service_discovery");
 
-    ota_tab = new ota();
-    tabWidget ->addTab(ota_tab,"OTA");
+    iam_tab= new IAM();
+    tabWidget ->addTab(iam_tab,"IAM");
+
+     ota_tab = new ota();
+     tabWidget ->addTab(ota_tab,"OTA");
 
     //sd_tab->update_sd();
     exec_tab->parse_exec_json();
-
-
-
     /* thread to lister on socket*/
 
 //    socket_thread=QThread::create([this]{
@@ -54,7 +54,7 @@ void MainWindow::on_simulation_button_clicked()
 //        std::function<void()>handler = [this](){this->choose_handler();};
 //        this->s->listen_l(handler);
 //        });
-//    socket_thread->start();
+//  socket_thread->start();
 
 
 }
@@ -68,7 +68,8 @@ void MainWindow::choose_handler()
 
         if(x=="sm_json")
             this->sm_tab->sm_handler();
-
+        if(x=="ServiceDiscovery")
+            this->sd_tab->sd_handler();
         if(x=="iam_json")
             this->iam_tab->iam_handler();
 
