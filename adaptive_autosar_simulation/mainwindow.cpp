@@ -30,6 +30,8 @@ void MainWindow::connect_fun()
 }
 void MainWindow::on_simulation_button_clicked()
 {
+    ucm_tab = new ucm();
+    tabWidget ->addTab(ucm_tab,"UCM");
 
     sm_tab = new sm();
     tabWidget ->addTab(sm_tab,"state manager");
@@ -40,8 +42,7 @@ void MainWindow::on_simulation_button_clicked()
 
     //sd_tab->update_sd();
     exec_tab->parse_exec_json();
-    ucm_tab = new ucm();
-    tabWidget ->addTab(ucm_tab,"UCM");
+
 
 
     /* thread to lister on socket*/

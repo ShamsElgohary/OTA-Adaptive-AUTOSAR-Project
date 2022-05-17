@@ -271,6 +271,9 @@ namespace ara
 			kIncorrectBlockSize = 30U,
 			kInsufficientData = 6U,
 			/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+			kUpdateSessionRejected = 33U,
+			kPreActivationFailed = 19U,
+			kVerificationFailed = 27U
 		};
 
 		typedef struct

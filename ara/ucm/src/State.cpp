@@ -78,15 +78,11 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     StartUpdateSessionOutput error_startUpdateSession = proxy->StartUpdateSession();
     if (error_startUpdateSession.AppError == SM_ApplicationError::kRejected)
     {
-
-
-
         guiLogger.ReportJsonGUI( "StartUpdateSession", "kRejected", true );
-        // ADD_Enum_Errors--------------------------------------------------------------//
-        return ara::ucm::OperationResultType::kOperationNotPermitted;
+        return ara::ucm::OperationResultType::kUpdateSessionRejected;
     }
 
-    guiLogger.ReportJsonGUI( "StartUpdateSession", "Start", true );
+    guiLogger.ReportJsonGUI( "StartUpdateSession", "Done", true );
 
     uint8_t RejectedCounter = 0;
     /*Get Functional Groups of PKG*/
@@ -103,8 +99,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
             guiLogger.ReportJsonGUI( "PrepareUpdate", "Prepare Failed", true );
 
-            // ADD_Enum_Errors--------------------------------------------------------------//
-            return ara::ucm::OperationResultType::kOperationNotPermitted;
+            return ara::ucm::OperationResultType::kPreActivationFailed;
         }
         else if (error_prepareUpdate.AppError == SM_ApplicationError::kRejected)
         {
@@ -113,9 +108,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
                 (CurrentStatus) = PackageManagerStatusType::kReady;
 
                 guiLogger.ReportJsonGUI( "PrepareUpdate", "Rejected" , true );
-
-                // ADD_Enum_Errors--------------------------------------------------------------//
-                return ara::ucm::OperationResultType::kOperationNotPermitted;
+                return ara::ucm::OperationResultType::kPreActivationFailed;
             }
 
             RejectedCounter++;
@@ -186,9 +179,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
 
             guiLogger.ReportJsonGUI( "VerifyUpdate", "Verify Failed", true );
-
-            // ADD_Enum_Errors--------------------------------------------------------------//
-            return ara::ucm::OperationResultType::kOperationNotPermitted;
+            return ara::ucm::OperationResultType::kVerificationFailed;
         }
         else if (error_verifyupdate.AppError == SM_ApplicationError::kRejected)
         {
@@ -196,8 +187,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             {
                 // Rollback();
                 guiLogger.ReportJsonGUI( "VerifyUpdate", "Rejected", true );
-                // ADD_Enum_Errors--------------------------------------------------------------//
-                return ara::ucm::OperationResultType::kOperationNotPermitted;
+                return ara::ucm::OperationResultType::kVerificationFailed;
             }
             RejectedCounter++;
         }
@@ -241,7 +231,10 @@ ara::ucm::OperationResultType PackageManagerState::FinishInternal()
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
 
-    (CurrentStatus) == PackageManagerStatusType::kCleaningUp;
+    (CurrentStatus) = PackageManagerStatusType::kCleaningUp;
+
+    proxy->StopUpdateSession();
+    guiLogger.ReportJsonGUI( "StopUpdateSession", "Stopped", true );
 
     /*if UCM status is activated finish method commit changes*/
     if ((CurrentStatus) == PackageManagerStatusType::kActivated)
@@ -337,11 +330,11 @@ ara::ucm::OperationResultType PackageManagerState::RevertProcessedSwPackages()
 
     if ((CurrentStatus) == PackageManagerStatusType::kReady)
     {
-        (CurrentStatus) == PackageManagerStatusType::kCleaningUp;
+        (CurrentStatus) = PackageManagerStatusType::kCleaningUp;
 
         ara::ucm::storage::SWCLManager::RevertChanges();
 
-        (CurrentStatus) == PackageManagerStatusType::kIdle;
+        (CurrentStatus) = PackageManagerStatusType::kIdle;
         SWPackagesCounter = 0;
     }
     return ara::ucm::OperationResultType::kSuccess;

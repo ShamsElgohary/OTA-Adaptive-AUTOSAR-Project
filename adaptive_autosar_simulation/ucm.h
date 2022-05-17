@@ -32,7 +32,7 @@ private:
      QGroupBox *ucmBox = new QGroupBox("UCM");
      QGroupBox *log = new QGroupBox("LOG");
      QGroupBox *mid = new QGroupBox();
-     QGroupBox *clusters = new QGroupBox("CLUSTERS");
+     QGroupBox *clusters = new QGroupBox("Present Clusters");
 
 
 
