@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(adaptive_autosar_simulation VERSION 0.1 LANGUAGES CXX)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 

@@ -42,6 +42,10 @@ void MainWindow::on_simulation_button_clicked()
 
     //sd_tab->update_sd();
     exec_tab->parse_exec_json();
+    ucm_tab = new ucm();
+    tabWidget ->addTab(ucm_tab,"UCM");
+
+
     /* thread to lister on socket*/
 
 //    socket_thread=QThread::create([this]{
