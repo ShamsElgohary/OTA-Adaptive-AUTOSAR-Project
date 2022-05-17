@@ -45,12 +45,12 @@ void MainWindow::on_simulation_button_clicked()
 
 
     /* thread to lister on socket*/
-    socket_thread=QThread::create([this]{
-        this->s->creat_socket();
-        std::function<void()>handler = [this](){this->choose_handler();};
-        this->s->listen_l(handler);
-        });
-    socket_thread->start();
+//    socket_thread=QThread::create([this]{
+//        this->s->creat_socket();
+//        std::function<void()>handler = [this](){this->choose_handler();};
+//        this->s->listen_l(handler);
+//        });
+//    socket_thread->start();
 }
 void MainWindow::choose_handler()
 {
