@@ -40,6 +40,7 @@ private:
     sm * sm_tab =new sm ;
     iam*  iam_tab =new iam ;
     ucm* ucm_tab=new ucm  ;
+    ota* ota_tab=new ota  ;
     sd* sd_tab=new sd;
 
     QTabWidget *tabWidget =new QTabWidget ;

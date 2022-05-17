@@ -179,6 +179,7 @@ void ucm::allClusters()
     ifstream inputFile(guiReportPath);
     Json::Reader R;
     R.parse(inputFile, event);
+    rowCluster =0;
     for (Json::Value::const_iterator it=event["ucm_json"]["PresentClusters"].begin(); it!=event["ucm_json"]["PresentClusters"].end(); ++it)
            {
                clustersTable->setRowCount(rowCluster+1);

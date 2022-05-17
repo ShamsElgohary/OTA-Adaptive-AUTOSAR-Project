@@ -5,6 +5,8 @@
 #include "GrantStorage.hpp"
 #include "IPCserverInterface.hpp"
 #include "../../exec/include/find_process_client.hpp"
+#include "../../../utility/jsoncpp/header/json.h"
+#include "../../../utility/simulation/include/simulation.hpp"
 
 
 namespace ara
