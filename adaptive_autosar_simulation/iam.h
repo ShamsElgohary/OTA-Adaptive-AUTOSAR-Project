@@ -11,11 +11,11 @@
 #include <QtWidgets>
 #include <QStringList>
 
-class IAM :public QWidget
+class iam :public QWidget
 {
      Q_OBJECT
 public:
-    explicit IAM(QWidget *parent = nullptr);
+    explicit iam(QWidget *parent = nullptr);
     //void PARSEIAM();
     void iam_handler();
 public slots:

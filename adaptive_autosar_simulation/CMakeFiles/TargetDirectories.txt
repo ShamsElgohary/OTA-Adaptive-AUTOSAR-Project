@@ -1,6 +1,0 @@
-/home/mariam/Desktop/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/CMakeFiles/rebuild_cache.dir
-/home/mariam/Desktop/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/CMakeFiles/edit_cache.dir
-/home/mariam/Desktop/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/CMakeFiles/adaptive_autosar_simulation.dir
-/home/mariam/Desktop/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/CMakeFiles/jsoncpp_lib.dir
-/home/mariam/Desktop/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/CMakeFiles/adaptive_autosar_simulation_autogen.dir
-/home/mariam/Desktop/OTA-Adaptive-AUTOSAR-Project/adaptive_autosar_simulation/CMakeFiles/jsoncpp_lib_autogen.dir
