@@ -5,7 +5,7 @@ using namespace std;
 
 std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateRequestImpl::StartUpdateSession()
 {
-    //sm_functions functions={.sm_StartUpdateSession=(1),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(0)};
+    sm_functions functions={.sm_StartUpdateSession=(1),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(0)};
     std::cout<<"Starting Update Session"<<std::endl;
 
     std::promise<UpdateRequestSkeleton::StartUpdateSessionOutput> promise;
@@ -26,26 +26,26 @@ std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateReq
 
     promise.set_value(out);
     
-    //log->update_logger(functions,this->FunctionGroupStates);
+    log->update_logger(functions,this->FunctionGroupStates);
     
     return promise.get_future();
 }
 void UpdateRequestImpl::StopUpdateSession()
 {
     cout<<"Stop Updating Session"<<std::endl;
-    //sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(1),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(0)};
+    sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(1),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(0)};
 
     FunctionGroupState state=FunctionGroupState::Preconstruct("machineFG", "running");
     bool success = client.setState(state);
     if(success)
     this->FunctionGroupStates[state.fg_name]=state.fg_newState;
     
-    //log->update_logger(functions,this->FunctionGroupStates);
+    log->update_logger(functions,this->FunctionGroupStates);
 }
 std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
 {
     cout<<"Preparing Update"<<std::endl;
-    //sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(1),.sm_VerifyUpdate=(0)};
+    sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(1),.sm_VerifyUpdate=(0)};
     
     bool success;
     StateClient client{};
@@ -62,13 +62,13 @@ std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestI
         std::cout<<state.fg_name<<" now is in state "<<state.fg_newState<<std::endl;
         out.AppError=success;
         this->FunctionGroupStates[state.fg_name]=state.fg_newState;
-        //log->update_logger(functions,this->FunctionGroupStates);
+        log->update_logger(functions,this->FunctionGroupStates);
         }
         else
         {
         printf("%s not prepared correctly\n",fg.c_str());    
         out.AppError=uint8_t(SM_ApplicationError::kPrepareFailed);
-        //log->update_logger(functions,this->FunctionGroupStates);
+        log->update_logger(functions,this->FunctionGroupStates);
         break;
         }
     }
@@ -77,7 +77,7 @@ std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestI
     {
         printf("StartUpdateSession must be called before\n");
         out.AppError=(uint8_t)SM_ApplicationError::kRejected;
-        //log->update_logger(functions,this->FunctionGroupStates);
+        log->update_logger(functions,this->FunctionGroupStates);
     }
     promise.set_value(out);
 
@@ -89,7 +89,7 @@ std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestI
 std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
 {
     std::cout<<"Verifying Update"<<std::endl;
-    //sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(1)};
+    sm_functions functions={.sm_StartUpdateSession=(0),.sm_StopUpdateSession=(0),.sm_PrepareUpdate=(0),.sm_VerifyUpdate=(1)};
     
     bool success;
     std::promise<UpdateRequestSkeleton::VerifyUpdateOutput> promise;
@@ -111,13 +111,13 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
             std::cout<<state.fg_name<<" now is in state "<<state.fg_newState<<std::endl;
             out.AppError=success;
             this->FunctionGroupStates[state.fg_name]=state.fg_newState;
-            //log->update_logger(functions,this->FunctionGroupStates);
+            log->update_logger(functions,this->FunctionGroupStates);
         }
         else
         {
         printf("%s in not verifiyed correctly\n",fg.c_str());
         out.AppError=uint8_t(SM_ApplicationError::kVerifyFailed);
-        //log->update_logger(functions,this->FunctionGroupStates);
+        log->update_logger(functions,this->FunctionGroupStates);
         break;
         }
     }
@@ -127,7 +127,7 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
     {
         printf("StartUpdateSession must be called before\n");
         out.AppError=(uint8_t)SM_ApplicationError::kRejected;
-        //log->update_logger(functions,this->FunctionGroupStates);
+        log->update_logger(functions,this->FunctionGroupStates);
     }
     promise.set_value(out);
     
@@ -135,4 +135,20 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
     
 
     return promise.get_future();
+}
+void UpdateRequestImpl::run_cluster(int cluster)
+{   
+if(cluster==clusters::OTA)
+{
+FunctionGroupState s=FunctionGroupState::Preconstruct("fn1","play");
+client.setState(s);
+this->FunctionGroupStates[s.fg_name]=s.fg_newState;
+}
+if(cluster==clusters::UCM)
+{
+FunctionGroupState s=FunctionGroupState::Preconstruct("machineFG","running");
+client.setState(s);
+this->FunctionGroupStates[s.fg_name]=s.fg_newState;  
+}
+this->log->update_logger({0,0,0,0},this->FunctionGroupStates);
 }

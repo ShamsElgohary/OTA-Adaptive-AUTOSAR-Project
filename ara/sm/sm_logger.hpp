@@ -1,6 +1,8 @@
 #pragma once
 #include "../../utility/simulation/include/simulation.hpp"
 #include <map>
+#include "functional"
+#include "thread"
 struct sm_functions
 {
     bool sm_StartUpdateSession;
@@ -14,8 +16,11 @@ class sm_logger
    private:
    sm_functions* functions_state;
    simulation* sim;
+   int fd=-1;
+   std::thread gui_thread;
    public:
    sm_logger(int server_port);
    void update_logger(sm_functions functions,std::map<string,string>fg_states);
    void reset();
+   void gui_receive();
 };
