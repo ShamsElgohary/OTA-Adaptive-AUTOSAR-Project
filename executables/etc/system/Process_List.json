@@ -1,31 +1,31 @@
 {
     "Process List Version": 1,
     "com_proxy_test": {
-        "Path": "/com_proxy_test/0.1/",
+        "Path": "/com_proxy_test",
         "Version": "0.1"
     },
     "com_skeleton_test": {
-        "Path": "/com_skeleton_test/0.1/",
+        "Path": "/com_skeleton_test",
         "Version": "0.1"
     },
     "ex1": {
-        "Path": "/ex1/0.1/",
+        "Path": "/ex1",
         "Version": "0.1"
     },
     "ex2": {
-        "Path": "/ex2/0.1/",
+        "Path": "/ex2",
         "Version": "0.1"
     },
     "iam": {
-        "Path": "/iam/0.1/",
+        "Path": "/iam",
         "Version": "0.1"
     },
     "sm": {
-        "Path": "/sm/0.1/",
+        "Path": "/sm",
         "Version": "0.1"
     },
     "someip_sd": {
-        "Path": "/someip_sd/0.1/",
+        "Path": "/someip_sd",
         "Version": "0.1"
     }
 }

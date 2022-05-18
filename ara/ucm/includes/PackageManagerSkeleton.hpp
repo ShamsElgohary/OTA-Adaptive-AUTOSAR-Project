@@ -17,7 +17,7 @@ namespace ara
             {
             public:
                 PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : 
-                skeletonBase("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",2, I_id, Cluster_Name, mode)
+                skeletonBase("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/etc/service_manifest.json",2, I_id, Cluster_Name, mode)
                 {}
                 /** TransferStart **/
                 struct TransferStartInput

@@ -31,3 +31,5 @@ public:
     void listen_l(std::function<void()>handler);
     ~simulation();
 };
+
+    void ClearJSONReport();

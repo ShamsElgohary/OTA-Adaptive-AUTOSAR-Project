@@ -58,7 +58,7 @@ exec::exec(QWidget *parent): QWidget{parent}
 void exec::parse_exec_json()
 {
 
-    ifstream file_input("/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/etc/executables_config.json");
+    ifstream file_input("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/etc/executables_config.json");
     Json::Reader reader;
     Json::Value root;
     reader.parse(file_input, root);

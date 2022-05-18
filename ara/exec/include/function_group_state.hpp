@@ -16,7 +16,7 @@ namespace ara {
            string fng_name ;
            string state;
         } CtorToken;
-
+        FunctionGroupState() = default; 
         static FunctionGroupState::CtorToken Preconstruct(string functionGroup, string newState);
         FunctionGroupState(FunctionGroupState::CtorToken &&token);
        };

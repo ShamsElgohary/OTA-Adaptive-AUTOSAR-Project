@@ -78,7 +78,7 @@ private:
      //Add lists to mid colume
 
     string guiReportPath = "file2.json";
-    QString activeLogPath = "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/ActionsLog.txt";
+    QString activeLogPath = "/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/ActionsLog.txt";
 
     //COM GridBox setup
      QGroupBox *comBox = new QGroupBox("COM");

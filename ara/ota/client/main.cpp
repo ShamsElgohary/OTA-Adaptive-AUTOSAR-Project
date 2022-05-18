@@ -123,7 +123,7 @@ public:
                 int it = myline.find("#");
                 string file_name = myline.substr(0, it);
                 string number = myline.substr(it + 1);
-                float num = stof(number);
+                int num = stoi(number);
                 x.Name = file_name;
                 x.Version = std::to_string(num);
                 trail.push_back(x);
@@ -204,7 +204,7 @@ public:
                 }
                 else if (cluster.Name == UCM_Cluster.Name)
                 {
-                    if (stof(cluster.Version) <= stof(UCM_Cluster.Version))
+                    if (stoi(cluster.Version) <= stoi(UCM_Cluster.Version))
                     {
                         continue;
                     }

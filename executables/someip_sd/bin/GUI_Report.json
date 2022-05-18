@@ -163,6 +163,14 @@
 			{
 				"Instance ID" : 65535,
 				"Service ID" : 1
+			},
+			{
+				"Instance ID" : 65535,
+				"Service ID" : 2
+			},
+			{
+				"Instance ID" : 65535,
+				"Service ID" : 1
 			}
 		],
 		"Received SD messages" : 
@@ -734,8 +742,40 @@
 				"Service ID" : 1,
 				"Type" : "find service",
 				"ttl" : 16777215
+			},
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2223,
+				"Service ID" : 2,
+				"Type" : "offer service",
+				"ttl" : 16777215
+			},
+			{
+				"IP" : "_",
+				"Instance ID" : 65535,
+				"Port Number" : "_",
+				"Service ID" : 2,
+				"Type" : "find service",
+				"ttl" : 16777215
+			},
+			{
+				"IP" : "_",
+				"Instance ID" : 65535,
+				"Port Number" : "_",
+				"Service ID" : 1,
+				"Type" : "find service",
+				"ttl" : 16777215
 			}
 		],
-		"ServiceInfoMap" : []
+		"ServiceInfoMap" : 
+		[
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2223,
+				"Service ID" : 2
+			}
+		]
 	}
 }

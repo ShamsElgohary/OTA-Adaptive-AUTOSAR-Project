@@ -2,14 +2,7 @@
 	"Cluster_name" : "ucm",
 	"com_json" : 
 	{
-		"Proxy_Required_Method" : 
-		[
-			{
-				"Method_ID" : 1,
-				"Method_Name" : "StartUpdateSession",
-				"Service_ID" : 1
-			}
-		],
+		"Proxy_Required_Method" : [],
 		"Service_Discovery_Request" : 
 		[
 			{
@@ -17,16 +10,15 @@
 				"Instance_ID" : 1,
 				"Service_ID" : 2,
 				"Type" : "Offer"
-			},
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 1,
-				"Type" : "Find"
 			}
 		],
 		"Skeleton_Provided_Method" : 
 		[
+			{
+				"Method_ID" : 7,
+				"Method_Name" : "GetSwClusterInfo",
+				"Service_ID" : 2
+			},
 			{
 				"Method_ID" : 1,
 				"Method_Name" : "TransferStart",
@@ -105,6 +97,16 @@
 			{
 				"Method_ID" : 5,
 				"Method_Name" : "ProcessSwPackage",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 6,
+				"Method_Name" : "Activate",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 10,
+				"Method_Name" : "Finish",
 				"Service_ID" : 2
 			}
 		]

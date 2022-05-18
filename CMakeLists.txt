@@ -29,7 +29,7 @@ find_package(Boost 1.50 COMPONENTS system filesystem program_options serializati
 file(GLOB_RECURSE SRC_FILES ${exec_source_dir}/*.cpp CMAKE_CONFIGURE_DEPENDS)
 add_executable(em ${SRC_FILES})
 target_include_directories(em PUBLIC  ${exec_source_dir}/include)
-target_link_libraries(em Boost::filesystem Boost::program_options jsoncpp_lib)
+target_link_libraries(em Boost::filesystem Boost::program_options jsoncpp_lib sim_sock_lib)
 install(TARGETS em RUNTIME DESTINATION ${em_install_dir})
 
 ###############################EM_LIB###############################
@@ -123,10 +123,10 @@ install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
 
 set(source_excutables_sm_dir "${CMAKE_SOURCE_DIR}/executables/sm/bin")
 set(source_excutables_sm_dir_1 "${CMAKE_SOURCE_DIR}/ara/sm")
-# set(source_simulation_dir "${CMAKE_SOURCE_DIR}/utility/simulation/src")
-# add_executable(sm ${source_excutables_sm_dir_1}/main.cpp ${source_excutables_sm_dir_1}/SM.cpp ${source_excutables_sm_dir_1}/sm_logger.cpp ${source_simulation_dir}/simulation.cpp) 
+set(source_simulation_dir "${CMAKE_SOURCE_DIR}/utility/simulation/src")
+add_executable(sm ${source_excutables_sm_dir_1}/main.cpp ${source_excutables_sm_dir_1}/SM.cpp ${source_excutables_sm_dir_1}/sm_logger.cpp ${source_simulation_dir}/simulation.cpp) 
 # To Return Original Remove Nexe line & uncomment the previous 2 lines
-add_executable(sm ${source_excutables_sm_dir_1}/main.cpp ${source_excutables_sm_dir_1}/SM.cpp) 
+# add_executable(sm ${source_excutables_sm_dir_1}/main.cpp ${source_excutables_sm_dir_1}/SM.cpp) 
 target_link_libraries( sm execution_lib jsoncpp_lib com_lib iam_lib)
 install(TARGETS sm RUNTIME DESTINATION ${source_excutables_sm_dir})
 

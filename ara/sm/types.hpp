@@ -1,5 +1,6 @@
 #pragma once
 
+const std::string Cluster_Name = "sm";
 namespace ara
 {
     namespace sm

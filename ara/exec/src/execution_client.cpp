@@ -13,12 +13,10 @@ ExecutionClient::ExecutionClient()
 
 void ExecutionClient::ReportExecutionStaste(ExecutionState state)
 {
-    this->fd = open("executablesFifo", O_WRONLY);
-    cout<< "[emClient] reporting state from executable\n" ;
-    write(fd, &state, sizeof(state));
-    close(this->fd);
+    write(0, &state, sizeof(state));
 }
 
 ExecutionClient::~ExecutionClient(){
+    close(0);
 }
 

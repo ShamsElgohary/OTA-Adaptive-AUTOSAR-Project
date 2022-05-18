@@ -74,7 +74,7 @@ namespace ara
                     }
                     this->ptr2bindingProtocol->CloseConnection();
                 }
-                PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/com_skeleton_test/etc/service_manifest.json",1, I_id, Cluster_Name, mode)
+                PackageManagerSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase("/home/kareem/Documents/GitHub/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/com_skeleton_test/etc/service_manifest.json",1, I_id, Cluster_Name, mode)
                 {
                 }
             };

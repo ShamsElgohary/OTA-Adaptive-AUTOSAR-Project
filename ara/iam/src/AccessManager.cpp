@@ -33,7 +33,7 @@ void ara::iam::AccessManager::RunEventLoop()
     t["info"]["Service_ID"] = Json::stringValue;
     t["info"]["Instance_ID"] = Json::stringValue;
 
-    simulation sim(8089);
+    simulation sim(8088);
 
     while (true)
     {

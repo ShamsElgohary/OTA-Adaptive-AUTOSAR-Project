@@ -56,7 +56,7 @@ namespace ara
             }
 
             guiSocket->connect_to_socket();
-            guiSocket->send_file("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+            guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
             
         }  
 
@@ -78,7 +78,7 @@ namespace ara
             json_file.close();
 
             guiSocket->connect_to_socket();
-            guiSocket->send_file("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+            guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
         } 
 
         void newPkgCluster(string name,string version)
@@ -98,7 +98,7 @@ namespace ara
             json_file.close();
 
             guiSocket->connect_to_socket();
-            guiSocket->send_file("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+            guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
         } 
 
         void ReportStatus(uint8_t statusId) 
@@ -116,7 +116,7 @@ namespace ara
             json_file.close(); 
 
             guiSocket->connect_to_socket();
-            guiSocket->send_file("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");           
+            guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");           
 
         }
 
@@ -144,7 +144,7 @@ namespace ara
             json_file<<event;
             json_file.close();
             guiSocket->connect_to_socket();
-            guiSocket->send_file("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+            guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
 
         }
 
@@ -172,12 +172,12 @@ namespace ara
             json_file.close();
 
             guiSocket->connect_to_socket();
-            guiSocket->send_file("/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+            guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
         }
 
         private:
 
-        simulation *guiSocket = new simulation(8089);
+        simulation *guiSocket = new simulation(8088);
 
 
         /* USED TO CONVERT THE UCM OPERATION RESULTS INTO A STRING */

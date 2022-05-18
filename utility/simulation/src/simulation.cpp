@@ -1,4 +1,4 @@
-#include "simulation.hpp"
+#include"../include/simulation.hpp"
 #include "thread"
 #include "iostream"
 //#include <QApplication>
@@ -147,4 +147,9 @@ void simulation::send_file(char *file_path)
         bzero(data, SIZE);
     }
     close(sockfd_c);
+}
+
+void ClearJSONReport()
+{
+    remove("GUI_Report.json");
 }
