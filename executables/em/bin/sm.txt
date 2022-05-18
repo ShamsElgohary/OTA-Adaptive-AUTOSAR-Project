@@ -1,0 +1,10 @@
+Preparing Update
+StartUpdateSession must be called before
+Verifying Update
+StartUpdateSession must be called before
+Stop Updating Session
+[sm] setting new state from sm
+[someip] connect: Connection refused
+[someip] CLIENT DIDN'T CONNECT TO SERVER 
+[someip] write_some: Broken pipe
+[GUI REPORT] Service ID: 1, Instance ID: 1, Method Type: Offer, Grant Result: 1

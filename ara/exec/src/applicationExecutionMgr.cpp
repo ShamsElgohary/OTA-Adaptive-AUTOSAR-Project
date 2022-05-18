@@ -120,13 +120,20 @@ void ApplicationExecutionMgr::initialize()
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
-    reportConfig_simulation();
-    sleep(1);
+    if (SIMULATION_ACTIVE)
+    {
+        reportConfig_simulation();
+        sleep(1);
+    }
+
     iam_future = IAM_handle();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
-    reportConfig_simulation();
-    sleep(1);
+    if (SIMULATION_ACTIVE)
+    {
+        reportConfig_simulation();
+        sleep(1);
+    }
     Execute();
     transitionChanges_.toStart_.clear();
     transitionChanges_.toTerminate_.clear();
@@ -299,8 +306,12 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     output_file << root;
     output_file.close();
     //------------------------------------------------
-    simulation sim_socket(8088);
-    sim_socket.connect_to_socket();
-    sim_socket.send_file("../etc/executables_config.json");
+    if (SIMULATION_ACTIVE)
+    {
+        simulation sim_socket(8088);
+        sim_socket.connect_to_socket();
+        sim_socket.send_file("../etc/executables_config.json");
+    }
+
     locker.unlock();
 }

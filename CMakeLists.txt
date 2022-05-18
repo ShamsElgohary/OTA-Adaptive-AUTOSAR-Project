@@ -57,9 +57,10 @@ install(TARGETS ex2 RUNTIME DESTINATION ${source_excutables_ex2_dir})
 set(iam_install_dir "${CMAKE_SOURCE_DIR}/executables/iam/bin")
 set(iam_source_dir "${CMAKE_SOURCE_DIR}/ara/iam")
 file(GLOB_RECURSE IAM_SRC_FILES ${iam_source_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
-add_executable(iam ${IAM_SRC_FILES} ${iam_source_dir}/lib/src/Grant.cpp) 
+file(GLOB_RECURSE IAM_SRC_LIB_FILES ${iam_source_dir}/lib/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
+add_executable(iam ${IAM_SRC_FILES} ${IAM_SRC_LIB_FILES}) 
 target_include_directories(iam PUBLIC  ${iam_source_dir}/include  ${iam_source_dir}/lib/include )
-target_link_libraries(iam execution_lib Boost::filesystem Boost::program_options Boost::serialization jsoncpp_lib sim_sock_lib)
+target_link_libraries(iam execution_lib Boost::filesystem Boost::program_options Boost::serialization boost_thread pthread boost_system jsoncpp_lib sim_sock_lib)
 install(TARGETS iam RUNTIME DESTINATION ${iam_install_dir})
 
 ################################IAM_LIB##########################

@@ -45,11 +45,13 @@ namespace ara
             std::ofstream json_file(file_name);
             json_file << event;
             json_file.close();
-
-            // Report
-            // simulation s(8080);
-            // s.connect_to_socket();
-            // s.send_file(file_name);
+            if (SIMULATION_ACTIVE)
+            {
+                // Report
+                // simulation s(8080);
+                // s.connect_to_socket();
+                // s.send_file(file_name);
+            }
         }
 
         void AddServiceDiscoveryRequest(uint16_t ServiceID, uint16_t InstanceID, ServiceDiscoveryMethodType Type, bool GrantResult, string Cluster_Name)
@@ -99,10 +101,13 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            // Report
-            // simulation s(8080);
-            // s.connect_to_socket();
-            // s.send_file(file_name);
+            if (SIMULATION_ACTIVE)
+            {
+                // Report
+                // simulation s(8080);
+                // s.connect_to_socket();
+                // s.send_file(file_name);
+            }
         }
     }
 }

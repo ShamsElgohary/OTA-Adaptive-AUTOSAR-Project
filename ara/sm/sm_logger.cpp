@@ -41,12 +41,16 @@ void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states
  reset();
  
  /*connect to server*/
- this->sim->connect_to_socket();
- char current_dir[256];
- getcwd(current_dir,256);
- std::string path(current_dir);
- path+="/sm.json";
- this->sim->send_file((char *)(path.c_str()));
+ if (SIMULATION_ACTIVE)
+ {
+    this->sim->connect_to_socket();
+    char current_dir[256];
+    getcwd(current_dir,256);
+    std::string path(current_dir);
+    path+="/sm.json";
+    this->sim->send_file((char *)(path.c_str()));
+ }
+ 
 }
 void sm_logger::reset()
 {

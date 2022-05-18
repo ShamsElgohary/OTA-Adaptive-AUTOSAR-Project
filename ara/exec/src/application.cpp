@@ -54,7 +54,11 @@ future<void> Application::start()
         current_state = newstate;
         locker.unlock();
         condr.notify_all();
-        static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        if (SIMULATION_ACTIVE)
+        {
+            static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        }
+
         cout << "[em] " << name << " new state is Krunning " << id << "\n\n\n";
         Update_status(); });
 }
@@ -81,7 +85,12 @@ void Application::Update_status()
         read(fd, &newstate, sizeof(current_state));
         unique_lock<mutex>  locker(mur);
         current_state = newstate;
-        static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        
+        if (SIMULATION_ACTIVE)
+        {
+            static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        }
+        
         id=0;
         close(fd);
         locker.unlock();

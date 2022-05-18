@@ -9,6 +9,7 @@
 #include <boost/filesystem.hpp>
 #include "../../../utility/jsoncpp/header/json.h"
 #include "../../../utility/simulation/include/simulation.hpp"
+#include "../../../utility/general.hpp"
 
 using namespace std;
 

@@ -1,11 +1,9 @@
 {
+	"Cluster_name" : "em_json",
 	"executables_configurations" : 
 	[
 		{
-			"depends" : 
-			{
-				"com_skeleton_test" : "Krunning"
-			},
+			"depends" : {},
 			"function_group" : 
 			{
 				"fn3" : 
@@ -21,6 +19,7 @@
 			{
 				"fn3" : 
 				[
+					"idle",
 					"run"
 				]
 			},
@@ -39,25 +38,19 @@
 			"name" : "ex1"
 		},
 		{
-			"depends" : 
-			{
-				"ex1" : "Kterminate"
-			},
+			"depends" : {},
 			"function_group" : 
 			{
-				"fn1" : 
+				"fn2" : 
 				[
 					"idle",
-					"play"
+					"run"
 				]
 			},
 			"name" : "ex2"
 		},
 		{
-			"depends" : 
-			{
-				"someip_sd" : "Krunning"
-			},
+			"depends" : {},
 			"function_group" : 
 			{
 				"machineFG" : 
@@ -91,6 +84,13 @@
 			"name" : "someip_sd"
 		}
 	],
+	"function_group_states" : 
+	{
+		"fn1" : "idle",
+		"fn2" : "idle",
+		"fn3" : "idle",
+		"machineFG" : "off"
+	},
 	"function_groups" : 
 	{
 		"fn1" : 
@@ -100,6 +100,15 @@
 				"idle",
 				"play",
 				"terminate"
+			]
+		},
+		"fn2" : 
+		{
+			"states" : 
+			[
+				"idle",
+				"run",
+				"end"
 			]
 		},
 		"fn3" : 
@@ -123,34 +132,12 @@
 			]
 		}
 	},
-	"running_executables" : 
-	[
-		{
-			"current_state" : "Kterminate",
-			"name" : "ex1",
-			"pid" : 31081
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "ex2",
-			"pid" : 31083
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "iam",
-			"pid" : 31036
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "sm",
-			"pid" : 31010
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "someip_sd",
-			"pid" : 31034
-		}
-	],
+	"running_executables" : [],
+	"sm_request" : 
+	{
+		"fng" : "",
+		"fng_state" : ""
+	},
 	"to_run" : [],
 	"to_term" : []
 }

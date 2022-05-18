@@ -47,11 +47,11 @@ void ara::iam::AccessManager::RunEventLoop()
 
 
         // Send PID to EM
-        //FPC.sendData(PID);
+        FPC.sendData(PID);
 
         // Receive Proc
-        //std::string P_name = FPC.receiveData();
-        std::string P_name = "ucm";
+        std::string P_name = FPC.receiveData();
+        // std::string P_name = "ucm";
         cout<< "[iamServer] process name: "<<P_name<<endl;
         // RECIEVE GRANT FROM CLIENT 
         ara::iam::Grant G = server.Receive(sd);
@@ -80,13 +80,16 @@ void ara::iam::AccessManager::RunEventLoop()
         json_f << request;
         json_f.close();
 
-        sim.connect_to_socket();
-        char current_dir[256];
-        getcwd(current_dir, 256);
-        std::string path(current_dir);
-        path += "/iam_access.json";
-        sim.send_file((char *)(path.c_str()));
-    }
+        if (SIMULATION_ACTIVE)
+        {
+            sim.connect_to_socket();
+            char current_dir[256];
+            getcwd(current_dir, 256);
+            std::string path(current_dir);
+            path += "/iam_access.json";
+            sim.send_file((char *)(path.c_str()));
+        }
 
+    }
     
 }

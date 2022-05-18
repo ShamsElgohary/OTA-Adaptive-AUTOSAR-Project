@@ -53,7 +53,7 @@ void servicestorage::RemoveService(uint16_t Service_ID, uint16_t instance_id)
 
 std::vector<serviceinfo> servicestorage::SearchServiceRegistry(uint16_t Service_ID, uint16_t Instance_ID)
 {
-     Addtorequests(Service_ID,Instance_ID);
+    Addtorequests(Service_ID, Instance_ID);
     std::vector<serviceinfo> rtn;
     auto itr = servicemap.find(Service_ID);
     std::vector<serviceinfo> v1;
@@ -84,28 +84,22 @@ serviceinfo servicestorage::SetServiceInfo(uint16_t Instance_ID, std::string ipv
     return s1;
 }
 
-
-
-
 using namespace std;
-
-
-
-
 
 simulation sim(8088);
 Json::Value Temp2;
 Json::Value Temp3;
 void removefromlist()
 
-{   
+{
     Json::Value event;
     ifstream f("GUI_Report.json");
-   
+
     Json::Reader R;
     R.parse(f, event);
     if (!event)
-    {   string x=" ";
+    {
+        string x = " ";
         event["Cluster_name"] = "ServiceDiscovery";
         event["SD"]["ServiceInfoMap"] = Json::arrayValue;
         event["SD"]["Find Requests"] = Json::arrayValue;
@@ -115,44 +109,42 @@ void removefromlist()
     // Add To JSON FILE
     event["SD"]["ServiceInfoMap"].clear();
     Json::Value Temp4;
-    auto itr=servicemap.begin();
-     for (auto itr = servicemap.begin(); itr != servicemap.end(); ++itr)
-        {Temp4["Service ID"] = itr->first;
-         for (auto it = itr->second.begin(); it != itr->second.end(); ++it)
+    auto itr = servicemap.begin();
+    for (auto itr = servicemap.begin(); itr != servicemap.end(); ++itr)
+    {
+        Temp4["Service ID"] = itr->first;
+        for (auto it = itr->second.begin(); it != itr->second.end(); ++it)
         {
-                Temp4["Instance ID"] = it->Instance_ID;
-                Temp4["IP"] = it->ipv4_address;
-                Temp4["Port Number"] = it->port_num;
-                event["SD"]["ServiceInfoMap"].append(Temp4);
-        }}
-
-    
+            Temp4["Instance ID"] = it->Instance_ID;
+            Temp4["IP"] = it->ipv4_address;
+            Temp4["Port Number"] = it->port_num;
+            event["SD"]["ServiceInfoMap"].append(Temp4);
+        }
+    }
 
     std::cout << event << std::endl;
     std::ofstream json_file("GUI_Report.json");
     json_file << event;
     json_file.close();
 
+    if (SIMULATION_ACTIVE)
+    {
+        sim.connect_to_socket();
 
-    sim.connect_to_socket();
-   
-    char current_dir[256];
+        char current_dir[256];
 
-    getcwd(current_dir, 256);
+        getcwd(current_dir, 256);
 
-    std::string path(current_dir);
+        std::string path(current_dir);
 
-    path += "/GUI_Report.json";
+        path += "/GUI_Report.json";
 
-    sim.send_file((char *)(path.c_str()));
-    
+        sim.send_file((char *)(path.c_str()));
+    }
 }
 
-
-
-
-void addtoGUI(uint16_t Service_ID, serviceinfo serviceinformation){
-    
+void addtoGUI(uint16_t Service_ID, serviceinfo serviceinformation)
+{
 
     Json::Value event;
     ifstream f("GUI_Report.json");
@@ -166,8 +158,6 @@ void addtoGUI(uint16_t Service_ID, serviceinfo serviceinformation){
         event["SD"]["Received SD messages"] = Json::arrayValue;
     }
 
-
-    
     Json::Value Temp;
     Temp["Service ID"] = Service_ID;
     Temp["Instance ID"] = serviceinformation.Instance_ID;
@@ -176,36 +166,30 @@ void addtoGUI(uint16_t Service_ID, serviceinfo serviceinformation){
 
     event["SD"]["ServiceInfoMap"].append(Temp);
 
-
-    
-
     std::cout << event << std::endl;
     std::ofstream json_file("GUI_Report.json");
     json_file << event;
     json_file.close();
-    
 
+    if (SIMULATION_ACTIVE)
+    {
+        sim.connect_to_socket();
 
-    sim.connect_to_socket();
-   
-    char current_dir[256];
+        char current_dir[256];
 
-    getcwd(current_dir, 256);
+        getcwd(current_dir, 256);
 
-    std::string path(current_dir);
+        std::string path(current_dir);
 
-    path += "/GUI_Report.json";
+        path += "/GUI_Report.json";
 
-    sim.send_file((char *)(path.c_str()));
-
-    
-
+        sim.send_file((char *)(path.c_str()));
+    }
 }
 
-
 void Addtorequests(uint16_t Service_ID, uint16_t instance_id)
-{        
-     Json::Value event;
+{
+    Json::Value event;
     ifstream f("GUI_Report.json");
     Json::Reader R;
     R.parse(f, event);
@@ -221,37 +205,32 @@ void Addtorequests(uint16_t Service_ID, uint16_t instance_id)
     Temp2["Instance ID"] = instance_id;
     Temp2["Service ID"] = Service_ID;
 
-
     event["SD"]["Find Requests"].append(Temp2);
-    
-    
+
     std::cout << event << std::endl;
     std::ofstream json_file("GUI_Report.json");
     json_file << event;
     json_file.close();
 
-
-
-     /*connect to server*/
-     
-    sim.connect_to_socket();
-    char current_dir[256];
-    getcwd(current_dir, 256);
-    std::string path(current_dir);
-    path += "/GUI_Report.json";
-    sim.send_file((char *)(path.c_str()));
-    
+    /*connect to server*/
+    if (SIMULATION_ACTIVE)
+    {
+        sim.connect_to_socket();
+        char current_dir[256];
+        getcwd(current_dir, 256);
+        std::string path(current_dir);
+        path += "/GUI_Report.json";
+        sim.send_file((char *)(path.c_str()));
+    }
 }
 
+void addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint32_t ttl, uint16_t TYPE, uint16_t port_num, string ipv4_address)
+{
 
-
-void addmsgtoGUI(uint16_t Service_ID,uint16_t instance_id,uint32_t ttl,uint16_t TYPE,uint16_t port_num, string ipv4_address){
-
-  
     Json::Value event;
     ifstream f("GUI_Report.json");
     Json::Reader R;
-     string msgtype;
+    string msgtype;
     R.parse(f, event);
     if (!event)
     {
@@ -262,48 +241,45 @@ void addmsgtoGUI(uint16_t Service_ID,uint16_t instance_id,uint32_t ttl,uint16_t 
     }
     Json::Value Temp3;
     // Add To JSON FILE
-    if (TYPE==0)
+    if (TYPE == 0)
     {
-         msgtype="find service";
-         Temp3["Port Number"]= "_";
-         ipv4_address="_";
-    }
-    else if((TYPE==1) && (ttl==0))
-    {
-        msgtype="Stop Offer service";
+        msgtype = "find service";
         Temp3["Port Number"] = "_";
-        ipv4_address="_";
+        ipv4_address = "_";
     }
-    else {
-        msgtype="offer service";
-        Temp3["Port Number"] = port_num;}
-        
+    else if ((TYPE == 1) && (ttl == 0))
+    {
+        msgtype = "Stop Offer service";
+        Temp3["Port Number"] = "_";
+        ipv4_address = "_";
+    }
+    else
+    {
+        msgtype = "offer service";
+        Temp3["Port Number"] = port_num;
+    }
+
     Temp3["Service ID"] = Service_ID;
     Temp3["Instance ID"] = instance_id;
     Temp3["IP"] = ipv4_address;
-    Temp3["Type"]=msgtype;
-    Temp3["ttl"]=ttl;
-
+    Temp3["Type"] = msgtype;
+    Temp3["ttl"] = ttl;
 
     event["SD"]["Received SD messages"].append(Temp3);
-    
-    
-   
+
     std::cout << event << std::endl;
     std::ofstream json_file("GUI_Report.json");
     json_file << event;
     json_file.close();
+    if (SIMULATION_ACTIVE)
+    {
+        sim.connect_to_socket();
+        char current_dir[256];
+        getcwd(current_dir, 256);
+        std::string path(current_dir);
+        path += "/GUI_Report.json";
+        sim.send_file((char *)(path.c_str()));
+    }
 
-
-    sim.connect_to_socket();
-    char current_dir[256];
-    getcwd(current_dir, 256);
-    std::string path(current_dir);
-    path += "/GUI_Report.json";
-    sim.send_file((char *)(path.c_str()));
-
-     /*connect to server*/
-    
-
-    
+    /*connect to server*/
 }

@@ -22,6 +22,7 @@
 #include "../../../../../../../utility/jsoncpp/header/json.h"
 #include <string>
 #include "../../../../../../../utility/simulation/include/simulation.hpp"
+#include "../../../../../../../utility/general.hpp"
 
 struct serviceinfo{
        uint16_t Instance_ID;

@@ -3,7 +3,6 @@
 #include <vector>
 #include "GUI_Report.hpp"
 
-const bool IAM_ACTIVATED = false;
 
 namespace ara
 {

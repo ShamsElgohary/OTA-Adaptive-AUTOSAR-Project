@@ -48,6 +48,7 @@ int ara::iam::IPCserverInterface::Listen()
     if(newSd < 0)
     {
         cerr << "Error accepting request from client!" << std::endl;
+        
         return -1;
     }
     std::cout << "[iamServer] Connected with client!" << std::endl;
