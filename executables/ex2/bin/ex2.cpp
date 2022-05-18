@@ -19,8 +19,8 @@ int main ()
     sigaction(SIGTERM,&sa,NULL);
 
     std::cout<<"[Ex2] hello from ex2 with pid = " <<getpid()<<"\n"  ;
-    usleep(100000);
+    sleep(2);
     ExecutionClient exec;
     exec.ReportExecutionStaste(ExecutionState::Krunning);
-    while(1);
+    sleep(20);
 }

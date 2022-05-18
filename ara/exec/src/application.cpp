@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <iostream>
+#include "applicationExecutionMgr.hpp"
 
 using namespace std;
 using namespace ara::exec;
@@ -28,11 +29,11 @@ future<void> Application::start()
 
             if(app_name.second == "Krunning")
             {
-                if(app->current_state !=ExecutionState::Krunning)
+                while(app->current_state !=ExecutionState::Krunning)
                     app->condr.wait(locker);
             }
             else{
-                if(app->current_state !=ExecutionState::Kterminate)
+                while(app->current_state !=ExecutionState::Kterminate)
                     app->condt.wait(locker);
             }
 
@@ -47,6 +48,14 @@ future<void> Application::start()
             execl(executable_path.c_str(), nullptr);
         }
         locker.unlock();
+        ExecutionState newstate = ExecutionState::Kidle;
+        read(fd, &newstate, sizeof(current_state));
+        locker.lock();
+        current_state = newstate;
+        locker.unlock();
+        condr.notify_all();
+        static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        cout << "[em] " << name << " new state is Krunning " << id << "\n\n\n";
         Update_status(); });
 }
 void Application::terminate()
@@ -67,21 +76,17 @@ void Application::Update_status()
 {
     thread([this]()
            {
+        
         ExecutionState newstate = ExecutionState::Kidle;
         read(fd, &newstate, sizeof(current_state));
         unique_lock<mutex>  locker(mur);
         current_state = newstate;
-        locker.unlock();
-        condr.notify_one();
-        cout << "[em] " << name << " new state is Krunning " << id << "\n\n\n";
-    
-        read(fd, &newstate, sizeof(current_state));
-        locker.lock();
-        current_state = newstate;
+        static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        id=0;
         close(fd);
         locker.unlock();
         cout << "[em] " << name << " new state is Kterminate"<<"\n\n\n";
-        condt.notify_one();
+        condt.notify_all();
          }).detach();
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name, string path)

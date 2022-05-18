@@ -1,4 +1,4 @@
-#include "../include/applicationExecutionMgr.hpp"
+#include "applicationExecutionMgr.hpp"
 
 using namespace ara::exec ;
 using namespace std;

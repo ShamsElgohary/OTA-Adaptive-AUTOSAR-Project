@@ -1,4 +1,5 @@
 {
+	"Cluster_name" : "em_json",
 	"executables_configurations" : 
 	[
 		{
@@ -91,6 +92,12 @@
 			"name" : "someip_sd"
 		}
 	],
+	"function_group_states" : 
+	{
+		"fn1" : "terminate",
+		"fn3" : "idle",
+		"machineFG" : "startup"
+	},
 	"function_groups" : 
 	{
 		"fn1" : 
@@ -125,11 +132,16 @@
 	"running_executables" : 
 	[
 		{
-			"current_state" : "Kterminate",
-			"name" : "ex1",
-			"pid" : 6122
+			"current_state" : "Krunning",
+			"name" : "sm",
+			"pid" : 12712
 		}
 	],
+	"sm_request" : 
+	{
+		"fng" : "fn1",
+		"fng_state" : "terminate"
+	},
 	"to_run" : [],
 	"to_term" : []
 }

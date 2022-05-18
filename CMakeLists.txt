@@ -13,6 +13,12 @@ set(jsoncpp_dir "${CMAKE_SOURCE_DIR}/utility/jsoncpp")
 add_library(jsoncpp_lib STATIC ${jsoncpp_dir}/src/jsoncpp.cpp)
 target_include_directories(jsoncpp_lib PUBLIC ${jsoncpp_dir}/jsoncpp/header)
 
+###############################simulation_lib####################################
+
+set(simulation_dir "${CMAKE_SOURCE_DIR}/utility/simulation")
+add_library(simulation_lib STATIC ${simulation_dir}/src/simulation.cpp)
+target_include_directories(simulation_lib PUBLIC ${simulation_dir}/include)
+
 ###############################EM###############################
 
 set(exec_source_dir "${CMAKE_SOURCE_DIR}/ara/exec")
@@ -21,7 +27,7 @@ find_package(Boost 1.50 COMPONENTS system filesystem program_options serializati
 file(GLOB_RECURSE SRC_FILES ${exec_source_dir}/*.cpp CMAKE_CONFIGURE_DEPENDS)
 add_executable(em ${SRC_FILES})
 target_include_directories(em PUBLIC  ${exec_source_dir}/include)
-target_link_libraries(em Boost::filesystem Boost::program_options jsoncpp_lib)
+target_link_libraries(em Boost::filesystem Boost::program_options jsoncpp_lib simulation_lib)
 install(TARGETS em RUNTIME DESTINATION ${em_install_dir})
 
 ###############################EM_LIB###############################

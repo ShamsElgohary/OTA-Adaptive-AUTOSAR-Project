@@ -21,6 +21,7 @@
 #include <boost/filesystem.hpp>
 #include <bits/stdc++.h>
 #include "execution_client.hpp"
+#include "simulation.hpp"
 #include <thread>
 #include <fstream>
 using namespace std;
@@ -28,38 +29,32 @@ namespace ara
 {
     namespace exec
     {
-        enum class PlatformStates : uint8_t
-        {
-            kRunning,
-            kRestarting,
-            kShutdown
-        };
 
-        typedef struct
-        {
-            ApplicationManifest manifest_;
-            vector<Application*> startupConfigurations_;
-        } Executable;
-
-        typedef struct
-        {
-            vector<Application *> toStart_;
-            vector<Application *> toTerminate_;
-        } TransitionChanges;
-
-        class ApplicationExecutionMgr final
+        class ApplicationExecutionMgr 
         {
             int smpipe{-1};
 
         public:
+            typedef struct
+            {
+                ApplicationManifest manifest_;
+                vector<Application *> startupConfigurations_;
+            } Executable;
+
+            typedef struct
+            {
+                vector<Application *> toStart_;
+                vector<Application *> toTerminate_;
+            } TransitionChanges;
+            
+            mutex mu;
             future<void> iam_future;
             vector<future<void>> process_state_update_future;
-
+            FunctionGroupState newfunctionGroup;
             vector<Executable> executables_;
             unique_ptr<MachineManifest> manifest_;
             map<string, FunctionGroup *> function_groups_;
             const string rootPath;
-            PlatformStates platformState_{PlatformStates::kRunning};
             TransitionChanges transitionChanges_;
             ApplicationExecutionMgr(string rootPath);
             void initialize();
@@ -72,7 +67,7 @@ namespace ara
             bool Terminate();
             bool Execute();
             string get_process_name(int test_id);
-            future<void>  IAM_handle();
+            future<void> IAM_handle();
             void reportConfig_simulation();
         };
     }

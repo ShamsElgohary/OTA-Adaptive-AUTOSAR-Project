@@ -2,6 +2,8 @@
 #include <bits/stdc++.h>
 #include "applicationManifest.hpp"
 #include "execution_client.hpp"
+//#include "applicationExecutionMgr.hpp"
+
 using namespace std;
 namespace ara
 {
@@ -18,6 +20,7 @@ namespace ara
             } CtorToken;
 
         public:
+            void * parent{nullptr};
             pid_t id{0};
             int fd;
             string name;

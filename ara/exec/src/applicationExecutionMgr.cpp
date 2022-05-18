@@ -74,6 +74,7 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
     }
     FunctionGroupState::CtorToken token = FunctionGroupState::Preconstruct(functionGroup_Name, functionGroup_NewState);
     FunctionGroupState functionGroup(move(token));
+    newfunctionGroup = functionGroup;
     return setState(functionGroup);
 }
 
@@ -89,7 +90,7 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
         }
         locker.unlock();
     }
-    auto &apps_term =  function_groups_[fgs.fg_name]->startupConfigurations_[function_groups_[fgs.fg_name]->currentState_];
+    auto &apps_term = function_groups_[fgs.fg_name]->startupConfigurations_[function_groups_[fgs.fg_name]->currentState_];
     bool flag = true;
     for (auto &app : apps_term)
     {
@@ -107,7 +108,6 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
             {
                 transitionChanges_.toTerminate_.push_back(app);
             }
-                
         }
         locker.unlock();
     }
@@ -121,9 +121,12 @@ void ApplicationExecutionMgr::initialize()
     loadMachineConfigrations();
     loadExecutablesConfigrations();
     reportConfig_simulation();
+    sleep(1);
     iam_future = IAM_handle();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
+    reportConfig_simulation();
+    sleep(1);
     Execute();
     transitionChanges_.toStart_.clear();
     transitionChanges_.toTerminate_.clear();
@@ -133,15 +136,11 @@ ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{roo
 
 bool ApplicationExecutionMgr::run()
 {
-    string functionGroup_Name;
-    string functionGroup_NewState;
-    int size;
     while (true)
     {
         ProcessStateClientRequest();
         Terminate();
         Execute();
-        reportConfig_simulation();
         transitionChanges_.toStart_.clear();
         transitionChanges_.toTerminate_.clear();
     }
@@ -165,6 +164,7 @@ bool ApplicationExecutionMgr::Execute()
     for (auto &app : transitionChanges_.toStart_)
     {
         app->depend = apps_state;
+        app->parent = this;
         process_state_update_future.push_back(app->start());
     }
     for (auto &f : process_state_update_future)
@@ -210,6 +210,7 @@ future<void> ApplicationExecutionMgr::IAM_handle()
 
 void ApplicationExecutionMgr::reportConfig_simulation()
 {
+    unique_lock<mutex> locker(mu);
     Json::Value machine_manifest_json;
     Json::Reader reader;
     std::ifstream input_file("../../etc/system/machine_manifest.json");
@@ -224,12 +225,13 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     Json::Value obj2(Json::objectValue);
     Json::Value obj3(Json::objectValue);
     root["function_groups"] = machine_manifest_json["function_groups"];
+    root["Cluster_name"] = "em_json";
     for (auto &app : executables_)
     {
 
-        for (auto confg : app.manifest_.startUpConfigurations)
+        for (auto &confg : app.manifest_.startUpConfigurations)
         {
-            for (auto fg : confg.function_group_states)
+            for (auto &fg : confg.function_group_states)
             {
                 for (auto state : fg.second)
                 {
@@ -268,20 +270,37 @@ void ApplicationExecutionMgr::reportConfig_simulation()
             }
         }
     }
+    obj["fng"] = this->newfunctionGroup.fg_name;
+    obj["fng_state"] = this->newfunctionGroup.fg_newState;
+    root["sm_request"] = obj;
+    obj.clear();
     root["running_executables"] = vec;
-
     vec.clear();
-    for (auto run : this->transitionChanges_.toStart_)
+    for (auto &run : this->transitionChanges_.toStart_)
     {
         vec.append(run->name);
     }
     root["to_run"] = vec;
-    for (auto term : this->transitionChanges_.toTerminate_)
+    vec.clear();
+
+    for (auto &term : this->transitionChanges_.toTerminate_)
     {
         vec.append(term->name);
     }
-    vec.clear();
     root["to_term"] = vec;
+    vec.clear();
+
+    for (auto &fng : function_groups_)
+    {
+        obj[fng.first] = fng.second->currentState_;
+    }
+    root["function_group_states"] = obj;
+
     output_file << root;
     output_file.close();
+    //------------------------------------------------
+    simulation sim_socket(8088);
+    sim_socket.connect_to_socket();
+    sim_socket.send_file("../etc/executables_config.json");
+    locker.unlock();
 }

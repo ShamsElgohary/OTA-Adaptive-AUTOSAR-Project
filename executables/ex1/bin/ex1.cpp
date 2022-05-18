@@ -16,12 +16,12 @@ int main()
     sa.sa_handler =handle_sigTerm ;
     sigaction(SIGTERM,&sa,NULL);
     cout << "[Ex1] hello from ex1 with pid = " << getpid() << "\n";
-    usleep(100000);
+    sleep(3);
 
     ExecutionClient exec;
 
     exec.ReportExecutionStaste(ExecutionState::Krunning);
-    
+    sleep(3);
     exec.ReportExecutionStaste(ExecutionState::Kterminate);
 
     return 0;
