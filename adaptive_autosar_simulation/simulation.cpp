@@ -66,7 +66,7 @@ void simulation::listen_l(std::function<void()>handler)
 
 void simulation::recive_file(int client_socket,std::function<void()>handler)
 {
-    //mtx.lock();
+   //mtx.lock();
    std::thread::id thread_id=std::this_thread::get_id();
    std::cout<<"thread id is"<<thread_id<<std::endl; 
 
@@ -143,6 +143,7 @@ void simulation::send_file(char *file_path)
             perror("[-] Error in sendung data");
             exit(1);
         }
+        usleep(5);
         bzero(data, SIZE);
     }
     close(sockfd_c);

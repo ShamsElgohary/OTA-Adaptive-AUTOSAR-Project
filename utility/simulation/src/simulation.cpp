@@ -1,11 +1,8 @@
-#include "../include/simulation.hpp"
+#include "simulation.hpp"
 #include "thread"
 #include "iostream"
-#include<iostream>
-#include<stdio.h>
-using namespace std;
-// #include <QApplication>
-// #include "mainwindow.h"
+//#include <QApplication>
+//#include "mainwindow.h"
 
 simulation::simulation(int port)
 {
@@ -69,7 +66,7 @@ void simulation::listen_l(std::function<void()>handler)
 
 void simulation::recive_file(int client_socket,std::function<void()>handler)
 {
-    //mtx.lock();
+   //mtx.lock();
    std::thread::id thread_id=std::this_thread::get_id();
    std::cout<<"thread id is"<<thread_id<<std::endl; 
 
@@ -98,7 +95,7 @@ void simulation::recive_file(int client_socket,std::function<void()>handler)
     handler();
     //MainWindow m;
     //m.handle_sm();
-    sleep(5);
+    //sleep(5);
     
 }
 
@@ -151,9 +148,3 @@ void simulation::send_file(char *file_path)
     }
     close(sockfd_c);
 }
-
-void ClearJSONReport()
-{
-    remove("GUI_Report.json");
-}
-
