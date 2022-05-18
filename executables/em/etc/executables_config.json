@@ -89,7 +89,7 @@
 		"fn1" : "idle",
 		"fn2" : "idle",
 		"fn3" : "idle",
-		"machineFG" : "off"
+		"machineFG" : "startup"
 	},
 	"function_groups" : 
 	{
@@ -132,12 +132,22 @@
 			]
 		}
 	},
-	"running_executables" : [],
+	"running_executables" : 
+	[
+		{
+			"current_state" : "Krunning",
+			"name" : "sm",
+			"pid" : 17929
+		}
+	],
 	"sm_request" : 
 	{
 		"fng" : "",
 		"fng_state" : ""
 	},
-	"to_run" : [],
+	"to_run" : 
+	[
+		"sm"
+	],
 	"to_term" : []
 }

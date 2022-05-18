@@ -23,6 +23,7 @@ namespace ara
             freopen("sm.txt","w+",stdout); //write cout and printf to txt file 
             this->log=new sm_logger(8088);
             FunctionGroupStates={};
+            client.setState(FunctionGroupState::Preconstruct("machineFG","running"));
             }
             sm_logger* log=nullptr;
             std::future<StartUpdateSessionOutput> StartUpdateSession();

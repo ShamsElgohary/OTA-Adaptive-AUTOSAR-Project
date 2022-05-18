@@ -11,10 +11,24 @@
 				"Service ID" : 1,
 				"Type" : "offer service",
 				"ttl" : 16777215
+			},
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2222,
+				"Service ID" : 1,
+				"Type" : "offer service",
+				"ttl" : 16777215
 			}
 		],
 		"ServiceInfoMap" : 
 		[
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2222,
+				"Service ID" : 1
+			},
 			{
 				"IP" : "127.0.0.1 ",
 				"Instance ID" : 1,
@@ -28,6 +42,30 @@
 		"Proxy_Required_Method" : [],
 		"Service_Discovery_Request" : 
 		[
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 1,
+				"Type" : "Offer"
+			},
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 1,
+				"Type" : "Offer"
+			},
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 1,
+				"Type" : "Offer"
+			},
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 1,
+				"Type" : "Offer"
+			},
 			{
 				"Grant_Result" : true,
 				"Instance_ID" : 1,

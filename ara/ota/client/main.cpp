@@ -296,15 +296,15 @@ public:
     void run()
     {
         get_meta_data();
-        cout << "1" << endl;
+        cout << "ota 1" << endl;
         parse_meta_data();
-        cout << "2" << endl;
+        cout << "ota 2" << endl;
         Get_UCM_Clusters();
-        cout << "3" << endl;
+        cout << "ota 3" << endl;
         Compare();
-        cout << "4" << endl;
+        cout << "ota 4" << endl;
         sim_json();
-        cout << "5" << endl;
+        cout << "ota 5" << endl;
     }
 };
 
