@@ -24,10 +24,10 @@ private:
     QGroupBox *ucm = new QGroupBox("UCM", this);
     QGroupBox *button_box = new QGroupBox;
 
-    QGroupBox *meta_data = new QGroupBox;
+    QGroupBox *meta_data = new QGroupBox("Meta Data", this);
     QTableWidget *meta_data_tabel = new QTableWidget;
 
-    QGroupBox *download_data = new QGroupBox;
+    QGroupBox *download_data = new QGroupBox("Download Data", this);
     QTableWidget *download_data_tabel = new QTableWidget;
 
     QGroupBox *ucm_package = new QGroupBox;

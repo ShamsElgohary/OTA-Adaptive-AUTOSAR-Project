@@ -38,6 +38,7 @@ sd::sd(QWidget *parent): QWidget{parent}
     main_layout->addWidget(console, 3, 0, 2, 3);
 
     console->layout()->addWidget(console_text);
+    console_text->setTextColor(QColor(Qt::white));
 
     setLayout(main_layout);
     sim=new simulation(8088);

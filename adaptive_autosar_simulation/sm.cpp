@@ -17,6 +17,9 @@ sm::sm(QWidget *parent): QWidget{parent}
     main_layout->addWidget(com, 0 ,1, 4, 1);
     main_layout->addWidget(console,  2 ,0, 2, 1);
 
+       QFont font;
+       font.setPointSize(11);
+       font.setBold(true);
 
 
     state_management->setLayout(new QVBoxLayout);
@@ -38,8 +41,8 @@ sm::sm(QWidget *parent): QWidget{parent}
     state_management->layout()->addWidget(function_group_state);
     function_group_state->setLayout(new QVBoxLayout());
     function_group_state->layout()->addWidget(function_group_state_table);
-    function_group_state_table->setRowCount(2);
-    function_group_state_table->setColumnCount(2);
+    function_group_state_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    function_group_state_table->horizontalHeader()->setFont(font);
 
     //start_simulation->setText("start simulation");
     //state_management->layout()->addWidget(start_simulation);
@@ -48,9 +51,10 @@ sm::sm(QWidget *parent): QWidget{parent}
     main_layout->addWidget(console, 2, 0, 2, 1);
 
     console->layout()->addWidget(console_text);
+    console->layout()->addWidget(console_text);
 
     com->setLayout(new QVBoxLayout);
-    com->layout()->addWidget(console_text);
+    
 
     setLayout(main_layout);
 
