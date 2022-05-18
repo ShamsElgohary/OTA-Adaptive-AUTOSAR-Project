@@ -85,6 +85,8 @@ void MainWindow::choose_handler()
             this->iam_tab->iam_handler();
         if(x=="ucm")
             this->ucm_tab->ucm_handler();
+        if(x=="ota")
+            this->ota_tab->ota_handler();
 
 }
 void MainWindow::on_ota_button_clicked()

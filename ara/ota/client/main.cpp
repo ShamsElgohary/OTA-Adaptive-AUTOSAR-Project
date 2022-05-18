@@ -7,6 +7,7 @@
 #include "fstream"
 #include <string>
 #include <vector>
+#include"simulation.hpp"
 // using std::filesystem::current_path;
 using namespace std;
 using namespace ara::ucm::pkgmgr::proxy;
@@ -117,7 +118,9 @@ public:
         {
             SwClusterInfoType x;
             getline(myfile, myline);
-            if (myline == ""){}
+            if (myline == "")
+            {
+            }
             else
             {
                 int it = myline.find("#");
@@ -277,7 +280,7 @@ public:
             event["ECU_Packages"][counter]["Version"] = x.Version;
             n++;
         }
-         event["Packges_2b_downloader_counter"] = download_trail.size();
+        event["Packges_2b_downloader_counter"] = download_trail.size();
 
         n = 1;
         for (auto x : download_trail)
@@ -307,13 +310,14 @@ public:
 
 int main()
 {
-    ClearJSONReport();
+    simulation s(8088);
+    s.connect_to_socket();
     CLIENT_OTA x;
-    x.run();
-    // while (1)
-    // {
-    //     x.run();
-    //     usleep(8000000);
-    // }
+   
+       // ClearJSONReport();
+        x.run();
+        s.send_file("../../../executables/ota/bin/GUI_Report.json");
+        // usleep(8000000);
+    
     return 0;
 }

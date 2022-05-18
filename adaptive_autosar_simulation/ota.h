@@ -4,13 +4,19 @@
 
 #include <QWidget>
 #include <QtWidgets>
+#include "simulation.hpp"
+#include "./jsoncpp/header/json.h"
 
 class ota: public QWidget
 {
     Q_OBJECT
 public:
     explicit ota(QWidget *parent = nullptr);
-signals:
+public slots:
+    void update_ota();
+    void ota_handler();
+
+signals: void ota_signal();
 private:
 
     QGridLayout *main_layout = new QGridLayout;
@@ -19,11 +25,12 @@ private:
     QGroupBox *button_box = new QGroupBox;
 
     QGroupBox *meta_data = new QGroupBox;
-    QPushButton * meta_data_button =new QPushButton;
     QTableWidget *meta_data_tabel = new QTableWidget;
 
+    QGroupBox *download_data = new QGroupBox;
+    QTableWidget *download_data_tabel = new QTableWidget;
+
     QGroupBox *ucm_package = new QGroupBox;
-    QPushButton * ucm_package_button =new QPushButton;
     QTableWidget *ucm_package_tabel = new QTableWidget;
 
     QPushButton * update =new QPushButton;
