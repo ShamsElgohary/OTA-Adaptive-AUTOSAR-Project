@@ -37,6 +37,7 @@ private:
     QHBoxLayout *main_layout =new QHBoxLayout ;
     QVBoxLayout *vertical_layout_tabs =new QVBoxLayout ;
     QVBoxLayout *vertical_layout_control=new QVBoxLayout  ;
+    QHBoxLayout *com = new QHBoxLayout;
     QWidget *widget =new QWidget ;
     exec * exec_tab =new exec ;
     sm * sm_tab =new sm ;

@@ -1,16 +1,24 @@
 #ifndef COM_H
 #define COM_H
 
-#include <QWidget>
+#include <QMainWindow>
+#include<QtCore>
+#include<QTreeWidget>
+#include<QJsonDocument>
+#include <type_traits>
+#include<QString>
 
-class com : public QWidget
+class GUI_COMM
 {
-    Q_OBJECT
+
 public:
-    explicit com(QWidget *parent = nullptr);
-
-signals:
-
+    GUI_COMM(QTreeWidget*);
+    void parse(QString);
+private:
+    QTreeWidget* tree;
+    //QString path;
+    void addTreeRoot(QString,QTreeWidget*,QString);
+    void addTreeChild(QTreeWidgetItem *parent,QString first, QVariant name);
 };
 
 #endif // COM_H
