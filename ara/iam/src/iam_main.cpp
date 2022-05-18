@@ -3,7 +3,7 @@
 int main (void)
 {
     ara::iam::AccessManager iam;
-    iam.InitGrantStorage("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/executables/etc/system/iam/access_control_lists.json");
+    iam.InitGrantStorage(CUSTOMIZED_PROJECT_PATH + "/executables/etc/system/iam/access_control_lists.json");
     iam.InitServerAdapter();
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);

@@ -49,7 +49,7 @@ public:
 
     // string crypto_get_hash(string packagename)
     // {
-    //     std::string path = "/home/tabakh/Desktop/GP/src/OTA-Adaptive-AUTOSAR-Project//executables/ota/bin/" + packagename + ".zip";
+    //     std::string path = CUSTOMIZED_PROJECT_PATH + "/executables/ota/bin/" + packagename + ".zip";
 
     //     ifstream ifs(path, ios::binary | ios::ate);
     //     ifstream::pos_type pos = ifs.tellg();

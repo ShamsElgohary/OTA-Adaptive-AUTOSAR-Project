@@ -2,6 +2,7 @@
 #include "someipTCP.hpp"
 #include "TLS/someipSecurity.hpp"
 #include "someip.hpp"
+#include "../../../../utility/general.hpp"
 
 using boost::asio::ip::udp;
 using boost::asio::ip::address;
@@ -93,7 +94,7 @@ namespace someip
 	{
 		if (someipConfig.endUserType == EndUserType::CLIENT)
 			{	
-				std::string CertificatePath = "/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project//ara/com/network_binding/SomeIp/TLS/Certificates/server.crt"; 
+				std::string CertificatePath = CUSTOMIZED_PROJECT_PATH + "/ara/com/network_binding/SomeIp/TLS/Certificates/server.crt"; 
 
 				boost::asio::ssl::context ctx(boost::asio::ssl::context::tls);
 				endUserInstance = make_shared<ClientTLS>(io_service, ctx , port, CertificatePath, IPv4);
@@ -101,7 +102,7 @@ namespace someip
 
 		else if (someipConfig.endUserType == EndUserType::SERVER)
 			{
-				std::string CertificateDir = "/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project//ara/com/network_binding/SomeIp/TLS/Certificates"; 
+				std::string CertificateDir = CUSTOMIZED_PROJECT_PATH + "/ara/com/network_binding/SomeIp/TLS/Certificates"; 
 
 				endUserInstance = make_shared<ServerTLS>(io_service, port, CertificateDir, IPv4);
 			}

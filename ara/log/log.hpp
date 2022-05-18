@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "../ucm/includes/types.hpp"
 #include "../../utility/jsoncpp/header/json.h"
 #include "../../utility/simulation/include/simulation.hpp"
@@ -54,8 +55,10 @@ namespace ara
 
             if (SIMULATION_ACTIVE)
             {
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
-                guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+                guiSocket->send_file(PathArr);
             }
         }
 
@@ -75,8 +78,10 @@ namespace ara
 
             if (SIMULATION_ACTIVE)
             {
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
-                guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+                guiSocket->send_file(PathArr);
             }
         }
 
@@ -97,8 +102,10 @@ namespace ara
 
             if (SIMULATION_ACTIVE)
             {
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
-                guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+                guiSocket->send_file(PathArr);
             }
         }
 
@@ -118,8 +125,10 @@ namespace ara
 
             if (SIMULATION_ACTIVE)
             {
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
-                guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+                guiSocket->send_file(PathArr);
             }
         }
 
@@ -147,8 +156,10 @@ namespace ara
             json_file.close();
             if (SIMULATION_ACTIVE)
             {
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
-                guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+                guiSocket->send_file(PathArr);
             }
         }
 
@@ -176,8 +187,10 @@ namespace ara
             json_file.close();
             if (SIMULATION_ACTIVE)
             {
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
-                guiSocket->send_file("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/Gui.json");
+                guiSocket->send_file(PathArr);
             }
         }
 

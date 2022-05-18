@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    ApplicationExecutionMgr app("/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project");
+    ApplicationExecutionMgr app(CUSTOMIZED_PROJECT_PATH);
     app.initialize();
     app.run();
     return 0;

@@ -5,12 +5,13 @@
 #include <iostream>
 #include <string>
 #include "sstream"
+#include "../../../../utility/general.hpp"
 using namespace CryptoPP;
 using namespace ara::crypto;
 using namespace std;
 int main()
 {
-    std::string path =  "/home/youssef/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/ara/crypto/cryp/src/ex1.txt";
+    std::string path =  CUSTOMIZED_PROJECT_PATH + "/ara/crypto/cryp/src/ex1.txt";
     
     ifstream ifs(path, ios::binary | ios::ate);
     ifstream::pos_type pos = ifs.tellg();

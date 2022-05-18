@@ -88,8 +88,10 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     /*Get Functional Groups of PKG*/
     FunctionGroupList FG_List = {"fn1", "fn2"};
 
+    int PrepareTrials = 0;
     PrepareUpdateOutput error_prepareUpdate = proxy->PrepareUpdate(FG_List);
-    while (error_prepareUpdate.AppError != SM_ApplicationError::kPrepared)
+    PrepareTrials += 1;
+    while ((error_prepareUpdate.AppError != SM_ApplicationError::kPrepared) && (PrepareTrials < 5))
     {
         error_prepareUpdate = proxy->PrepareUpdate(FG_List);
 
@@ -113,7 +115,8 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
             RejectedCounter++;
         }
-
+        PrepareTrials += 1;
+        usleep(1000);
     }
 
     guiLogger.ReportJsonGUI( "PrepareUpdate", "Prepared" , true );
@@ -166,8 +169,10 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
     RejectedCounter = 0;
 
+    int VerifyTrails = 0;
     VerifyUpdateOutput error_verifyupdate = proxy->VerifyUpdate(FG_List);
-    while (error_verifyupdate.AppError != SM_ApplicationError::kVerified)
+    VerifyTrails += 1;
+    while ((error_verifyupdate.AppError != SM_ApplicationError::kVerified) && (VerifyTrails < 5))
     {
         error_verifyupdate = proxy->VerifyUpdate(FG_List);
 
@@ -191,6 +196,8 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             }
             RejectedCounter++;
         }
+        VerifyTrails += 1;
+        usleep(1000);
     }
 
     guiLogger.ReportJsonGUI( "VerifyUpdate", "Verified", true );

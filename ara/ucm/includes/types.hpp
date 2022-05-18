@@ -14,6 +14,7 @@
 #include <array>
 #include <string>
 #include "serialization_simple.hpp"
+#include <stdio.h>
 
 using namespace std;
 
