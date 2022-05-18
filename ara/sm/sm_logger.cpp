@@ -25,13 +25,12 @@ void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states
 
  Json::Value sm_json;
  sm_json["Cluster_name"]="sm_json";
- for(int i=0;i<30;i++)
- {
- sm_json["sm_json"]["UpdateRequest"]["StartUpdateSession"][i]=Json::Value(functions.sm_StartUpdateSession);
- sm_json["sm_json"]["UpdateRequest"]["PrepareUpdate"][i]=Json::Value(functions.sm_PrepareUpdate);
- sm_json["sm_json"]["UpdateRequest"]["VerifyUpdate"][i]=Json::Value(functions.sm_VerifyUpdate);
- sm_json["sm_json"]["UpdateRequest"]["StopUpdateSession"][i]=Json::Value(functions.sm_StopUpdateSession);
- }
+ 
+ sm_json["sm_json"]["UpdateRequest"]["StartUpdateSession"]=Json::Value(functions.sm_StartUpdateSession);
+ sm_json["sm_json"]["UpdateRequest"]["PrepareUpdate"]=Json::Value(functions.sm_PrepareUpdate);
+ sm_json["sm_json"]["UpdateRequest"]["VerifyUpdate"]=Json::Value(functions.sm_VerifyUpdate);
+ sm_json["sm_json"]["UpdateRequest"]["StopUpdateSession"]=Json::Value(functions.sm_StopUpdateSession);
+
 
  for(auto x :fg_states)
  sm_json["sm_json"]["function_group_states"][x.first]=x.second;
