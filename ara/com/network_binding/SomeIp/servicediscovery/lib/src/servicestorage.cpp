@@ -122,7 +122,7 @@ void removefromlist()
         }
     }
 
-    std::cout << event << std::endl;
+    //std::cout << event << std::endl;
     std::ofstream json_file("GUI_Report.json");
     json_file << event;
     json_file.close();
@@ -166,7 +166,7 @@ void addtoGUI(uint16_t Service_ID, serviceinfo serviceinformation)
 
     event["SD"]["ServiceInfoMap"].append(Temp);
 
-    std::cout << event << std::endl;
+    //std::cout << event << std::endl;
     std::ofstream json_file("GUI_Report.json");
     json_file << event;
     json_file.close();
@@ -207,7 +207,7 @@ void Addtorequests(uint16_t Service_ID, uint16_t instance_id)
 
     event["SD"]["Find Requests"].append(Temp2);
 
-    std::cout << event << std::endl;
+   // std::cout << event << std::endl;
     std::ofstream json_file("GUI_Report.json");
     json_file << event;
     json_file.close();
@@ -267,7 +267,7 @@ void addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint32_t ttl, uint16
 
     event["SD"]["Received SD messages"].append(Temp3);
 
-    std::cout << event << std::endl;
+   // std::cout << event << std::endl;
     std::ofstream json_file("GUI_Report.json");
     json_file << event;
     json_file.close();

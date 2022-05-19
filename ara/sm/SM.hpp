@@ -18,24 +18,28 @@ namespace ara
         class UpdateRequestImpl : public ara::sm::skeleton::UpdateRequestSkeleton
         {
         public:
-           UpdateRequestImpl(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::skeleton::UpdateRequestSkeleton(I_id, mode)
+            UpdateRequestImpl(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::skeleton::UpdateRequestSkeleton(I_id, mode)
             {
-            freopen("sm.txt","w+",stdout); //write cout and printf to txt file 
-            this->log=new sm_logger(8088);
-            FunctionGroupStates={};
-            client.setState(FunctionGroupState::Preconstruct("machineFG","running"));
+                freopen("sm.txt", "w+", stdout); // write cout and printf to txt file
+                this->log = new sm_logger(8088);
+                FunctionGroupStates = {};
             }
-            sm_logger* log=nullptr;
+            sm_logger *log = nullptr;
             std::future<StartUpdateSessionOutput> StartUpdateSession();
             std::future<PrepareUpdateOutput> PrepareUpdate(FunctionGroupList FunctionGroups);
             std::future<VerifyUpdateOutput> VerifyUpdate(FunctionGroupList FunctionGroups);
             void StopUpdateSession();
             void run_cluster(int cluster);
+
         private:
             StateClient client;
             std::map<Functiongroup, std::string> FunctionGroupStates;
             friend class sm_logger;
-            enum clusters{OTA,UCM};
+            enum clusters
+            {
+                OTA,
+                UCM
+            };
         };
     }
 }

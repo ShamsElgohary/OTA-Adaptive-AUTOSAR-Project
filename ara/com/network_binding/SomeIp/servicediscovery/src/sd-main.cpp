@@ -12,8 +12,8 @@ uint16_t port_num;
 
 int main()
 {
-    // ara::exec::ExecutionClient exec;
-    // exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
     while (1)
     {
         std::string ipv4_address;

@@ -13,7 +13,7 @@
 				"type": "SOME/IP",
 				"instance_id": 1,
 				"ipv4": "127.0.0.1",
-				"port": 2223
+				"port": 2253
 			}
 		]
 	}

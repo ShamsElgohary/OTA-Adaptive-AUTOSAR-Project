@@ -16,8 +16,7 @@ namespace ara
             {
             public:
                UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(CUSTOMIZED_PROJECT_PATH + "/executables/sm/etc/service_manifest.json",1 , I_id, Cluster_Name, mode)
-               {
-               }
+               {}
                 /** StartUpdateSession **/
                 struct StartUpdateSessionOutput
                 {
@@ -105,6 +104,7 @@ namespace ara
 
                 void handleMethod() override
                 {
+
                     int methodID;
                     string methodName;
                     this->ptr2bindingProtocol->ServerListen();

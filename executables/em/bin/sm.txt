@@ -1,5 +1,27 @@
+Sm offering service
+sm Method name: 1, Method Type: Offer
+[SM Skeleton] handle: 1
+Starting Update Session
 [sm] setting new state from sm
-[someip] connect: Connection refused
-[someip] CLIENT DIDN'T CONNECT TO SERVER 
-[someip] write_some: Broken pipe
-[GUI REPORT] Service ID: 1, Instance ID: 1, Method Type: Offer, Grant Result: 1
+fn2 now is in state end
+sm Method name: StartUpdateSession, Method Type: Skeleton
+[SM Skeleton] handle: 2
+Preparing Update
+StartUpdateSession must be called before
+sm Method name: PrepareUpdate, Method Type: Skeleton
+[SM Skeleton] handle: 2
+Preparing Update
+StartUpdateSession must be called before
+sm Method name: PrepareUpdate, Method Type: Skeleton
+[SM Skeleton] handle: 2
+Preparing Update
+StartUpdateSession must be called before
+sm Method name: PrepareUpdate, Method Type: Skeleton
+[SM Skeleton] handle: 2
+Preparing Update
+StartUpdateSession must be called before
+sm Method name: PrepareUpdate, Method Type: Skeleton
+[SM Skeleton] handle: 2
+Preparing Update
+StartUpdateSession must be called before
+sm Method name: PrepareUpdate, Method Type: Skeleton

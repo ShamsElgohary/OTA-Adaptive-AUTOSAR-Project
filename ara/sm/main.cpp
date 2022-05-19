@@ -11,8 +11,12 @@ int main()
     /********Report to EM*****/
     ExecutionClient client{};
     client.ReportExecutionStaste(ExecutionState::Krunning);
-    UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
-    updaterequest.log->gui_receive();
+    StateClient x;
+    x.setState(FunctionGroupState::Preconstruct("machineFG", "running"));
+
+    
+
+    //updaterequest.log->gui_receive();
     /********Test*************/
     
     // FunctionGroupList function_groups = {"fn1", "fn2"};
@@ -25,6 +29,12 @@ int main()
     // updaterequest.StopUpdateSession();
     
     /******Offer_Service*************/
-    
-    updaterequest.OfferService();
+    std::thread([](){
+        UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
+            cout<<"Sm offering service"<<endl;
+
+        updaterequest.OfferService();
+    } ).detach();
+    x.setState(FunctionGroupState::Preconstruct("fn1", "idle"));
+    while(1)sleep(1000);
 }

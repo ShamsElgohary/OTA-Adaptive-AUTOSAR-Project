@@ -61,7 +61,7 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
 {
     int size;
     char functionGroup_Name[10], functionGroup_NewState[10];
-    smpipe = open("smFifo", O_RDWR);
+    smpipe = open("smFifo", O_RDONLY);
     read(smpipe, &size, sizeof(int));
     for (int i = 0; i <= size; i++)
     {
@@ -149,7 +149,10 @@ bool ApplicationExecutionMgr::run()
         Terminate();
         Execute();
         bool state_check=true;
+        close(smpipe);
+        smpipe = open("smFifo", O_WRONLY);
         write(smpipe, &state_check, sizeof(bool));
+        close(smpipe);
         transitionChanges_.toStart_.clear();
         transitionChanges_.toTerminate_.clear();
     }

@@ -4,7 +4,7 @@
 	{
 		"Config 1": 
 		{
-			"depends": {},
+			"depends": {"someip_sd":"Krunning"},
 			"machine_states": ["running"],
 			"function_group_states": {},
 			"scheduling_policy": "Round Robin",

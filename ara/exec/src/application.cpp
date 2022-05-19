@@ -7,7 +7,6 @@
 #include <errno.h>
 #include <iostream>
 #include "applicationExecutionMgr.hpp"
-
 using namespace std;
 using namespace ara::exec;
 
@@ -54,20 +53,24 @@ future<void> Application::start()
         current_state = newstate;
         locker.unlock();
         condr.notify_all();
-        static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        if(SIMULATION_ACTIVE)
+        {
+            static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        }
         cout << "[em] " << name << " new state is Krunning " << id << "\n\n\n";
         Update_status(); });
 }
 void Application::terminate()
 {
     unique_lock<mutex> locker(mur);
-    if (kill(id, SIGTERM)==-1)
+    if (kill(id, SIGTERM) == -1)
     {
         cout << "[em] couldn't terminate process.... with id = " << id << " and named " << name << "\n\n\n";
     }
-    else{
-        cout << "[em] terminateing "<< name << "\n";
-        id=0;
+    else
+    {
+        cout << "[em] terminateing " << name << "\n";
+        id = 0;
     }
     locker.unlock();
 }
@@ -81,13 +84,16 @@ void Application::Update_status()
         read(fd, &newstate, sizeof(current_state));
         unique_lock<mutex>  locker(mur);
         current_state = newstate;
-        static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        if(SIMULATION_ACTIVE)
+        {
+            static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        }        
         id=0;
         close(fd);
         locker.unlock();
         cout << "[em] " << name << " new state is Kterminate"<<"\n\n\n";
-        condt.notify_all();
-         }).detach();
+        condt.notify_all(); })
+        .detach();
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name, string path)
 {

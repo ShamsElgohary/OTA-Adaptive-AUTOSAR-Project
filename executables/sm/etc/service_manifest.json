@@ -7,7 +7,7 @@
 				"type": "SOME/IP",
 				"instance_id": 1,
 				"ipv4": "127.0.0.1",
-				"port": 2222
+				"port": 2522
 			}
 		]
 	}

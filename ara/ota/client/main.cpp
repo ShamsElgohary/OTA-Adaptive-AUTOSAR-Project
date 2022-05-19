@@ -7,7 +7,8 @@
 #include "fstream"
 #include <string>
 #include <vector>
-#include"simulation.hpp"
+#include "simulation.hpp"
+#include "execution_client.hpp"
 // using std::filesystem::current_path;
 using namespace std;
 using namespace ara::ucm::pkgmgr::proxy;
@@ -310,14 +311,20 @@ public:
 
 int main()
 {
-    simulation s(8088);
-    s.connect_to_socket();
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
+    sleep(3);
     CLIENT_OTA x;
-   
-       // ClearJSONReport();
-        x.run();
-        s.send_file("../../../executables/ota/bin/GUI_Report.json");
-        // usleep(8000000);
-    
+
+    // ClearJSONReport();
+    x.run();
+    if(SIMULATION_ACTIVE)
+    {   
+        simulation s(8088);
+        s.connect_to_socket();
+        s.send_file("../../../executables/ota/bin/GUI_Report.json");    
+    }
+    // usleep(8000000);
+
     return 0;
 }

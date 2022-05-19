@@ -4,13 +4,13 @@
 	{
 		"Config 1": 
 		{
-			"depends": {},
-			"machine_states": ["startup","running"],
+			"depends": {"iam":"Krunning"},
+			"machine_states": ["running"],
 			"function_group_states": {},
 			"scheduling_policy": "Round Robin",
 			"scheduling_priority": "1",
-			"arguments": ["arg_0","arg_0"],
-			"environments": ["env_1","env_1"]
+			"arguments": [],
+			"environments": []
 		}
 	}
 }

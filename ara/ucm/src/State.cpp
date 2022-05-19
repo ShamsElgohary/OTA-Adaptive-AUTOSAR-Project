@@ -60,11 +60,13 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     ara::com::ServiceHandleContainer<UpdateRequestproxy::HandleType> handles_container = ara::sm::UpdateRequest::proxy::UpdateRequestproxy::FindService();
 
     if (handles_container.size() == 0)
-    {
+    {   
+        cout<<"no handle found"<<endl;
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
     else
     {
+        cout<<"handle found"<<endl;
         proxy = std::make_shared<UpdateRequestproxy>(handles_container[0]);
     }
 

@@ -127,7 +127,7 @@
 				"off",
 				"startup",
 				"running",
-				"restart",
+				"update",
 				"sleep"
 			]
 		}
@@ -137,7 +137,7 @@
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 17929
+			"pid" : 110287
 		}
 	],
 	"sm_request" : 

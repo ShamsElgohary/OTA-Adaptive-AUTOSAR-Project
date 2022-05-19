@@ -9,7 +9,8 @@ namespace ara
         {
             // Test
             string Typestr = (Type == MethodType::Skeleton_Method) ? "Skeleton" : "Proxy";
-            cout << "[GUI REPORT] Method ID: " << methodID << ", Method Name: " << methodName << ", Method Type: " << Typestr << endl;
+            cout << Cluster_Name <<" Method name: " << methodName ;
+            cout << ", Method Type: " << Typestr << endl;
 
             // Read JSON File
             Json::Value event;
@@ -70,7 +71,7 @@ namespace ara
             {
                 Typestr = "Stop";
             }
-            cout << "[GUI REPORT] Service ID: " << ServiceID << ", Instance ID: " << InstanceID << ", Method Type: " << Typestr << ", Grant Result: " << GrantResult << endl;
+            cout << Cluster_Name <<" Method name: " << ServiceID << ", Method Type: " << Typestr << endl;
 
             // Read JSON File
             Json::Value event;

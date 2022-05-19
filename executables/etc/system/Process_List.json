@@ -8,14 +8,6 @@
         "Path": "/com_skeleton_test/",
         "Version": "0.1"
     },
-    "ex1": {
-        "Path": "/ex1/",
-        "Version": "0.1"
-    },
-    "ex2": {
-        "Path": "/ex2/",
-        "Version": "0.1"
-    },
     "iam": {
         "Path": "/iam/",
         "Version": "0.1"
@@ -26,6 +18,14 @@
     },
     "someip_sd": {
         "Path": "/someip_sd/",
+        "Version": "0.1"
+    },
+    "ucm": {
+        "Path": "/ucm/",
+        "Version": "0.1"
+    },
+    "ota": {
+        "Path": "/ota/",
         "Version": "0.1"
     }
 }
