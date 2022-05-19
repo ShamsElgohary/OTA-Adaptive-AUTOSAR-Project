@@ -4,14 +4,16 @@
 	{
 		"UpdateRequest" : 
 		{
-			"PrepareUpdate" : true,
+			"PrepareUpdate" : false,
 			"StartUpdateSession" : false,
 			"StopUpdateSession" : false,
-			"VerifyUpdate" : false
+			"VerifyUpdate" : true
 		},
 		"function_group_states" : 
 		{
-			"fn2" : "Updating"
+			"fn1" : "off",
+			"fn2" : "off",
+			"machineFG" : ""
 		}
 	}
 }

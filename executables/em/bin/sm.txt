@@ -7,21 +7,28 @@ fn2 now is in state end
 sm Method name: StartUpdateSession, Method Type: Skeleton
 [SM Skeleton] handle: 2
 Preparing Update
-StartUpdateSession must be called before
+[sm] setting new state from sm
+fn1 now is in state off
+[sm] setting new state from sm
+fn2 now is in state off
 sm Method name: PrepareUpdate, Method Type: Skeleton
-[SM Skeleton] handle: 2
-Preparing Update
+[SM Skeleton] handle: 3
+Verifying Update
 StartUpdateSession must be called before
-sm Method name: PrepareUpdate, Method Type: Skeleton
-[SM Skeleton] handle: 2
-Preparing Update
+sm Method name: VerifyUpdate, Method Type: Skeleton
+[SM Skeleton] handle: 3
+Verifying Update
 StartUpdateSession must be called before
-sm Method name: PrepareUpdate, Method Type: Skeleton
-[SM Skeleton] handle: 2
-Preparing Update
+sm Method name: VerifyUpdate, Method Type: Skeleton
+[SM Skeleton] handle: 3
+Verifying Update
 StartUpdateSession must be called before
-sm Method name: PrepareUpdate, Method Type: Skeleton
-[SM Skeleton] handle: 2
-Preparing Update
+sm Method name: VerifyUpdate, Method Type: Skeleton
+[SM Skeleton] handle: 3
+Verifying Update
 StartUpdateSession must be called before
-sm Method name: PrepareUpdate, Method Type: Skeleton
+sm Method name: VerifyUpdate, Method Type: Skeleton
+[SM Skeleton] handle: 3
+Verifying Update
+StartUpdateSession must be called before
+sm Method name: VerifyUpdate, Method Type: Skeleton

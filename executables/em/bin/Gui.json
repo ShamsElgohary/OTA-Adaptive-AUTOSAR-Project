@@ -5,10 +5,11 @@
 		{
 			"Activate" : 
 			{
-				"PrepareUpdate" : "Rejected",
-				"StartUpdateSession" : "Done"
+				"PrepareUpdate" : "Prepared",
+				"StartUpdateSession" : "Done",
+				"VerifyUpdate" : "Rejected"
 			},
-			"PackageManagerStatus" : "kReady",
+			"PackageManagerStatus" : "kVerifying",
 			"ProcessedActionType" : "Install",
 			"TransferFinishRate" : 100.0
 		},
@@ -26,7 +27,7 @@
 		},
 		"PackageManager" : 
 		{
-			"Activate" : "kOperationNotPermitted",
+			"Activate" : "",
 			"Finish" : "kOperationNotPermitted",
 			"GetSwClusterInfo" : "kSuccess",
 			"ProcessSwPackage" : "kSuccess",

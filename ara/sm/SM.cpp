@@ -14,7 +14,7 @@ std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateReq
     bool success = client.setState(state);
     if (success)
     {
-        this->FunctionGroupStates[state.fg_name] = "Updating";
+        this->FunctionGroupStates[state.fg_name] = "end";
         out.AppError = success;
         std::cout << state.fg_name << " now is in state " << state.fg_newState << std::endl;
     }
