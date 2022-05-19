@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -40,33 +39,43 @@ void MainWindow::on_simulation_button_clicked()
     ota_tab = new ota();
     tabWidget ->addTab(ota_tab,"OTA");
 
-
-    /* thread to lister on socket*/
-    socket_thread=QThread::create([this]{
+    QThread::create([this]{
         this->s->creat_socket();
-            std::function<void()>handler = [this](){this->choose_handler();};
-            this->s->listen_l(handler);
-        });
-    socket_thread->start();
-}
-void MainWindow::choose_handler()
-{
-    std::ifstream file_input("file2.json"); //path to be updated
-        Json::Reader reader;
-        Json::Value root;
-        reader.parse(file_input, root);
-        string x=root["Cluster_name"].asString();
 
-        if(x=="sm_json")
-            this->sm_tab->sm_handler();    
-        else if(x=="iam_json")
-            this->iam_tab->iam_handler();
-        else if(x=="em_json")
+        while(1)
         {
-            this->exec_tab->em_handler();
-        }
+            int new_socket =this->s->listen_l();
+            cout<<"thread created"<<endl;
+            QThread::create([this,new_socket]()
+            {
+                auto name = this->s->recive_exe_name(new_socket);
+                while(1)
+                {
+                    bool file = this->s->recive_file(new_socket,name);
+                    cout<<file<<endl;
+                    if(file){
+                        callHandler(name);
+                        usleep(10);
+                    }
+                    else
+                    {
+                        break;
+                    }
 
+                }
+            })->start();
+
+        }
+    })->start();
 }
+void MainWindow::callHandler(simulation::exe_name name)
+{
+    switch(name)
+    {
+        case (simulation::exe_name::exec) : exec_tab->em_handler();
+    }
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;

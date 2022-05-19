@@ -56,6 +56,7 @@ namespace ara
             map<string, FunctionGroup *> function_groups_;
             const string rootPath;
             TransitionChanges transitionChanges_;
+            simulation sim_socket{8088};
             ApplicationExecutionMgr(string rootPath);
             void initialize();
             bool run();

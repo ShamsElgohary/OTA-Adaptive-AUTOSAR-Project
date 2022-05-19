@@ -61,7 +61,7 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
 {
     int size;
     char functionGroup_Name[10], functionGroup_NewState[10];
-    smpipe = open("smFifo", O_RDONLY);
+    smpipe = open("smFifo", O_RDWR);
     read(smpipe, &size, sizeof(int));
     for (int i = 0; i <= size; i++)
     {
@@ -120,6 +120,8 @@ void ApplicationExecutionMgr::initialize()
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
+    sim_socket.connect_to_socket();
+    sim_socket.send_exe_name(simulation::exe_name::exec);
     reportConfig_simulation();
     sleep(1);
     iam_future = IAM_handle();
@@ -299,8 +301,6 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     output_file << root;
     output_file.close();
     //------------------------------------------------
-    simulation sim_socket(8088);
-    sim_socket.connect_to_socket();
     sim_socket.send_file("../etc/executables_config.json");
     locker.unlock();
 }

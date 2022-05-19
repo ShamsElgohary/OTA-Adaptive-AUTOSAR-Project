@@ -95,8 +95,8 @@
 	"function_group_states" : 
 	{
 		"fn1" : "terminate",
-		"fn3" : "idle",
-		"machineFG" : "startup"
+		"fn3" : "run",
+		"machineFG" : "running"
 	},
 	"function_groups" : 
 	{
@@ -133,15 +133,39 @@
 	[
 		{
 			"current_state" : "Krunning",
+			"name" : "com_proxy_test",
+			"pid" : 27397
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "com_skeleton_test",
+			"pid" : 27396
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "iam",
+			"pid" : 27246
+		},
+		{
+			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 12712
+			"pid" : 27207
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "someip_sd",
+			"pid" : 27245
 		}
 	],
 	"sm_request" : 
 	{
-		"fng" : "fn1",
-		"fng_state" : "terminate"
+		"fng" : "fn3",
+		"fng_state" : "run"
 	},
-	"to_run" : [],
+	"to_run" : 
+	[
+		"com_proxy_test",
+		"com_skeleton_test"
+	],
 	"to_term" : []
 }

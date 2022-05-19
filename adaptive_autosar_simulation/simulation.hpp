@@ -19,15 +19,16 @@ private:
     int e;
     int sockfd_s;
     int sockfd_c;
-    int new_sock;
     std::mutex mtx;
 
 public:
+    typedef enum {exec,sm,iam,ucm,ota,sd} exe_name;
     simulation(int port);
     void creat_socket();
     void connect_to_socket();
     void send_file(char *file_path);
-    void recive_file(int client_socket,std::function<void()>handler);
-    void listen_l(std::function<void()>handler);
+    exe_name recive_exe_name(int client_socket);
+    bool recive_file(int client_socket,exe_name name);
+    int listen_l();
     ~simulation();
 };

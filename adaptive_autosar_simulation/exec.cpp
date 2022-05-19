@@ -1,5 +1,6 @@
 #include "exec.h"
 
+
 exec::exec(QWidget *parent): QWidget{parent}
 {
     machine_configGbx->setLayout(new QHBoxLayout());
@@ -58,16 +59,16 @@ exec::exec(QWidget *parent): QWidget{parent}
     update_running_executables();
     update_fng_states();
     update_sm_requests();
-    //update_exec();
+   //update_exec();
     setLayout(main_layout);
 }
 void exec::parse_exec_json()
 {
-
-    ifstream file_input("file2.json");
+    ifstream fi2("em.json");
+    if(fi2.peek() == std::ifstream::traits_type::eof())return;
     Json::Reader reader;
     Json::Value root;
-    reader.parse(file_input, root);
+    reader.parse(fi2, root);
 
     for(auto exe : root["executables_configurations"])
     {
@@ -346,7 +347,7 @@ void exec::clear_widget()
     fng_states->clear();
     sm_request.clear();
 }
-void exec::update_exec()
+void exec::update_exec( )
 {
     clear_widget();
     parse_exec_json();

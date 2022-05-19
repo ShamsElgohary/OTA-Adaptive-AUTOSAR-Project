@@ -24,7 +24,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void connect_fun();
-    void choose_handler();
+  void callHandler(simulation::exe_name);
 
 private slots:
     void on_simulation_button_clicked();

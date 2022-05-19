@@ -12,6 +12,9 @@ simulation::simulation(int port)
 
 simulation::~simulation()
 {
+    close(sockfd_c);
+    close(sockfd_s);
+
 }
 
 void simulation::creat_socket()
@@ -40,7 +43,7 @@ void simulation::creat_socket()
     printf("[+]Binding Successfull.\n");
 }
 
-void simulation::listen_l(std::function<void()>handler)
+int simulation::listen_l()
 {
     struct sockaddr_in new_addr;
     socklen_t addr_size;
@@ -56,51 +59,57 @@ void simulation::listen_l(std::function<void()>handler)
         exit(1);
     }
     addr_size = sizeof(new_addr);
+
+    return accept(sockfd_s, (struct sockaddr *)&new_addr, &addr_size);
+}
+simulation::exe_name simulation::recive_exe_name(int client_socket)
+{
+    exe_name name ;
+    recv(client_socket, &name, sizeof(exe_name),0);
+    return name;
+}
+bool simulation::recive_file(int client_socket,exe_name name)
+{
+    int n;
+    string file_name;
+    bool succes;
+    switch(name)
+    {
+        case (simulation::exe_name::exec) : file_name = "em.json";
+    }
+    if (recv(client_socket, &n, sizeof(n), 0)<=0){
+        close(client_socket);
+        return false;
+    }
+    ofstream file;
+    file.open(file_name);
+    file.clear();
+    char  buffer [SIZE];
     while(1)
     {
-        new_sock = accept(sockfd_s, (struct sockaddr *)&new_addr, &addr_size);
-            std::thread t(&simulation::recive_file,this,new_sock,handler);
-        t.detach();
-    }
-}
-
-void simulation::recive_file(int client_socket,std::function<void()>handler)
-{
-    //mtx.lock();
-   std::thread::id thread_id=std::this_thread::get_id();
-   std::cout<<"thread id is"<<thread_id<<std::endl; 
-
-    ofstream f("file2.json");
-    f.clear();
-    char buffer[SIZE];
-
-    int n;
-    while (1)
-    {
-        n = recv(client_socket, buffer, SIZE, 0);
-        if (n <= 0)
+        if(n==0)break;
+        if (recv(client_socket, buffer, n * sizeof(char) , 0)<=0)
         {
-            break;
-            return;
+            file.close();
+            close(client_socket);
+            return false;
         }
-        f << buffer;
-        bzero(buffer, SIZE);
+        file<<buffer;
+        if (recv(client_socket, &n, sizeof(n), 0)<=0)
+        {
+            file.close();
+            close(client_socket);
+            return false;
+        }
     }
-    std::cout<<"file recieved"<<std::endl;
-
-    f.flush();
-    f.close();
-    close(client_socket);
-    handler();
-
+    file.flush();
+    file.close();
+    return true;
 }
 
 void simulation::connect_to_socket()
 {
     struct sockaddr_in server_addr;
-    FILE *fp;
-    char *filename = "execution_manifest.json";
-
     sockfd_c = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd_c < 0)
     {
@@ -123,24 +132,18 @@ void simulation::connect_to_socket()
 
 void simulation::send_file(char *file_path)
 {
-    FILE *fp;
-    fp = fopen(file_path, "r");
-    if (fp == NULL)
-    {
-        perror("[-]Error in reading file.");
-        exit(1);
-    }
-    char data[SIZE] = {0};
-
-    while (fgets(data, SIZE, fp) != NULL)
-    {
-        if (send(sockfd_c, data, sizeof(data), 0) == -1)
+    ifstream fp;
+        fp.open(file_path);
+        string data;
+        int size =0;
+        while (!fp.eof())
         {
-            perror("[-] Error in sendung data");
-            exit(1);
+            data="";
+            fp >> data;
+            size =data.size();
+            send(sockfd_c, &size, sizeof(int), 0);
+            send(sockfd_c, data.c_str(), sizeof(char)*size, 0);
         }
-        usleep(5);
-        bzero(data, SIZE);
-    }
-    close(sockfd_c);
+        size =0;
+        send(sockfd_c, &size, sizeof(int), 0);
 }
