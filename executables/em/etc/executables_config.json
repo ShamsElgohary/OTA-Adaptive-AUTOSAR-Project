@@ -93,7 +93,7 @@
 		"fn1" : "idle",
 		"fn2" : "idle",
 		"fn3" : "idle",
-		"machineFG" : "startup"
+		"machineFG" : "running"
 	},
 	"function_groups" : 
 	{
@@ -136,15 +136,42 @@
 			]
 		}
 	},
-	"running_executables" : [],
+	"running_executables" : 
+	[
+		{
+			"current_state" : "Krunning",
+			"name" : "iam",
+			"pid" : 3631
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ota",
+			"pid" : 3640
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "sm",
+			"pid" : 3625
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "someip_sd",
+			"pid" : 3630
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ucm",
+			"pid" : 3635
+		}
+	],
 	"sm_request" : 
 	{
-		"fng" : "",
-		"fng_state" : ""
+		"fng" : "fn1",
+		"fng_state" : "idle"
 	},
 	"to_run" : 
 	[
-		"sm"
+		"ota"
 	],
 	"to_term" : []
 }

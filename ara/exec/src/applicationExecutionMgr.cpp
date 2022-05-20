@@ -123,7 +123,7 @@ void ApplicationExecutionMgr::initialize()
     if (true)
     {
         reportConfig_simulation();
-        sleep(100);
+        sleep(1);
     }
 
     iam_future = IAM_handle();

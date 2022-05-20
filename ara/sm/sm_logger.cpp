@@ -15,8 +15,10 @@ using namespace ara::sm;
 
 sm_logger::sm_logger(int server_port)
 {
-//freopen("sm.txt","w+",stdout); //write cout and printf to txt file     
+//freopen("sm.txt","w+",stdout); //write cout and printf to txt file
 this->sim=new simulation(server_port);
+this->sim->connect_to_socket();
+this->sim->send_exe_name(simulation::exe_name::sm);
 this->functions_state={};
 }
 void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states)
@@ -43,7 +45,6 @@ void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states
  /*connect to server*/
  if (true)
  {
-    this->sim->connect_to_socket();
     char current_dir[256];
     getcwd(current_dir,256);
     std::string path(current_dir);

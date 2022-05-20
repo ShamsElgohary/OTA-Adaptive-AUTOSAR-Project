@@ -1,5 +1,6 @@
 #include "exec.h"
 
+
 exec::exec(QWidget *parent): QWidget{parent}
 {
     machine_configGbx->setLayout(new QHBoxLayout());
@@ -51,17 +52,23 @@ exec::exec(QWidget *parent): QWidget{parent}
     Running_executables->layout()->addWidget(rexe_table);
     rexe_table->setMinimumHeight(220);
 
-    parse_exec_json();
-    update_exec();
+    connect(this,SIGNAL(em_signal()),this,SLOT(update_exec()));
+
+    update_executables_confg();
+    update_machine_confg();
+    update_running_executables();
+    update_fng_states();
+    update_sm_requests();
     setLayout(main_layout);
 }
 void exec::parse_exec_json()
 {
+    ifstream fi2( to_string(simulation::exe_name::exec));
 
-    ifstream file_input("/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/etc/executables_config.json");
+    if(fi2.peek() == std::ifstream::traits_type::eof())return;
     Json::Reader reader;
     Json::Value root;
-    reader.parse(file_input, root);
+    reader.parse(fi2, root);
 
     for(auto exe : root["executables_configurations"])
     {
@@ -110,6 +117,17 @@ void exec::parse_exec_json()
     {
        to_term.push_back(exe.asString());
     }
+    //----------------------------------------------
+    auto fng_States = root["function_group_states"].getMemberNames();
+
+    for(auto fn : fng_States)
+    {
+       fng_state[fn]=  root["function_group_states"][fn].asCString();
+    }
+    //------------------------------------------------
+    sm_request["fng"] = root["sm_request"]["fng"].asCString();
+    sm_request["fng_state"] = root["sm_request"]["fng_state"].asCString();
+
 }
 
 
@@ -138,16 +156,14 @@ void exec::update_machine_confg()
              QTreeWidgetItem* s =  new QTreeWidgetItem{};
              s->setText(1,QString::fromStdString(state));
              s->setFont(1,font);
-
              name->addChild(s);
         }
         name->setExpanded(true);
-
     }
-
 }
 void exec::update_executables_confg()
 {
+
     exec_tree->setColumnCount(3);
     exec_tree->setHeaderLabels(QStringList{"Executable","Configuration","states"});
     exec_tree->header()->setSectionResizeMode(QHeaderView::Stretch);
@@ -211,13 +227,14 @@ void exec::update_running_executables()
     rexe_table->setHorizontalHeaderLabels(QStringList{"Name","Current state","PID"});
     rexe_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     rexe_table->horizontalHeader()->setFont(font);
-
+    int i=0;
+    rexe_table->setRowCount(r_exe.size());
     for(auto exe : r_exe )
     {
-        rexe_table->setRowCount(rexe_table->rowCount()+1);
-        rexe_table->setItem(rexe_table->rowCount()-1,0, new QTableWidgetItem{QString::fromStdString(exe.name) });
-        rexe_table->setItem(rexe_table->rowCount()-1,1, new QTableWidgetItem{QString::fromStdString(exe.current_state) });
-        rexe_table->setItem(rexe_table->rowCount()-1,2, new QTableWidgetItem{QString::number(exe.pid) });
+        rexe_table->setItem(i,0, new QTableWidgetItem{QString::fromStdString(exe.name) });
+        rexe_table->setItem(i,1, new QTableWidgetItem{QString::fromStdString(exe.current_state) });
+        rexe_table->setItem(i,2, new QTableWidgetItem{QString::number(exe.pid) });
+        i++;
     }
 
 }
@@ -228,17 +245,26 @@ void exec::update_network_consle()
 void exec::update_fng_states()
 {
     QFont font;
-    font.setPointSize(11);
+    font.setPointSize(12);
     font.setBold(true);
 
     fng_states->setColumnCount(1);
     fng_states->setHorizontalHeaderItem(0,new QTableWidgetItem {QString::fromStdString("current state")});
 
-    fng_states->setRowCount(fng.size());
+    fng_states->setRowCount(fng_state.size());
     int i=0;
-    for(auto &fn: fng)
+
+    for(auto &fn: fng_state)
     {
-        fng_states->setVerticalHeaderItem(i,new QTableWidgetItem {QString::fromStdString(fn.first)});
+        QTableWidgetItem *f = new QTableWidgetItem {QString::fromStdString(fn.first)};
+        QTableWidgetItem *s = new QTableWidgetItem {QString::fromStdString(fn.second)};
+        f->setFont(font);
+        s->setFont(font);
+        f->setTextAlignment(Qt::AlignCenter);
+        s->setTextAlignment(Qt::AlignCenter);
+
+        fng_states->setVerticalHeaderItem(i,f);
+        fng_states->setItem(i-1,1,s);
         i++;
     }
     fng_states->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -249,25 +275,90 @@ void exec::update_fng_states()
 }
 void exec::update_sm_requests()
 {
+
     QFont font;
-    font.setPointSize(11);
+    font.setPointSize(12);
     font.setBold(true);
     sm1_list->setColumnCount(2);
+    if(sm_request.size()>0)
+    {
+        sm1_list->setRowCount(sm_request.size()-1);
+
+    }
+    else
+    {
+        sm1_list->setRowCount(0);
+
+    }
+
     sm1_list->setHorizontalHeaderItem(0,new QTableWidgetItem {QString::fromStdString("function group")});
     sm1_list->setHorizontalHeaderItem(1,new QTableWidgetItem {QString::fromStdString("new state")});
     sm1_list->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    font.setPointSize(11);
     sm1_list->horizontalHeader()->setFont(font);
+    sm1_list->setItem(0,0,new QTableWidgetItem {QString::fromStdString(sm_request["fng"])});
+    sm1_list->setItem(0,1,new QTableWidgetItem {QString::fromStdString(sm_request["fng_state"])});
 
     sm2_list->setHeaderLabels(QStringList{"Action","Executable"});
     sm2_list->header()->setSectionResizeMode(QHeaderView::Stretch);
     sm2_list->header()->setFont(font);
+    font.setPointSize(12);
+    QTreeWidgetItem* tr =  new QTreeWidgetItem{sm2_list};
+    QTreeWidgetItem* tt=  new QTreeWidgetItem{sm2_list};
+    if(to_run.size()>0||to_term.size()>0)
+    {
+        tr->setText(0 ,"to_run");
+        tt->setText(0 ,"to_terminate");
+        tr->setFont(0 ,font);
+        tt->setFont(0 ,font);
+    }
+
+    font.setBold(false);
+    for(auto &exe : to_run)
+    {
+         QTreeWidgetItem* s =  new QTreeWidgetItem{};
+         s->setText(1,QString::fromStdString(exe));
+         s->setFont(1 ,font);
+         tr->addChild(s);
+    }
+    for(auto &exe : to_term)
+    {
+         QTreeWidgetItem* s =  new QTreeWidgetItem{};
+         s->setText(1,QString::fromStdString(exe));
+         s->setFont(1 ,font);
+         tt->addChild(s);
+    }
+    tt->setExpanded(true);
+    tr->setExpanded(true);
 
 }
-void exec::update_exec()
+
+void exec::clear_widget()
 {
+    exes_conf.clear();
+    r_exe.clear();
+    to_run.clear();
+    to_term.clear();
+    exec_tree->clear();
+    machine_tree->clear();
+    sm1_list->clear();
+    sm2_list->clear();
+    rexe_table->clear();
+    fng_states->clear();
+    sm_request.clear();
+}
+void exec::update_exec( )
+{
+    clear_widget();
+    parse_exec_json();
     update_executables_confg();
     update_machine_confg();
     update_running_executables();
     update_fng_states();
     update_sm_requests();
+}
+
+void exec::em_handler()
+{
+    emit em_signal();
 }

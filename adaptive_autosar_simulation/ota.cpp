@@ -81,7 +81,7 @@ ota::ota(QWidget *parent)
 
 void ota::update_ota()
 {
-        std::ifstream file_input("file2.json"); //path to be updated
+        std::ifstream file_input(to_string(simulation::exe_name::ota)); //path to be updated
         Json::Reader reader;
         Json::Value root;
         reader.parse(file_input, root);

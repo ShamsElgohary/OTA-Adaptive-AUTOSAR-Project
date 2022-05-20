@@ -6,7 +6,7 @@
 #include "jsoncpp/header/json.h"
 #include <fstream>
 #include <iostream>
-
+#include "simulation.hpp"
 using namespace std;
 using namespace Json;
 
@@ -77,7 +77,7 @@ private:
 
      //Add lists to mid colume
 
-    string guiReportPath = "file2.json";
+    string guiReportPath = to_string(simulation::exe_name::ucm);
     QString activeLogPath = "/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/bin/ActionsLog.txt";
 
     //COM GridBox setup

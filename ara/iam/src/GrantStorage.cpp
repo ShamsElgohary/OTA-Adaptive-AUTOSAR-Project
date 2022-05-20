@@ -37,7 +37,6 @@ void ara::iam::GrantStorage::ParseJson(std::string filePath)
     R.parse(f, access);
     Json::Value tmp;
 
-    simulation sim(8089);
 
     if (!access)
     {
@@ -83,6 +82,7 @@ void ara::iam::GrantStorage::ParseJson(std::string filePath)
     json_file.close();
     if (SIMULATION_ACTIVE)
     {
+        simulation sim(8088);
         sim.connect_to_socket();
         char current_dir[256];
         getcwd(current_dir, 256);

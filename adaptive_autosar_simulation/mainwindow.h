@@ -10,7 +10,7 @@
 #include "sd.h"
 #include "QThread"
 #include "ota.h"
-
+#include "simulation.hpp"
 using namespace std;
 
 QT_BEGIN_NAMESPACE
@@ -25,8 +25,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void connect_fun();
-    void choose_handler();
+    void choose_handler(simulation::exe_name name);
+    void open_tab(simulation::exe_name name);
 
+    void create_server();
 private slots:
     void on_simulation_button_clicked();
     void on_ota_button_clicked();
@@ -51,8 +53,7 @@ private:
     QPushButton * ota_button =new QPushButton;
     QPushButton * ucm_button =new QPushButton;
     
-    simulation* s=nullptr;
-    QThread* socket_thread=nullptr;
+    simulation* s=new simulation(8088);
 
 };
 #endif // MAINWINDOW_H

@@ -48,7 +48,7 @@ sd::sd(QWidget *parent): QWidget{parent}
 void sd::update_sd()
 {
 
-    std::ifstream file_input("file2.json"); //path to be updated
+    std::ifstream file_input(to_string(simulation::exe_name::sd)); //path to be updated
     Json::Reader reader;
     Json::Value root;
     reader.parse(file_input, root);

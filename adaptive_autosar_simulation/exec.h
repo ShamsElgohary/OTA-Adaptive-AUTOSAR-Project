@@ -5,6 +5,8 @@
 #include <QtWidgets>
 #include "jsoncpp/header/json.h"
 #include <fstream>
+#include <iostream>
+#include "simulation.hpp"
 using namespace std;
 class exec : public QWidget
 {
@@ -12,15 +14,18 @@ class exec : public QWidget
 public:
     explicit exec(QWidget *parent = nullptr);
     void parse_exec_json();
-    void update_exec();
     void update_machine_confg();
     void update_executables_confg();
     void update_running_executables();
     void update_network_consle();
     void update_sm_requests();
     void update_fng_states();
-
+    void em_handler();
+    void clear_widget();
+public slots:
+    void update_exec();
 signals:
+    void em_signal();
 private:
     struct exe_configuartions
     {
@@ -58,10 +63,12 @@ private:
 
     vector<exe_configuartions> exes_conf;
     map<string,vector<string>> fng ;
+    map<string,string> fng_state ;
+
     vector<running_exec> r_exe;
     vector<string> to_run;
     vector<string> to_term;
-
+    map<string , string> sm_request;
 };
 
 #endif // EXEC_H

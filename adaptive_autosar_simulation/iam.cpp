@@ -43,7 +43,7 @@ IAM::IAM(QWidget *parent): QWidget{parent}
 void IAM::PARSEIAM()
 {
 
-    std::ifstream file_input("file2.json"); //path to be updated
+    std::ifstream file_input(to_string(simulation::exe_name::iam)); //path to be updated
     Json::Reader reader;
     Json::Value root;
     reader.parse(file_input, root);

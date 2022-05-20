@@ -21,10 +21,9 @@ namespace ara
             UpdateRequestImpl(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::skeleton::UpdateRequestSkeleton(I_id, mode)
             {
                 freopen("sm.txt", "w+", stdout); // write cout and printf to txt file
-                this->log = new sm_logger(8088);
                 FunctionGroupStates = {};
             }
-            sm_logger *log = nullptr;
+            sm_logger *log {new sm_logger(8088)};
             std::future<StartUpdateSessionOutput> StartUpdateSession();
             std::future<PrepareUpdateOutput> PrepareUpdate(FunctionGroupList FunctionGroups);
             std::future<VerifyUpdateOutput> VerifyUpdate(FunctionGroupList FunctionGroups);

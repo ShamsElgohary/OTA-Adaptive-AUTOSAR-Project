@@ -33,7 +33,6 @@ void ara::iam::AccessManager::RunEventLoop()
     t["info"]["Service_ID"] = Json::stringValue;
     t["info"]["Instance_ID"] = Json::stringValue;
 
-    simulation sim(8088);
 
     while (true)
     {
@@ -82,6 +81,7 @@ void ara::iam::AccessManager::RunEventLoop()
 
         if (SIMULATION_ACTIVE)
         {
+            simulation sim(8088);
             sim.connect_to_socket();
             char current_dir[256];
             getcwd(current_dir, 256);

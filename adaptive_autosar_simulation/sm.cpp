@@ -68,7 +68,7 @@ void sm::sm_handler()
 }
 void sm::update_sm()
 {
-        std::ifstream file_input("file2.json"); //path to be updated
+        std::ifstream file_input(to_string(simulation::exe_name::sm)); //path to be updated
         Json::Reader reader;
         Json::Value root;
         reader.parse(file_input, root);
