@@ -1,34 +1,20 @@
-Sm offering service
-sm Method name: 1, Method Type: Offer
-[SM Skeleton] handle: 1
 Starting Update Session
 [sm] setting new state from sm
+Sm offering service
 fn2 now is in state end
-sm Method name: StartUpdateSession, Method Type: Skeleton
-[SM Skeleton] handle: 2
+[+]Server socket created. 
+sm Method name: 1, Method Type: Offer
+return is 1
 Preparing Update
 [sm] setting new state from sm
 fn1 now is in state off
+[+]Server socket created. 
 [sm] setting new state from sm
 fn2 now is in state off
-sm Method name: PrepareUpdate, Method Type: Skeleton
-[SM Skeleton] handle: 3
+[+]Server socket created. 
+return is 1
 Verifying Update
 StartUpdateSession must be called before
-sm Method name: VerifyUpdate, Method Type: Skeleton
-[SM Skeleton] handle: 3
-Verifying Update
-StartUpdateSession must be called before
-sm Method name: VerifyUpdate, Method Type: Skeleton
-[SM Skeleton] handle: 3
-Verifying Update
-StartUpdateSession must be called before
-sm Method name: VerifyUpdate, Method Type: Skeleton
-[SM Skeleton] handle: 3
-Verifying Update
-StartUpdateSession must be called before
-sm Method name: VerifyUpdate, Method Type: Skeleton
-[SM Skeleton] handle: 3
-Verifying Update
-StartUpdateSession must be called before
-sm Method name: VerifyUpdate, Method Type: Skeleton
+[+]Server socket created. 
+return is 5
+Stop Updating Session

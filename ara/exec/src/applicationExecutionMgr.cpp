@@ -120,16 +120,16 @@ void ApplicationExecutionMgr::initialize()
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
-    if (SIMULATION_ACTIVE)
+    if (true)
     {
         reportConfig_simulation();
-        sleep(1);
+        sleep(100);
     }
 
     iam_future = IAM_handle();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
-    if (SIMULATION_ACTIVE)
+    if (true)
     {
         reportConfig_simulation();
         sleep(1);
@@ -139,7 +139,9 @@ void ApplicationExecutionMgr::initialize()
     transitionChanges_.toTerminate_.clear();
 }
 
-ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{rootPath} {}
+ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{rootPath} {
+        sim_socket.connect_to_socket();
+        sim_socket.send_exe_name(simulation::exe_name::exec);}
 
 bool ApplicationExecutionMgr::run()
 {
@@ -311,12 +313,11 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     output_file << root;
     output_file.close();
     //------------------------------------------------
-    if (SIMULATION_ACTIVE)
+    if (true)
     {
-        simulation sim_socket(8088);
-        sim_socket.connect_to_socket();
         sim_socket.send_file("../etc/executables_config.json");
     }
 
     locker.unlock();
 }
+

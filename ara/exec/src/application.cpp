@@ -53,7 +53,7 @@ future<void> Application::start()
         current_state = newstate;
         locker.unlock();
         condr.notify_all();
-        if(SIMULATION_ACTIVE)
+        if(true)
         {
             static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
         }
@@ -84,7 +84,7 @@ void Application::Update_status()
         read(fd, &newstate, sizeof(current_state));
         unique_lock<mutex>  locker(mur);
         current_state = newstate;
-        if(SIMULATION_ACTIVE)
+        if(true)
         {
             static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
         }        

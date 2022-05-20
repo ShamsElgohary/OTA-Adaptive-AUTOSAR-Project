@@ -26,31 +26,10 @@
 			"name" : "com_skeleton_test"
 		},
 		{
-			"depends" : {},
-			"function_group" : 
+			"depends" : 
 			{
-				"fn1" : 
-				[
-					"idle",
-					"play"
-				]
+				"someip_sd" : "Krunning"
 			},
-			"name" : "ex1"
-		},
-		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"fn2" : 
-				[
-					"idle",
-					"run"
-				]
-			},
-			"name" : "ex2"
-		},
-		{
-			"depends" : {},
 			"function_group" : 
 			{
 				"machineFG" : 
@@ -59,6 +38,17 @@
 				]
 			},
 			"name" : "iam"
+		},
+		{
+			"depends" : {},
+			"function_group" : 
+			{
+				"fn1" : 
+				[
+					"idle"
+				]
+			},
+			"name" : "ota"
 		},
 		{
 			"depends" : {},
@@ -82,6 +72,20 @@
 				]
 			},
 			"name" : "someip_sd"
+		},
+		{
+			"depends" : 
+			{
+				"iam" : "Krunning"
+			},
+			"function_group" : 
+			{
+				"machineFG" : 
+				[
+					"running"
+				]
+			},
+			"name" : "ucm"
 		}
 	],
 	"function_group_states" : 
@@ -132,14 +136,7 @@
 			]
 		}
 	},
-	"running_executables" : 
-	[
-		{
-			"current_state" : "Krunning",
-			"name" : "sm",
-			"pid" : 110287
-		}
-	],
+	"running_executables" : [],
 	"sm_request" : 
 	{
 		"fng" : "",

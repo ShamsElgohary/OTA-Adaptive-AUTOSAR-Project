@@ -41,7 +41,7 @@ void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states
  reset();
  
  /*connect to server*/
- if (SIMULATION_ACTIVE)
+ if (true)
  {
     this->sim->connect_to_socket();
     char current_dir[256];

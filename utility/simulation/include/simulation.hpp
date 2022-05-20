@@ -19,17 +19,16 @@ private:
     int e;
     int sockfd_s;
     int sockfd_c;
-    int new_sock;
-    std::mutex mtx;
 
 public:
+    typedef enum {exec,sm,iam,ucm,ota,sd} exe_name;
     simulation(int port);
     void creat_socket();
     void connect_to_socket();
     void send_file(char *file_path);
-    void recive_file(int client_socket, std::function<void()> handler);
-    void listen_l(std::function<void()> handler);
+    void send_exe_name(simulation::exe_name name);
+    exe_name recive_exe_name(int client_socket);
+    char* recive_file(int client_socket);
+    int listen_l();
     ~simulation();
 };
-
-void ClearJSONReport();
