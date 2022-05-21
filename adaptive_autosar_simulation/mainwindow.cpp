@@ -140,5 +140,6 @@ void MainWindow::on_ucm_button_clicked()
 }
 MainWindow::~MainWindow()
 {
+    system("pkill -f adaptive_autosar_simulation");
     delete ui;
 }
