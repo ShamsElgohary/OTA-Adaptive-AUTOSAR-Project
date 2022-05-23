@@ -36,7 +36,7 @@ ucm::ucm(QWidget *parent)
     log->setMaximumWidth(450);
     newSwPkg->setMaximumHeight(170);
     status->setMaximumHeight(80);
-    activate->setMaximumHeight(160);
+    activate->setMaximumHeight(170);
     transferRate->setMaximumHeight(80);
 
     //New SW PKG Details Implimentaion
@@ -100,9 +100,9 @@ ucm::ucm(QWidget *parent)
 
     //activate Table Implimentaion
 
-    activateTable->setRowCount(3);
+    activateTable->setRowCount(4);
     activateTable->setColumnCount(1);
-    activateTableXLabels<<"Start Update Session"<<"Prepare Update"<<"Verify Update";
+    activateTableXLabels<<"Start Update Session"<<"Prepare Update"<<"Verify Update"<<"Stop Update Session";
     activateTable->setVerticalHeaderLabels(activateTableXLabels);
     activateTable->horizontalHeader()->setVisible(0);
     activateTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
