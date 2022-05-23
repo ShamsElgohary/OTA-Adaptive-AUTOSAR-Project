@@ -91,7 +91,7 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
     bool success;
     std::promise<UpdateRequestSkeleton::VerifyUpdateOutput> promise;
     UpdateRequestSkeleton::VerifyUpdateOutput out;
-    if (this->FunctionGroupStates["machineFG"] == "Updating")
+    if (this->FunctionGroupStates["fn2"] == "end")
     {
         for (auto fg : FunctionGroups)
         {
