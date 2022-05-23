@@ -15,6 +15,7 @@
 		},
 		"PKGDetails" : 
 		{
+			"PackageStatus" : "",
 			"Action" : "Install",
 			"Clusters" : 
 			{

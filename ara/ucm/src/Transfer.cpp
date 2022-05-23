@@ -3,6 +3,8 @@
 
 using namespace ara::ucm;
 
+ara::log guiLogger;
+
 namespace ara::ucm::transfer
 {
 
@@ -49,6 +51,9 @@ namespace ara::ucm::transfer
 
         StartTransferOutput.BlockSize = NewPackagePtr->TransferInfo.GetBlockSize();
         StartTransferOutput.TransferStartResult = OperationResultType::kSuccess;
+
+        // JSON (GUI SIMULATION)
+        guiLogger.pkgAction("kTransferring",1);
 
         return StartTransferOutput;
     }
@@ -105,8 +110,6 @@ namespace ara::ucm::transfer
         SwPkg->UpdateFinishRate();
         
         // GUI SIMULATION
-        ara::log guiLogger;
-        std::cout<<SwPkg->GetFinishRate();
         guiLogger.ReportJsonGUI( "TransferFinishRate" , SwPkg->GetFinishRate()*100);
         // DELAY TO SHOW RATE?
 
@@ -135,6 +138,9 @@ namespace ara::ucm::transfer
         // 4- Manifest checking
 
         SwPkg->SetPackageState(SwPackageStateType::kTransferred);
+
+        // JSON (GUI SIMULATION)
+        guiLogger.pkgAction("kTransferred",1);
 
         return ara::ucm::OperationResultType::kSuccess;
     }

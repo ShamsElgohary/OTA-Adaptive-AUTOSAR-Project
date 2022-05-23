@@ -297,6 +297,9 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
     /* CHANGE STATE TO KPROCESSING */
     ptrToSwPkg->SetPackageState(SwPackageStateType::kProcessing);
 
+    // JSON (GUI SIMULATION)
+    guiLogger.pkgAction("kProcessing",1);
+
     /* GET PACKAGE */
     std::string SWPackagePath{ptrToSwPkg->GetPackagePath()};
 
@@ -323,6 +326,9 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
 
     /* CHANGE STATE TO KPROCESSING */
     ptrToSwPkg->SetPackageState(SwPackageStateType::kProcessed);
+
+    // JSON (GUI SIMULATION)
+    guiLogger.pkgAction("kProcessed",1);
 
     ara::ucm::SynchronizedStorage::DeleteItem(id);
 

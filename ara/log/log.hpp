@@ -62,7 +62,7 @@ namespace ara
             }
         }
 
-        void pkgAction(string actiontype)
+        void pkgAction(string actiontype, bool pkgStatus = 0)
         {
             // Read JSON File
             Json::Value event;
@@ -70,7 +70,12 @@ namespace ara
             Json::Reader R;
             R.parse(inputFile, event);
 
-            event["ucm_json"]["PKGDetails"]["Action"] = Json::Value(actiontype);
+            if(pkgStatus)
+                event["ucm_json"]["PKGDetails"]["PackageStatus"] = Json::Value(actiontype);
+
+            else
+                event["ucm_json"]["PKGDetails"]["Action"] = Json::Value(actiontype);
+            
 
             std::ofstream json_file("Gui.json");
             json_file << event;
