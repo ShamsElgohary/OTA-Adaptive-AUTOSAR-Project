@@ -106,14 +106,12 @@ void simulation::connect_to_socket()
 
 void simulation::send_file(char *file_path)
 {
-    ifstream fp;
+   ifstream fp;
     fp.open(file_path);
     string data;
     int size =0;
-    while (!fp.eof())
+    while (getline(fp,data))
     {
-        data="";
-        fp >> data;
         data+="\0";
         size =data.size()+1;
         send(sockfd_c, &size, sizeof(int), 0);
