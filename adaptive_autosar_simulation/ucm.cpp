@@ -221,7 +221,7 @@ void ucm::readActivateNewCluster()
     R.parse(inputFile, event);
 
     QString action = QString::fromStdString((event["ucm_json"]["PKGDetails"]["Action"]).asString());
-    QString pkgStatus = QString::fromStdString("will be added");
+    QString pkgStatus = QString::fromStdString((event["ucm_json"]["PKGDetails"]["PackageStatus"]).asString());
     QString ClusterName = QString::fromStdString((event["ucm_json"]["PKGDetails"]["Clusters"]["sw1"]["name"]).asString());
     QString Version = QString::fromStdString((event["ucm_json"]["PKGDetails"]["Clusters"]["sw1"]["version"]).asString());
     detailsTable->setItem(0,0,new QTableWidgetItem(QString(action)));

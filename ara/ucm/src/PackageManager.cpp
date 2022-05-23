@@ -21,6 +21,7 @@ namespace ara::ucm::pkgmgr
 
         promise.set_value(StartReturn);
 
+        logger.ClearActionsLog();
         logger.ActionsLog("[TransferStart] \t\t Result : ", static_cast<unsigned char>(StartReturn.TransferStartResult));
         logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
 

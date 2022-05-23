@@ -22,6 +22,19 @@ namespace ara
             ReportError << Error << '\n';
         }
 
+        void ClearActionsLog()
+        {
+            try
+            {
+                ofstream ReportAction("ActionsLog.txt", std::ofstream::out | std::ofstream::trunc);
+                ReportAction.close();
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << e.what() << '\n';
+            }
+        }
+
         /* REPORTS ALL ACTIONS THAT OCCURED*/
         void ActionsLog(string Action, uint8_t Result)
         {
@@ -47,6 +60,7 @@ namespace ara
                 std::ofstream json_file("GUI_Report.json");
                 json_file << event;
                 json_file.close();
+                
             }
             catch (const std::exception &e)
             {
