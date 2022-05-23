@@ -38,13 +38,13 @@ namespace ara
 
                 // Read JSON File
                 Json::Value event;
-                ifstream inputFile("Gui.json");
+                ifstream inputFile("GUI_Report.json");
                 Json::Reader R;
                 R.parse(inputFile, event);
 
                 event["ucm_json"]["PackageManager"][method] = Json::Value(OperationResult[Result]);
 
-                std::ofstream json_file("Gui.json");
+                std::ofstream json_file("GUI_Report.json");
                 json_file << event;
                 json_file.close();
             }
@@ -55,7 +55,7 @@ namespace ara
 
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
@@ -66,7 +66,7 @@ namespace ara
         {
             // Read JSON File
             Json::Value event;
-            ifstream inputFile("Gui.json");
+            ifstream inputFile("GUI_Report.json");
             Json::Reader R;
             R.parse(inputFile, event);
 
@@ -77,13 +77,13 @@ namespace ara
                 event["ucm_json"]["PKGDetails"]["Action"] = Json::Value(actiontype);
             
 
-            std::ofstream json_file("Gui.json");
+            std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
 
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
@@ -94,20 +94,20 @@ namespace ara
         {
             // Read JSON File
             Json::Value event;
-            ifstream inputFile("Gui.json");
+            ifstream inputFile("GUI_Report.json");
             Json::Reader R;
             R.parse(inputFile, event);
 
             event["ucm_json"]["PKGDetails"]["Clusters"]["sw1"]["name"] = name;
             event["ucm_json"]["PKGDetails"]["Clusters"]["sw1"]["version"] = version;
 
-            std::ofstream json_file("Gui.json");
+            std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
 
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
@@ -118,19 +118,19 @@ namespace ara
         {
             // Read JSON File
             Json::Value event;
-            ifstream inputFile("Gui.json");
+            ifstream inputFile("GUI_Report.json");
             Json::Reader R;
             R.parse(inputFile, event);
 
             event["ucm_json"]["GUI"]["PackageManagerStatus"] = Json::Value(CurrentStatusTypes[statusId]);
 
-            std::ofstream json_file("Gui.json");
+            std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
 
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
@@ -143,7 +143,7 @@ namespace ara
 
             // Read JSON File
             Json::Value event;
-            ifstream inputFile("Gui.json");
+            ifstream inputFile("GUI_Report.json");
             Json::Reader R;
             R.parse(inputFile, event);
 
@@ -156,12 +156,12 @@ namespace ara
                 event["ucm_json"]["GUI"]["Activate"][section] = Json::Value(value);
             }
 
-            std::ofstream json_file("Gui.json");
+            std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
@@ -172,7 +172,7 @@ namespace ara
         {
             // Read JSON File
             Json::Value event;
-            ifstream inputFile("Gui.json");
+            ifstream inputFile("GUI_Report.json");
             Json::Reader R;
             R.parse(inputFile, event);
 
@@ -187,12 +187,12 @@ namespace ara
                 clusterNumb++;
             }
 
-            std::ofstream json_file("Gui.json");
+            std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/Gui.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
