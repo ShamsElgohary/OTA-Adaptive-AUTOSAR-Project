@@ -83,20 +83,6 @@ namespace ara
                     friend class boost::serialization::access;
                 };
 
-                /** StopUpdateSession **/
-                struct StopUpdateSessionOutput
-                {
-                    uint8_t AppError;
-
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &AppError;
-                    }
-                    friend class boost::serialization::access;
-                };
-
             virtual std::future<StartUpdateSessionOutput> StartUpdateSession() = 0;
             virtual std::future<PrepareUpdateOutput> PrepareUpdate(FunctionGroupList FunctionGroups) = 0;
             virtual std::future<VerifyUpdateOutput> VerifyUpdate(FunctionGroupList FunctionGroups) = 0;
@@ -118,7 +104,6 @@ namespace ara
                     std::future<PrepareUpdateOutput> prepareUpdateOutput;
                     VerifyUpdateInput verifyUpdateInput;
                     std::future<VerifyUpdateOutput> verifyUpdateOutput;
-                    std::future<StopUpdateSessionOutput> stopUpdateSessionOutput;
                     cout << "[SM Skeleton] handle: " << methodID << endl;
                     switch (methodID)
                     {
@@ -156,9 +141,6 @@ namespace ara
                         methodName = "StopUpdateSession";
                         /*fire and forget function*/
                         StopUpdateSession();
-                        //stopUpdateSessionOutput = StopUpdateSession();
-                        //S.serialize(result, stopUpdateSessionOutput);
-                        this->ptr2bindingProtocol->SendRequest(4, result);
                         break;
                     }
                     }

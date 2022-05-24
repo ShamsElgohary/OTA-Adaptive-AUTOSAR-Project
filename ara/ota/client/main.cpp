@@ -333,11 +333,10 @@ int main()
 
     // ClearJSONReport();
     x.run();
-    // if (SIMULATION_ACTIVE)
-    // {
-
-    s.send_file("ota_Report.json");
-    // }
+    if (SIMULATION_ACTIVE)
+    {
+        s.send_file("ota_Report.json");
+    }
     while (1)
     {
     }

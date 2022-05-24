@@ -90,20 +90,6 @@ namespace ara
                     friend class boost::serialization::access;
                 };
 
-                /** StopUpdateSession **/
-                struct StopUpdateSessionOutput
-                {
-                    SM_ApplicationError AppError;
-
-                private:
-                    template <typename Archive>
-                    void serialize(Archive &ar, const unsigned int version)
-                    {
-                        ar &AppError;
-                    }
-                    friend class boost::serialization::access;
-                };
-
                 namespace methods
                 {
                     class StartUpdateSession : public ara::com::proxy::method::MethodBase
@@ -155,8 +141,7 @@ namespace ara
                         void operator()()
                         {
                             // fire and forget
-                            StopUpdateSessionOutput out;
-                            process_method_call<StopUpdateSessionOutput>(out);
+                            process_method_call();
                             ara::com::AddMethodCall(4, "StopUpdateSession", ara::com::MethodType::Proxy_Method, 1, Cluster_Name);
                         }
                     };

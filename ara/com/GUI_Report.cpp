@@ -14,7 +14,7 @@ namespace ara
 
             // Read JSON File
             Json::Value event;
-            string file_name = "GUI_Report.json";
+            string file_name = Cluster_Name + "_Report.json";
             string cluster_name = Cluster_Name;
             ifstream f(file_name);
             Json::Reader R;
@@ -46,13 +46,6 @@ namespace ara
             std::ofstream json_file(file_name);
             json_file << event;
             json_file.close();
-            if (SIMULATION_ACTIVE)
-            {
-                // Report
-                // simulation s(8080);
-                // s.connect_to_socket();
-                // s.send_file(file_name);
-            }
         }
 
         void AddServiceDiscoveryRequest(uint16_t ServiceID, uint16_t InstanceID, ServiceDiscoveryMethodType Type, bool GrantResult, string Cluster_Name)
@@ -75,7 +68,7 @@ namespace ara
 
             // Read JSON File
             Json::Value event;
-            string file_name = "GUI_Report.json";
+            string file_name = Cluster_Name + "_Report.json";
             string cluster_name = Cluster_Name;
             ifstream f(file_name);
             Json::Reader R;
@@ -101,14 +94,6 @@ namespace ara
             std::ofstream json_file(file_name);
             json_file << event;
             json_file.close();
-
-            if (SIMULATION_ACTIVE)
-            {
-                // Report
-                // simulation s(8080);
-                // s.connect_to_socket();
-                // s.send_file(file_name);
-            }
         }
     }
 }

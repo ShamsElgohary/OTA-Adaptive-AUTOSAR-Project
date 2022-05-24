@@ -25,9 +25,15 @@ std::cout<<"sm logger connected to gui\n";
 void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states)
 {
  /*create updated json file*/
+// Read JSON File
+Json::Value event;
+string file_name = "sm_Report.json";
+ifstream f(file_name);
+Json::Reader R;
+R.parse(f, event);
 
- Json::Value sm_json;
- sm_json["Cluster_name"]="sm_json";
+ Json::Value sm_json = event;
+ sm_json["Cluster_name"]="sm";
  
  sm_json["sm_json"]["UpdateRequest"]["StartUpdateSession"]=Json::Value(functions.sm_StartUpdateSession);
  sm_json["sm_json"]["UpdateRequest"]["PrepareUpdate"]=Json::Value(functions.sm_PrepareUpdate);
@@ -38,7 +44,7 @@ void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states
  for(auto x :fg_states)
  sm_json["sm_json"]["function_group_states"][x.first]=x.second;
  
- std::ofstream json_file("sm.json");
+ std::ofstream json_file("sm_Report.json");
  json_file<<sm_json;
  json_file.close();
  reset();
@@ -49,7 +55,7 @@ void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states
     char current_dir[256];
     getcwd(current_dir,256);
     std::string path(current_dir);
-    path+="/sm.json";
+    path+="/sm_Report.json";
     this->sim->send_file((char *)(path.c_str()));
  }
  

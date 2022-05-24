@@ -46,6 +46,12 @@ namespace ara
                         D.deserialize(out_ss, out);
                         this -> Delegate ->CloseConnection();
                     }
+                    void process_method_call()
+                    {
+                        stringstream payload;
+                        usleep(8000);
+                        this->Delegate->SendRequest(this->ID, payload);
+                    }
                 };
             }
         }
