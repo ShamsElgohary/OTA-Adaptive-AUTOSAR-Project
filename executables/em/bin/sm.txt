@@ -1,2 +1,0 @@
-Sm offering service
-sm Method name: 1, Method Type: Offer

@@ -18,7 +18,7 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
         if (key != "Process List Version")
         {
             string x = v[key]["Path"].asString();
-            path y(rootPath + "/executables" + x);
+            path y(rootPath + "executables" + x);
             p.push_back(y);
         }
     }

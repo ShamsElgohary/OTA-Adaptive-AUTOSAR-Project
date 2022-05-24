@@ -43,8 +43,11 @@ future<void> Application::start()
         this->id = fork();
         if (this->id == 0)
         {
+            cout<<"path "<<executable_path<<endl;
+            //chdir(executable_path.c_str());
             dup2(fd, 0);
-            execl(executable_path.c_str(), nullptr);
+            string path = executable_path+name;
+            execl(path.c_str(), nullptr);
         }
         locker.unlock();
         ExecutionState newstate = ExecutionState::Kidle;
@@ -100,7 +103,7 @@ Application::Application(ApplicationManifest::startUpConfiguration con, string n
 {
     configuration_ = con;
     this->name = name;
-    executable_path = path + "/" + name;
+    executable_path = path ;
     current_state = ExecutionState::Kidle;
 }
 
