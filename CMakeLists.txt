@@ -39,14 +39,14 @@ target_include_directories(execution_lib PUBLIC  ${exec_source_dir}/include)
 
 ###############################EX1###############################
 
-set(source_excutables_ex1_dir "${CMAKE_SOURCE_DIR}/executables/ex1/bin")
+set(source_excutables_ex1_dir "${CMAKE_SOURCE_DIR}/executables/ex1/0.1/bin")
 add_executable(ex1 ${source_excutables_ex1_dir}/ex1.cpp) 
 target_link_libraries( ex1 execution_lib )
 install(TARGETS ex1 RUNTIME DESTINATION ${source_excutables_ex1_dir})
 
 ###############################EX2###############################
 
-set(source_excutables_ex2_dir  "${CMAKE_SOURCE_DIR}/executables/ex2/bin")
+set(source_excutables_ex2_dir  "${CMAKE_SOURCE_DIR}/executables/ex2/0.1/bin")
 add_executable(ex2 ${source_excutables_ex2_dir}/ex2.cpp) 
 target_link_libraries( ex2 execution_lib )
 install(TARGETS ex2 RUNTIME DESTINATION ${source_excutables_ex2_dir})
@@ -54,7 +54,7 @@ install(TARGETS ex2 RUNTIME DESTINATION ${source_excutables_ex2_dir})
 
 ################################IAM#############################
 
-set(iam_install_dir "${CMAKE_SOURCE_DIR}/executables/iam/bin")
+set(iam_install_dir "${CMAKE_SOURCE_DIR}/executables/iam/0.1/bin")
 set(iam_source_dir "${CMAKE_SOURCE_DIR}/ara/iam")
 file(GLOB_RECURSE IAM_SRC_FILES ${iam_source_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
 file(GLOB_RECURSE IAM_SRC_LIB_FILES ${iam_source_dir}/lib/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
@@ -100,7 +100,7 @@ target_include_directories(
         
 ################################SomeIP_SD##########################
 
-set(someIp_SD_install_dir "${CMAKE_SOURCE_DIR}/executables/someip_sd/bin")
+set(someIp_SD_install_dir "${CMAKE_SOURCE_DIR}/executables/someip_sd/0.1/bin")
 set(COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES "${com_source_dir}/network_binding/SomeIp/servicediscovery/src")
 
 add_executable(someip_sd ${COM_serviceDiscovery_SRC_FILES} ${COM_SERVICE_DiSCOVERY_MAIN_SRC_FILES}/sd-main.cpp)
@@ -111,7 +111,7 @@ install(TARGETS someip_sd RUNTIME DESTINATION ${someIp_SD_install_dir})
 ###############################UCM#############################
 
 set(UCM_FILES "${CMAKE_SOURCE_DIR}/ara/ucm/")
-set(ucm_install_dir "${CMAKE_SOURCE_DIR}/executables/ucm/bin")
+set(ucm_install_dir "${CMAKE_SOURCE_DIR}/executables/ucm/0.1/bin")
 
 file(GLOB_RECURSE UCM_SRC_FILES ${UCM_FILES}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
 add_executable(ucm ${UCM_SRC_FILES}) 
@@ -122,7 +122,7 @@ install(TARGETS ucm RUNTIME DESTINATION ${ucm_install_dir})
 
 ###############################SM###############################
 
-set(source_excutables_sm_dir "${CMAKE_SOURCE_DIR}/executables/sm/bin")
+set(source_excutables_sm_dir "${CMAKE_SOURCE_DIR}/executables/sm/0.1/bin")
 set(source_excutables_sm_dir_1 "${CMAKE_SOURCE_DIR}/ara/sm")
 set(source_simulation_dir "${CMAKE_SOURCE_DIR}/utility/simulation/src")
 add_executable(sm ${source_excutables_sm_dir_1}/main.cpp ${source_excutables_sm_dir_1}/SM.cpp ${source_excutables_sm_dir_1}/sm_logger.cpp ${source_simulation_dir}/simulation.cpp) 
@@ -134,14 +134,14 @@ install(TARGETS sm RUNTIME DESTINATION ${source_excutables_sm_dir})
 ################################COM_test##########################
 
 set(test_server_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Server")
-set(test_server_install_dir "${CMAKE_SOURCE_DIR}/executables/com_skeleton_test/bin")
+set(test_server_install_dir "${CMAKE_SOURCE_DIR}/executables/com_skeleton_test/0.1/bin")
 add_executable(com_skeleton_test ${test_server_source_dir}/main.cpp ) 
 target_link_libraries(com_skeleton_test com_lib iam_lib execution_lib)
 target_include_directories( com_skeleton_test PUBLIC ${test_server_source_dir} )
 install(TARGETS com_skeleton_test RUNTIME DESTINATION ${test_server_install_dir})
 
 set(test_client_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Client")
-set(test_client_install_dir "${CMAKE_SOURCE_DIR}/executables/com_proxy_test/bin")
+set(test_client_install_dir "${CMAKE_SOURCE_DIR}/executables/com_proxy_test/0.1/bin")
 add_executable(com_proxy_test ${test_client_source_dir}/main.cpp) 
 target_include_directories( com_proxy_test PUBLIC ${test_client_source_dir})
 target_link_libraries(com_proxy_test com_lib iam_lib execution_lib)
@@ -161,7 +161,7 @@ install(TARGETS com_proxy_test RUNTIME DESTINATION ${test_client_install_dir})
 ######################### ota ##########################
 
 set(ota_source_dir "${CMAKE_SOURCE_DIR}/ara/ota/client")
-set(ota_install_dir "${CMAKE_SOURCE_DIR}/executables/ota/bin")
+set(ota_install_dir "${CMAKE_SOURCE_DIR}/executables/ota/0.1/bin")
 add_executable(ota ${ota_source_dir}/main.cpp ) 
 target_link_libraries(ota com_lib iam_lib execution_lib cpr )
 install(TARGETS ota RUNTIME DESTINATION ${ota_install_dir})

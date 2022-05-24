@@ -86,6 +86,7 @@
         "barrier": "cpp",
         "latch": "cpp",
         "semaphore": "cpp",
-        "syncstream": "cpp"
+        "syncstream": "cpp",
+        "*.ipp": "cpp"
     }
 }

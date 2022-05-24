@@ -1,0 +1,20 @@
+{
+	"ap_service_instances":
+		{
+			"required_ap_service_instances": [
+				{
+					"service_id": 1,
+					"type": "SOME/IP",
+					"instance_id": 1
+				},
+				{
+					"service_id": 2,
+					"type": "SOME/IP",
+					"instance_id": 1
+				}
+			],
+			"provided_ap_service_instances": [
+				
+			]
+		}
+}
