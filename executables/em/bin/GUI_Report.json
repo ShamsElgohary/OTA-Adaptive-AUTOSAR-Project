@@ -1,133 +1,12 @@
 {
-	"Cluster_name" : "ota",
-	"ECU_Packages" : 
-	{
-		"Package1" : 
-		{
-			"Name" : "ex1",
-			"Version" : "0.1"
-		},
-		"Package2" : 
-		{
-			"Name" : "ex2",
-			"Version" : "0.1"
-		},
-		"Package3" : 
-		{
-			"Name" : "iam",
-			"Version" : "0.1"
-		},
-		"Package4" : 
-		{
-			"Name" : "ota",
-			"Version" : "0.1"
-		},
-		"Package5" : 
-		{
-			"Name" : "sm",
-			"Version" : "0.1"
-		},
-		"Package6" : 
-		{
-			"Name" : "someip_sd",
-			"Version" : "0.1"
-		},
-		"Package7" : 
-		{
-			"Name" : "ucm",
-			"Version" : "0.1"
-		}
-	},
-	"ECU_packages_counter" : 7,
-	"Packges_2b_downloader_counter" : 1,
-	"Server_packages_counter" : 1,
+	"Cluster_name" : "ucm",
 	"com_json" : 
 	{
 		"Proxy_Required_Method" : 
 		[
 			{
-				"Method_ID" : 7,
-				"Method_Name" : "GetSwClusterInfo",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 1,
-				"Method_Name" : "TransferStart",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
 				"Method_ID" : 3,
-				"Method_Name" : "TransferExit",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 5,
-				"Method_Name" : "ProcessSwPackage",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 1,
-				"Method_Name" : "StartUpdateSession",
-				"Service_ID" : 1
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "PrepareUpdate",
+				"Method_Name" : "VerifyUpdate",
 				"Service_ID" : 1
 			},
 			{
@@ -136,13 +15,28 @@
 				"Service_ID" : 1
 			},
 			{
-				"Method_ID" : 6,
-				"Method_Name" : "Activate",
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 10,
+				"Method_Name" : "Finish",
 				"Service_ID" : 2
 			},
 			{
-				"Method_ID" : 7,
-				"Method_Name" : "GetSwClusterInfo",
+				"Method_ID" : 1,
+				"Method_Name" : "TransferStart",
 				"Service_ID" : 2
 			},
 			{
@@ -219,71 +113,6 @@
 				"Method_ID" : 1,
 				"Method_Name" : "StartUpdateSession",
 				"Service_ID" : 1
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "PrepareUpdate",
-				"Service_ID" : 1
-			},
-			{
-				"Method_ID" : 6,
-				"Method_Name" : "Activate",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 7,
-				"Method_Name" : "GetSwClusterInfo",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 1,
-				"Method_Name" : "TransferStart",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 5,
-				"Method_Name" : "ProcessSwPackage",
-				"Service_ID" : 2
 			},
 			{
 				"Method_ID" : 2,
@@ -326,137 +155,19 @@
 				"Instance_ID" : 1,
 				"Service_ID" : 1,
 				"Type" : "Find"
-			},
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 2,
-				"Type" : "Offer"
-			},
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 1,
-				"Type" : "Offer"
-			},
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 2,
-				"Type" : "Find"
-			},
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 1,
-				"Type" : "Find"
-			},
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 2,
-				"Type" : "Offer"
-			},
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 1,
-				"Type" : "Offer"
-			},
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 2,
-				"Type" : "Find"
-			},
-			{
-				"Grant_Result" : true,
-				"Instance_ID" : 1,
-				"Service_ID" : 1,
-				"Type" : "Find"
 			}
 		],
 		"Skeleton_Provided_Method" : 
 		[
 			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 6,
-				"Method_Name" : "Activate",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 4,
-				"Method_Name" : "StopUpdateSession",
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
 				"Service_ID" : 1
 			},
 			{
-				"Method_ID" : 1,
-				"Method_Name" : "TransferStart",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 2,
-				"Method_Name" : "TransferData",
-				"Service_ID" : 2
-			},
-			{
-				"Method_ID" : 5,
-				"Method_Name" : "ProcessSwPackage",
-				"Service_ID" : 2
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
 			},
 			{
 				"Method_ID" : 3,
@@ -469,9 +180,24 @@
 				"Service_ID" : 2
 			},
 			{
-				"Method_ID" : 4,
-				"Method_Name" : "StopUpdateSession",
-				"Service_ID" : 1
+				"Method_ID" : 10,
+				"Method_Name" : "Finish",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 7,
+				"Method_Name" : "GetSwClusterInfo",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
 			},
 			{
 				"Method_ID" : 2,
@@ -490,11 +216,32 @@
 			},
 			{
 				"Method_ID" : 2,
-				"Method_Name" : null
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
 			},
 			{
 				"Method_ID" : 3,
 				"Method_Name" : "TransferExit",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 5,
+				"Method_Name" : "ProcessSwPackage",
 				"Service_ID" : 2
 			},
 			{
@@ -503,14 +250,9 @@
 				"Service_ID" : 1
 			},
 			{
-				"Method_ID" : 2,
-				"Method_Name" : "PrepareUpdate",
-				"Service_ID" : 1
-			},
-			{
-				"Method_ID" : 4,
-				"Method_Name" : "StopUpdateSession",
-				"Service_ID" : 1
+				"Method_ID" : 6,
+				"Method_Name" : "Activate",
+				"Service_ID" : 2
 			}
 		]
 	},
@@ -525,7 +267,8 @@
 				"VerifyUpdate" : "Verified"
 			},
 			"PackageManagerStatus" : "kActivated",
-			"ProcessedActionType" : "Install"
+			"ProcessedActionType" : "Install",
+			"TransferFinishRate" : 100.0
 		},
 		"PKGDetails" : 
 		{
@@ -543,7 +286,12 @@
 		"PackageManager" : 
 		{
 			"Activate" : "kSuccess",
-			"ProcessSwPackage" : "kSuccess"
+			"Finish" : "kOperationNotPermitted",
+			"GetSwClusterInfo" : "kSuccess",
+			"ProcessSwPackage" : "kSuccess",
+			"TransferData" : "kSuccess",
+			"TransferExit" : "kSuccess",
+			"TransferStart" : "kSuccess"
 		},
 		"PresentClusters" : 
 		{

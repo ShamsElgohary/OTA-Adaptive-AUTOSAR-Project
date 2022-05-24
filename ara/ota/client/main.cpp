@@ -247,6 +247,7 @@ public:
 
             string pckg = y.Name + y.Version;
             download(pckg);
+            usleep(2000000);
             this->Transfer2UCM(pckg);
         }
     }
@@ -260,7 +261,7 @@ public:
     void sim_json()
     {
 
-        std::ofstream json_file("GUI_Report.json");
+        std::ofstream json_file("ota_Report.json");
         Json::Value event;
         event["Cluster_name"] = "ota";
         event["Server_packages_counter"] = trail.size();
@@ -302,6 +303,7 @@ public:
         parse_meta_data();
         cout << "ota 2" << endl;
         Get_UCM_Clusters();
+        usleep(2000000);
         cout << "ota 3" << endl;
         Compare();
         cout << "ota 4" << endl;
@@ -322,19 +324,22 @@ int main()
     sa.sa_handler = handle_sigTerm;
     sigaction(SIGTERM, &sa, NULL);
     sleep(2);
+    simulation s(8088);
+    s.connect_to_socket();
+    s.send_exe_name(simulation::exe_name::ota);
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
     CLIENT_OTA x;
 
     // ClearJSONReport();
     x.run();
-    if (SIMULATION_ACTIVE)
-    {
-        simulation s(8088);
-        s.connect_to_socket();
-        s.send_file("../../../executables/ota/0.1/bin/GUI_Report.json");
-    }
-    // usleep(8000000);
+    // if (SIMULATION_ACTIVE)
+    // {
 
+    s.send_file("ota_Report.json");
+    // }
+    while (1)
+    {
+    }
     return 0;
 }

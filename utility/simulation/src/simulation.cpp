@@ -44,7 +44,6 @@ int simulation::listen_l()
 {
     struct sockaddr_in new_addr;
     socklen_t addr_size;
-
     e = listen(sockfd_s, 10);
     if (e == 0)
     {
@@ -61,19 +60,19 @@ int simulation::listen_l()
 }
 simulation::exe_name simulation::recive_exe_name(int client_socket)
 {
-    exe_name name ;
-    recv(client_socket, &name, sizeof(int),0);
+    exe_name name;
+    recv(client_socket, &name, sizeof(int), 0);
     return name;
 }
 void simulation::send_exe_name(simulation::exe_name name)
 {
     send(sockfd_c, &name, sizeof(int), 0);
 }
-char* simulation::recive_file(int client_socket)
+char *simulation::recive_file(int client_socket)
 {
     char *buffer = new char[SIZE];
-    recv(client_socket, buffer, SIZE,0);
-    std::cout<<"file recieved "<<std::endl;
+    recv(client_socket, buffer, SIZE, 0);
+    std::cout << "file recieved " << std::endl;
     string file = buffer;
     return buffer;
 }
@@ -106,20 +105,18 @@ void simulation::connect_to_socket()
 
 void simulation::send_file(char *file_path)
 {
-   ifstream fp;
+    ifstream fp;
     fp.open(file_path);
     string data;
-    int size =0;
-    while (getline(fp,data))
+    int size = 0;
+    while (getline(fp, data))
     {
-        data+="\0";
-        size =data.size()+1;
+        data += "\0";
+        size = data.size() + 1;
         send(sockfd_c, &size, sizeof(int), 0);
-        send(sockfd_c, data.c_str(), sizeof(char)*size, 0);
+        send(sockfd_c, data.c_str(), sizeof(char) * size, 0);
     }
     fp.close();
-    size =0;
+    size = 0;
     send(sockfd_c, &size, sizeof(int), 0);
-
 }
-

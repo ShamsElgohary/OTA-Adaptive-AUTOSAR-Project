@@ -8,4 +8,5 @@ const bool IAM_ACTIVATED = true;
 #define youssef "/home/youssef/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/"
 #define shams "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/" 
 #define Yasmin "/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/"
-const std::string CUSTOMIZED_PROJECT_PATH = loay;
+#define karim "/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/"
+const std::string CUSTOMIZED_PROJECT_PATH = karim;

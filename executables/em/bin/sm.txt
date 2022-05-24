@@ -5,13 +5,13 @@ sm logger connected to gui
 [sm] setting new state from sm
 [sm] setting new state from sm
 [iamClient] Connected to the server!
-[iamClient] 19976
+[iamClient] 17001
 [iamClient] Awaiting server response...
 [iamClient] Result: 1
 IP Address: 127.0.0.1 
 Port: 2522
-Sm offering service
 [sm] setting new state from sm
+Sm offering service
 sm Method name: 1, Method Type: Offer
 [SM Skeleton] handle: 1
 Starting Update Session
@@ -30,5 +30,3 @@ fn1 now is in state verify
 sm Method name: VerifyUpdate, Method Type: Skeleton
 [SM Skeleton] handle: 4
 Stop Updating Session
-[sm] setting new state from sm
-sm Method name: StopUpdateSession, Method Type: Skeleton
