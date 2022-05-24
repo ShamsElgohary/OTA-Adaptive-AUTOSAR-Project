@@ -21,7 +21,7 @@ namespace ara
         {
             // Connect to gui socket
             guiSocket->connect_to_socket();
-
+            guiSocket->send_exe_name(simulation::exe_name::ucm);
         }
 
         ~log()
