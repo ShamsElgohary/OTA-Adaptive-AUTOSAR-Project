@@ -18,10 +18,9 @@ int main()
     sa.sa_handler = handle_sigTerm;
     sigaction(SIGTERM, &sa, NULL);
     sleep(2);
+    sm_logger logger(8088);
     ExecutionClient client{};
     client.ReportExecutionStaste(ExecutionState::Krunning);
-    
-    sm_logger logger(8088);
 
     StateClient x;
     x.setState(FunctionGroupState::Preconstruct("fn1", "idle"));
@@ -32,10 +31,10 @@ int main()
     sleep(1);
     x.setState(FunctionGroupState::Preconstruct("machineFG", "running"));
     sleep(6);
-    x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
-    //UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
-    //updaterequest.log->gui_receive();
+    // UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
+    // updaterequest.log->gui_receive();
     /********Test*************/
+    UpdateRequestImpl updaterequest(&logger, 1, ara::com::MethodCallProcessingMode::kEvent);
 
     FunctionGroupList function_groups = {"fn1", "fn2"};
     // std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> out=updaterequest.StartUpdateSession();
@@ -44,19 +43,17 @@ int main()
     // //std::cout<<"return is "<<static_cast<unsigned>(out1.get().AppError)<<std::endl;
     // std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> out2=updaterequest.VerifyUpdate(function_groups);
     // //std::cout<<"return is "<<static_cast<unsigned>(out2.get().AppError)<<std::endl;
-    //updaterequest.StopUpdateSession();
+    // updaterequest.StopUpdateSession();
 
     /******Offer_Service*************/
-    /*std::thread([&updaterequest]()
+    std::thread([&updaterequest]()
                 {
             cout<<"Sm offering service"<<endl;
+            updaterequest.OfferService(); })
+        .detach();
+    // x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
 
-        updaterequest.OfferService(); })
-        .detach();*/
-    //x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
-     UpdateRequestImpl updaterequest(&logger,1, ara::com::MethodCallProcessingMode::kEvent);
-     cout<<"Sm offering service"<<endl;
-     updaterequest.OfferService();
-     //sleep(1000);
-     sleep(1000);
+    x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
+    // sleep(1000);
+    sleep(1000);
 }

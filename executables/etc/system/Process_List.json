@@ -1,12 +1,8 @@
 {
-    "Process List Version": 3,
-    "com_proxy_test": {
-        "Path": "/com_proxy_test/0.1/",
-        "Version": "0.1"
-    },
-    "com_skeleton_test": {
-        "Path": "/com_skeleton_test/0.1/",
-        "Version": "0.1"
+    "Process List Version": 6,
+    "SWCL_TEST1_VENDOR_A": {
+        "Path": "/SWCL_TEST1_VENDOR_A/0.1.0/",
+        "Version": "0.1.0"
     },
     "ex1": {
         "Path": "/ex1/0.1/",

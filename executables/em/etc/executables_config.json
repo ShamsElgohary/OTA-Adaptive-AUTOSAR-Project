@@ -9,39 +9,6 @@
 					"depends" : {},
 					"function_group" : 
 					{
-						"fn3" : 
-						[
-							"run"
-						]
-					}
-				}
-			],
-			"name" : "com_proxy_test"
-		},
-		{
-			"confg" : 
-			[
-				{
-					"depends" : {},
-					"function_group" : 
-					{
-						"fn3" : 
-						[
-							"idle",
-							"run"
-						]
-					}
-				}
-			],
-			"name" : "com_skeleton_test"
-		},
-		{
-			"confg" : 
-			[
-				{
-					"depends" : {},
-					"function_group" : 
-					{
 						"fn1" : 
 						[
 							"idle",
@@ -224,34 +191,37 @@
 		{
 			"current_state" : "Krunning",
 			"name" : "iam",
-			"pid" : 79593
+			"pid" : 20160
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ota",
+			"pid" : 20293
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 79429
+			"pid" : 19976
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "someip_sd",
-			"pid" : 79558
+			"pid" : 20123
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "ucm",
-			"pid" : 79598
+			"pid" : 20165
 		}
 	],
 	"sm_request" : 
 	{
-		"fng" : "machineFG",
-		"fng_state" : "running"
+		"fng" : "fn2",
+		"fng_state" : "idle"
 	},
 	"to_run" : 
 	[
-		"iam",
-		"someip_sd",
-		"ucm"
+		"ota"
 	],
 	"to_term" : []
 }

@@ -14,4 +14,4 @@
 [TransferData] 		 Result : kSuccess
 [TransferExit] 		 Result : kSuccess
 [ProcessSwPackage] 		 Result : kSuccess
-[Activate] 		 Result : 
+[Activate] 		 Result : kSuccess
