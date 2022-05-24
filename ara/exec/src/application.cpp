@@ -84,13 +84,14 @@ void Application::Update_status()
         read(fd, &newstate, sizeof(current_state));
         unique_lock<mutex>  locker(mur);
         current_state = newstate;
-        if(true)
-        {
-            static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
-        }        
+             
         id=0;
         close(fd);
         locker.unlock();
+        if(true)
+        {
+            static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
+        }    
         cout << "[em] " << name << " new state is Kterminate"<<"\n\n\n";
         condt.notify_all(); })
         .detach();

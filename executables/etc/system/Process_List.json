@@ -27,5 +27,13 @@
     "ucm": {
         "Path": "/ucm/",
         "Version": "0.1"
+    },
+    "ex1": {
+        "Path": "/ex1/",
+        "Version": "0.1"
+    },
+    "ex2": {
+        "Path": "/ex2/",
+        "Version": "0.1"
     }
 }

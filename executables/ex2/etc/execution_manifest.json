@@ -4,9 +4,9 @@
 	{
 		"Config 1": 
 		{
-			"depends": {},
+			"depends": {"ex1" :"Kterminate"},
 			"machine_states": [],
-			"function_group_states": {"fn2" : ["idle"]},
+			"function_group_states": {"fn1" : ["idle"]},
 			"scheduling_policy": "Round Robin",
 			"scheduling_priority": "1",
 			"arguments": [],
@@ -16,7 +16,7 @@
 		{
 			"depends": {},
 			"machine_states": [],
-			"function_group_states": {"fn2" : ["run"]},
+			"function_group_states": {"fn1" : ["play"]},
 			"scheduling_policy": "Round Robin",
 			"scheduling_priority": "1",
 			"arguments": [],

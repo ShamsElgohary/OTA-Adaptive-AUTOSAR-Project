@@ -224,7 +224,7 @@ future<void> ApplicationExecutionMgr::IAM_handle()
 
 void ApplicationExecutionMgr::reportConfig_simulation()
 {
-    unique_lock<mutex> locker(mu);
+      unique_lock<mutex> locker(mu);
     Json::Value machine_manifest_json;
     Json::Reader reader;
     std::ifstream input_file("../../etc/system/machine_manifest.json");
@@ -235,14 +235,18 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     Json::Value root;
     Json::Value vec(Json::arrayValue);
     Json::Value vec2(Json::arrayValue);
+    Json::Value vec3(Json::arrayValue);
+
     Json::Value obj(Json::objectValue);
     Json::Value obj2(Json::objectValue);
     Json::Value obj3(Json::objectValue);
+    Json::Value obj4(Json::objectValue);
+
     root["function_groups"] = machine_manifest_json["function_groups"];
     root["Cluster_name"] = "em_json";
+    int i = 0;
     for (auto &app : executables_)
     {
-
         for (auto &confg : app.manifest_.startUpConfigurations)
         {
             for (auto &fg : confg.function_group_states)
@@ -257,15 +261,19 @@ void ApplicationExecutionMgr::reportConfig_simulation()
             {
                 obj3[depends.first] = depends.second;
             }
+            obj4["function_group"] = obj2;
+            obj4["depends"] = obj3;
+            vec3.append(obj4);
+            obj4.clear();
+            obj2.clear();
+            obj3.clear();
+            vec2.clear();
         }
-        obj["function_group"] = obj2;
         obj["name"] = app.manifest_.name;
-        obj["depends"] = obj3;
+        obj["confg"] = vec3;
         vec.append(obj);
         obj.clear();
-        obj2.clear();
-        obj3.clear();
-        vec2.clear();
+        vec3.clear();
     }
     root["executables_configurations"] = vec;
     vec.clear();
@@ -273,8 +281,8 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     {
         for (auto &app : exe.startupConfigurations_)
         {
-
-            if (app->id != 0)
+            unique_lock<mutex> locker2(app->mur);
+            if (app->current_state == ExecutionState::Krunning)
             {
                 obj["name"] = app->name;
                 obj["current_state"] = (app->current_state == ExecutionState::Krunning ? "Krunning" : "Kterminate");
@@ -282,6 +290,7 @@ void ApplicationExecutionMgr::reportConfig_simulation()
                 vec.append(obj);
                 obj.clear();
             }
+            locker2.unlock();
         }
     }
     obj["fng"] = this->newfunctionGroup.fg_name;
@@ -309,15 +318,11 @@ void ApplicationExecutionMgr::reportConfig_simulation()
         obj[fng.first] = fng.second->currentState_;
     }
     root["function_group_states"] = obj;
-
+    //root["message_box"] = report_msg;
     output_file << root;
     output_file.close();
     //------------------------------------------------
-    if (true)
-    {
-        sim_socket.send_file("../etc/executables_config.json");
-    }
-
+    sim_socket.send_file("../etc/executables_config.json");
     locker.unlock();
 }
 

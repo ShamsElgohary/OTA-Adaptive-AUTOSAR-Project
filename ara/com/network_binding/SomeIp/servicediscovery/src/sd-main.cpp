@@ -4,14 +4,27 @@
 #include "../lib/include/someip_sd_message.hpp"
 #include "string.h"
 #include "../../../../../exec/include/execution_client.hpp"
+using namespace ara::exec;
+
 uint16_t service_id;
 uint16_t instance_id;
 uint32_t TTL;
 uint16_t TYPE;
 uint16_t port_num;
-
+void handle_sigTerm(int sig)
+{
+    ExecutionClient exec;
+    exec.ReportExecutionStaste(ExecutionState::Kterminate);
+    exit(1);
+}
 int main()
 {
+    struct sigaction sa;
+    sa.sa_flags = SA_RESTART;
+    sa.sa_handler = handle_sigTerm;
+    sigaction(SIGTERM, &sa, NULL);
+    sleep(2);
+
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
     while (1)
@@ -24,11 +37,13 @@ int main()
 
         someip::SomeIpConfiguration someipConfig{someip::TransportProtocol::TCP, someip::EndUserType::SERVER, someip::SecurityType::RAW};
 
-        boost::asio::io_context  io_service;
+        boost::asio::io_context io_service;
 
         std::shared_ptr<someip::someipConnection> serverUser = someip::someipConnection::SetSomeIpConfiguration(io_service, 2067, someipConfig);
 
-        std::cout << "[servicediscovery] " << "Listening For SD Requests..." << std::endl << std::endl;
+        std::cout << "[servicediscovery] "
+                  << "Listening For SD Requests..." << std::endl
+                  << std::endl;
 
         serverUser->ServerListen();
 
@@ -39,7 +54,7 @@ int main()
         D.Deserialize(ss, ipv4_address);
         D.Deserialize(ss, port_num);
 
-        addmsgtoGUI(service_id,instance_id,TTL,TYPE,port_num,ipv4_address);
+        addmsgtoGUI(service_id, instance_id, TTL, TYPE, port_num, ipv4_address);
 
         uint16_t SID = service_id;
         uint16_t IID = instance_id;
@@ -64,24 +79,21 @@ int main()
 
         case (uint16_t)0x00: // find service
         {
-            
+
             std::vector<serviceinfo> rtn;
             rtn = servicestorage::SearchServiceRegistry(SID, IID); // return typeee
-
-           
 
             std::vector<uint16_t> instance_ids;
             std::vector<std::string> addresses;
             std::vector<uint16_t> port_num;
             for (auto itr = rtn.begin(); itr != rtn.end(); ++itr)
             {
-                
-                cout<< "[servicediscovery] " <<itr->Instance_ID<<" "<< itr->ipv4_address<<" "<<itr->port_num<<endl ;
+
+                cout << "[servicediscovery] " << itr->Instance_ID << " " << itr->ipv4_address << " " << itr->port_num << endl;
                 instance_ids.push_back(itr->Instance_ID);
                 addresses.push_back(itr->ipv4_address);
                 port_num.push_back(itr->port_num);
             }
-           
 
             someip_sd_message msg1;
             someip::someipHeader header1;
@@ -99,7 +111,8 @@ int main()
             break;
         }
         default:
-            std::cout << "[servicediscovery] " << "default" << std::endl;
+            std::cout << "[servicediscovery] "
+                      << "default" << std::endl;
         }
     }
 }

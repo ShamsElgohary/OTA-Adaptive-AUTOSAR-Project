@@ -3,97 +3,180 @@
 	"executables_configurations" : 
 	[
 		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"fn3" : 
-				[
-					"run"
-				]
-			},
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"fn3" : 
+						[
+							"run"
+						]
+					}
+				}
+			],
 			"name" : "com_proxy_test"
 		},
 		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"fn3" : 
-				[
-					"idle",
-					"run"
-				]
-			},
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"fn3" : 
+						[
+							"idle",
+							"run"
+						]
+					}
+				}
+			],
 			"name" : "com_skeleton_test"
 		},
 		{
-			"depends" : 
-			{
-				"someip_sd" : "Krunning"
-			},
-			"function_group" : 
-			{
-				"machineFG" : 
-				[
-					"running"
-				]
-			},
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"fn1" : 
+						[
+							"idle",
+							"play"
+						]
+					}
+				}
+			],
+			"name" : "ex1"
+		},
+		{
+			"confg" : 
+			[
+				{
+					"depends" : 
+					{
+						"ex1" : "Kterminate"
+					},
+					"function_group" : 
+					{
+						"fn1" : 
+						[
+							"idle"
+						]
+					}
+				},
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"fn1" : 
+						[
+							"play"
+						]
+					}
+				}
+			],
+			"name" : "ex2"
+		},
+		{
+			"confg" : 
+			[
+				{
+					"depends" : 
+					{
+						"someip_sd" : "Krunning"
+					},
+					"function_group" : 
+					{
+						"machineFG" : 
+						[
+							"running"
+						]
+					}
+				}
+			],
 			"name" : "iam"
 		},
 		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"fn1" : 
-				[
-					"idle"
-				]
-			},
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"fn2" : 
+						[
+							"idle",
+							"run",
+							"end"
+						]
+					}
+				}
+			],
 			"name" : "ota"
 		},
 		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"machineFG" : 
-				[
-					"startup",
-					"running"
-				]
-			},
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"machineFG" : 
+						[
+							"startup",
+							"running"
+						]
+					}
+				}
+			],
 			"name" : "sm"
 		},
 		{
-			"depends" : {},
-			"function_group" : 
-			{
-				"machineFG" : 
-				[
-					"running"
-				]
-			},
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"machineFG" : 
+						[
+							"running"
+						]
+					}
+				}
+			],
 			"name" : "someip_sd"
 		},
 		{
-			"depends" : 
-			{
-				"iam" : "Krunning"
-			},
-			"function_group" : 
-			{
-				"machineFG" : 
-				[
-					"running"
-				]
-			},
+			"confg" : 
+			[
+				{
+					"depends" : 
+					{
+						"iam" : "Krunning"
+					},
+					"function_group" : 
+					{
+						"machineFG" : 
+						[
+							"running"
+						]
+					}
+				}
+			],
 			"name" : "ucm"
 		}
 	],
 	"function_group_states" : 
 	{
-		"fn1" : "idle",
+		"fn1" : "terminate",
 		"fn2" : "idle",
 		"fn3" : "idle",
-		"machineFG" : "running"
+		"machineFG" : "startup"
 	},
 	"function_groups" : 
 	{
@@ -140,38 +223,15 @@
 	[
 		{
 			"current_state" : "Krunning",
-			"name" : "iam",
-			"pid" : 3631
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "ota",
-			"pid" : 3640
-		},
-		{
-			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 3625
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "someip_sd",
-			"pid" : 3630
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "ucm",
-			"pid" : 3635
+			"pid" : 49936
 		}
 	],
 	"sm_request" : 
 	{
 		"fng" : "fn1",
-		"fng_state" : "idle"
+		"fng_state" : "terminate"
 	},
-	"to_run" : 
-	[
-		"ota"
-	],
+	"to_run" : [],
 	"to_term" : []
 }

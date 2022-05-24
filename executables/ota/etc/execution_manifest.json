@@ -6,7 +6,7 @@
 		{
 			"depends": {},
 			"machine_states": [],
-			"function_group_states": {"fn1":["idle"]},
+			"function_group_states": {"fn2":["idle","run","end"]},
 			"scheduling_policy": "Round Robin",
 			"scheduling_priority": "1",
 			"arguments": ["arg_0","arg_0"],
