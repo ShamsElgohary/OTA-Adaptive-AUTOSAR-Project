@@ -1,5 +1,5 @@
 {
-    "Process List Version": 3,
+    "Process List Version": 1,
     "com_proxy_test": {
         "Path": "/com_proxy_test/",
         "Version": "0.1"

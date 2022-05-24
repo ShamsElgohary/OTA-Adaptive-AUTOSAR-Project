@@ -24,9 +24,22 @@ int main()
     sa.sa_handler = handle_sigTerm;
     sigaction(SIGTERM, &sa, NULL);
     sleep(2);
+    Json::Value event;
+    ifstream f("SD_Report.json");
+    Json::Reader R;
+    R.parse(f, event);
+    event["Cluster_name"] = "ServiceDiscovery";
+    event["SD"]["ServiceInfoMap"] = Json::arrayValue;
+    event["SD"]["Find Requests"] = Json::arrayValue;
+    event["SD"]["Received SD messages"] = Json::arrayValue;
+    std::ofstream json_file("SD_Report.json");
+    json_file << event;
+    json_file.close();
 
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
+    servicestorage ServiceStorage;
+
     while (1)
     {
         std::string ipv4_address;
@@ -53,8 +66,9 @@ int main()
         D.Deserialize(ss, service_id, instance_id, TTL, TYPE);
         D.Deserialize(ss, ipv4_address);
         D.Deserialize(ss, port_num);
+        
 
-        addmsgtoGUI(service_id, instance_id, TTL, TYPE, port_num, ipv4_address);
+        ServiceStorage.addmsgtoGUI(service_id,instance_id,TTL,TYPE,port_num,ipv4_address);
 
         uint16_t SID = service_id;
         uint16_t IID = instance_id;
@@ -68,11 +82,11 @@ int main()
         {
             if (TTL == (uint32_t)0xFFFFFF) // offer
             {
-                servicestorage::AddToServiceRegistry(SID, servicestorage::SetServiceInfo(IID, Address, port)); // return struct
+                ServiceStorage.AddToServiceRegistry(SID, ServiceStorage.SetServiceInfo(IID, Address, port)); // return struct
             }
             else if (TTL == (uint32_t)0x000000) // stop offer  //only remove from map
             {
-                servicestorage::RemoveService(SID, IID); // stop offer
+                ServiceStorage.RemoveService(SID, IID); // stop offer
             }
             break;
         }
@@ -81,7 +95,7 @@ int main()
         {
 
             std::vector<serviceinfo> rtn;
-            rtn = servicestorage::SearchServiceRegistry(SID, IID); // return typeee
+            rtn = ServiceStorage.SearchServiceRegistry(SID, IID); // return typeee
 
             std::vector<uint16_t> instance_ids;
             std::vector<std::string> addresses;

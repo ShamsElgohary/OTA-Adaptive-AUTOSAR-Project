@@ -4,7 +4,7 @@ namespace pt = boost::property_tree;
 
 std::map<std::string, std::vector<ara::iam::Grant>> ara::iam::GrantStorage::AccessMap;
 
-void ara::iam::GrantStorage::ParseJson(std::string filePath)
+void ara::iam::GrantStorage::ParseJson(std::string filePath, simulation & sim_socket)
 {
     // Create a root
     pt::ptree root;
@@ -82,13 +82,11 @@ void ara::iam::GrantStorage::ParseJson(std::string filePath)
     json_file.close();
     if (SIMULATION_ACTIVE)
     {
-        simulation sim(8088);
-        sim.connect_to_socket();
         char current_dir[256];
         getcwd(current_dir, 256);
         std::string path(current_dir);
         path += "/iam_access.json";
-        sim.send_file((char *)(path.c_str()));
+        sim_socket.send_file((char *)(path.c_str()));
     }
 }
 

@@ -18,9 +18,10 @@ namespace ara
             private:
             ara::iam::IPCserverInterface server;
             ara::exec::FindProcessClient FPC;
+            simulation sim_socket{8088};
 
             public: 
-            
+
             void InitGrantStorage(std::string basePath);
             
             std::uint8_t InitServerAdapter();

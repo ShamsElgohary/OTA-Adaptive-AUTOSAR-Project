@@ -3,7 +3,9 @@
 
 void ara::iam::AccessManager::InitGrantStorage(std::string basePath)
 {
-    ara::iam::GrantStorage::ParseJson(basePath);
+    sim_socket.connect_to_socket();
+    sim_socket.send_exe_name(simulation::exe_name::iam);
+    ara::iam::GrantStorage::ParseJson(basePath, sim_socket);
 }
 
 std::uint8_t ara::iam::AccessManager::InitServerAdapter()
@@ -11,8 +13,6 @@ std::uint8_t ara::iam::AccessManager::InitServerAdapter()
     // RUN SERVER
     return server.ServerSocketInit();
 }
-
-
 
 void ara::iam::AccessManager::RunEventLoop()
 {
@@ -81,13 +81,11 @@ void ara::iam::AccessManager::RunEventLoop()
 
         if (SIMULATION_ACTIVE)
         {
-            simulation sim(8088);
-            sim.connect_to_socket();
             char current_dir[256];
             getcwd(current_dir, 256);
             std::string path(current_dir);
             path += "/iam_access.json";
-            sim.send_file((char *)(path.c_str()));
+            sim_socket.send_file((char *)(path.c_str()));
         }
 
     }
