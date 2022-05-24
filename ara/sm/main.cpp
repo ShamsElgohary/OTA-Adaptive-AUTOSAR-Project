@@ -20,6 +20,9 @@ int main()
     sleep(2);
     ExecutionClient client{};
     client.ReportExecutionStaste(ExecutionState::Krunning);
+    
+    sm_logger logger(8088);
+
     StateClient x;
     x.setState(FunctionGroupState::Preconstruct("fn1", "idle"));
     sleep(6);
@@ -28,7 +31,8 @@ int main()
     x.setState(FunctionGroupState::Preconstruct("fn1", "terminate"));
     sleep(1);
     x.setState(FunctionGroupState::Preconstruct("machineFG", "running"));
-    
+    sleep(6);
+    x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
     //UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
     //updaterequest.log->gui_receive();
     /********Test*************/
@@ -43,13 +47,16 @@ int main()
     //updaterequest.StopUpdateSession();
 
     /******Offer_Service*************/
-    std::thread([]()
+    /*std::thread([&updaterequest]()
                 {
-        UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
             cout<<"Sm offering service"<<endl;
 
         updaterequest.OfferService(); })
-        .detach();
-    x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
-    sleep(1000);
+        .detach();*/
+    //x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
+     UpdateRequestImpl updaterequest(&logger,1, ara::com::MethodCallProcessingMode::kEvent);
+     cout<<"Sm offering service"<<endl;
+     updaterequest.OfferService();
+     //sleep(1000);
+     sleep(1000);
 }

@@ -18,12 +18,14 @@ namespace ara
         class UpdateRequestImpl : public ara::sm::skeleton::UpdateRequestSkeleton
         {
         public:
-            UpdateRequestImpl(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::skeleton::UpdateRequestSkeleton(I_id, mode)
+            UpdateRequestImpl(sm_logger*logger,ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::skeleton::UpdateRequestSkeleton(I_id, mode)
             {
                 //freopen("sm.txt", "w+", stdout); // write cout and printf to txt file
                 FunctionGroupStates = {};
+                this->log=logger;
+
             }
-            sm_logger *log {new sm_logger(8088)};
+            sm_logger *log;
             std::future<StartUpdateSessionOutput> StartUpdateSession();
             std::future<PrepareUpdateOutput> PrepareUpdate(FunctionGroupList FunctionGroups);
             std::future<VerifyUpdateOutput> VerifyUpdate(FunctionGroupList FunctionGroups);
