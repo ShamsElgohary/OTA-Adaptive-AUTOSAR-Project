@@ -36,6 +36,7 @@ extern const string fileBackupPath;
 extern const string ProjectPath;
 extern const string ProcessListPath;
 extern string command;
+extern ara::log GUI_Logger;
 
 static string GetProjectPath();
 

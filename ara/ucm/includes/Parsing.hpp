@@ -17,7 +17,6 @@ namespace ara
 				ActionType actionType;
 				string activationAction;
 				string deltaPackageApplicableVersion;
-				ara::log guiLogger;
 
 			public:
 				SwClusterInfoType GetSwClusterInfo(string PackagePath);

@@ -22,7 +22,7 @@ SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
     swClusterInfo.Version = version;
     swClusterInfo.Name = name;
 
-    guiLogger.newPkgCluster(name,version);
+    GUI_Logger.newPkgCluster(name,version);
 
 
     return swClusterInfo;
@@ -55,11 +55,10 @@ void SoftwarePackageParser::SwPackageManifestParser(string PackagePath)
 
     activationAction = root.get<std::string>("activationAction");
 
-    guiLogger.pkgAction(actionTypeString);
+    GUI_Logger.pkgAction(actionTypeString);
 
     // LOGGING & GUI SIMULATION
-    ara::log logger;
-    logger.ReportJsonGUI("ProcessedActionType", actionTypeString);
+    GUI_Logger.ReportJsonGUI("ProcessedActionType", actionTypeString);
     
     // deltaPackageApplicableVersion = root.get<std::string>("deltaPackageApplicableVersion");
 }
