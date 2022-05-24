@@ -34,7 +34,7 @@ PackageManagerState::PackageManagerState(PackageManagerStatusType pkgmgr_Current
             SWCLManager::PushInSWCLusters(SWCluster);
         }
     
-    guiLogger.ReportPresentSWClusters(SWCLManager::GetPresentSWCLs());
+    GUI_Logger.ReportPresentSWClusters(SWCLManager::GetPresentSWCLs());
     
     }
     catch (const std::exception &e)
@@ -80,11 +80,11 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     StartUpdateSessionOutput error_startUpdateSession = proxy->StartUpdateSession();
     if (error_startUpdateSession.AppError == SM_ApplicationError::kRejected)
     {
-        guiLogger.ReportJsonGUI( "StartUpdateSession", "kRejected", true );
+        GUI_Logger.ReportJsonGUI( "StartUpdateSession", "kRejected", true );
         return ara::ucm::OperationResultType::kUpdateSessionRejected;
     }
 
-    guiLogger.ReportJsonGUI( "StartUpdateSession", "Done", true );
+    GUI_Logger.ReportJsonGUI( "StartUpdateSession", "Done", true );
 
     uint8_t RejectedCounter = 0;
     /*Get Functional Groups of PKG*/
@@ -101,7 +101,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         {
             (CurrentStatus) = PackageManagerStatusType::kReady;
 
-            guiLogger.ReportJsonGUI( "PrepareUpdate", "Prepare Failed", true );
+            GUI_Logger.ReportJsonGUI( "PrepareUpdate", "Prepare Failed", true );
 
             return ara::ucm::OperationResultType::kPreActivationFailed;
         }
@@ -111,7 +111,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             {
                 (CurrentStatus) = PackageManagerStatusType::kReady;
 
-                guiLogger.ReportJsonGUI( "PrepareUpdate", "Rejected" , true );
+                GUI_Logger.ReportJsonGUI( "PrepareUpdate", "Rejected" , true );
                 return ara::ucm::OperationResultType::kPreActivationFailed;
             }
 
@@ -121,7 +121,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         usleep(1000);
     }
 
-    guiLogger.ReportJsonGUI( "PrepareUpdate", "Prepared" , true );
+    GUI_Logger.ReportJsonGUI( "PrepareUpdate", "Prepared" , true );
 
 
     (CurrentStatus) = PackageManagerStatusType::kActivating;
@@ -185,7 +185,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             (CurrentStatus) = PackageManagerStatusType::kReady;
 
 
-            guiLogger.ReportJsonGUI( "VerifyUpdate", "Verify Failed", true );
+            GUI_Logger.ReportJsonGUI( "VerifyUpdate", "Verify Failed", true );
             return ara::ucm::OperationResultType::kVerificationFailed;
         }
         else if (error_verifyupdate.AppError == SM_ApplicationError::kRejected)
@@ -193,7 +193,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             if (RejectedCounter == PrepareUpdateCounter)
             {
                 // Rollback();
-                guiLogger.ReportJsonGUI( "VerifyUpdate", "Rejected", true );
+                GUI_Logger.ReportJsonGUI( "VerifyUpdate", "Rejected", true );
                 return ara::ucm::OperationResultType::kVerificationFailed;
             }
             RejectedCounter++;
@@ -202,8 +202,8 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
         usleep(1000);
     }
 
-    guiLogger.ReportJsonGUI( "VerifyUpdate", "Verified", true );
-    guiLogger.ReportPresentSWClusters(SWCLManager::GetPresentSWCLs());
+    GUI_Logger.ReportJsonGUI( "VerifyUpdate", "Verified", true );
+    GUI_Logger.ReportPresentSWClusters(SWCLManager::GetPresentSWCLs());
 
     (CurrentStatus) = PackageManagerStatusType::kActivated;
     return ara::ucm::OperationResultType::kSuccess;
@@ -243,7 +243,7 @@ ara::ucm::OperationResultType PackageManagerState::FinishInternal()
     (CurrentStatus) = PackageManagerStatusType::kCleaningUp;
 
     proxy->StopUpdateSession();
-    guiLogger.ReportJsonGUI( "StopUpdateSession", "Stopped", true );
+    GUI_Logger.ReportJsonGUI( "StopUpdateSession", "Stopped", true );
 
     /*if UCM status is activated finish method commit changes*/
     if ((CurrentStatus) == PackageManagerStatusType::kActivated)
@@ -298,7 +298,7 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
     ptrToSwPkg->SetPackageState(SwPackageStateType::kProcessing);
 
     // JSON (GUI SIMULATION)
-    guiLogger.pkgAction("kProcessing",1);
+    GUI_Logger.pkgAction("kProcessing",1);
 
     /* GET PACKAGE */
     std::string SWPackagePath{ptrToSwPkg->GetPackagePath()};
@@ -328,7 +328,7 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
     ptrToSwPkg->SetPackageState(SwPackageStateType::kProcessed);
 
     // JSON (GUI SIMULATION)
-    guiLogger.pkgAction("kProcessed",1);
+    GUI_Logger.pkgAction("kProcessed",1);
 
     ara::ucm::SynchronizedStorage::DeleteItem(id);
 

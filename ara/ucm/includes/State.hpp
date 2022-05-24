@@ -20,8 +20,6 @@ namespace ara
                 static uint16_t ProcessListVersion;
                 //shared ptr creation
                 std::shared_ptr <ara::sm::UpdateRequest::proxy::UpdateRequestproxy> proxy = nullptr;
-                ara::log guiLogger;
-
 
             public:
                 PackageManagerState(PackageManagerStatusType pkgmgr_CurrentStatus);

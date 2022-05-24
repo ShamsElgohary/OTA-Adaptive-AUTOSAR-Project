@@ -12,6 +12,8 @@ const string ProcessListPath = ProjectPath + "executables/etc/system/";
 
 string command;
 
+ara::log GUI_Logger;
+
 static string GetProjectPath()
 {
   string origin = GetCurrentDirectory();

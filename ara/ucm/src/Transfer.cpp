@@ -3,7 +3,6 @@
 
 using namespace ara::ucm;
 
-ara::log guiLogger;
 
 namespace ara::ucm::transfer
 {
@@ -53,7 +52,7 @@ namespace ara::ucm::transfer
         StartTransferOutput.TransferStartResult = OperationResultType::kSuccess;
 
         // JSON (GUI SIMULATION)
-        guiLogger.pkgAction("kTransferring",1);
+        GUI_Logger.pkgAction("kTransferring",1);
 
         return StartTransferOutput;
     }
@@ -110,7 +109,7 @@ namespace ara::ucm::transfer
         SwPkg->UpdateFinishRate();
         
         // GUI SIMULATION
-        guiLogger.ReportJsonGUI( "TransferFinishRate" , SwPkg->GetFinishRate()*100);
+        GUI_Logger.ReportJsonGUI( "TransferFinishRate" , SwPkg->GetFinishRate()*100);
         // DELAY TO SHOW RATE?
 
         return ara::ucm::OperationResultType::kSuccess;
@@ -140,7 +139,7 @@ namespace ara::ucm::transfer
         SwPkg->SetPackageState(SwPackageStateType::kTransferred);
 
         // JSON (GUI SIMULATION)
-        guiLogger.pkgAction("kTransferred",1);
+        GUI_Logger.pkgAction("kTransferred",1);
 
         return ara::ucm::OperationResultType::kSuccess;
     }

@@ -10,11 +10,25 @@
 
 using namespace std;
 
+
 namespace ara
 {
     class log
     {
     public:
+        
+        log()
+        {
+            // Connect to gui socket
+            guiSocket->connect_to_socket();
+            guiSocket->send_exe_name(simulation::exe_name::ucm);
+        }
+
+        ~log()
+        {
+            // DEFAULT DESTRUCTOR
+        }
+
         /* REPORTS ONLY ERRORS */
         void ReportError(string Error)
         {
@@ -26,6 +40,10 @@ namespace ara
         {
             try
             {
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
+                char PathArr[Path.length() + 1]; 
+                guiSocket->send_file(PathArr);
+
                 ofstream ReportAction("ActionsLog.txt", std::ofstream::out | std::ofstream::trunc);
                 ReportAction.close();
             }
@@ -71,7 +89,6 @@ namespace ara
             {
                 std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
             }
         }
@@ -99,7 +116,6 @@ namespace ara
             {
                 std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
             }
         }
@@ -123,7 +139,6 @@ namespace ara
             {
                 std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
             }
         }
@@ -146,7 +161,6 @@ namespace ara
             {
                 std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
             }
         }
@@ -177,7 +191,6 @@ namespace ara
             {
                 std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
             }
         }
@@ -208,13 +221,14 @@ namespace ara
             {
                 std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->connect_to_socket();
                 guiSocket->send_file(PathArr);
             }
         }
 
     private:
-        simulation *guiSocket = new simulation(8088);
+
+        inline static simulation *guiSocket = new simulation(8088);
+        
 
         /* USED TO CONVERT THE UCM OPERATION RESULTS INTO A STRING */
         string OperationResult[7] =
@@ -224,4 +238,5 @@ namespace ara
         string CurrentStatusTypes[9] =
             {"kIdle", "kReady", "kProcessing", "kActivating", "kActivated", "kRollingBack", "kRolledBack", "kCleaningUp", "kVerifying"};
     };
+
 }
