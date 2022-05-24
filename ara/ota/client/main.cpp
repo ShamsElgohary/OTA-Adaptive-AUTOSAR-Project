@@ -37,7 +37,6 @@ public:
         else
         {
             cout << "NO UCM" << endl;
-            exit(1);
         }
     }
 
@@ -323,7 +322,6 @@ int main()
     sa.sa_handler = handle_sigTerm;
     sigaction(SIGTERM, &sa, NULL);
     sleep(2);
-
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
     CLIENT_OTA x;

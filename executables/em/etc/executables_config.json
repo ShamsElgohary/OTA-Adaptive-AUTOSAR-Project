@@ -173,10 +173,10 @@
 	],
 	"function_group_states" : 
 	{
-		"fn1" : "terminate",
-		"fn2" : "idle",
+		"fn1" : "idle",
+		"fn2" : "end",
 		"fn3" : "idle",
-		"machineFG" : "startup"
+		"machineFG" : "running"
 	},
 	"function_groups" : 
 	{
@@ -223,14 +223,39 @@
 	[
 		{
 			"current_state" : "Krunning",
+			"name" : "ex2",
+			"pid" : 5349
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "iam",
+			"pid" : 5275
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ota",
+			"pid" : 0
+		},
+		{
+			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 49936
+			"pid" : 5071
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "someip_sd",
+			"pid" : 5267
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ucm",
+			"pid" : 5296
 		}
 	],
 	"sm_request" : 
 	{
 		"fng" : "fn1",
-		"fng_state" : "terminate"
+		"fng_state" : "idle"
 	},
 	"to_run" : [],
 	"to_term" : []

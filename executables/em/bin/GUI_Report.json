@@ -1,0 +1,102 @@
+{
+	"SD" : 
+	{
+		"Received SD messages" : 
+		[
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2253,
+				"Service ID" : 2,
+				"Type" : "offer service",
+				"ttl" : 16777215
+			},
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2522,
+				"Service ID" : 1,
+				"Type" : "offer service",
+				"ttl" : 16777215
+			}
+		],
+		"ServiceInfoMap" : 
+		[
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2253,
+				"Service ID" : 2
+			},
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2522,
+				"Service ID" : 1
+			}
+		]
+	},
+	"com_json" : 
+	{
+		"Service_Discovery_Request" : 
+		[
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 2,
+				"Type" : "Offer"
+			}
+		]
+	},
+	"ucm_json" : 
+	{
+		"PresentClusters" : 
+		{
+			"Cluster1" : 
+			{
+				"Name" : "com_proxy_test",
+				"Version" : "0.1"
+			},
+			"Cluster2" : 
+			{
+				"Name" : "com_skeleton_test",
+				"Version" : "0.1"
+			},
+			"Cluster3" : 
+			{
+				"Name" : "ex1",
+				"Version" : "0.1"
+			},
+			"Cluster4" : 
+			{
+				"Name" : "ex2",
+				"Version" : "0.1"
+			},
+			"Cluster5" : 
+			{
+				"Name" : "iam",
+				"Version" : "0.1"
+			},
+			"Cluster6" : 
+			{
+				"Name" : "ota",
+				"Version" : "0.1"
+			},
+			"Cluster7" : 
+			{
+				"Name" : "sm",
+				"Version" : "0.1"
+			},
+			"Cluster8" : 
+			{
+				"Name" : "someip_sd",
+				"Version" : "0.1"
+			},
+			"Cluster9" : 
+			{
+				"Name" : "ucm",
+				"Version" : "0.1"
+			}
+		}
+	}
+}

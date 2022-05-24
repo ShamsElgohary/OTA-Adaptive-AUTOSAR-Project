@@ -15,7 +15,6 @@ int main()
     sa.sa_flags=SA_RESTART;
     sa.sa_handler =handle_sigTerm ;
     sigaction(SIGTERM,&sa,NULL);
-    cout << "[Ex1] hello from ex1 with pid = " << getpid() << "\n";
     sleep(2);
 
     ExecutionClient exec;
