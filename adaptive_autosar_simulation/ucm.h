@@ -78,8 +78,7 @@ private:
      //Add lists to mid colume
 
     string guiReportPath = to_string(simulation::exe_name::ucm);
-    QString activeLogPath = "/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/ucm/0.1/bin/ActionsLog.txt";
-
+    QString activeLogPath = "/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/ActionsLog.txt";
     //COM GridBox setup
      QGroupBox *comBox = new QGroupBox("COM");
 };

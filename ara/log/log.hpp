@@ -42,7 +42,7 @@ namespace ara
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->send_file(PathArr);
+                guiSocket->send_file("GUI_Report.json");
 
                 ofstream ReportAction("ActionsLog.txt", std::ofstream::out | std::ofstream::trunc);
                 ReportAction.close();
@@ -89,7 +89,7 @@ namespace ara
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->send_file(PathArr);
+                guiSocket->send_file("GUI_Report.json");
             }
         }
 
@@ -116,7 +116,7 @@ namespace ara
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->send_file(PathArr);
+                guiSocket->send_file("GUI_Report.json");
             }
         }
 
@@ -139,7 +139,7 @@ namespace ara
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->send_file(PathArr);
+                guiSocket->send_file("GUI_Report.json");
             }
         }
 
@@ -161,7 +161,7 @@ namespace ara
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->send_file(PathArr);
+                guiSocket->send_file("GUI_Report.json");
             }
         }
 
@@ -191,7 +191,7 @@ namespace ara
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->send_file(PathArr);
+                guiSocket->send_file("GUI_Report.json");
             }
         }
 
@@ -221,7 +221,7 @@ namespace ara
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
-                guiSocket->send_file(PathArr);
+                guiSocket->send_file("GUI_Report.json");
             }
         }
 

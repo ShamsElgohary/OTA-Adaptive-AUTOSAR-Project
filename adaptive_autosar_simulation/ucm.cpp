@@ -253,11 +253,12 @@ void ucm::updateActivateRate()
     QString prepareUpdate = QString::fromStdString((event["ucm_json"]["GUI"]["Activate"]["PrepareUpdate"]).asString());
     QString startUpdateSession = QString::fromStdString((event["ucm_json"]["GUI"]["Activate"]["StartUpdateSession"]).asString());
     QString verifyUpdate = QString::fromStdString((event["ucm_json"]["GUI"]["Activate"]["VerifyUpdate"]).asString());
-    QString finish = QString::fromStdString((event["ucm_json"]["GUI"]["PackageManagerStatus"]).asString());
+    QString finish = QString::fromStdString((event["ucm_json"]["GUI"]["Activate"]["StopUpdateSession"]).asString());
 
     activateTable->setItem(0,1,new QTableWidgetItem(QString(prepareUpdate)));
     activateTable->setItem(0,0,new QTableWidgetItem(QString(startUpdateSession)));
     activateTable->setItem(0,2,new QTableWidgetItem(QString(verifyUpdate)));
+    activateTable->setItem(0,3,new QTableWidgetItem(QString(finish)));
 
     if(startUpdateSession == "Done")
     {
@@ -271,7 +272,7 @@ void ucm::updateActivateRate()
     {
         activateProgressBar->setValue(75);
     }
-    if(finish == "kActivated")
+    if(finish == "Stopped")
     {
         activateProgressBar->setValue(100);
     }
