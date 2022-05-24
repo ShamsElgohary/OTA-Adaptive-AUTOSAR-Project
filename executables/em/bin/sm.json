@@ -6,14 +6,13 @@
 		{
 			"PrepareUpdate" : false,
 			"StartUpdateSession" : false,
-			"StopUpdateSession" : false,
-			"VerifyUpdate" : true
+			"StopUpdateSession" : true,
+			"VerifyUpdate" : false
 		},
 		"function_group_states" : 
 		{
-			"fn1" : "off",
-			"fn2" : "off",
-			"machineFG" : ""
+			"fn1" : "verify",
+			"fn2" : "end"
 		}
 	}
 }

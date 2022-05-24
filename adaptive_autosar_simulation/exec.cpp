@@ -1,5 +1,5 @@
 #include "exec.h"
-
+#include "simulation.hpp"
 
 exec::exec(QWidget *parent): QWidget{parent}
 {
@@ -63,70 +63,79 @@ exec::exec(QWidget *parent): QWidget{parent}
 }
 void exec::parse_exec_json()
 {
-    ifstream fi2( to_string(simulation::exe_name::exec));
+    std::ifstream file_input(to_string(simulation::exe_name::exec));
+    if(file_input.peek() == std::ifstream::traits_type::eof())return;
+       Json::Reader reader;
+       Json::Value root;
+       reader.parse(file_input, root);
+       bool flag =true;
+       for(auto exe : root["executables_configurations"])
+       {
 
-    if(fi2.peek() == std::ifstream::traits_type::eof())return;
-    Json::Reader reader;
-    Json::Value root;
-    reader.parse(fi2, root);
+           for(auto conf : exe["confg"])
+           {
+               exe_configuartions exe_conf;
 
-    for(auto exe : root["executables_configurations"])
-    {
-        exe_configuartions exe_conf;
-        exe_conf.name =  exe["name"].asString();
-        exe_conf.funtion_group =  exe["function_group"].getMemberNames()[0];
-        for(auto state :  exe["function_group"][exe_conf.funtion_group])
-        {
-            exe_conf.states.push_back(state.asString());
-        }
-        auto deps = exe["depends"].getMemberNames();
-        for(auto dep : deps )
-        {
-            exe_conf.dependancy[dep] = (exe["depends"][dep].asString());
-        }
-        exes_conf.push_back(exe_conf);
-    }
-    //--------------------------------------------------------
-    auto fns = root["function_groups"].getMemberNames();
-    vector<string> states;
-    for(auto fn :fns)
-    {
-        for(auto state : root["function_groups"][fn]["states"])
-        {
-            states.push_back(state.asString());
-        }
-        fng[fn] = states;
-        states.clear();
-    }
-    //--------------------------------------------------------
-    running_exec executable ;
-    for(auto exe : root["running_executables"])
-    {
-        executable.name = exe["name"].asString();
-        executable.current_state = exe["current_state"].asString();
-        executable.pid = exe["pid"].asInt();
-        r_exe.push_back(executable);
-    }
-    //--------------------------------------------------------
-    for(auto exe : root["to_run"])
-    {
-       to_run.push_back(exe.asString());
-    }
-    //--------------------------------------------------------
-    for(auto exe : root["to_term"])
-    {
-       to_term.push_back(exe.asString());
-    }
-    //----------------------------------------------
-    auto fng_States = root["function_group_states"].getMemberNames();
+               exe_conf.funtion_group =  conf["function_group"].getMemberNames()[0];
+               for(auto state :  conf["function_group"][exe_conf.funtion_group])
+               {
+                   exe_conf.states.push_back(state.asString());
+               }
+               auto deps = conf["depends"].getMemberNames();
+               for(auto dep : deps )
+               {
+                   exe_conf.dependancy[dep] = (conf["depends"][dep].asString());
+               }
+               if(flag)
+               {
+                   exes_conf[exe["name"].asCString()] =vector<exe_configuartions>();
+                   flag =false ;
+               }
+               exes_conf[exe["name"].asCString()].push_back(exe_conf);
+           }
+         }
+       //--------------------------------------------------------
+       auto fns = root["function_groups"].getMemberNames();
+       vector<string> states;
+       for(auto fn :fns)
+       {
+           for(auto state : root["function_groups"][fn]["states"])
+           {
+               states.push_back(state.asString());
+           }
+           fng[fn] = states;
+           states.clear();
+       }
+       //--------------------------------------------------------
+       running_exec executable ;
+       for(auto exe : root["running_executables"])
+       {
+           executable.name = exe["name"].asString();
+           executable.current_state = exe["current_state"].asString();
+           executable.pid = exe["pid"].asInt();
+           r_exe.push_back(executable);
+       }
+       //--------------------------------------------------------
+       for(auto exe : root["to_run"])
+       {
+          to_run.push_back(exe.asString());
+       }
+       //--------------------------------------------------------
+       for(auto exe : root["to_term"])
+       {
+          to_term.push_back(exe.asString());
+       }
+       //----------------------------------------------
+       auto fng_States = root["function_group_states"].getMemberNames();
 
-    for(auto fn : fng_States)
-    {
-       fng_state[fn]=  root["function_group_states"][fn].asCString();
-    }
-    //------------------------------------------------
-    sm_request["fng"] = root["sm_request"]["fng"].asCString();
-    sm_request["fng_state"] = root["sm_request"]["fng_state"].asCString();
+       for(auto fn : fng_States)
+       {
+          fng_state[fn]=  root["function_group_states"][fn].asCString();
+       }
+       //------------------------------------------------
+       sm_request["fng"] = root["sm_request"]["fng"].asCString();
+       sm_request["fng_state"] = root["sm_request"]["fng_state"].asCString();
+       //msg  += root["message_box"].asCString();
 
 }
 
@@ -162,8 +171,7 @@ void exec::update_machine_confg()
     }
 }
 void exec::update_executables_confg()
-{
-
+{  
     exec_tree->setColumnCount(3);
     exec_tree->setHeaderLabels(QStringList{"Executable","Configuration","states"});
     exec_tree->header()->setSectionResizeMode(QHeaderView::Stretch);
@@ -171,48 +179,61 @@ void exec::update_executables_confg()
     font.setPointSize(11);
     font.setBold(true);
     exec_tree->header()->setFont(font);
-    for(int i = 0 ;i<exes_conf.size() ;i++)
+    for(auto exe :  exes_conf )
      {
         QTreeWidgetItem* name =  new QTreeWidgetItem{exec_tree};
-        name->setText(0,QString::fromStdString(exes_conf[i].name));
+        name->setText(0,QString::fromStdString(exe.first));
         font.setPointSize(12);
         font.setBold(true);
         name->setFont(0 ,font);
-        QTreeWidgetItem* fng =  new QTreeWidgetItem{};
-        font.setPointSize(12);
-        font.setBold(false);
 
-        fng->setText(0,"Function group");
-        fng->setFont(0 ,font);
-        name->addChild(fng);
-
-        QTreeWidgetItem* dep =  new QTreeWidgetItem{};
-        dep->setText(0,"Dependency");
-        dep->setFont(0 ,font);
-        name->addChild(dep);
-
-        QTreeWidgetItem* fng_states =  new QTreeWidgetItem{};
-        fng_states->setText(1,QString::fromStdString(exes_conf[i].funtion_group));
-        fng_states->setFont(1 ,font);
-        fng->addChild(fng_states);
-
-        for(auto &state : exes_conf[i].states)
-        {
-             QTreeWidgetItem* s =  new QTreeWidgetItem{};
-             s->setText(2,QString::fromStdString(state));
-             s->setFont(2 ,font);
-
-             fng_states->addChild(s);
-        }
-        for(auto &dependency : exes_conf[i].dependancy)
-        {
-             QTreeWidgetItem* d_name =  new QTreeWidgetItem{};
-             d_name->setText(1,(QString::fromStdString(dependency.first)));
-             d_name->setText(2,(QString::fromStdString(dependency.second)));
-             dep->addChild(d_name);
-        }
         name->setExpanded(true);
+        int i=1;
+        for(auto conf: exe.second)
+        {
+            QTreeWidgetItem* conf_node =  new QTreeWidgetItem{name};
+            QString n = "conf"+ QString::number(i) ;
+            conf_node->setText(0,n);
+            font.setPointSize(12);
+            font.setBold(false);
+            conf_node->setFont(0 ,font);
+            i++;
 
+            QTreeWidgetItem* fng =  new QTreeWidgetItem{};
+            font.setPointSize(12);
+            font.setBold(false);
+
+            fng->setText(0,"Function group");
+            fng->setFont(0 ,font);
+            conf_node->addChild(fng);
+
+            QTreeWidgetItem* dep =  new QTreeWidgetItem{};
+            dep->setText(0,"Dependency");
+            dep->setFont(0 ,font);
+            conf_node->addChild(dep);
+
+            QTreeWidgetItem* fng_states =  new QTreeWidgetItem{};
+            fng_states->setText(1,QString::fromStdString(conf.funtion_group));
+            fng_states->setFont(1 ,font);
+            fng->addChild(fng_states);
+
+            for(auto &state : conf.states)
+            {
+                 QTreeWidgetItem* s =  new QTreeWidgetItem{};
+                 s->setText(2,QString::fromStdString(state));
+                 s->setFont(2 ,font);
+
+                 fng_states->addChild(s);
+            }
+            for(auto &dependency : conf.dependancy)
+            {
+                 QTreeWidgetItem* d_name =  new QTreeWidgetItem{};
+                 d_name->setText(1,(QString::fromStdString(dependency.first)));
+                 d_name->setText(2,(QString::fromStdString(dependency.second)));
+                 dep->addChild(d_name);
+            }
+            conf_node->setExpanded(true);
+        }
     }
 }
 void exec::update_running_executables()

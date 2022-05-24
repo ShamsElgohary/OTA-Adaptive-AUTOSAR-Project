@@ -14,7 +14,7 @@ namespace ara
                 static std::map<std::string, std::vector<ara::iam::Grant>> AccessMap;
 
             public:
-                static void ParseJson(std::string filePath);
+                static void ParseJson(std::string filePath, simulation & sim_socket);
 
                 static bool SearchGrantStorage (const std::string P_name, const ara::iam::Grant & G);
         };

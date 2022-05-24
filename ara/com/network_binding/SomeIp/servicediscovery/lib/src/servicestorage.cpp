@@ -2,6 +2,12 @@
 
 using namespace someip;
 
+servicestorage::servicestorage()
+{
+    sim_socket.connect_to_socket();
+    sim_socket.send_exe_name(simulation::exe_name::sd);
+}
+
 void servicestorage::AddToServiceRegistry(uint16_t Service_ID, serviceinfo serviceinformation)
 {
     auto itr = servicemap.find(Service_ID);
@@ -86,14 +92,13 @@ serviceinfo servicestorage::SetServiceInfo(uint16_t Instance_ID, std::string ipv
 
 using namespace std;
 
-simulation sim(8088);
 Json::Value Temp2;
 Json::Value Temp3;
-void removefromlist()
+void servicestorage::removefromlist()
 
 {
     Json::Value event;
-    ifstream f("GUI_Report.json");
+    ifstream f("SD_Report.json");
 
     Json::Reader R;
     R.parse(f, event);
@@ -122,32 +127,30 @@ void removefromlist()
         }
     }
 
-    //std::cout << event << std::endl;
-    std::ofstream json_file("GUI_Report.json");
+    // std::cout << event << std::endl;
+    std::ofstream json_file("SD_Report.json");
     json_file << event;
     json_file.close();
 
     if (SIMULATION_ACTIVE)
     {
-        sim.connect_to_socket();
-
         char current_dir[256];
 
         getcwd(current_dir, 256);
 
         std::string path(current_dir);
 
-        path += "/GUI_Report.json";
+        path += "/SD_Report.json";
 
-        sim.send_file((char *)(path.c_str()));
+        sim_socket.send_file((char *)(path.c_str()));
     }
 }
 
-void addtoGUI(uint16_t Service_ID, serviceinfo serviceinformation)
+void servicestorage::addtoGUI(uint16_t Service_ID, serviceinfo serviceinformation)
 {
 
     Json::Value event;
-    ifstream f("GUI_Report.json");
+    ifstream f("SD_Report.json");
     Json::Reader R;
     R.parse(f, event);
     if (!event)
@@ -166,31 +169,29 @@ void addtoGUI(uint16_t Service_ID, serviceinfo serviceinformation)
 
     event["SD"]["ServiceInfoMap"].append(Temp);
 
-    //std::cout << event << std::endl;
-    std::ofstream json_file("GUI_Report.json");
+    // std::cout << event << std::endl;
+    std::ofstream json_file("SD_Report.json");
     json_file << event;
     json_file.close();
 
     if (SIMULATION_ACTIVE)
     {
-        sim.connect_to_socket();
-
         char current_dir[256];
 
         getcwd(current_dir, 256);
 
         std::string path(current_dir);
 
-        path += "/GUI_Report.json";
+        path += "/SD_Report.json";
 
-        sim.send_file((char *)(path.c_str()));
+        sim_socket.send_file((char *)(path.c_str()));
     }
 }
 
-void Addtorequests(uint16_t Service_ID, uint16_t instance_id)
+void servicestorage::Addtorequests(uint16_t Service_ID, uint16_t instance_id)
 {
     Json::Value event;
-    ifstream f("GUI_Report.json");
+    ifstream f("SD_Report.json");
     Json::Reader R;
     R.parse(f, event);
     if (!event)
@@ -207,28 +208,27 @@ void Addtorequests(uint16_t Service_ID, uint16_t instance_id)
 
     event["SD"]["Find Requests"].append(Temp2);
 
-   // std::cout << event << std::endl;
-    std::ofstream json_file("GUI_Report.json");
+    // std::cout << event << std::endl;
+    std::ofstream json_file("SD_Report.json");
     json_file << event;
     json_file.close();
 
     /*connect to server*/
     if (SIMULATION_ACTIVE)
     {
-        sim.connect_to_socket();
         char current_dir[256];
         getcwd(current_dir, 256);
         std::string path(current_dir);
-        path += "/GUI_Report.json";
-        sim.send_file((char *)(path.c_str()));
+        path += "/SD_Report.json";
+        sim_socket.send_file((char *)(path.c_str()));
     }
 }
 
-void addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint32_t ttl, uint16_t TYPE, uint16_t port_num, string ipv4_address)
+void servicestorage::addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint32_t ttl, uint16_t TYPE, uint16_t port_num, string ipv4_address)
 {
 
     Json::Value event;
-    ifstream f("GUI_Report.json");
+    ifstream f("SD_Report.json");
     Json::Reader R;
     string msgtype;
     R.parse(f, event);
@@ -267,18 +267,17 @@ void addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint32_t ttl, uint16
 
     event["SD"]["Received SD messages"].append(Temp3);
 
-   // std::cout << event << std::endl;
-    std::ofstream json_file("GUI_Report.json");
+    // std::cout << event << std::endl;
+    std::ofstream json_file("SD_Report.json");
     json_file << event;
     json_file.close();
     if (SIMULATION_ACTIVE)
     {
-        sim.connect_to_socket();
         char current_dir[256];
         getcwd(current_dir, 256);
         std::string path(current_dir);
-        path += "/GUI_Report.json";
-        sim.send_file((char *)(path.c_str()));
+        path += "/SD_Report.json";
+        sim_socket.send_file((char *)(path.c_str()));
     }
 
     /*connect to server*/

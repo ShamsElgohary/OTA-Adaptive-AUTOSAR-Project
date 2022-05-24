@@ -6,7 +6,6 @@
 #include "jsoncpp/header/json.h"
 #include <fstream>
 #include <iostream>
-#include "simulation.hpp"
 using namespace std;
 class exec : public QWidget
 {
@@ -29,7 +28,6 @@ signals:
 private:
     struct exe_configuartions
     {
-        string name ;
         string funtion_group ;
         vector<string> states ;
         map<string ,string>dependancy ;
@@ -60,8 +58,7 @@ private:
     QTableWidget *rexe_table =new QTableWidget();
     QTableWidget *fng_states =new QTableWidget();
 
-
-    vector<exe_configuartions> exes_conf;
+    map<string , vector<exe_configuartions>> exes_conf;
     map<string,vector<string>> fng ;
     map<string,string> fng_state ;
 
@@ -69,6 +66,7 @@ private:
     vector<string> to_run;
     vector<string> to_term;
     map<string , string> sm_request;
+    string msg ;
 };
 
 #endif // EXEC_H

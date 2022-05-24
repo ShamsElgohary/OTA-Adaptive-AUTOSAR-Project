@@ -3,6 +3,7 @@
 #include "fstream"
 #include <QTableWidget>
 #include "iostream"
+#include "../utility/general.hpp""
 
 void sd::sd_handler()
 {
@@ -107,7 +108,7 @@ void sd::update_sd()
                     +" type: "+type+"\n";
 
             console_text->insertPlainText(result.c_str());
-            console_text->setTextColor(QColor(Qt::black));
+            console_text->setTextColor(QColor(Qt::white));
 
     }
 

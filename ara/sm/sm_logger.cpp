@@ -15,11 +15,12 @@ using namespace ara::sm;
 
 sm_logger::sm_logger(int server_port)
 {
-//freopen("sm.txt","w+",stdout); //write cout and printf to txt file
+freopen("sm.txt","w+",stdout); //write cout and printf to txt file
 this->sim=new simulation(server_port);
 this->sim->connect_to_socket();
 this->sim->send_exe_name(simulation::exe_name::sm);
 this->functions_state={};
+std::cout<<"sm logger connected to gui\n";
 }
 void sm_logger::update_logger(sm_functions functions,map<string,string>fg_states)
 {
@@ -60,7 +61,7 @@ this->functions_state={};
 void sm_logger::gui_receive()
 {
       this->gui_thread =std::thread([this]{
-          UpdateRequestImpl * u=new UpdateRequestImpl(1);
+          UpdateRequestImpl * u=new UpdateRequestImpl(this,1);
           while(1)
           {
           fd=open("gui_sm",O_RDONLY);

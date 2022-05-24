@@ -88,7 +88,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
     uint8_t RejectedCounter = 0;
     /*Get Functional Groups of PKG*/
-    FunctionGroupList FG_List = {"fn1", "fn2"};
+    FunctionGroupList FG_List = {"fn1"};
 
     int PrepareTrials = 0;
     PrepareUpdateOutput error_prepareUpdate = proxy->PrepareUpdate(FG_List);

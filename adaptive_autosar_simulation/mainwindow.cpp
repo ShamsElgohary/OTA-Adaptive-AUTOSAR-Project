@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
    vertical_layout_tabs->addWidget(tabWidget);
 
-
+   this->tabWidget->addTab(exec_tab,"Execution Manager");
    simulation_button->setText("start simulation");
    vertical_layout_control->addWidget(simulation_button);
    ucm_button->setText("UCM Run");
@@ -95,9 +95,6 @@ void MainWindow::open_tab(simulation::exe_name name)
 {
     switch(name)
     {
-     case (simulation::exe_name::exec) :
-        this->tabWidget->addTab(exec_tab,"Execution Manager");
-        break;
     case (simulation::exe_name::sm) :
         this->tabWidget->addTab(sm_tab,"State Manager");
         break;

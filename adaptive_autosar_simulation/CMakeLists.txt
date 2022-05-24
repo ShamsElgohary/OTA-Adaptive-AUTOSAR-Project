@@ -40,6 +40,7 @@ set(PROJECT_SOURCES
         sd.cpp
         com.h
         com.cpp
+        ../utility/general.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

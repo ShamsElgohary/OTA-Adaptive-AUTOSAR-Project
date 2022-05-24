@@ -1,0 +1,13 @@
+{
+	"Cluster_name" : "sm_json",
+	"sm_json" : 
+	{
+		"UpdateRequest" : 
+		{
+			"PrepareUpdate" : false,
+			"StartUpdateSession" : false,
+			"StopUpdateSession" : false,
+			"VerifyUpdate" : false
+		}
+	}
+}

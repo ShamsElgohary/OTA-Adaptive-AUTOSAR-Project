@@ -8,7 +8,9 @@
 #include <string>
 #include <vector>
 #include "simulation.hpp"
-#include "execution_client.hpp"
+#include <unistd.h>
+using namespace std;
+using namespace ara::exec;
 // using std::filesystem::current_path;
 using namespace std;
 using namespace ara::ucm::pkgmgr::proxy;
@@ -35,7 +37,6 @@ public:
         else
         {
             cout << "NO UCM" << endl;
-            exit(1);
         }
     }
 
@@ -308,21 +309,30 @@ public:
         cout << "ota 5" << endl;
     }
 };
-
-int main()
+void handle_sigTerm(int sig)
 {
     ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Kterminate);
+    exit(1);
+}
+int main()
+{
+    struct sigaction sa;
+    sa.sa_flags = SA_RESTART;
+    sa.sa_handler = handle_sigTerm;
+    sigaction(SIGTERM, &sa, NULL);
+    sleep(2);
+    ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
-    sleep(3);
     CLIENT_OTA x;
 
     // ClearJSONReport();
     x.run();
-    if(SIMULATION_ACTIVE)
-    {   
+    if (SIMULATION_ACTIVE)
+    {
         simulation s(8088);
         s.connect_to_socket();
-        s.send_file("../../../executables/ota/bin/GUI_Report.json");    
+        s.send_file("../../../executables/ota/0.1/bin/GUI_Report.json");
     }
     // usleep(8000000);
 

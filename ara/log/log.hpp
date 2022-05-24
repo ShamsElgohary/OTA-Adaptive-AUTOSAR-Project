@@ -87,7 +87,7 @@ namespace ara
 
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
@@ -114,7 +114,7 @@ namespace ara
 
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
@@ -137,7 +137,7 @@ namespace ara
 
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
@@ -159,7 +159,7 @@ namespace ara
 
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
@@ -219,7 +219,7 @@ namespace ara
             json_file.close();
             if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
+                std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
