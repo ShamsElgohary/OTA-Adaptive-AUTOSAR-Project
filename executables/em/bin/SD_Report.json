@@ -18,16 +18,16 @@
 			{
 				"IP" : "127.0.0.1 ",
 				"Instance ID" : 1,
-				"Port Number" : 2522,
-				"Service ID" : 1,
+				"Port Number" : 2253,
+				"Service ID" : 2,
 				"Type" : "offer service",
 				"ttl" : 16777215
 			},
 			{
 				"IP" : "127.0.0.1 ",
 				"Instance ID" : 1,
-				"Port Number" : 2253,
-				"Service ID" : 2,
+				"Port Number" : 2522,
+				"Service ID" : 1,
 				"Type" : "offer service",
 				"ttl" : 16777215
 			},
@@ -53,14 +53,14 @@
 			{
 				"IP" : "127.0.0.1 ",
 				"Instance ID" : 1,
-				"Port Number" : 2522,
-				"Service ID" : 1
+				"Port Number" : 2253,
+				"Service ID" : 2
 			},
 			{
 				"IP" : "127.0.0.1 ",
 				"Instance ID" : 1,
-				"Port Number" : 2253,
-				"Service ID" : 2
+				"Port Number" : 2522,
+				"Service ID" : 1
 			}
 		]
 	}

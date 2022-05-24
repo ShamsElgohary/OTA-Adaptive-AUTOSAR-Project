@@ -18,7 +18,7 @@ int main()
     sigaction(SIGTERM,&sa,NULL);
 
     ara::iam::AccessManager iam;
-    iam.InitGrantStorage(CUSTOMIZED_PROJECT_PATH + "/executables/etc/system/iam/access_control_lists.json");
+    iam.InitGrantStorage(CUSTOMIZED_PROJECT_PATH + "executables/etc/system/iam/access_control_lists.json");
     iam.InitServerAdapter();
 
     sleep(2);

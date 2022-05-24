@@ -1,11 +1,23 @@
 {
-    "Process List Version": 1,
+    "Process List Version": 2,
+    "SWCL_TEST1_VENDOR_A": {
+        "Path": "/SWCL_TEST1_VENDOR_A/0.1.0/",
+        "Version": "0.1.0"
+    },
     "com_proxy_test": {
         "Path": "/com_proxy_test/0.1/",
         "Version": "0.1"
     },
     "com_skeleton_test": {
         "Path": "/com_skeleton_test/0.1/",
+        "Version": "0.1"
+    },
+    "ex1": {
+        "Path": "/ex1/0.1/",
+        "Version": "0.1"
+    },
+    "ex2": {
+        "Path": "/ex2/0.1/",
         "Version": "0.1"
     },
     "iam": {
@@ -26,14 +38,6 @@
     },
     "ucm": {
         "Path": "/ucm/0.1/",
-        "Version": "0.1"
-    },
-    "ex1": {
-        "Path": "/ex1/0.1/",
-        "Version": "0.1"
-    },
-    "ex2": {
-        "Path": "/ex2/0.1/",
         "Version": "0.1"
     }
 }

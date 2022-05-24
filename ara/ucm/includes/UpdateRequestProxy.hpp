@@ -170,11 +170,11 @@ namespace ara
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
                     {
-                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "/executables/ucm/etc/service_manifest.json", Cluster_Name, 1);
+                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/etc/service_manifest.json", Cluster_Name, 1);
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
                     {
-                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "/executables/ucm/etc/service_manifest.json", Cluster_Name, 1, InstanceID);
+                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/etc/service_manifest.json", Cluster_Name, 1, InstanceID);
                     }
                     methods::StartUpdateSession StartUpdateSession;
                     methods::PrepareUpdate PrepareUpdate;

@@ -22,7 +22,7 @@ int main()
         PackageManagerProxy RecService(handles[0]);
         // cout<<"find service returned 1 or more handle"<<endl;
         // cout<<RecService.Add(3,4).Sum<<endl;
-        ifstream ifs(CUSTOMIZED_PROJECT_PATH + "/executables/com_proxy_test/bin/PackageTest#3.zip", ios::binary | ios::ate);
+        ifstream ifs(CUSTOMIZED_PROJECT_PATH + "executables/com_proxy_test/0.1/bin/PackageTest#3.zip", ios::binary | ios::ate);
         ifstream::pos_type pos = ifs.tellg();
         vector<char> result(pos);
         ifs.seekg(0, ios::beg);

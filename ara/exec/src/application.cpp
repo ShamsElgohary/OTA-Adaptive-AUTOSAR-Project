@@ -43,7 +43,6 @@ future<void> Application::start()
         this->id = fork();
         if (this->id == 0)
         {
-            cout<<"path "<<executable_path<<endl;
             //chdir(executable_path.c_str());
             dup2(fd, 0);
             string path = executable_path+name;

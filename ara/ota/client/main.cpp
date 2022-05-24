@@ -332,7 +332,7 @@ int main()
     {
         simulation s(8088);
         s.connect_to_socket();
-        s.send_file("../../../executables/ota/bin/GUI_Report.json");
+        s.send_file("../../../executables/ota/0.1/bin/GUI_Report.json");
     }
     // usleep(8000000);
 

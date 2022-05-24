@@ -1,0 +1,136 @@
+{
+	"Cluster_name" : "ota",
+	"com_json" : 
+	{
+		"Proxy_Required_Method" : 
+		[
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 3,
+				"Method_Name" : "TransferExit",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 1,
+				"Method_Name" : "StartUpdateSession",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "PrepareUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
+			}
+		],
+		"Service_Discovery_Request" : 
+		[
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 1,
+				"Type" : "Find"
+			}
+		],
+		"Skeleton_Provided_Method" : 
+		[
+			{
+				"Method_ID" : 5,
+				"Method_Name" : "ProcessSwPackage",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "PrepareUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 3,
+				"Method_Name" : "VerifyUpdate",
+				"Service_ID" : 1
+			},
+			{
+				"Method_ID" : 6,
+				"Method_Name" : "Activate",
+				"Service_ID" : 2
+			}
+		]
+	},
+	"ucm_json" : 
+	{
+		"GUI" : 
+		{
+			"Activate" : 
+			{
+				"PrepareUpdate" : "Prepared",
+				"StartUpdateSession" : "Done",
+				"VerifyUpdate" : "Rejected"
+			},
+			"PackageManagerStatus" : "kVerifying",
+			"ProcessedActionType" : "Install",
+			"TransferFinishRate" : 100.0
+		},
+		"PKGDetails" : 
+		{
+			"Action" : "Install",
+			"Clusters" : 
+			{
+				"sw1" : 
+				{
+					"name" : "SWCL_TEST1_VENDOR_A",
+					"version" : "0.1.0"
+				}
+			},
+			"PackageStatus" : "kProcessed"
+		},
+		"PackageManager" : 
+		{
+			"Activate" : "",
+			"ProcessSwPackage" : "kSuccess",
+			"TransferData" : "kSuccess",
+			"TransferExit" : "kSuccess"
+		}
+	}
+}

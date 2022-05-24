@@ -20,7 +20,7 @@ namespace ara
         public:
             UpdateRequestImpl(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::skeleton::UpdateRequestSkeleton(I_id, mode)
             {
-                freopen("sm.txt", "w+", stdout); // write cout and printf to txt file
+                //freopen("sm.txt", "w+", stdout); // write cout and printf to txt file
                 FunctionGroupStates = {};
             }
             sm_logger *log {new sm_logger(8088)};

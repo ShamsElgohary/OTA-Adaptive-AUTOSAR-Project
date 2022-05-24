@@ -75,6 +75,7 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
     FunctionGroupState::CtorToken token = FunctionGroupState::Preconstruct(functionGroup_Name, functionGroup_NewState);
     FunctionGroupState functionGroup(move(token));
     newfunctionGroup = functionGroup;
+
     return setState(functionGroup);
 }
 
@@ -139,9 +140,11 @@ void ApplicationExecutionMgr::initialize()
     transitionChanges_.toTerminate_.clear();
 }
 
-ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{rootPath} {
-        sim_socket.connect_to_socket();
-        sim_socket.send_exe_name(simulation::exe_name::exec);}
+ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{rootPath}
+{
+    sim_socket.connect_to_socket();
+    sim_socket.send_exe_name(simulation::exe_name::exec);
+}
 
 bool ApplicationExecutionMgr::run()
 {
@@ -150,7 +153,7 @@ bool ApplicationExecutionMgr::run()
         ProcessStateClientRequest();
         Terminate();
         Execute();
-        bool state_check=true;
+        bool state_check = true;
         close(smpipe);
         smpipe = open("smFifo", O_WRONLY);
         write(smpipe, &state_check, sizeof(bool));
@@ -224,7 +227,7 @@ future<void> ApplicationExecutionMgr::IAM_handle()
 
 void ApplicationExecutionMgr::reportConfig_simulation()
 {
-      unique_lock<mutex> locker(mu);
+    unique_lock<mutex> locker(mu);
     Json::Value machine_manifest_json;
     Json::Reader reader;
     std::ifstream input_file("../../etc/system/machine_manifest.json");
@@ -318,11 +321,10 @@ void ApplicationExecutionMgr::reportConfig_simulation()
         obj[fng.first] = fng.second->currentState_;
     }
     root["function_group_states"] = obj;
-    //root["message_box"] = report_msg;
+    // root["message_box"] = report_msg;
     output_file << root;
     output_file.close();
     //------------------------------------------------
     sim_socket.send_file("../etc/executables_config.json");
     locker.unlock();
 }
-
