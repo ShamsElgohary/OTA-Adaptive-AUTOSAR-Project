@@ -155,6 +155,8 @@ namespace ara
                         void operator()()
                         {
                             // fire and forget
+                            StopUpdateSessionOutput out;
+                            process_method_call<StopUpdateSessionOutput>(out);
                             ara::com::AddMethodCall(4, "StopUpdateSession", ara::com::MethodType::Proxy_Method, 1, Cluster_Name);
                         }
                     };
