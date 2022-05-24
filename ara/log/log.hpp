@@ -40,7 +40,7 @@ namespace ara
         {
             try
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
+                std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
 
@@ -85,9 +85,9 @@ namespace ara
                 std::cout << e.what() << '\n';
             }
 
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
+                std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
@@ -112,9 +112,9 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
+                std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
@@ -135,9 +135,9 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
+                std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
@@ -157,9 +157,9 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
+                std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
@@ -187,9 +187,9 @@ namespace ara
             std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "/executables/ucm/bin/GUI_Report.json";
+                std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
@@ -217,9 +217,9 @@ namespace ara
             std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE)
             {
-                std::string Path = CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/bin/GUI_Report.json";
+                std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
                 guiSocket->send_file(PathArr);
             }
