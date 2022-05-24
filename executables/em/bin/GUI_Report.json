@@ -5,6 +5,66 @@
 		"Proxy_Required_Method" : 
 		[
 			{
+				"Method_ID" : 7,
+				"Method_Name" : "GetSwClusterInfo",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 1,
+				"Method_Name" : "TransferStart",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
+				"Method_ID" : 2,
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
+			},
+			{
 				"Method_ID" : 2,
 				"Method_Name" : "TransferData",
 				"Service_ID" : 2
@@ -25,6 +85,11 @@
 				"Service_ID" : 2
 			},
 			{
+				"Method_ID" : 5,
+				"Method_Name" : "ProcessSwPackage",
+				"Service_ID" : 2
+			},
+			{
 				"Method_ID" : 1,
 				"Method_Name" : "StartUpdateSession",
 				"Service_ID" : 1
@@ -32,11 +97,6 @@
 			{
 				"Method_ID" : 2,
 				"Method_Name" : "PrepareUpdate",
-				"Service_ID" : 1
-			},
-			{
-				"Method_ID" : 3,
-				"Method_Name" : "VerifyUpdate",
 				"Service_ID" : 1
 			},
 			{
@@ -72,19 +132,9 @@
 		"Skeleton_Provided_Method" : 
 		[
 			{
-				"Method_ID" : 5,
-				"Method_Name" : "ProcessSwPackage",
-				"Service_ID" : 2
-			},
-			{
 				"Method_ID" : 2,
-				"Method_Name" : "PrepareUpdate",
-				"Service_ID" : 1
-			},
-			{
-				"Method_ID" : 3,
-				"Method_Name" : "VerifyUpdate",
-				"Service_ID" : 1
+				"Method_Name" : "TransferData",
+				"Service_ID" : 2
 			},
 			{
 				"Method_ID" : 3,
@@ -130,7 +180,8 @@
 			"Activate" : "",
 			"ProcessSwPackage" : "kSuccess",
 			"TransferData" : "kSuccess",
-			"TransferExit" : "kSuccess"
+			"TransferExit" : "kSuccess",
+			"TransferStart" : "kSuccess"
 		}
 	}
 }

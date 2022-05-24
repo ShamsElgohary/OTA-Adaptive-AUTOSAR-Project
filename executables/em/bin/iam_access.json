@@ -67,7 +67,7 @@
 	[
 		{
 			"Grant_Result" : true,
-			"Process_id" : 34380,
+			"Process_id" : 79598,
 			"Process_name" : "ucm",
 			"info" : 
 			{
@@ -75,42 +75,6 @@
 				"Instance_ID" : 1,
 				"PR_Type" : "Provide",
 				"Service_ID" : 2
-			}
-		},
-		{
-			"Grant_Result" : true,
-			"Process_id" : 34163,
-			"Process_name" : "sm",
-			"info" : 
-			{
-				"GrantType" : "ComGrant",
-				"Instance_ID" : 1,
-				"PR_Type" : "Provide",
-				"Service_ID" : 1
-			}
-		},
-		{
-			"Grant_Result" : true,
-			"Process_id" : 34404,
-			"Process_name" : "ota",
-			"info" : 
-			{
-				"GrantType" : "ComGrant",
-				"Instance_ID" : 1,
-				"PR_Type" : "Require",
-				"Service_ID" : 2
-			}
-		},
-		{
-			"Grant_Result" : true,
-			"Process_id" : 34380,
-			"Process_name" : "ucm",
-			"info" : 
-			{
-				"GrantType" : "ComGrant",
-				"Instance_ID" : 1,
-				"PR_Type" : "Require",
-				"Service_ID" : 1
 			}
 		}
 	]

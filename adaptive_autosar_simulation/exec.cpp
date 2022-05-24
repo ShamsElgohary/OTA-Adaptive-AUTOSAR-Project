@@ -196,6 +196,7 @@ void exec::update_executables_confg()
             conf_node->setText(0,n);
             font.setPointSize(12);
             font.setBold(false);
+            conf_node->setFont(0 ,font);
             i++;
 
             QTreeWidgetItem* fng =  new QTreeWidgetItem{};
