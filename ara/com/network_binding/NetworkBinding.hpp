@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -22,12 +23,19 @@ namespace ara
         public:
             NetworkBindingBase() = default;
             ~NetworkBindingBase() = default;
+            
             virtual void OfferService() = 0;
             virtual void StopOfferService() = 0;
+
             virtual stringstream ReceiveMessage(int &method_id) = 0;
             virtual stringstream ReceiveMessage() = 0;
-            virtual void SendRequest(uint32_t methodID, stringstream &s) = 0;
+
+            virtual stringstream SendRequest(uint32_t methodID, stringstream &s) = 0;            
+            virtual void SendResponse(uint32_t methodID, stringstream &s) = 0;
+            virtual void SendFireAndForget(uint32_t methodID, stringstream &s) = 0;
+            virtual void SendNotification(uint32_t methodID, stringstream &s) = 0;
             virtual void ServerListen() = 0;
+            
             virtual void CloseConnection() = 0;
         };
         /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,10 +61,17 @@ namespace ara
             void OfferService() override;
             void StopOfferService() override;
             void ServerListen() override;
-            void SendRequest(uint32_t methodID, stringstream &s) override;
+
+            stringstream SendRequest(uint32_t methodID, stringstream &s) override;            
+            void SendResponse(uint32_t methodID, stringstream &s) override;
+            void SendFireAndForget(uint32_t methodID, stringstream &s) override;
+            void SendNotification(uint32_t methodID, stringstream &s) override;
+
             void CloseConnection() override;
+            
             stringstream ReceiveMessage(int &method_id) override;
             stringstream ReceiveMessage() override;
+            
             static vector<serviceinfo> FindService_SomeIp(int serviceID, ara::com::InstanceIdentifier instance_id = 0xffff);
 
         };
