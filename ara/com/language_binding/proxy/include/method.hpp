@@ -22,6 +22,7 @@ namespace ara
                     
                     uint16_t ID;
                     MethodBase(std::shared_ptr<ara::com::NetworkBindingBase> ptr, uint16_t id) : Delegate(ptr), ID(id) {}
+                    
                     template <typename output, typename T>
                     void process_method_call(T in, output &out)
                     {
@@ -29,28 +30,30 @@ namespace ara
                         Serializer2 S;
                         S.serialize(payload, in);
                         usleep(8000);
-                        this->Delegate->SendRequest(this->ID, payload);
-                        stringstream out_ss = this->Delegate->ReceiveMessage();
+                        // REQUEST SENDS A MESSAGES AND RECEIVES RESPONSE
+                        stringstream out_ss = this->Delegate->SendRequest(this->ID, payload);
                         Deserializer2 D;
                         D.deserialize(out_ss, out);
                         this -> Delegate ->CloseConnection();
                     }
+                    
                     template <typename output>
                     void process_method_call(output &out)
                     {
                         stringstream payload;
                         usleep(8000);
-                        this->Delegate->SendRequest(this->ID, payload);
-                        stringstream out_ss = this->Delegate->ReceiveMessage();
+                        // REQUEST SENDS A MESSAGES AND RECEIVES RESPONSE (NO INPUT PAYLOAD IS EMPTY)
+                        stringstream out_ss = this->Delegate->SendRequest(this->ID, payload);
                         Deserializer2 D;
                         D.deserialize(out_ss, out);
                         this -> Delegate ->CloseConnection();
                     }
+                    
                     void process_method_call()
                     {
                         stringstream payload;
                         usleep(8000);
-                        this->Delegate->SendRequest(this->ID, payload);
+                        this->Delegate->SendFireAndForget(this->ID, payload);
                     }
                 };
             }
