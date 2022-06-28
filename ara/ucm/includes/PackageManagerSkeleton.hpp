@@ -289,7 +289,7 @@ namespace ara
                         stringstream result;
                         TransferStartOutput op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(1, result);
+                        this->ptr2bindingProtocol->SendRequest(1, result);
 
                         break;
                     }
@@ -305,7 +305,7 @@ namespace ara
                         stringstream result;
                         TransferDataOutput op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(2, result);
+                        this->ptr2bindingProtocol->SendRequest(2, result);
 
                         break;
                     }
@@ -321,7 +321,7 @@ namespace ara
                         stringstream result;
                         TransferExitOutput op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(3, result);
+                        this->ptr2bindingProtocol->SendRequest(3, result);
 
                         break;
                     }
@@ -337,7 +337,7 @@ namespace ara
                         stringstream result;
                         TransferDeleteOutput op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(4, result);
+                        this->ptr2bindingProtocol->SendRequest(4, result);
 
                         break;
                     }
@@ -353,7 +353,7 @@ namespace ara
                         stringstream result;
                         ProcessSwPackageOutput op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(5, result);
+                        this->ptr2bindingProtocol->SendRequest(5, result);
 
                         break;
                     }
@@ -366,7 +366,7 @@ namespace ara
                         stringstream result;
                         ActivateOutput op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(6, result);
+                        this->ptr2bindingProtocol->SendRequest(6, result);
 
                         break;
                     }
@@ -379,7 +379,7 @@ namespace ara
                         stringstream result;
                         GetSwClusterInfoOutput op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(7, result);
+                        this->ptr2bindingProtocol->SendRequest(7, result);
 
                         break;
                     }
@@ -392,7 +392,7 @@ namespace ara
                         stringstream result;
                         RollbackOutput op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(8, result);
+                        this->ptr2bindingProtocol->SendRequest(8, result);
 
                         break;
                     }
@@ -405,7 +405,7 @@ namespace ara
                         stringstream result;
                         RevertProcessedSwPackagesOutput op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(9, result);
+                        this->ptr2bindingProtocol->SendRequest(9, result);
 
                         break;
                     }
@@ -418,7 +418,7 @@ namespace ara
                         stringstream result;
                         FinishOutput op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(10, result);
+                        this->ptr2bindingProtocol->SendRequest(10, result);
 
                         break;
                     }
@@ -431,7 +431,7 @@ namespace ara
                         stringstream result;
                         GetCurrentStatusField op = F_op.get();
                         S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(11, result);
+                        this->ptr2bindingProtocol->SendRequest(11, result);
 
                         break;
                     }

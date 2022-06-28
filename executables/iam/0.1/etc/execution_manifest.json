@@ -1,0 +1,19 @@
+{
+	"platform_application": "false",
+	"startup_configs": 
+	{
+		"Config 1": 
+		{
+			"depends": {"someip_sd":"Krunning"},
+			"machine_states": ["running"],
+			"function_group_states": {},
+			"scheduling_policy": "Round Robin",
+			"scheduling_priority": "1",
+			"arguments": [],
+			"environments": []
+		}
+	}
+}
+
+
+

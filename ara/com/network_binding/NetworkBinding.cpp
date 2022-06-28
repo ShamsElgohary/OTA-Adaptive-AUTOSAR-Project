@@ -17,8 +17,8 @@ namespace ara
         {
 
         }
-
-        stringstream SomeIpNetworkBinding::SendRequest(uint32_t methodID, stringstream &s)
+        
+        void SomeIpNetworkBinding::SendRequest(uint32_t methodID, stringstream &s)
         {
             if (!clientInstance)
             {
@@ -26,47 +26,7 @@ namespace ara
             }
             someip::someipHeader header(serviceId, methodID);
             someip::someipMessage someipMsg(header, s);
-            someip::someipMessage receivedMsg = clientInstance->SendRequest(someipMsg);
-
-            std::stringstream receivedData;
-            receivedData << receivedMsg.payload;
-
-            return receivedData;
-        }
-
-
-        void SomeIpNetworkBinding::SendResponse(uint32_t methodID, stringstream &s)
-        {
-            if (!clientInstance)
-            {
-                clientInstance = someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig);
-            }
-            someip::someipHeader header(serviceId, methodID);
-            someip::someipMessage someipMsg(header, s);
-            clientInstance->SendResponse(someipMsg);
-        }
-
-        void SomeIpNetworkBinding::SendFireAndForget(uint32_t methodID, stringstream &s)
-        {
-            if (!clientInstance)
-            {
-                clientInstance = someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig);
-            }
-
-            someip::someipHeader header(serviceId, methodID);
-            someip::someipMessage someipMsg(header, s);
-            clientInstance->SendFireAndForget(someipMsg);
-        }
-
-        void SomeIpNetworkBinding::SendNotification(uint32_t methodID, stringstream &s)
-        {
-            if (!clientInstance)
-            {
-                clientInstance = someip::someipConnection::SetSomeIpConfiguration(io_service, port, someipConfig);
-            }
-            someip::someipHeader header(serviceId, methodID);
-            someip::someipMessage someipMsg(header, s);
-            clientInstance->SendNotification(someipMsg);
+            clientInstance->SendMessage(someipMsg);
         }
 
         void SomeIpNetworkBinding::CloseConnection()
@@ -83,10 +43,9 @@ namespace ara
             }
             clientInstance->ServerListen();
         }
-
-
         stringstream SomeIpNetworkBinding::ReceiveMessage(int &method_id)
         {
+
             someip::someipMessage someipMsg = clientInstance->ReceiveMessage();
             method_id = someipMsg.header.getMethodID();
             std::stringstream receivedData;

@@ -1,0 +1,27 @@
+{
+	"platform_application": "false",
+	"startup_configs": 
+	{
+		"Config 1": 
+		{
+			"depends": {"ex1" :"Kterminate"},
+			"machine_states": [],
+			"function_group_states": {"fn1" : ["idle"]},
+			"scheduling_policy": "Round Robin",
+			"scheduling_priority": "1",
+			"arguments": [],
+			"environments": []
+		},
+		"Config 2": 
+		{
+			"depends": {},
+			"machine_states": [],
+			"function_group_states": {"fn1" : ["play"]},
+			"scheduling_policy": "Round Robin",
+			"scheduling_priority": "1",
+			"arguments": [],
+			"environments": []
+		}
+	}
+}
+

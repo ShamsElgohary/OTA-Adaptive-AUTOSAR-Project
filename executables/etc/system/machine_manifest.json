@@ -1,0 +1,23 @@
+{
+  "function_groups": 
+  {
+    "machineFG": 
+    {
+      "states": ["off","startup","running","update","sleep"] 
+    },
+    "fn1": 
+    {
+      "states": ["idle","play","terminate"]
+    },
+    "fn2": 
+    {
+      "states": ["idle","run","end"]
+    },
+    "fn3": 
+    {
+      "states": ["idle","run","end"]
+    }
+  }
+
+}
+

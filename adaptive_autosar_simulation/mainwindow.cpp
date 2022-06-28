@@ -62,7 +62,7 @@ void MainWindow::on_simulation_button_clicked()
     int id = fork();
     if (id == 0)
     {
-        chdir("/home/shams/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/");
+        chdir("/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/");
         execl("em", nullptr);
     }
 }

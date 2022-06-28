@@ -83,10 +83,10 @@ namespace ara
                     friend class boost::serialization::access;
                 };
 
-                virtual std::future<StartUpdateSessionOutput> StartUpdateSession() = 0;
-                virtual std::future<PrepareUpdateOutput> PrepareUpdate(FunctionGroupList FunctionGroups) = 0;
-                virtual std::future<VerifyUpdateOutput> VerifyUpdate(FunctionGroupList FunctionGroups) = 0;
-                virtual void StopUpdateSession() = 0;
+            virtual std::future<StartUpdateSessionOutput> StartUpdateSession() = 0;
+            virtual std::future<PrepareUpdateOutput> PrepareUpdate(FunctionGroupList FunctionGroups) = 0;
+            virtual std::future<VerifyUpdateOutput> VerifyUpdate(FunctionGroupList FunctionGroups) = 0;
+            virtual void StopUpdateSession() = 0;
 
                 void handleMethod() override
                 {
@@ -113,7 +113,7 @@ namespace ara
                         startUpdateSessionOutput = StartUpdateSession();
                         StartUpdateSessionOutput out1=startUpdateSessionOutput.get();
                         S.serialize(result, out1);
-                        this->ptr2bindingProtocol->SendResponse(1, result);
+                        this->ptr2bindingProtocol->SendRequest(1, result);
                         break;
                     }
                     case 2:
@@ -123,7 +123,7 @@ namespace ara
                         prepareUpdateOutput = PrepareUpdate(prepareUpdateInput.FunctionGroups);
                         PrepareUpdateOutput out2=prepareUpdateOutput.get();
                         S.serialize(result, out2);
-                        this->ptr2bindingProtocol->SendResponse(2, result);
+                        this->ptr2bindingProtocol->SendRequest(2, result);
                         break;
                     } 
                     case 3:
@@ -133,7 +133,7 @@ namespace ara
                         verifyUpdateOutput = VerifyUpdate(verifyUpdateInput.FunctionGroups);
                         VerifyUpdateOutput out3=verifyUpdateOutput.get();
                         S.serialize(result, out3);
-                        this->ptr2bindingProtocol->SendResponse(3, result);
+                        this->ptr2bindingProtocol->SendRequest(3, result);
                         break;
                     }
                     case 4:
