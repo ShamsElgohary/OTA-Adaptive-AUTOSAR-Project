@@ -27,7 +27,7 @@ enum EndUserType{
 };
 
 enum SecurityType{
-	RAW,TLS,IPSec
+	RAW,TLS
 };
 
 
@@ -97,6 +97,9 @@ class someipConnection{
 		/* CONNECT PROXY TO SERVER */
 		virtual bool ProxyConnect();	
 
+		/* SHOWS CONTENT OF SOMEIP MSG */
+		void ReportMessageInfo(someipMessage msg);
+
 		/* CLOSE SOCKET CONNECTION */
 		virtual bool CloseConnection() = 0;
 
@@ -123,6 +126,7 @@ class someipConnection{
 		virtual bool SendFireAndForget(someipMessage &msg) = 0;
 
 		virtual bool SendNotification(someipMessage &msg) = 0;
+
 };
 
 

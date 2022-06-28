@@ -53,13 +53,12 @@ namespace someip {
 	someipMessage someipTCP::SendRequest(someipMessage &req)
 	{
 		req.header.setMessageType( MessageType::REQUEST );
-		
+		/* Report Message Info */
+		//ReportMessageInfo(req);
 		/* SEND MESSAGE */
 		this->SendMessage(req);
-
 		/* RESPONSE */
 		someipMessage responseMsg = this->ReceiveMessage();
-
 		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
 		{
 			//std::cout<< "[someip] MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
@@ -75,6 +74,8 @@ namespace someip {
     bool someipTCP::SendResponse(someipMessage &responseMsg)
 	{
 		responseMsg.header.setMessageType( MessageType::RESPONSE );
+		/* Report Message Info */
+		//ReportMessageInfo(responseMsg);
 		bool operationStatus = this->SendMessage(responseMsg);
 		return operationStatus;
 	}
@@ -84,17 +85,20 @@ namespace someip {
 	bool someipTCP::SendFireAndForget(someipMessage &msg)
 	{
 		msg.header.setMessageType( MessageType::REQUEST_NO_RETURN );
-		this->SendMessageAsynch(msg);
+		/* Report Message Info */
+		//ReportMessageInfo(msg);
+		this->SendMessage(msg);
 		return true;
 	}
 
 	bool someipTCP::SendNotification(someipMessage &msg)
 	{
 		msg.header.setMessageType( MessageType::NOTIFICATION );
-		this->SendMessageAsynch(msg);
+		/* Report Message Info */
+		//ReportMessageInfo(msg);
+		this->SendMessage(msg);
 		return true;
 	}
-
 
 	/* FUNCTION TO SEND A SOME/IP MESSAGE USING TCP SYNCHRONOUS */
 	bool someipTCP::SendMessage(someipMessage &msg)

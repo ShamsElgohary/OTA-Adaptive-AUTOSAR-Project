@@ -8,7 +8,6 @@ namespace someip
 
     someipHeader::someipHeader() 
     {
-    interfaceVersion = 1;
     messageID = requestID = 0;
     returnCode = ReturnCode::E_OK;
     messageType = MessageType::ERROR;
@@ -56,8 +55,8 @@ namespace someip
 		return someip::getMethodID( messageID );
 	}
 
-    	void someipHeader::setMessageType(MessageType messageType) {
-		messageType = messageType;
+	void someipHeader::setMessageType(MessageType messageType) {
+		this->messageType = messageType;
 	}
 
 	bool someipHeader::isErrorType() const {
@@ -65,7 +64,7 @@ namespace someip
 	}
 
 	void someipHeader::setMessageID(MessageID messageID) {
-		messageID = messageID;
+		this->messageID = messageID;
 	}
 
 	void someipHeader::setServiceID(ServiceID serviceID) {
@@ -110,6 +109,15 @@ namespace someip
 		this->length = length;	
 	}
 
+	uint8_t someipHeader::getInterfaceVersion()
+	{
+		return this->interfaceVersion;
+	}
+
+	uint8_t someipHeader::getProtocolVersion()
+	{
+		return this->protocolVersion;
+	}
 
     bool someipHeader::operator==(const someipHeader& right) const {
 		if (messageID != right.messageID)

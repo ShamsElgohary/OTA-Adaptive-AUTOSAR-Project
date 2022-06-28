@@ -5,7 +5,7 @@ sm logger connected to gui
 [sm] setting new state from sm
 [sm] setting new state from sm
 [iamClient] Connected to the server!
-[iamClient] 4381
+[iamClient] 6858
 [iamClient] Awaiting server response...
 [iamClient] Result: 1
 IP Address: 127.0.0.1 

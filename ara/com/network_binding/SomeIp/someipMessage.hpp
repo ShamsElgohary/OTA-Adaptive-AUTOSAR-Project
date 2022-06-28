@@ -94,7 +94,7 @@ class someipHeader {
 		uint32_t  length;
 		RequestID requestID;
 		ProtocolVersion protocolVersion = 1;
-		InterfaceVersion interfaceVersion ;
+		InterfaceVersion interfaceVersion =1;
 		MessageType messageType;
 		ReturnCode returnCode;
 
@@ -114,7 +114,8 @@ class someipHeader {
 		RequestID getRequestID() const;
 		ServiceID getServiceID() const;
 		uint32_t getLength();
-
+		InterfaceVersion getInterfaceVersion();
+		ProtocolVersion getProtocolVersion();
 
 		void setMessageType(MessageType messageType);
 		void setMessageID(MessageID messageID);

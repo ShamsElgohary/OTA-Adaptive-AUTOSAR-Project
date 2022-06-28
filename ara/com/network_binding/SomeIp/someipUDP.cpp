@@ -49,19 +49,18 @@ namespace someip{
 	someipMessage someipUDP::SendRequest(someipMessage &req)
 	{
 		req.header.setMessageType( MessageType::REQUEST );
-
+		/* Report Message Info */
+		//ReportMessageInfo(req);
 		/* SEND MESSAGE */
 		this->SendMessage(req);
-
 		/* RESPONSE */
 		someipMessage responseMsg = this->ReceiveMessage();
-
 		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
 		{
 			//std::cout<< "[someip] MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
 			/* CONTAINS HEADER WITH ERROR CODE (DEFAULT CONSTRUCTOR) */
-			// someipMessage msg;
-			// return msg;
+			//someipMessage msg;
+			//return msg;
 		}
 
 		return responseMsg;
@@ -70,39 +69,32 @@ namespace someip{
 
     bool someipUDP::SendResponse(someipMessage &responseMsg)
 	{
-		if( responseMsg.header.getMessageType() != MessageType::RESPONSE )
-		{
-			std::cout<< "[someip] MESSAGE TYPE ISN'T RESPONSE MESSAGE " << std::endl;
-			//return false;
-		}
-
-		this->SendMessage(responseMsg);
-		return true;
+		responseMsg.header.setMessageType( MessageType::RESPONSE );
+		/* Report Message Info */
+		//ReportMessageInfo(responseMsg);
+		bool operationStatus = this->SendMessage(responseMsg);
+		return operationStatus;
 	}
 
 	/* REQUEST NO RESPONSE */
 	bool someipUDP::SendFireAndForget(someipMessage &msg)
 	{
-		if( msg.header.getMessageType() != MessageType::REQUEST_NO_RETURN )
-		{
-			std::cout<< "[someip] MESSAGE TYPE ISN'T REQUEST NO RETURN MESSAGE " << std::endl;
-		}
-
+		msg.header.setMessageType( MessageType::REQUEST_NO_RETURN );
+		/* Report Message Info */
+		//ReportMessageInfo(msg);
 		this->SendMessage(msg);
 		return true;
 	}
 
 	bool someipUDP::SendNotification(someipMessage &msg)
 	{
-		if( msg.header.getMessageType() != MessageType::NOTIFICATION )
-		{
-			std::cout<< "[someip] MESSAGE TYPE ISN'T NOTIFICATION " << std::endl;
-		}
-
+		msg.header.setMessageType( MessageType::NOTIFICATION );
+		/* Report Message Info */
+		//ReportMessageInfo(msg);
 		this->SendMessage(msg);
 		return true;
 	}
-
+	
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING UDP */
 	bool someipUDP::SendMessage(someipMessage &msg)
 	{

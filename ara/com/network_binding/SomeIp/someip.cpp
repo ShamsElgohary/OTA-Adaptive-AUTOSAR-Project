@@ -35,7 +35,7 @@ namespace someip
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////  SOMEIP CLIENT  	/////////////////////////////////////////
+    ///////////////////////////////////  SOMEIP CONNECTION 	/////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -142,5 +142,61 @@ namespace someip
 		std::cout<< " [someip] WRONG INSTANCE CALLED... \n";
 		// METHOD RELATED TO SERVER ONLY
 	}
+
+
+	void someipConnection::ReportMessageInfo(someipMessage msg)
+	{
+		stringstream monitor;
+		
+		std::string userTypeStr[] = {"CLIENT", "SERVER"};
+		std::string tpTypeStr[]= {"TCP","UDP"};
+		std::string messageTypeString;
+
+		switch (msg.header.getMessageType())
+		{
+		case 0x00:
+			messageTypeString = "REQUEST";
+			break;
+		case 0x01:
+			messageTypeString = "REQUEST_NO_RETURN";
+			break;
+		case 0x02:
+			messageTypeString = "NOTIFICATION";
+			break;
+		case 0x80:
+			messageTypeString = "RESPONSE";
+			break;
+		case 0x81:
+			messageTypeString = "ERROR";
+			break;								
+		case 0x20:
+			messageTypeString = "TP_REQUEST";
+			break;
+		case 0x21:
+			messageTypeString = "TP_REQUEST_NO_RETURN";
+			break;
+		case 0x22:
+			messageTypeString = "TP_NOTIFICATION";
+			break;
+		case 0xA0:
+			messageTypeString = "TP_RESPONSE";
+			break;
+		case 0xA1:
+			messageTypeString = "TP_ERROR";
+			break;
+		default:
+			break;
+		}
+
+
+		monitor<<"\n\n[endUserType] : "<< userTypeStr[this->endUserType] << " [Transport Protocol] "<< tpTypeStr[this->tpType];
+		monitor<<"\n[SOME/IP Message Details] \nMessageID [ServiceId] " << msg.header.getServiceID() <<" [MethodId] " << msg.header.getMethodID()
+				<< "\n[length] " << msg.header.getLength() 
+				<< "\n[RequestId] "<<msg.header.getRequestID() 
+				<< "\n[Protocol Version] " << +msg.header.getProtocolVersion() << " [Interface Version] " << +msg.header.getInterfaceVersion()
+				<< " [Message Type] " << messageTypeString << " [Return Code] 0 \n\n"; 
+		
+	}
+
 
 } // Namespace someip
