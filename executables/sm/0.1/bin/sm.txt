@@ -1,5 +1,0 @@
-Sm offering service
-[someip] connect: Connection refused
-[someip] CLIENT DIDN'T CONNECT TO SERVER 
-[someip] write_some: Broken pipe
-sm Method name: 1, Method Type: Offer
