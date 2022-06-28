@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <bits/stdc++.h>
+#include "../utility/general.hpp"
 
 class sm: public QWidget
 {
@@ -19,7 +20,7 @@ class sm: public QWidget
 public:
     explicit sm(QWidget *parent = nullptr);
     void sm_handler();
-    enum clusters{OTA,UCM};
+    enum clusters{OTA=1,UCM};
 public slots:
     void update_sm();
     void update_terminal();

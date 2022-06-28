@@ -29,10 +29,12 @@ public:
     void open_tab(simulation::exe_name name);
 
     void create_server();
+    void closeEvent(QCloseEvent *e);
 private slots:
     void on_simulation_button_clicked();
     void on_ota_button_clicked();
     void on_ucm_button_clicked();
+
 
 private:
     Ui::MainWindow *ui;
@@ -51,9 +53,11 @@ private:
     QTabWidget *tabWidget =new QTabWidget ;
     QPushButton * simulation_button =new QPushButton;
     QPushButton * ota_button =new QPushButton;
-    QPushButton * ucm_button =new QPushButton;
+    QPushButton * end_simulation_button =new QPushButton;
     
     simulation* s=new simulation(8088);
+    int process_id;
+    bool simulation_running=false;
 
 };
 #endif // MAINWINDOW_H

@@ -11,11 +11,13 @@
 #include <unistd.h>
 #include <errno.h>
 #include <bits/stdc++.h>
+#include "../../utility/general.hpp"
 using namespace ara::sm;
-
+int sm_logger::fd=-1;
+std::thread sm_logger::gui_thread;
 sm_logger::sm_logger(int server_port)
 {
-freopen("sm.txt","w+",stdout); //write cout and printf to txt file
+//freopen("sm.txt","w+",stdout); //write cout and printf to txt file
 this->sim=new simulation(server_port);
 this->sim->connect_to_socket();
 this->sim->send_exe_name(simulation::exe_name::sm);
@@ -66,15 +68,16 @@ this->functions_state={};
 }
 void sm_logger::gui_receive()
 {
-      this->gui_thread =std::thread([this]{
-          UpdateRequestImpl * u=new UpdateRequestImpl(this,1);
+          gui_thread =std::thread([]{
+          UpdateRequestImpl * u;
+          string path(CUSTOMIZED_PROJECT_PATH+"gui_sm");
           while(1)
           {
-          fd=open("gui_sm",O_RDONLY);
+          fd=open(path.c_str(),O_RDONLY);
+          std::cout<<"received cluster\n";
           int cluster;
           read(fd,&cluster,sizeof(int));
           u->run_cluster(cluster);
-          close(fd);
           }
       });
       gui_thread.detach();

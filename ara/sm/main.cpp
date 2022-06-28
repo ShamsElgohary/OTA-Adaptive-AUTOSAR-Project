@@ -31,29 +31,16 @@ int main()
     sleep(1);
     x.setState(FunctionGroupState::Preconstruct("machineFG", "running"));
     sleep(6);
-    // UpdateRequestImpl updaterequest(1, ara::com::MethodCallProcessingMode::kEvent);
-    // updaterequest.log->gui_receive();
+    
     /********Test*************/
     UpdateRequestImpl updaterequest(&logger, 1, ara::com::MethodCallProcessingMode::kEvent);
-
-    FunctionGroupList function_groups = {"fn1", "fn2"};
-    // std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> out=updaterequest.StartUpdateSession();
-    // //std::cout<<"return is "<<static_cast<unsigned>(out.get().AppError)<<std::endl;
-    // std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> out1=updaterequest.PrepareUpdate(function_groups);
-    // //std::cout<<"return is "<<static_cast<unsigned>(out1.get().AppError)<<std::endl;
-    // std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> out2=updaterequest.VerifyUpdate(function_groups);
-    // //std::cout<<"return is "<<static_cast<unsigned>(out2.get().AppError)<<std::endl;
-    // updaterequest.StopUpdateSession();
-
+    sm_logger::gui_receive();
     /******Offer_Service*************/
     std::thread([&updaterequest]()
                 {
             cout<<"Sm offering service"<<endl;
             updaterequest.OfferService(); })
         .detach();
-    // x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
-
-    x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
-    // sleep(1000);
+    //x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
     sleep(1000);
 }

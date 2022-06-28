@@ -9,9 +9,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
    this->tabWidget->addTab(exec_tab,"Execution Manager");
    simulation_button->setText("start simulation");
+   ota_button->setText("Run OTA");
    vertical_layout_control->addWidget(simulation_button);
-   ucm_button->setText("UCM Run");
-   vertical_layout_control->addWidget(ucm_button);
+   vertical_layout_control->addWidget(ota_button);
+   end_simulation_button->setText("End simulation");
+   vertical_layout_control->addWidget(end_simulation_button);
+   ota_button->setVisible(false);
 
    main_layout->addLayout(vertical_layout_control);
    main_layout->addLayout(vertical_layout_tabs);
@@ -53,16 +56,21 @@ void MainWindow::connect_fun()
 {
     connect(simulation_button, SIGNAL(clicked()), this, SLOT(on_simulation_button_clicked()));
     connect(ota_button, SIGNAL(clicked()), this, SLOT(on_ota_button_clicked()));
-    connect(ucm_button, SIGNAL(clicked()), this, SLOT(on_ucm_button_clicked()));
+    connect(end_simulation_button, SIGNAL(clicked()), this, SLOT(on_ucm_button_clicked()));
 }
 void MainWindow::on_simulation_button_clicked()
 {
 //    system("./em");
 //    chdir("/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop_Qt_5_15_2_GCC_64bit-Debug");
-    int id = fork();
-    if (id == 0)
+    simulation_running=true;
+    process_id= fork();
+    if (process_id == 0)
     {
+<<<<<<< Updated upstream
         chdir("/home/shams/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/");
+=======
+        chdir("/home/youssef/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/");
+>>>>>>> Stashed changes
         execl("em", nullptr);
     }
 }
@@ -75,6 +83,7 @@ void MainWindow::choose_handler(simulation::exe_name name)
         break;
     case (simulation::exe_name::ucm) :
         ucm_tab->ucm_handler();
+        ota_button->setVisible(true);
         break;
     case (simulation::exe_name::ota) :
         ota_tab->ota_handler();
@@ -115,25 +124,61 @@ void MainWindow::open_tab(simulation::exe_name name)
 }
 void MainWindow::on_ota_button_clicked()
 {
-    QThread *th = QThread::create([this]
-                                  {
-                                      sm_tab->run_cluster(sm::clusters::OTA);
-                                      sm_tab->sm_handler();
-                                  });
-    th->start();
-    ota_tab = new ota();
-    tabWidget->addTab(ota_tab, "OTA");
+    //static int count;
+    int count=1;
+    /*if(count==0)
+    {
+        QThread*th= QThread::create([this]{
+        sm_tab->run_cluster(sm::clusters::UCM);
+        sm_tab->sm_handler();
+        });
+        th->start();
+        count++;
+        ota_button->setText("Run OTA");
+    }*/
+    if(count==1)
+    {
+        QThread*th= QThread::create([this]{
+        sm_tab->run_cluster(sm::clusters::OTA);
+        sm_tab->sm_handler();
+        });
+        th->start();
+        count=0;
+        ota_button->setText("Run OTA");
+    }
 }
 void MainWindow::on_ucm_button_clicked()
 {
-    QThread *th = QThread::create([this]
-          {
-              sm_tab->run_cluster(sm::clusters::UCM);
-              sm_tab->sm_handler();
-          });
-    th->start();
-    ucm_tab = new ucm();
-    tabWidget->addTab(ucm_tab, "UCM");
+    system("pkill -x em");
+    system("pkill -x sm");
+    system("pkill -x iam");
+    system("pkill -x ota");
+    system("pkill -x someip_sd");
+    system("pkill -x ucm");
+    system("pkill -x ex1");
+    system("pkill -x ex2");
+    while(tabWidget->count()!=1)
+    {
+    tabWidget->removeTab(1);
+    }
+    if(tabWidget->count()==1)
+    {
+        exec_tab->clear_widget();
+        ota_button->setVisible(false);
+        simulation_running=false;
+    }
+}
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+    if(simulation_running)
+    {
+        e->ignore();
+        QMessageBox msgbox;
+        msgbox.setText("Please Stop Simlation Before Exit");
+        msgbox.exec();
+    }
+    else
+        e->accept();
 }
 MainWindow::~MainWindow()
 {

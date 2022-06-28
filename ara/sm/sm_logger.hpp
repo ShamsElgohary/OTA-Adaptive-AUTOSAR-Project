@@ -16,11 +16,11 @@ class sm_logger
    private:
    sm_functions* functions_state;
    simulation* sim;
-   int fd=-1;
-   std::thread gui_thread;
+   static int fd;
+   static std::thread gui_thread;
    public:
    sm_logger(int server_port);
    void update_logger(sm_functions functions,std::map<string,string>fg_states);
    void reset();
-   void gui_receive();
+   static void gui_receive();
 };

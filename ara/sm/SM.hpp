@@ -31,15 +31,17 @@ namespace ara
             std::future<VerifyUpdateOutput> VerifyUpdate(FunctionGroupList FunctionGroups);
             void StopUpdateSession();
             void run_cluster(int cluster);
+            UpdateRequestImpl(const UpdateRequestImpl &other)=default;
 
-        private:
-            StateClient client;
-            std::map<Functiongroup, std::string> FunctionGroupStates;
+
+            private:
+            StateClient* client;
+            static std::map<Functiongroup, std::string> FunctionGroupStates;
             friend class sm_logger;
             enum clusters
             {
-                OTA,
-                UCM
+                OTA=1,
+                UCM=2
             };
         };
     }

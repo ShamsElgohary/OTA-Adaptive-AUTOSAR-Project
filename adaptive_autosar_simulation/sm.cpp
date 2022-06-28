@@ -113,7 +113,8 @@ void sm::update_sm()
 void sm::update_terminal()
 {
         console_text->clear();
-        QFile file("/home/youssef/Documents/OTA-Adaptive-AUTOSAR-Project/sm.txt");
+        string file_path=CUSTOMIZED_PROJECT_PATH+"executables/em/bin/sm.txt";
+        QFile file(file_path.c_str());
         file.open(QIODevice::ReadOnly);
         QTextStream in(&file);
         console_text->setText(in.readAll());
@@ -121,9 +122,13 @@ void sm::update_terminal()
 }
 void sm::run_cluster(sm::clusters cluster)
 {
-    char path[]="/home/youssef/Documents/OTA-Adaptive-AUTOSAR-Project/gui_sm";
-    int fd=open(path, O_WRONLY);
-    write(fd,&cluster,sizeof(cluster));
+    string path(CUSTOMIZED_PROJECT_PATH+"gui_sm");
+    mkfifo(path.c_str(),0777);
+    int fd=open(path.c_str(), O_WRONLY);
+    qDebug() << "open fd";
+    int c=(int)cluster;
+    write(fd,&c,sizeof(int));
     std::cout<<"connected"<<std::endl;
+    qDebug()<<"cluster is "<<c;
     ::close(fd);
 }
