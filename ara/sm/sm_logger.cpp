@@ -52,7 +52,7 @@ R.parse(f, event);
  reset();
  
  /*connect to server*/
- if (true)
+ if (SIMULATION_ACTIVE)
  {
     char current_dir[256];
     getcwd(current_dir,256);

@@ -72,10 +72,10 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
     {
         read(smpipe, &functionGroup_NewState[i], sizeof(char));
     }
+    close(smpipe);
     FunctionGroupState::CtorToken token = FunctionGroupState::Preconstruct(functionGroup_Name, functionGroup_NewState);
     FunctionGroupState functionGroup(move(token));
     newfunctionGroup = functionGroup;
-
     return setState(functionGroup);
 }
 
@@ -121,16 +121,15 @@ void ApplicationExecutionMgr::initialize()
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
     loadExecutablesConfigrations();
-    if (true)
+    if (SIMULATION_ACTIVE)
     {
         reportConfig_simulation();
         sleep(1);
     }
-
     iam_future = IAM_handle();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
-    if (true)
+    if (SIMULATION_ACTIVE)
     {
         reportConfig_simulation();
         sleep(1);
@@ -142,8 +141,11 @@ void ApplicationExecutionMgr::initialize()
 
 ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{rootPath}
 {
-    sim_socket.connect_to_socket();
-    sim_socket.send_exe_name(simulation::exe_name::exec);
+    if (SIMULATION_ACTIVE)
+    {
+        sim_socket.connect_to_socket();
+        sim_socket.send_exe_name(simulation::exe_name::exec);
+    }
 }
 
 bool ApplicationExecutionMgr::run()
@@ -153,16 +155,19 @@ bool ApplicationExecutionMgr::run()
         ProcessStateClientRequest();
         Terminate();
         Execute();
-        bool state_check = true;
-        close(smpipe);
-        smpipe = open("smFifo", O_WRONLY);
-        write(smpipe, &state_check, sizeof(bool));
-        close(smpipe);
+        report_success_sm();
         transitionChanges_.toStart_.clear();
         transitionChanges_.toTerminate_.clear();
     }
 }
 
+void ApplicationExecutionMgr::report_success_sm()
+{
+    bool state_check = true;
+    smpipe = open("smFifo", O_WRONLY);
+    write(smpipe, &state_check, sizeof(bool));
+    close(smpipe);
+}
 bool ApplicationExecutionMgr::Terminate()
 {
     for (auto &app : transitionChanges_.toTerminate_)
@@ -175,18 +180,20 @@ bool ApplicationExecutionMgr::Execute()
     map<string, Application *> apps_state;
     for (auto &app : transitionChanges_.toStart_)
     {
-
         apps_state[app->name] = app;
     }
     for (auto &app : transitionChanges_.toStart_)
     {
         app->depend = apps_state;
         app->parent = this;
-        process_state_update_future.push_back(app->start());
+        app->start();
     }
-    for (auto &f : process_state_update_future)
+    for (auto &app : transitionChanges_.toStart_)
     {
-        f.wait();
+        unique_lock<mutex> locker(app->mur);
+        while (app->current_state != ExecutionState::Krunning)
+            app->condr.wait(locker);
+        locker.unlock();
     }
     return true;
 }

@@ -49,7 +49,6 @@ namespace ara
             
             mutex mu;
             future<void> iam_future;
-            vector<future<void>> process_state_update_future;
             FunctionGroupState newfunctionGroup;
             vector<Executable> executables_;
             unique_ptr<MachineManifest> manifest_;
@@ -70,6 +69,7 @@ namespace ara
             string get_process_name(int test_id);
             future<void> IAM_handle();
             void reportConfig_simulation();
+            void report_success_sm();
         };
     }
 }

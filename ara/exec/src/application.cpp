@@ -17,10 +17,10 @@ Application::Application(Application::CtorToken &&token)
     name = token.name;
     executable_path = token.executable_path;
 }
-future<void> Application::start()
+void Application::start()
 {
-    return async(launch::async, [this]()
-                 {
+     thread([this]()
+           {
         for (auto &app_name : configuration_.dependency)
         {
             Application* app =depend[app_name.first] ;
@@ -28,11 +28,11 @@ future<void> Application::start()
 
             if(app_name.second == "Krunning")
             {
-                while(app->current_state !=ExecutionState::Krunning)
+                if(app->current_state !=ExecutionState::Krunning)
                     app->condr.wait(locker);
             }
             else{
-                while(app->current_state !=ExecutionState::Kterminate)
+                if(app->current_state !=ExecutionState::Kterminate)
                     app->condt.wait(locker);
             }
 
@@ -55,12 +55,12 @@ future<void> Application::start()
         current_state = newstate;
         locker.unlock();
         condr.notify_all();
-        if(true)
+        if(SIMULATION_ACTIVE)
         {
             static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
         }
         cout << "[em] " << name << " new state is Krunning " << id << "\n\n\n";
-        Update_status(); });
+        Update_status(); }).detach();
 }
 void Application::terminate()
 {
@@ -79,24 +79,19 @@ void Application::terminate()
 
 void Application::Update_status()
 {
-    thread([this]()
-           {
-        
         ExecutionState newstate = ExecutionState::Kidle;
         read(fd, &newstate, sizeof(current_state));
         unique_lock<mutex>  locker(mur);
         current_state = newstate;
-             
         id=0;
         close(fd);
         locker.unlock();
-        if(true)
+        if(SIMULATION_ACTIVE)
         {
             static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
         }    
         cout << "[em] " << name << " new state is Kterminate"<<"\n\n\n";
-        condt.notify_all(); })
-        .detach();
+        condt.notify_all();
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name, string path)
 {

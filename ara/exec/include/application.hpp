@@ -35,7 +35,7 @@ namespace ara
             Application(Application::CtorToken &&token);
             Application(ApplicationManifest::startUpConfiguration con, string name, string path);
             ~Application();
-            future<void> start();
+            void start();
             void terminate();
             void Update_status();
         };

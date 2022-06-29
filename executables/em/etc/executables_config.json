@@ -191,37 +191,29 @@
 		{
 			"current_state" : "Krunning",
 			"name" : "iam",
-			"pid" : 7069
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "ota",
-			"pid" : 7169
+			"pid" : 73472
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 6858
+			"pid" : 73431
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "someip_sd",
-			"pid" : 7061
+			"pid" : 73470
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "ucm",
-			"pid" : 7123
+			"pid" : 73478
 		}
 	],
 	"sm_request" : 
 	{
-		"fng" : "fn2",
-		"fng_state" : "idle"
+		"fng" : "machineFG",
+		"fng_state" : "running"
 	},
-	"to_run" : 
-	[
-		"ota"
-	],
+	"to_run" : [],
 	"to_term" : []
 }

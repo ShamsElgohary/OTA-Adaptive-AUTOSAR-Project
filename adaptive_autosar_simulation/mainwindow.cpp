@@ -66,11 +66,8 @@ void MainWindow::on_simulation_button_clicked()
     process_id= fork();
     if (process_id == 0)
     {
-<<<<<<< Updated upstream
-        chdir("/home/shams/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/");
-=======
-        chdir("/home/youssef/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/");
->>>>>>> Stashed changes
+        //chdir("/home/shams/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/");
+        chdir("/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/");
         execl("em", nullptr);
     }
 }
@@ -170,6 +167,7 @@ void MainWindow::on_ucm_button_clicked()
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {
+    s->~simulation();
     if(simulation_running)
     {
         e->ignore();
@@ -182,6 +180,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
 }
 MainWindow::~MainWindow()
 {
+    s->~simulation();
     system("pkill -f adaptive_autosar_simulation");
     delete ui;
 }
