@@ -56,19 +56,32 @@ void MainWindow::connect_fun()
 {
     connect(simulation_button, SIGNAL(clicked()), this, SLOT(on_simulation_button_clicked()));
     connect(ota_button, SIGNAL(clicked()), this, SLOT(on_ota_button_clicked()));
-    connect(end_simulation_button, SIGNAL(clicked()), this, SLOT(on_ucm_button_clicked()));
+    connect(end_simulation_button, SIGNAL(clicked()), this, SLOT(end_simulation_button_clicked()));
 }
 void MainWindow::on_simulation_button_clicked()
 {
-//    system("./em");
-//    chdir("/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/build-adaptive_autosar_simulation-Desktop_Qt_5_15_2_GCC_64bit-Debug");
     simulation_running=true;
+    if(flag==0)
+    {
+     string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
+     mkfifo(path.c_str(),0777);
     process_id= fork();
     if (process_id == 0)
     {
-        //chdir("/home/shams/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/");
-        chdir("/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/");
+        string path=CUSTOMIZED_PROJECT_PATH+"/executables/em/bin/";
+        chdir(path.c_str());
         execl("em", nullptr);
+    }
+    flag=1;
+    simulation_button->setText("Load Configurations");
+    }
+    else if(flag==1)
+    {
+        QThread*th= QThread::create([this]{
+        exec_tab->em_connect();
+        });
+        th->start();
+        simulation_button->setText("Process SM Request");
     }
 }
 void MainWindow::choose_handler(simulation::exe_name name)
@@ -144,7 +157,7 @@ void MainWindow::on_ota_button_clicked()
         ota_button->setText("Run OTA");
     }
 }
-void MainWindow::on_ucm_button_clicked()
+void MainWindow::end_simulation_button_clicked()
 {
     system("pkill -x em");
     system("pkill -x sm");
@@ -163,6 +176,8 @@ void MainWindow::on_ucm_button_clicked()
         exec_tab->clear_widget();
         ota_button->setVisible(false);
         simulation_running=false;
+        simulation_button->setText("start simulation");
+        flag=0;
     }
 }
 void MainWindow::closeEvent(QCloseEvent *e)
@@ -174,6 +189,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
         QMessageBox msgbox;
         msgbox.setText("Please Stop Simlation Before Exit");
         msgbox.exec();
+        end_simulation_button_clicked();
     }
     else
         e->accept();

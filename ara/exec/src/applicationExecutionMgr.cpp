@@ -59,6 +59,7 @@ bool ApplicationExecutionMgr::loadMachineConfigrations()
 
 bool ApplicationExecutionMgr::ProcessStateClientRequest()
 {
+    
     int size;
     char functionGroup_Name[10], functionGroup_NewState[10];
     smpipe = open("smFifo", O_RDONLY);
@@ -118,7 +119,10 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 
 void ApplicationExecutionMgr::initialize()
 {
+    std::string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
+    fd1=open(path.c_str(),O_RDONLY);
     mkfifo("smFifo", 0777);
+    wait_for_gui();
     loadMachineConfigrations();
     loadExecutablesConfigrations();
     if (SIMULATION_ACTIVE)
@@ -153,6 +157,8 @@ bool ApplicationExecutionMgr::run()
     while (true)
     {
         ProcessStateClientRequest();
+        reportConfig_simulation();
+        wait_for_gui();
         Terminate();
         Execute();
         report_success_sm();
@@ -334,4 +340,12 @@ void ApplicationExecutionMgr::reportConfig_simulation()
     //------------------------------------------------
     sim_socket.send_file("../etc/executables_config.json");
     locker.unlock();
+}
+void ApplicationExecutionMgr::wait_for_gui()
+{
+    std::string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
+    fd1=open(path.c_str(),O_RDONLY);
+    int tmp;
+    read(fd1,&tmp,sizeof(int));
+    close(fd1);
 }

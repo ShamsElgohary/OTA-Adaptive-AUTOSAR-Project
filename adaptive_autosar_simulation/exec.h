@@ -21,6 +21,8 @@ public:
     void update_fng_states();
     void em_handler();
     void clear_widget();
+    void em_connect();
+    int fd;
 public slots:
     void update_exec();
 signals:
@@ -67,6 +69,7 @@ private:
     vector<string> to_term;
     map<string , string> sm_request;
     string msg ;
+
 };
 
 #endif // EXEC_H

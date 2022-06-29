@@ -1,8 +1,11 @@
 #include "exec.h"
+#include "mainwindow.h"
 #include "simulation.hpp"
 
 exec::exec(QWidget *parent): QWidget{parent}
 {
+
+
     machine_configGbx->setLayout(new QHBoxLayout());
 
     main_layout->addWidget(Running_executables, 0, 0, 1, 1 );
@@ -59,6 +62,7 @@ exec::exec(QWidget *parent): QWidget{parent}
     update_running_executables();
     update_fng_states();
     update_sm_requests();
+
     setLayout(main_layout);
 }
 void exec::parse_exec_json()
@@ -377,6 +381,14 @@ void exec::update_exec( )
     update_running_executables();
     update_fng_states();
     update_sm_requests();
+}
+void exec::em_connect()
+{
+    int c=1;
+    string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
+    fd=open(path.c_str(), O_WRONLY);
+    write(fd,&c,sizeof(int));
+    ::close(fd);
 }
 
 void exec::em_handler()

@@ -33,7 +33,7 @@ public:
 private slots:
     void on_simulation_button_clicked();
     void on_ota_button_clicked();
-    void on_ucm_button_clicked();
+    void end_simulation_button_clicked();
 
 
 private:
@@ -58,6 +58,7 @@ private:
     simulation* s=new simulation(8088);
     int process_id;
     bool simulation_running=false;
+    int flag=0;
 
 };
 #endif // MAINWINDOW_H

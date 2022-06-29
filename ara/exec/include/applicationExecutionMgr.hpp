@@ -22,6 +22,7 @@
 #include <bits/stdc++.h>
 #include "execution_client.hpp"
 #include "simulation.hpp"
+#include "../../../utility/general.hpp"
 #include <thread>
 #include <fstream>
 using namespace std;
@@ -33,6 +34,7 @@ namespace ara
         class ApplicationExecutionMgr 
         {
             int smpipe{-1};
+            int fd1;
 
         public:
             typedef struct
@@ -70,6 +72,7 @@ namespace ara
             future<void> IAM_handle();
             void reportConfig_simulation();
             void report_success_sm();
+            void wait_for_gui();
         };
     }
 }
