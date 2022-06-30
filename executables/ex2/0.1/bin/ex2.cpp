@@ -12,11 +12,14 @@ void handle_sigTerm(int sig)
 int main()
 {
     struct sigaction sa;
-    sa.sa_flags=SA_RESTART;
-    sa.sa_handler =handle_sigTerm ;
-    sigaction(SIGTERM,&sa,NULL);
+    sa.sa_flags = SA_RESTART;
+    sa.sa_handler = handle_sigTerm;
+    sigaction(SIGTERM, &sa, NULL);
+
+    cout << "hellooo from v1111111" << endl;
     sleep(2);
     ExecutionClient exec;
     exec.ReportExecutionStaste(ExecutionState::Krunning);
-    while(1);
+    while (1)
+        ;
 }

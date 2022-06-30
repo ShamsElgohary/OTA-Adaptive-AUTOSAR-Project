@@ -1,5 +1,5 @@
 {
-    "Process List Version": 1,
+    "Process List Version": 7,
     "ex1": {
         "Path": "/ex1/0.1/",
         "Version": "0.1"
@@ -27,5 +27,10 @@
     "ucm": {
         "Path": "/ucm/0.1/",
         "Version": "0.1"
+    },
+    "ex3": {
+        "Path": "/ex3/0.1/",
+        "Version": "0.1"
     }
+
 }

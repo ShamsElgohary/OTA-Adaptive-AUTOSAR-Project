@@ -41,8 +41,8 @@ bool ApplicationExecutionMgr::loadExecutablesConfigrations()
                 }
             }
         }
+        excutables_map.insert({executables_.back().manifest_.name, executables_.back().manifest_.executable_path});
     }
-    return true;
 }
 
 bool ApplicationExecutionMgr::loadMachineConfigrations()
@@ -59,7 +59,7 @@ bool ApplicationExecutionMgr::loadMachineConfigrations()
 
 bool ApplicationExecutionMgr::ProcessStateClientRequest()
 {
-    
+
     int size;
     char functionGroup_Name[10], functionGroup_NewState[10];
     smpipe = open("smFifo", O_RDONLY);
@@ -119,8 +119,8 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 
 void ApplicationExecutionMgr::initialize()
 {
-    std::string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
-    fd1=open(path.c_str(),O_RDONLY);
+    std::string path(CUSTOMIZED_PROJECT_PATH + "gui_em");
+    fd1 = open(path.c_str(), O_RDONLY);
     mkfifo("smFifo", 0777);
     wait_for_gui();
     loadMachineConfigrations();
@@ -164,6 +164,8 @@ bool ApplicationExecutionMgr::run()
         report_success_sm();
         transitionChanges_.toStart_.clear();
         transitionChanges_.toTerminate_.clear();
+        cout << "testtttt" << endl;
+        reparse();
     }
 }
 
@@ -343,9 +345,109 @@ void ApplicationExecutionMgr::reportConfig_simulation()
 }
 void ApplicationExecutionMgr::wait_for_gui()
 {
-    std::string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
-    fd1=open(path.c_str(),O_RDONLY);
+    std::string path(CUSTOMIZED_PROJECT_PATH + "gui_em");
+    fd1 = open(path.c_str(), O_RDONLY);
     int tmp;
-    read(fd1,&tmp,sizeof(int));
+    read(fd1, &tmp, sizeof(int));
     close(fd1);
+}
+
+void ApplicationExecutionMgr::reparse()
+{
+
+    cout << "test reparse" << endl;
+    Json::Value v;
+    Json::Reader r;
+    std::ifstream is;
+    is.open("../../etc/system/Process_List.json");
+    r.parse(is, v);
+    map<string, path> plist;
+    int count = 0;
+    // vector<path> p;
+    // vector<string> exe_name;
+    std::map<string, string>::iterator it2;
+
+    for (Json::Value::const_iterator it = v.begin(); it != v.end(); ++it)
+    {
+        string key = it.key().asString();
+        // exe_name.push_back(key);
+        if (key != "Process List Version")
+        {
+            string x = v[key]["Path"].asString();
+            path y(rootPath + "executables" + x);
+            // p.push_back(y);
+            plist.insert({key, y});
+        }
+    }
+
+    for (auto &k : plist)
+    {
+        it2 = excutables_map.find(k.first);
+        if (it2 == excutables_map.end())
+        {
+
+            cout << "test 111111" << endl;
+            string p2 = k.second.string() + "etc/execution_manifest.json";
+
+            executables_.push_back(Executable{ApplicationManifest(p2), vector<Application *>()});
+            for (auto &app : executables_.back().manifest_.startUpConfigurations)
+            {
+                executables_.back().startupConfigurations_.push_back(new Application{app, executables_.back().manifest_.name, executables_.back().manifest_.executable_path});
+            }
+            for (auto &app : executables_.back().startupConfigurations_)
+            {
+                for (auto function_group : app->configuration_.function_group_states)
+                {
+                    for (auto state : function_group.second)
+                    {
+                        function_groups_[function_group.first]->startupConfigurations_[state].push_back(app);
+                    }
+                }
+            }
+        }
+        else
+        {
+            string pname = k.second.string() + "bin/";
+
+            // cout << "pname= " << pname << endl
+                //  << "it2.second = " << it2->second << endl;
+            if (pname != it2->second)
+            {
+                // cout << "test 2222" << endl;
+                string n = k.first;
+                // cout << n;
+                for (auto i : executables_)
+                {
+                    if (i.manifest_.name == n)
+                    {
+                        i.manifest_.executable_path = pname;
+                        for (auto &x : i.startupConfigurations_)
+                        {
+                            x->executable_path = pname;
+                        }
+                        // std::vector<Executable>::iterator itr = std::find(executables_.begin(), executables_.end(), i);
+                        // executables_.erase(executables_.begin() + count);
+                        // string p2 = k.second.string() + "etc/execution_manifest.json";
+
+                        // executables_.push_back(Executable{ApplicationManifest(p2), vector<Application *>()});
+                        // for (auto &app : executables_.back().manifest_.startUpConfigurations)
+                        // {
+                        //     executables_.back().startupConfigurations_.push_back(new Application{app, executables_.back().manifest_.name, executables_.back().manifest_.executable_path});
+                        // }
+                        // for (auto &app : executables_.back().startupConfigurations_)
+                        // {
+                        //     for (auto function_group : app->configuration_.function_group_states)
+                        //     {
+                        //         for (auto state : function_group.second)
+                        //         {
+                        //             function_groups_[function_group.first]->startupConfigurations_[state].push_back(app);
+                        //         }
+                        //     }
+                        // }
+                    }
+                    // count++;
+                }
+            }
+        }
+    }
 }

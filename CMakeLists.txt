@@ -50,6 +50,13 @@ set(source_excutables_ex2_dir  "${CMAKE_SOURCE_DIR}/executables/ex2/0.1/bin")
 add_executable(ex2 ${source_excutables_ex2_dir}/ex2.cpp) 
 target_link_libraries( ex2 execution_lib )
 install(TARGETS ex2 RUNTIME DESTINATION ${source_excutables_ex2_dir})
+###############################EX2###############################
+
+set(source_excutables_ex2_dir_  "${CMAKE_SOURCE_DIR}/executables/ex2/0.2/bin")
+add_executable(ex2_ ${source_excutables_ex2_dir_}/ex2.cpp) 
+target_link_libraries( ex2_ execution_lib )
+install(TARGETS ex2_ RUNTIME DESTINATION ${source_excutables_ex2_dir_})
+
 
 
 ################################IAM#############################
