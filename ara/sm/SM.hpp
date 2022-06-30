@@ -23,6 +23,7 @@ namespace ara
                 //freopen("sm.txt", "w+", stdout); // write cout and printf to txt file
                 FunctionGroupStates = {};
                 this->log=logger;
+                client=new StateClient();
 
             }
             sm_logger *log;

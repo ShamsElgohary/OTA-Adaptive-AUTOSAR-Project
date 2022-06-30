@@ -66,10 +66,9 @@ void sm_logger::reset()
 {
 this->functions_state={};
 }
-void sm_logger::gui_receive()
+void sm_logger::gui_receive(ara::sm::UpdateRequestImpl* ptr)
 {
-          gui_thread =std::thread([]{
-          UpdateRequestImpl * u;
+          gui_thread =std::thread([ptr]{
           string path(CUSTOMIZED_PROJECT_PATH+"gui_sm");
           while(1)
           {
@@ -77,7 +76,7 @@ void sm_logger::gui_receive()
           std::cout<<"received cluster\n";
           int cluster;
           read(fd,&cluster,sizeof(int));
-          u->run_cluster(cluster);
+          ptr->run_cluster(cluster);
           }
       });
       gui_thread.detach();

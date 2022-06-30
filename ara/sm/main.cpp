@@ -34,7 +34,7 @@ int main()
     
     /********Test*************/
     UpdateRequestImpl updaterequest(&logger, 1, ara::com::MethodCallProcessingMode::kEvent);
-    sm_logger::gui_receive();
+    updaterequest.log->gui_receive(&updaterequest);
     /******Offer_Service*************/
     std::thread([&updaterequest]()
                 {

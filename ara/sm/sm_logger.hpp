@@ -3,6 +3,13 @@
 #include <map>
 #include "functional"
 #include "thread"
+namespace ara
+{
+    namespace sm
+    {
+        class UpdateRequestImpl;
+    }
+}
 struct sm_functions
 {
     bool sm_StartUpdateSession;
@@ -22,5 +29,5 @@ class sm_logger
    sm_logger(int server_port);
    void update_logger(sm_functions functions,std::map<string,string>fg_states);
    void reset();
-   static void gui_receive();
+   static void gui_receive(ara::sm::UpdateRequestImpl* ptr);
 };
