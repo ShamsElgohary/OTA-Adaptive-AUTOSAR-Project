@@ -25,13 +25,15 @@
 #include "../../../utility/general.hpp"
 #include <thread>
 #include <fstream>
+#include <algorithm>
+
 using namespace std;
 namespace ara
 {
     namespace exec
     {
 
-        class ApplicationExecutionMgr 
+        class ApplicationExecutionMgr
         {
             int smpipe{-1};
             int fd1;
@@ -48,13 +50,14 @@ namespace ara
                 vector<Application *> toStart_;
                 vector<Application *> toTerminate_;
             } TransitionChanges;
-            
+
             mutex mu;
             future<void> iam_future;
             FunctionGroupState newfunctionGroup;
             vector<Executable> executables_;
             unique_ptr<MachineManifest> manifest_;
             map<string, FunctionGroup *> function_groups_;
+            map<string, string> excutables_map;//{name,path}
             const string rootPath;
             TransitionChanges transitionChanges_;
             simulation sim_socket{8088};
@@ -73,7 +76,7 @@ namespace ara
             void reportConfig_simulation();
             void report_success_sm();
             void wait_for_gui();
+            void reparse();
         };
     }
 }
-

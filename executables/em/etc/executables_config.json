@@ -136,14 +136,43 @@
 				}
 			],
 			"name" : "ucm"
+		},
+		{
+			"confg" : 
+			[
+				{
+					"depends" : 
+					{
+						"ex1" : "Kterminate"
+					},
+					"function_group" : 
+					{
+						"fn1" : 
+						[
+							"idle"
+						]
+					}
+				},
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"fn1" : 
+						[
+							"play"
+						]
+					}
+				}
+			],
+			"name" : "ex3"
 		}
 	],
 	"function_group_states" : 
 	{
-		"fn1" : "terminate",
+		"fn1" : "play",
 		"fn2" : "idle",
 		"fn3" : "idle",
-		"machineFG" : "running"
+		"machineFG" : "startup"
 	},
 	"function_groups" : 
 	{
@@ -190,30 +219,28 @@
 	[
 		{
 			"current_state" : "Krunning",
-			"name" : "iam",
-			"pid" : 73472
+			"name" : "ex2",
+			"pid" : 20860
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 73431
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "someip_sd",
-			"pid" : 73470
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "ucm",
-			"pid" : 73478
+			"pid" : 20797
 		}
 	],
 	"sm_request" : 
 	{
-		"fng" : "machineFG",
-		"fng_state" : "running"
+		"fng" : "fn1",
+		"fng_state" : "play"
 	},
-	"to_run" : [],
-	"to_term" : []
+	"to_run" : 
+	[
+		"ex1",
+		"ex2",
+		"ex3"
+	],
+	"to_term" : 
+	[
+		"ex2"
+	]
 }
