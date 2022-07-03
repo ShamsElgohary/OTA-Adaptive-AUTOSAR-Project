@@ -43,7 +43,7 @@ namespace ara
                 ofstream ReportAction("ActionsLog.txt", std::ofstream::out | std::ofstream::trunc);
                 ReportAction.close();
 
-                if (SIMULATION_ACTIVE_2)
+                if (SIMULATION_ACTIVE_UCM)
                 {
                     std::string Path = "GUI_Report.json";
                     char PathArr[Path.length() + 1]; 
@@ -88,7 +88,7 @@ namespace ara
                 std::cout << e.what() << '\n';
             }
 
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE_UCM)
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
@@ -115,7 +115,7 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE_UCM)
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
@@ -138,7 +138,7 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE_UCM)
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
@@ -160,7 +160,7 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE_UCM)
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
@@ -190,7 +190,7 @@ namespace ara
             std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE_UCM)
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 
@@ -220,7 +220,7 @@ namespace ara
             std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
-            if (SIMULATION_ACTIVE_2)
+            if (SIMULATION_ACTIVE_UCM)
             {
                 std::string Path = "GUI_Report.json";
                 char PathArr[Path.length() + 1]; 

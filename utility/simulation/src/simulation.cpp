@@ -67,7 +67,6 @@ simulation::exe_name simulation::recive_exe_name(int client_socket)
 void simulation::send_exe_name(simulation::exe_name name)
 {
     send(sockfd_c, &name, sizeof(int), 0);
-    usleep(10);
 }
 char *simulation::recive_file(int client_socket)
 {

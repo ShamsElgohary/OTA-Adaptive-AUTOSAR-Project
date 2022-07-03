@@ -61,12 +61,12 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 
     if (handles_container.size() == 0)
     {   
-        cout<<"no handle found"<<endl;
+        cout<<"[ucm] No SM Handle Found"<<endl;
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
     else
     {
-        cout<<"handle found"<<endl;
+        cout<<"[ucm] SM Handle Found"<<endl;
         proxy = std::make_shared<UpdateRequestproxy>(handles_container[0]);
     }
 
@@ -305,37 +305,30 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
     std::string SWPackagePath{ptrToSwPkg->GetPackagePath()};
     /* USED TO PARSE */
     ara::ucm::parsing::SoftwarePackageParser SWParser_instance;
-    cout << "[ucm] Breakpoint 5 Pass" << endl;
+
     /* SWPACKAGEPATH IS UPDATED WITH ITS PATH AFTER UNZIPPING */
     SWPackagePath = SWParser_instance.UnzipPackage(SWPackagePath);
-    cout << "[ucm] Breakpoint 6 Pass" << endl;
 
     SWParser_instance.SwPackageManifestParser(SWPackagePath);
-    cout << "[ucm] Breakpoint 7 Pass" << endl;
 
     /* GET SW CLUSTER INFORMATION FROM PARSING */
     SwClusterInfoType NewSwClusterInfo{SWParser_instance.GetSwClusterInfo(SWPackagePath)};
-    cout << "[ucm] Breakpoint 8 Pass" << endl;
 
     /* GET SW ACTION TYPE FROM PARSING */
     ActionType action{SWParser_instance.GetActionType()};
-    cout << "[ucm] Breakpoint 9 Pass" << endl;
 
     shared_ptr<ara::ucm::storage::ReversibleAction> actionPtr;
 
     /* ADD SWCLUSTER & EXECUTE */
     actionPtr = SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo, action, SWPackagePath);
 
-    cout << "[ucm] Breakpoint 10 Pass" << endl;
-
     (CurrentStatus) = PackageManagerStatusType::kReady;
 
     /* CHANGE STATE TO KPROCESSING */
     ptrToSwPkg->SetPackageState(SwPackageStateType::kProcessed);
-    cout << "[ucm] Breakpoint 11 Pass" << endl;
+
     // JSON (GUI SIMULATION)
     GUI_Logger.pkgAction("kProcessed",1);
-    cout << "[ucm] Breakpoint 12 Pass" << endl;
 
     ara::ucm::SynchronizedStorage::DeleteItem(id);
 

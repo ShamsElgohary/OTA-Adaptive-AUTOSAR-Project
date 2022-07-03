@@ -13,7 +13,18 @@ std::uint8_t ara::iam::IPCclientInterface::Connect()
     ara::iam::IPCclientInterface::clientSd = socket(AF_INET, SOCK_STREAM, 0);
     //try to connect...
     int status = connect(ara::iam::IPCclientInterface::clientSd, (sockaddr*) &sendSockAddr, sizeof(sendSockAddr));
-    if(status < 0)
+    int failcount = 0;
+    while (status < 0 && failcount < 3)
+    {
+        usleep(20);
+        status = connect(ara::iam::IPCclientInterface::clientSd, (sockaddr*) &sendSockAddr, sizeof(sendSockAddr));
+        failcount += 1;
+        if (status >= 0)
+        {
+            break;
+        }
+    }
+    if (status < 0)
     {
         std::cout << "[iamClient] " << "Error connecting to socket!" << std::endl;
         return 1;

@@ -1,7 +1,7 @@
 #pragma once
 
 const bool SIMULATION_ACTIVE = true;
-const bool SIMULATION_ACTIVE_2 = true;
+const bool SIMULATION_ACTIVE_UCM = true;
 const bool SIMULATION_ACTIVE_IAM = true;
 const bool IAM_ACTIVATED = true;
 

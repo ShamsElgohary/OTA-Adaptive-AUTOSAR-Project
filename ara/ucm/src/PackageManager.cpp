@@ -81,8 +81,6 @@ namespace ara::ucm::pkgmgr
 
         catch (const std::exception & ex)
         {
-            cout << "THEEEEE EXCEPTIONNNNNNNNNNNNNNNNNNNNN " << endl;
-            cerr << ex.what() << endl;
             ProcessReturn.OperationReturn = ara::ucm::OperationResultType::kOperationNotPermitted;
         }
 
@@ -163,7 +161,7 @@ namespace ara::ucm::pkgmgr
         promise.set_value(FinishResult);
 
         GUI_Logger.ActionsLog("[Finish] \t\t Result : ", static_cast<unsigned char>(FinishResult.OperationReturn));
-        GUI_Logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
+        // GUI_Logger.ReportStatus( static_cast<unsigned char>( PackageManagerStateinstance->GetStatusInternal() ) );
 
         return promise.get_future();
     }

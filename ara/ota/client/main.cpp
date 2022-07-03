@@ -36,7 +36,7 @@ public:
         }
         else
         {
-            cout << "NO UCM" << endl;
+            cout << "[ota] NO UCM Handle Found"<<endl;
         }
     }
 
