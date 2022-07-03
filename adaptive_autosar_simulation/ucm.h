@@ -81,7 +81,7 @@ private:
      //Add lists to mid colume
 
     string guiReportPath = to_string(simulation::exe_name::ucm);
-    QString activeLogPath = QString::fromStdString((CUSTOMIZED_PROJECT_PATH) + "/executables/em/bin/ActionsLog.txt");
+    QString activeLogPath = QString::fromStdString((CUSTOMIZED_PROJECT_PATH) + "executables/em/bin/ActionsLog.txt");
     //COM GridBox setup
      QGroupBox *comBox = new QGroupBox("COM");
 };

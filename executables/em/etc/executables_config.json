@@ -117,11 +117,30 @@
 				}
 			],
 			"name" : "someip_sd"
+		},
+		{
+			"confg" : 
+			[
+				{
+					"depends" : 
+					{
+						"iam" : "Krunning"
+					},
+					"function_group" : 
+					{
+						"machineFG" : 
+						[
+							"running"
+						]
+					}
+				}
+			],
+			"name" : "ucm"
 		}
 	],
 	"function_group_states" : 
 	{
-		"fn1" : "terminate",
+		"fn1" : "idle",
 		"fn2" : "idle",
 		"fn3" : "idle",
 		"machineFG" : "running"
@@ -172,23 +191,33 @@
 		{
 			"current_state" : "Krunning",
 			"name" : "iam",
-			"pid" : 49315
+			"pid" : 50953
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ota",
+			"pid" : 51037
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 49291
+			"pid" : 50911
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "someip_sd",
-			"pid" : 49313
+			"pid" : 50949
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ucm",
+			"pid" : 50958
 		}
 	],
 	"sm_request" : 
 	{
-		"fng" : "machineFG",
-		"fng_state" : "running"
+		"fng" : "fn2",
+		"fng_state" : "idle"
 	},
 	"to_run" : [],
 	"to_term" : []

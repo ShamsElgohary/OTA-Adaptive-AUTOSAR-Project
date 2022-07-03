@@ -4,9 +4,9 @@
 
 
 const string ProjectPath = GetProjectPath();
-const string UCM_Path = ProjectPath + "/ucm/";
+const string UCM_Path = ProjectPath + "/ucm/0.1/";
 const string fileSystemPath = ProjectPath + "executables";
-const string ZIP_PackagesPath = ProjectPath + "executables/ucm/ZIP_Packages";
+const string ZIP_PackagesPath = ProjectPath + "executables/ucm/0.1/ZIP_Packages";
 const string fileBackupPath = ProjectPath + "executables/Backup";
 const string ProcessListPath = ProjectPath + "executables/etc/system/";
 

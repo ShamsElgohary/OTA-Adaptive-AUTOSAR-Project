@@ -79,8 +79,10 @@ namespace ara::ucm::pkgmgr
             ProcessReturn.OperationReturn = PackageManagerStateinstance->ProcessSwPackageInternal(id);
         }
 
-        catch (...)
+        catch (const std::exception & ex)
         {
+            cout << "THEEEEE EXCEPTIONNNNNNNNNNNNNNNNNNNNN " << endl;
+            cerr << ex.what() << endl;
             ProcessReturn.OperationReturn = ara::ucm::OperationResultType::kOperationNotPermitted;
         }
 

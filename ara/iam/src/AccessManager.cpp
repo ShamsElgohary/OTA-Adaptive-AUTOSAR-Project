@@ -79,7 +79,7 @@ void ara::iam::AccessManager::RunEventLoop()
         json_f << request;
         json_f.close();
 
-        if (SIMULATION_ACTIVE)
+        if (SIMULATION_ACTIVE_IAM)
         {
             char current_dir[256];
             getcwd(current_dir, 256);

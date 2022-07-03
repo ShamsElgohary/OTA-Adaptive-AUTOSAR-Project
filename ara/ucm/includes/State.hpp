@@ -15,7 +15,7 @@ namespace ara
             private:
 
                 /* State of The Entire UCM PKG */ 
-                PackageManagerStatusType CurrentStatus;
+                PackageManagerStatusType CurrentStatus = PackageManagerStatusType::kIdle;
                 uint8_t SWPackagesCounter=0;
                 static uint16_t ProcessListVersion;
                 //shared ptr creation

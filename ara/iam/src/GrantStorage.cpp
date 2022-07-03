@@ -80,7 +80,7 @@ void ara::iam::GrantStorage::ParseJson(std::string filePath, simulation & sim_so
     std::ofstream json_file("iam_access.json");
     json_file << access;
     json_file.close();
-    if (SIMULATION_ACTIVE)
+    if (SIMULATION_ACTIVE_IAM)
     {
         char current_dir[256];
         getcwd(current_dir, 256);
