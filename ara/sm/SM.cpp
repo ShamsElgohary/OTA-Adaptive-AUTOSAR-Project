@@ -134,9 +134,10 @@ void UpdateRequestImpl::run_cluster(int cluster)
     if (cluster == (int)clusters::OTA)
     {
         printf("ota cluster received\n");
-        FunctionGroupState s = FunctionGroupState::Preconstruct("fn2", "run");
+        FunctionGroupState s = FunctionGroupState::Preconstruct("fn2", "idle");
         client->setState(s);
         FunctionGroupStates[s.fg_name] = s.fg_newState;
+        log->update_logger({0, 0, 0, 0},FunctionGroupStates);
     }
     if (cluster == (int) clusters::UCM)
     {
@@ -146,6 +147,6 @@ void UpdateRequestImpl::run_cluster(int cluster)
         client->setState(FunctionGroupState::Preconstruct("machineFG", "running"));
         //sleep(6);
         FunctionGroupStates[s.fg_name] = s.fg_newState;
+        log->update_logger({0, 0, 0, 0},FunctionGroupStates);
     }
-    log->update_logger({0, 0, 0, 0},FunctionGroupStates);
 }
