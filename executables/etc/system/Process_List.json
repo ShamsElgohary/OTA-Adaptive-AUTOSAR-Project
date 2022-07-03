@@ -1,9 +1,5 @@
 {
-    "Process List Version": 10,
-    "SWCL_TEST1_VENDOR_A": {
-        "Path": "/SWCL_TEST1_VENDOR_A/0.1.0/",
-        "Version": "0.1.0"
-    },
+    "Process List Version": 1,
     "ex1": {
         "Path": "/ex1/0.1/",
         "Version": "0.1"
