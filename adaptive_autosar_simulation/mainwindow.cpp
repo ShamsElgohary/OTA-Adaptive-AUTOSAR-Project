@@ -63,17 +63,17 @@ void MainWindow::on_simulation_button_clicked()
     simulation_running=true;
     if(flag==0)
     {
-     string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
-     mkfifo(path.c_str(),0777);
-    process_id= fork();
-    if (process_id == 0)
-    {
-        string path=CUSTOMIZED_PROJECT_PATH+"/executables/em/bin/";
-        chdir(path.c_str());
-        execl("em", nullptr);
-    }
-    flag=1;
-    simulation_button->setText("Load Configurations");
+         string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
+         mkfifo(path.c_str(),0777);
+        process_id= fork();
+        if (process_id == 0)
+        {
+            string path=CUSTOMIZED_PROJECT_PATH+"/executables/em/bin/";
+            chdir(path.c_str());
+            execl("em", nullptr);
+        }
+        flag=1;
+        simulation_button->setText("Load Configurations");
     }
     else if(flag==1)
     {

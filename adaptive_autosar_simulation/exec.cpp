@@ -139,7 +139,6 @@ void exec::parse_exec_json()
        //------------------------------------------------
        sm_request["fng"] = root["sm_request"]["fng"].asCString();
        sm_request["fng_state"] = root["sm_request"]["fng_state"].asCString();
-       //msg  += root["message_box"].asCString();
 
 }
 
@@ -234,8 +233,13 @@ void exec::update_executables_confg()
                  QTreeWidgetItem* d_name =  new QTreeWidgetItem{};
                  d_name->setText(1,(QString::fromStdString(dependency.first)));
                  d_name->setText(2,(QString::fromStdString(dependency.second)));
+                 d_name->setFont(2 ,font);
+                 d_name->setFont(1 ,font);
                  dep->addChild(d_name);
             }
+            fng_states->setExpanded(true);
+            fng->setExpanded(true);
+            dep->setExpanded(true);
             conf_node->setExpanded(true);
         }
     }
@@ -265,7 +269,20 @@ void exec::update_running_executables()
 }
 void exec::update_network_consle()
 {
-
+    std::ifstream file_input2;
+    file_input2.open("/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/em_report.txt");
+    string s ,s2;
+    if(!file_input2) { // file couldn't be opened
+          cout << "Error: file could not be opened" << endl;
+       }
+    else{
+    while ( !file_input2.eof() ) {
+         getline(file_input2,s);
+         s2+= s+"\n";
+      }
+      file_input2.close();
+    }
+    network_text->setText(QString::fromStdString(s2));
 }
 void exec::update_fng_states()
 {
@@ -371,6 +388,7 @@ void exec::clear_widget()
     rexe_table->clear();
     fng_states->clear();
     sm_request.clear();
+    network_text->clear();
 }
 void exec::update_exec( )
 {
@@ -381,6 +399,7 @@ void exec::update_exec( )
     update_running_executables();
     update_fng_states();
     update_sm_requests();
+    update_network_consle();
 }
 void exec::em_connect()
 {

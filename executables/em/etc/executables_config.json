@@ -136,40 +136,11 @@
 				}
 			],
 			"name" : "ucm"
-		},
-		{
-			"confg" : 
-			[
-				{
-					"depends" : 
-					{
-						"ex1" : "Kterminate"
-					},
-					"function_group" : 
-					{
-						"fn1" : 
-						[
-							"idle"
-						]
-					}
-				},
-				{
-					"depends" : {},
-					"function_group" : 
-					{
-						"fn1" : 
-						[
-							"play"
-						]
-					}
-				}
-			],
-			"name" : "ex3"
 		}
 	],
 	"function_group_states" : 
 	{
-		"fn1" : "play",
+		"fn1" : "terminate",
 		"fn2" : "idle",
 		"fn3" : "idle",
 		"machineFG" : "startup"
@@ -220,25 +191,20 @@
 		{
 			"current_state" : "Krunning",
 			"name" : "ex2",
-			"pid" : 20860
+			"pid" : 25316
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 20797
+			"pid" : 25271
 		}
 	],
 	"sm_request" : 
 	{
 		"fng" : "fn1",
-		"fng_state" : "play"
+		"fng_state" : "terminate"
 	},
-	"to_run" : 
-	[
-		"ex1",
-		"ex2",
-		"ex3"
-	],
+	"to_run" : [],
 	"to_term" : 
 	[
 		"ex2"

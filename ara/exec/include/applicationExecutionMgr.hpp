@@ -28,6 +28,7 @@
 #include <algorithm>
 
 using namespace std;
+
 namespace ara
 {
     namespace exec

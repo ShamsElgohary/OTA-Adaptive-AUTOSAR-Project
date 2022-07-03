@@ -2,9 +2,7 @@
 #include <bits/stdc++.h>
 #include "applicationManifest.hpp"
 #include "execution_client.hpp"
-//#include "applicationExecutionMgr.hpp"
 #include "../../../utility/general.hpp"
-
 using namespace std;
 namespace ara
 {

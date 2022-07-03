@@ -2,6 +2,7 @@
 using namespace std;
 using namespace ara::exec;
 using namespace boost::filesystem;
+std::ofstream outdata;
 
 bool ApplicationExecutionMgr::loadExecutablesConfigrations()
 {
@@ -74,6 +75,8 @@ bool ApplicationExecutionMgr::ProcessStateClientRequest()
         read(smpipe, &functionGroup_NewState[i], sizeof(char));
     }
     close(smpipe);
+    outdata << "[SM] function group : " << functionGroup_Name << " new state is " << functionGroup_NewState << endl;
+    outdata.flush();
     FunctionGroupState::CtorToken token = FunctionGroupState::Preconstruct(functionGroup_Name, functionGroup_NewState);
     FunctionGroupState functionGroup(move(token));
     newfunctionGroup = functionGroup;
@@ -122,7 +125,6 @@ void ApplicationExecutionMgr::initialize()
     std::string path(CUSTOMIZED_PROJECT_PATH + "gui_em");
     fd1 = open(path.c_str(), O_RDONLY);
     mkfifo("smFifo", 0777);
-    wait_for_gui();
     loadMachineConfigrations();
     loadExecutablesConfigrations();
     if (SIMULATION_ACTIVE)
@@ -145,6 +147,7 @@ void ApplicationExecutionMgr::initialize()
 
 ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{rootPath}
 {
+    outdata.open("em_report.txt");
     if (SIMULATION_ACTIVE)
     {
         sim_socket.connect_to_socket();
@@ -164,7 +167,6 @@ bool ApplicationExecutionMgr::run()
         report_success_sm();
         transitionChanges_.toStart_.clear();
         transitionChanges_.toTerminate_.clear();
-        cout << "testtttt" << endl;
         reparse();
     }
 }
@@ -235,7 +237,9 @@ future<void> ApplicationExecutionMgr::IAM_handle()
         while(1){
             id = srv.receiveData();
             process_name = get_process_name(id);
-            cout<< "[em] " << process_name << endl;
+            outdata<<"[IAM] process id : "<<id<<endl;
+            outdata<< "[EM] process name : " << process_name << endl;
+            outdata.flush();
             srv.sendData(process_name);
         } });
 }
@@ -336,7 +340,6 @@ void ApplicationExecutionMgr::reportConfig_simulation()
         obj[fng.first] = fng.second->currentState_;
     }
     root["function_group_states"] = obj;
-    // root["message_box"] = report_msg;
     output_file << root;
     output_file.close();
     //------------------------------------------------
@@ -355,7 +358,6 @@ void ApplicationExecutionMgr::wait_for_gui()
 void ApplicationExecutionMgr::reparse()
 {
 
-    cout << "test reparse" << endl;
     Json::Value v;
     Json::Reader r;
     std::ifstream is;
@@ -386,7 +388,6 @@ void ApplicationExecutionMgr::reparse()
         if (it2 == excutables_map.end())
         {
 
-            cout << "test 111111" << endl;
             string p2 = k.second.string() + "etc/execution_manifest.json";
 
             executables_.push_back(Executable{ApplicationManifest(p2), vector<Application *>()});
@@ -410,7 +411,7 @@ void ApplicationExecutionMgr::reparse()
             string pname = k.second.string() + "bin/";
 
             // cout << "pname= " << pname << endl
-                //  << "it2.second = " << it2->second << endl;
+            //  << "it2.second = " << it2->second << endl;
             if (pname != it2->second)
             {
                 // cout << "test 2222" << endl;

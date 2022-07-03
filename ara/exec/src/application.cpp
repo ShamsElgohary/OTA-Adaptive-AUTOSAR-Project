@@ -9,9 +9,11 @@
 #include "applicationExecutionMgr.hpp"
 using namespace std;
 using namespace ara::exec;
+extern std::ofstream outdata;
 
 Application::Application(Application::CtorToken &&token)
 {
+    outdata.open("em_report.txt");
     current_state = ExecutionState::Kidle;
     configuration_ = token.configration;
     name = token.name;
@@ -19,7 +21,7 @@ Application::Application(Application::CtorToken &&token)
 }
 void Application::start()
 {
-     thread([this]()
+    thread([this]()
            {
         for (auto &app_name : configuration_.dependency)
         {
@@ -59,19 +61,23 @@ void Application::start()
         {
             static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
         }
-        cout << "[em] " << name << " new state is Krunning " << id << "\n\n\n";
-        Update_status(); }).detach();
+        outdata << "[EM] " << name << " state is Krunning " << id << "\n";
+        outdata.flush();
+        Update_status(); })
+        .detach();
 }
 void Application::terminate()
 {
     unique_lock<mutex> locker(mur);
     if (kill(id, SIGTERM) == -1)
     {
-        cout << "[em] couldn't terminate process.... with id = " << id << " and named " << name << "\n\n\n";
+        outdata << "[EM] couldn't terminate process.... with id = " << id << " and named " << name << "\n";
+        outdata.flush();
     }
     else
     {
-        cout << "[em] terminateing " << name << "\n";
+        outdata << "[EM] terminateing " << name << "\n";
+        outdata.flush();
         id = 0;
     }
     locker.unlock();
@@ -79,25 +85,28 @@ void Application::terminate()
 
 void Application::Update_status()
 {
-        ExecutionState newstate = ExecutionState::Kidle;
-        read(fd, &newstate, sizeof(current_state));
-        unique_lock<mutex>  locker(mur);
-        current_state = newstate;
-        id=0;
-        close(fd);
-        locker.unlock();
-        if(SIMULATION_ACTIVE)
-        {
-            static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
-        }    
-        cout << "[em] " << name << " new state is Kterminate"<<"\n\n\n";
-        condt.notify_all();
+    ExecutionState newstate = ExecutionState::Kidle;
+    read(fd, &newstate, sizeof(current_state));
+    unique_lock<mutex> locker(mur);
+    current_state = newstate;
+    id = 0;
+    close(fd);
+    locker.unlock();
+    if (SIMULATION_ACTIVE)
+    {
+        static_cast<ApplicationExecutionMgr *>(parent)->reportConfig_simulation();
+    }
+    outdata << "[EM] " << name << " state is Kterminate"
+            << "\n";
+    outdata.flush();
+
+    condt.notify_all();
 }
 Application::Application(ApplicationManifest::startUpConfiguration con, string name, string path)
 {
     configuration_ = con;
     this->name = name;
-    executable_path = path ;
+    executable_path = path;
     current_state = ExecutionState::Kidle;
 }
 
