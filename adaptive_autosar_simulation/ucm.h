@@ -7,6 +7,9 @@
 #include <fstream>
 #include <iostream>
 #include "simulation.hpp"
+#include "../utility/general.hpp"
+
+
 using namespace std;
 using namespace Json;
 
@@ -78,7 +81,7 @@ private:
      //Add lists to mid colume
 
     string guiReportPath = to_string(simulation::exe_name::ucm);
-    QString activeLogPath = "/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/ActionsLog.txt";
+    QString activeLogPath = QString::fromStdString((CUSTOMIZED_PROJECT_PATH) + "/executables/em/bin/ActionsLog.txt");
     //COM GridBox setup
      QGroupBox *comBox = new QGroupBox("COM");
 };

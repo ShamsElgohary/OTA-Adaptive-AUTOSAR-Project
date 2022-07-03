@@ -40,12 +40,15 @@ namespace ara
         {
             try
             {
-                std::string Path = "GUI_Report.json";
-                char PathArr[Path.length() + 1]; 
-                guiSocket->send_file("GUI_Report.json");
-
                 ofstream ReportAction("ActionsLog.txt", std::ofstream::out | std::ofstream::trunc);
                 ReportAction.close();
+
+                if (SIMULATION_ACTIVE)
+                {
+                    std::string Path = "GUI_Report.json";
+                    char PathArr[Path.length() + 1]; 
+                    guiSocket->send_file("GUI_Report.json");
+                }
             }
             catch (const std::exception &e)
             {

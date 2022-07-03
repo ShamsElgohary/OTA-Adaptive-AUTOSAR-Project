@@ -2,14 +2,17 @@
 #include <iostream>
 #include "execution_client.hpp"
 #include <unistd.h>
+
 using namespace std;
 using namespace ara::exec;
+
 void handle_sigTerm(int sig)
 {
     ExecutionClient exec;
     exec.ReportExecutionStaste(ExecutionState::Kterminate);
     exit(1);
 }
+
 int main()
 {
     struct sigaction sa;
