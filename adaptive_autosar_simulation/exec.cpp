@@ -270,7 +270,7 @@ void exec::update_running_executables()
 void exec::update_network_consle()
 {
     std::ifstream file_input2;
-    file_input2.open("/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/executables/em/bin/em_report.txt");
+    file_input2.open(CUSTOMIZED_PROJECT_PATH+"executables/em/bin/em_report.txt");
     string s ,s2;
     if(!file_input2) { // file couldn't be opened
           cout << "Error: file could not be opened" << endl;
