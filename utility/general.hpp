@@ -1,7 +1,7 @@
 #pragma once
 
 const bool SIMULATION_ACTIVE = true;
-const bool SIMULATION_ACTIVE_2 = true;
+const bool SIMULATION_ACTIVE_2 = false;
 const bool IAM_ACTIVATED = true;
 
 #define loay "/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/"
@@ -9,4 +9,4 @@ const bool IAM_ACTIVATED = true;
 #define shams "/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/" 
 #define Yasmin "/home/yasmin/Desktop/Graduation_Project/02-OurImpement/OTA-Adaptive-AUTOSAR-Project/"
 #define karim "/home/kareem/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/"
-const std::string CUSTOMIZED_PROJECT_PATH = shams;
+const std::string CUSTOMIZED_PROJECT_PATH = loay;

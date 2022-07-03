@@ -148,6 +148,15 @@ void ApplicationExecutionMgr::initialize()
 ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{rootPath}
 {
     outdata.open("em_report.txt");
+    remove("sm_Report.json");
+    remove("ucm_Report.json");
+    remove("sm_Report.json");
+    remove("ActionsLog.txt");
+    remove("GUI_Report.json");
+    remove("SD_Report.json");
+    remove("iam_access.json");
+    remove("ota_Report.json");
+    remove("sm.txt");
     if (SIMULATION_ACTIVE)
     {
         sim_socket.connect_to_socket();

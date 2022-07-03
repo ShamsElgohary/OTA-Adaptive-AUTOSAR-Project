@@ -169,16 +169,14 @@ void MainWindow::end_simulation_button_clicked()
     system("pkill -x ex2");
     while(tabWidget->count()!=1)
     {
-    tabWidget->removeTab(1);
+        tabWidget->removeTab(1);
     }
-    if(tabWidget->count()==1)
-    {
-        exec_tab->clear_widget();
-        ota_button->setVisible(false);
-        simulation_running=false;
-        simulation_button->setText("start simulation");
-        flag=0;
-    }
+    exec_tab->clear_widget();
+    ota_button->setVisible(false);
+    simulation_running=false;
+    simulation_button->setText("start simulation");
+    flag=0;
+
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {
