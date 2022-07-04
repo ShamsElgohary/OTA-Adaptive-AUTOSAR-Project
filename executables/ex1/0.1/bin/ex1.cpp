@@ -16,8 +16,7 @@ int main()
     sa.sa_handler =handle_sigTerm ;
     sigaction(SIGTERM,&sa,NULL);
     char path[100];
-    cout<<getcwd(path,100);
-    sleep(2);
+    sleep(1);
 
     ExecutionClient exec;
     exec.ReportExecutionStaste(ExecutionState::Krunning);

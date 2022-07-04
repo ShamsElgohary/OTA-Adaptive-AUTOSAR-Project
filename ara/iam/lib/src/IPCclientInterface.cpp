@@ -1,66 +1,54 @@
 #include "../include/IPCclientInterface.hpp"
 
+ara::iam::IPCclientInterface::IPCclientInterface() : io_service(), socket_(io_service) {}
 std::uint8_t ara::iam::IPCclientInterface::Connect()
 {
-    //setup a socket and connection tools 
-    struct hostent* host = gethostbyname(IAM_IP_ADDRESS); 
-    sockaddr_in sendSockAddr;   
-    bzero((char*)&sendSockAddr, sizeof(sendSockAddr)); 
-    sendSockAddr.sin_family = AF_INET; 
-    sendSockAddr.sin_addr.s_addr = 
-        inet_addr(inet_ntoa(*(struct in_addr*)*host->h_addr_list));
-    sendSockAddr.sin_port = htons(IAM_PORT_NUMBER);
-    ara::iam::IPCclientInterface::clientSd = socket(AF_INET, SOCK_STREAM, 0);
-    //try to connect...
-    int status = connect(ara::iam::IPCclientInterface::clientSd, (sockaddr*) &sendSockAddr, sizeof(sendSockAddr));
-    int failcount = 0;
-    while (status < 0 && failcount < 3)
+    try
     {
-        usleep(20);
-        status = connect(ara::iam::IPCclientInterface::clientSd, (sockaddr*) &sendSockAddr, sizeof(sendSockAddr));
-        failcount += 1;
-        if (status >= 0)
-        {
-            break;
-        }
+        socket_.connect(tcp::endpoint(boost::asio::ip::address::from_string(IAM_IP_ADDRESS), IAM_PORT_NUMBER));
     }
-    if (status < 0)
+    catch (boost::system::system_error e)
     {
-        std::cout << "[iamClient] " << "Error connecting to socket!" << std::endl;
-        return 1;
+        std::cout << "iam connect to socket : " << e.what() << endl;
     }
-    std::cout << "[iamClient] " << "Connected to the server!" << std::endl;
-
-    return 0;
 }
 void ara::iam::IPCclientInterface::Send(ara::iam::Grant G)
 {
     std::stringstream ss;
-
-    // Serialize GrantObj 1 in stringstream ss
-    boost::serialization::Serialize(G, ss);
-
-    std::string data = ss.str();
-
-    char msg[1500]; 
-    memset(&msg, 0, sizeof(msg));//clear the buffer
-    strcpy(msg, data.c_str());
-    if(data == "exit")
+    try
     {
-        send(ara::iam::IPCclientInterface::clientSd, (char*)&msg, strlen(msg), 0);
+        // Serialize GrantObj 1 in stringstream ss
+        boost::serialization::Serialize(G, ss);
+        std::string data = ss.str();
+        boost::asio::write(socket_, boost::asio::buffer(data));
     }
-    send(ara::iam::IPCclientInterface::clientSd, (char*)&msg, strlen(msg), 0);
+    catch (boost::system::system_error e)
+    {
+        std::cout << "iam client : " << e.what() << endl;
+    }
 }
 
-void ara::iam::IPCclientInterface::sendPID(int pid)
-{
-    send(ara::iam::IPCclientInterface::clientSd , &pid, sizeof(int) , 0 );
-}
 
 bool ara::iam::IPCclientInterface::Receive()
 {
-    std::cout << "[iamClient] " << "Awaiting server response..." << std::endl;
-    recv(ara::iam::IPCclientInterface::clientSd, &is_granted, sizeof(bool), 0);
-    std::cout << "[iamClient] " << "Result: " << is_granted << std::endl;
+    bool is_granted = false;
+    try
+    {
+        std::cout << "[iamClient] "
+                  << "Awaiting server response..." << std::endl;
+        char buf[1];
+        socket_.read_some(boost::asio::buffer(buf,1));
+        cout<<"[iamClient] Result: "<<buf<<endl;
+        is_granted = (buf[0] == '1') ? true : false;
+        std::cout << "[iamClient] Result: " << is_granted << std::endl;
+    }
+    catch (boost::system::system_error e)
+    {
+        std::cout << "iam Receive error: " << e.what() << endl;
+    }
     return is_granted;
+}
+ara::iam::IPCclientInterface::~IPCclientInterface()
+{
+    socket_.close();
 }

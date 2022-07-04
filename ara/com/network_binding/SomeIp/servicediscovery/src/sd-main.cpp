@@ -23,7 +23,13 @@ int main()
     sa.sa_flags = SA_RESTART;
     sa.sa_handler = handle_sigTerm;
     sigaction(SIGTERM, &sa, NULL);
-    sleep(2);
+    
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
+
+    sleep(1);
+    
+    servicestorage ServiceStorage;
     Json::Value event;
     ifstream f("SD_Report.json");
     Json::Reader R;
@@ -36,9 +42,6 @@ int main()
     json_file << event;
     json_file.close();
 
-    ara::exec::ExecutionClient exec;
-    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
-    servicestorage ServiceStorage;
 
     while (1)
     {

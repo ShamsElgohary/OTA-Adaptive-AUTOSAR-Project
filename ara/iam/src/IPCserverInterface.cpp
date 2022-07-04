@@ -1,90 +1,70 @@
-# include "../include/IPCserverInterface.hpp"
+#include "../include/IPCserverInterface.hpp"
 
+ara::iam::IPCserverInterface::IPCserverInterface() : io_service(), acceptor_(io_service, tcp::endpoint(tcp::v4(), IAM_PORT_NUMBER)), socket_(io_service) {}
 std::uint8_t ara::iam::IPCserverInterface::ServerSocketInit()
 {
-    //setup a socket and connection tools
-    bzero((char*)&servAddr, sizeof(servAddr));
-    ara::iam::IPCserverInterface::servAddr.sin_family = AF_INET;
-    ara::iam::IPCserverInterface::servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    ara::iam::IPCserverInterface::servAddr.sin_port = htons(IAM_PORT_NUMBER);
- 
-    //open stream oriented socket with internet address
-    //also keep track of the socket descriptor
-    ara::iam::IPCserverInterface::ServerSD = socket(AF_INET, SOCK_STREAM, 0);
-    if(ara::iam::IPCserverInterface::ServerSD < 0)
+    cout << "iam listening for requests....." << endl;
+    try
     {
-        cerr << "Error establishing the server socket" << std::endl;
-        return 1;
+        acceptor_.accept(socket_);
     }
-    //bind the socket to its local address
-    int bindStatus = bind(ara::iam::IPCserverInterface::ServerSD , (struct sockaddr*) &servAddr, 
-        sizeof(servAddr));
-    if(bindStatus < 0)
+    catch (boost::system::system_error e)
     {
-        cerr << "Error binding socket to local address" << std::endl;
-        return 2;
+        std::cout << "iam ServerSocketInit : " << e.what() << endl;
     }
-    return 0;
 }
 
-int ara::iam::IPCserverInterface::getPeerId(int sd)
-{
-    recv(sd , &clientPID , sizeof(int) , 0 ) ;
-    return clientPID;
-}
 
 int ara::iam::IPCserverInterface::Listen()
 {
     std::cout << "[iamServer] Waiting for a client to connect..." << std::endl;
-    // listen for up to 5 requests at a time
-    listen(ara::iam::IPCserverInterface::ServerSD, 5);
-    // receive a request from client using accept
-    // we need a new address to connect with the client
-    sockaddr_in newSockAddr;
-    socklen_t newSockAddrSize = sizeof(newSockAddr);
-    // accept, create a new socket descriptor to 
-    // handle the new connection with client
-    int newSd = accept(ara::iam::IPCserverInterface::ServerSD , (sockaddr *)&newSockAddr, &newSockAddrSize);
-    if(newSd < 0)
+    try
     {
-        cerr << "Error accepting request from client!" << std::endl;
-        
-        return -1;
+        acceptor_.accept(socket_);
     }
-    std::cout << "[iamServer] Connected with client!" << std::endl;
-
-    return newSd;
+    catch (boost::system::system_error e)
+    {
+        std::cout << "iam Listen : " << e.what() << endl;
+    }
 }
 
 void ara::iam::IPCserverInterface::Send(bool is_granted, int sd)
 {
-    send(sd, &is_granted, sizeof(bool), 0);
+    string s = (is_granted ? "1" : "0");
+    try
+    {
+        cout<<"iam Send : "<<s<<endl;
+        socket_.write_some(boost::asio::buffer(s,1));
+    }
+    catch (boost::system::system_error e)
+    {
+        std::cout << "iam Send error  : " << e.what() << endl;
+    }
 }
 
 ara::iam::Grant ara::iam::IPCserverInterface::Receive(int sd)
 {
-    char msg[1500];
-    //receive a message from the client (listen)
-    std::cout << "[iamServer] Awaiting client response..." << std::endl;
-    memset(&msg, 0, sizeof(msg));//clear the buffer
-    
-    recv(sd, (char*)&msg, sizeof(msg), 0);
-    std::string op = ara::iam::convertToString(msg, 1500);
-    // Convert to string Stream
-    std::stringstream ss;
-    ss.str(op);
-
-    // Create GrantObj
     ara::iam::Grant G;
+    try
+    {
+        boost::asio::streambuf buf;
+        
+        boost::asio::read_until(socket_, buf, "\0");
+        stringstream ss(boost::asio::buffer_cast<const char *>(buf.data()));
+        string s(boost::asio::buffer_cast<const char *>(buf.data()));
 
-    // Deserialize stringstream ss in GrantObj
-    boost::serialization::Deserialize(G, ss);
-    
-    // std::cout << "[CLIENT]" << std::endl;
-    // std::cout << "Service ID: " << G.S_id << std::endl;
-    // std::cout << "Instance ID: " << G.In_id << std::endl;
-    // std::cout << "Grant Type: " << G.GType << std::endl;
-    // std::cout << "PR Type: " << G.PR_T << std::endl;
-
+        cout<< "iam Receive: " << s <<endl;
+        // Create GrantObj
+        // Deserialize stringstream ss in GrantObj
+        boost::serialization::Deserialize(G, ss);
+    }
+    catch (boost::system::system_error e)
+    {
+        std::cout << "iam Receive error: " << e.what() << endl;
+    }
     return G;
+}
+ara::iam::IPCserverInterface::~IPCserverInterface()
+{
+    socket_.close();
 }

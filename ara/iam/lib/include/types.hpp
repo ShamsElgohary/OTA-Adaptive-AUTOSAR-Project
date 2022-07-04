@@ -32,6 +32,7 @@ namespace ara
     {
         typedef uint16_t ServiceID;
         typedef uint16_t InstanceID;
+        typedef uint32_t PID;
         typedef std::string Process_Name;
         typedef std::string Grant_Type;
         typedef std::string PR_Type;

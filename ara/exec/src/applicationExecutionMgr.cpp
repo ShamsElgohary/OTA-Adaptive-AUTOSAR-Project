@@ -154,7 +154,6 @@ ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{roo
     remove("ActionsLog.txt");
     remove("GUI_Report.json");
     remove("SD_Report.json");
-    remove("iam_access.json");
     remove("ota_Report.json");
     remove("sm.txt");
     if (SIMULATION_ACTIVE)

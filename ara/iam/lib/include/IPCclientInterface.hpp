@@ -10,15 +10,14 @@ namespace ara
         class IPCclientInterface
         {
         private:
-            int portnum = IAM_PORT_NUMBER;
-            std::string IP = IAM_IP_ADDRESS;
-            int clientSd;
-            bool is_granted;
+            boost::asio::io_service io_service;
+            tcp::socket socket_;
 
         public:
+            IPCclientInterface();
+            ~IPCclientInterface();
             std::uint8_t Connect();
             void Send(ara::iam::Grant G);
-            void sendPID(int pid);
             bool Receive();
         };
     }

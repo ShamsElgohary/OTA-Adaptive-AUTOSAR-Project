@@ -12,10 +12,8 @@ namespace ara
             private:
             ara::iam::IPCclientInterface IPC;
             int clientPID;
-
             public:
             bool HasGrant(Grant& G);
-
             IAMGrantQuery();
         };
     }

@@ -16,22 +16,18 @@ void handle_sigTerm(int sig)
 int main()
 {
     struct sigaction sa;
-    sa.sa_flags=SA_RESTART;
-    sa.sa_handler =handle_sigTerm ;
-    sigaction(SIGTERM,&sa,NULL);
+    sa.sa_flags = SA_RESTART;
+    sa.sa_handler = handle_sigTerm;
+    sigaction(SIGTERM, &sa, NULL);
+
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
+    sleep(1);
 
     ara::iam::AccessManager iam;
     iam.InitGrantStorage(CUSTOMIZED_PROJECT_PATH + "executables/etc/system/iam/access_control_lists.json");
     iam.InitServerAdapter();
-
-    sleep(2);
-   
-    ara::exec::ExecutionClient exec;
-
-    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
-
     iam.RunEventLoop();
-
 
     return 0;
 }

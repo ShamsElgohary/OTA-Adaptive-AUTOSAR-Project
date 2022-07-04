@@ -12,15 +12,13 @@ namespace ara
         private:
             int portnum = IAM_PORT_NUMBER;
             std::string IP = IAM_IP_ADDRESS;
-            sockaddr_in servAddr;
-            int ServerSD;
-            int clientPID;
-
+            boost::asio::io_service io_service;
+            tcp::acceptor acceptor_;
         public:
-            IPCserverInterface() = default;
-            ~IPCserverInterface() = default;
+            tcp::socket socket_;
+            IPCserverInterface() ;
+            ~IPCserverInterface() ;
             std::uint8_t ServerSocketInit();
-            int getPeerId(int sd);
             int Listen();
             void Send(bool is_granted, int sd);
             ara::iam::Grant Receive(int sd);

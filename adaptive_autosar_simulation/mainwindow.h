@@ -57,7 +57,7 @@ private:
     QPushButton * ota_button =new QPushButton;
     QPushButton * end_simulation_button =new QPushButton;
     
-    simulation* s=new simulation(8088);
+    simulation*s ;
     int process_id;
     bool simulation_running=false;
     int flag=0;

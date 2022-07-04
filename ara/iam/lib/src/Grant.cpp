@@ -13,9 +13,11 @@ bool ara::iam::Grant::IsEqual(const ara::iam::Grant& other)
 
 ara::iam::Grant::Grant(ara::iam::ServiceID S, ara::iam::InstanceID I, ara::iam::Grant_Type GT, ara::iam::PR_Type PR) : S_id(S), 
                         In_id(I), GType(GT), PR_T(PR)
-    {}
+    { 
+        PID = getpid();
+    }
 
-ara::iam::Grant::Grant (const ara::iam::Grant& other) : S_id(other.S_id), In_id(other.In_id), GType(other.GType), PR_T(other.PR_T)
+ara::iam::Grant::Grant (const ara::iam::Grant& other) : S_id(other.S_id), In_id(other.In_id), GType(other.GType), PR_T(other.PR_T),PID(other.PID)
     {}
 
 void boost::serialization::Serialize(ara::iam::Grant & g, stringstream& ss)

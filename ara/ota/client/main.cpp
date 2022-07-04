@@ -323,12 +323,14 @@ int main()
     sa.sa_flags = SA_RESTART;
     sa.sa_handler = handle_sigTerm;
     sigaction(SIGTERM, &sa, NULL);
-    sleep(2);
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
+    sleep(1);
+    
     simulation s(8088);
     s.connect_to_socket();
     s.send_exe_name(simulation::exe_name::ota);
-    ara::exec::ExecutionClient exec;
-    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
+    
     CLIENT_OTA x;
 
     // ClearJSONReport();

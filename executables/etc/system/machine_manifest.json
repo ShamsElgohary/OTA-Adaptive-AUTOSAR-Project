@@ -7,15 +7,15 @@
     },
     "fn1": 
     {
-      "states": ["idle","play","terminate"]
+      "states": ["off","idle","play","terminate"]
     },
     "fn2": 
     {
-      "states": ["idle","run","end"]
+      "states": ["off","idle","run","end"]
     },
     "fn3": 
     {
-      "states": ["idle","run","end"]
+      "states": ["off","idle","run","end"]
     }
   }
 

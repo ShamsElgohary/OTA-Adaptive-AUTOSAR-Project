@@ -17,21 +17,21 @@ int main()
     sa.sa_flags = SA_RESTART;
     sa.sa_handler = handle_sigTerm;
     sigaction(SIGTERM, &sa, NULL);
-    sleep(2);
     sm_logger logger(8088);
     ExecutionClient client{};
     client.ReportExecutionStaste(ExecutionState::Krunning);
-
     StateClient x;
-    // x.setState(FunctionGroupState::Preconstruct("fn1", "idle"));
-    // sleep(6);
-    // x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
-    // sleep(6);
-    // x.setState(FunctionGroupState::Preconstruct("fn1", "terminate"));
-    // sleep(1);
+    sleep(1);
+    x.setState(FunctionGroupState::Preconstruct("fn1", "idle"));
+    sleep(1);
+    x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
+    sleep(1);
+
+    x.setState(FunctionGroupState::Preconstruct("fn1", "terminate"));
+    sleep(1);
     x.setState(FunctionGroupState::Preconstruct("machineFG", "running"));
-    sleep(6);
-    
+    sleep(1);
+
     /********Test*************/
     UpdateRequestImpl updaterequest(&logger, 1, ara::com::MethodCallProcessingMode::kEvent);
     updaterequest.log->gui_receive(&updaterequest);

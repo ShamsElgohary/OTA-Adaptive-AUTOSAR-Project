@@ -15,11 +15,7 @@ int main()
     sa.sa_flags = SA_RESTART;
     sa.sa_handler = handle_sigTerm;
     sigaction(SIGTERM, &sa, NULL);
-
-    cout << "hellooo from v1111111" << endl;
-    sleep(2);
     ExecutionClient exec;
     exec.ReportExecutionStaste(ExecutionState::Krunning);
-    while (1)
-        ;
+    while (1);
 }

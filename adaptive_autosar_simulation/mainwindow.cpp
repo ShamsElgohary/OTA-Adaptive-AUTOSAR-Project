@@ -9,10 +9,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
    this->tabWidget->addTab(exec_tab,"Execution Manager");
    simulation_button->setText("start simulation");
-   ota_button->setText("Run OTA");
+   ota_button->setText("update system");
    vertical_layout_control->addWidget(simulation_button);
    vertical_layout_control->addWidget(ota_button);
-   end_simulation_button->setText("End simulation");
+   end_simulation_button->setText("restart simulation");
    vertical_layout_control->addWidget(end_simulation_button);
    ota_button->setVisible(false);
 
@@ -22,31 +22,35 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
    widget->setLayout(main_layout);
 
    setCentralWidget(widget);
-
+   s=new simulation(8088);
    create_server();
    connect_fun();
 }
 void MainWindow::create_server()
 {
+    s->create_server();
     QThread::create([this]{
-        this->s->creat_socket();
         while(1)
         {
-            int new_socket =this->s->listen_l();
+            auto new_socket = this->s->listen_l();
             cout<<"thread created"<<endl;
             QThread::create([this,new_socket]()
             {
                 auto name = this->s->recive_exe_name(new_socket);
-                //open_tab(name);
-                emit receive_cluster(name);
-                auto handler = [name,this](){choose_handler(name);};
+                open_tab(name);
                 while(1)
                 {
                     if(this->s->recive_file(new_socket,name)){
-                        handler();
-                        usleep(10);
+                        choose_handler(name);
+                        usleep(500);
                     }
-                    else break;
+                    else
+                    {
+                        cout<<"socket closed"<<endl;
+                        new_socket->close();
+                        delete new_socket;
+                        break;
+                    }
                 }
             })->start();
         }
@@ -73,7 +77,7 @@ void MainWindow::on_simulation_button_clicked()
         process_id= fork();
         if (process_id == 0)
         {
-            string path=CUSTOMIZED_PROJECT_PATH+"/executables/em/bin/";
+            string path=CUSTOMIZED_PROJECT_PATH+"executables/em/bin/";
             chdir(path.c_str());
             execl("em", nullptr);
         }
@@ -98,7 +102,6 @@ void MainWindow::choose_handler(simulation::exe_name name)
         break;
     case (simulation::exe_name::ucm) :
         ucm_tab->ucm_handler();
-        ota_button->setVisible(true);
         break;
     case (simulation::exe_name::ota) :
         ota_tab->ota_handler();
@@ -108,6 +111,7 @@ void MainWindow::choose_handler(simulation::exe_name name)
         break;
     case (simulation::exe_name::iam) :
         iam_tab->iam_handler();
+        ota_button->setVisible(true);
         break;
     case (simulation::exe_name::sm) :
         sm_tab->sm_handler();
@@ -172,34 +176,33 @@ void MainWindow::end_simulation_button_clicked()
     system("pkill -x ucm");
     system("pkill -x ex1");
     system("pkill -x ex2");
-    while(tabWidget->count()!=1)
-    {
-        tabWidget->removeTab(1);
-    }
+    tabWidget->clear();
     exec_tab->clear_widget();
+    this->tabWidget->addTab(exec_tab,"Execution Manager");
     ota_button->setVisible(false);
     simulation_running=false;
     simulation_button->setText("start simulation");
     flag=0;
-
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {
-    s->~simulation();
-    if(simulation_running)
-    {
-        e->ignore();
-        QMessageBox msgbox;
-        msgbox.setText("Please Stop Simlation Before Exit");
-        msgbox.exec();
-        end_simulation_button_clicked();
-    }
-    else
-        e->accept();
+    end_simulation_button_clicked();
+    e->accept();
 }
 MainWindow::~MainWindow()
 {
     s->~simulation();
-    system("pkill -f adaptive_autosar_simulation");
+
     delete ui;
+    delete main_layout;
+    delete vertical_layout_tabs;
+    delete vertical_layout_control;
+    delete com;
+    delete widget;
+    delete exec_tab;
+    delete sm_tab;
+    delete exec_tab;
+    delete iam_tab;
+    delete ucm_tab;
+    delete sd_tab;
 }
