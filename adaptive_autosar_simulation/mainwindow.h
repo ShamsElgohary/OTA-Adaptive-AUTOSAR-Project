@@ -11,6 +11,9 @@
 #include "QThread"
 #include "ota.h"
 #include "simulation.hpp"
+#include "sm_tab.h"
+#include"ucm_tab.h"
+#include"ota_tab.h"
 using namespace std;
 
 QT_BEGIN_NAMESPACE
@@ -46,11 +49,14 @@ private:
     QHBoxLayout *com = new QHBoxLayout;
     QWidget *widget =new QWidget ;
     exec * exec_tab =new exec ;
-    sm * sm_tab =new sm ;
+    //sm * sm_tab =new sm ;
+    sm_tab * SM_tab = new sm_tab;
     IAM*  iam_tab =new IAM ;
-    ucm* ucm_tab=new ucm  ;
+    //ucm* ucm_tab=new ucm  ;
+    ucm_tab * UCM_tab = new ucm_tab;
     sd* sd_tab=new sd;
-    ota* ota_tab=new ota  ;
+    //ota* ota_tab=new ota  ;
+    ota_tab * OTA_tab = new ota_tab;
     
     QTabWidget *tabWidget =new QTabWidget ;
     QPushButton * simulation_button =new QPushButton;

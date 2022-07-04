@@ -9,10 +9,12 @@ namespace ara
         {
             // Test
             string Typestr = (Type == MethodType::Skeleton_Method) ? "Skeleton" : "Proxy";
+            cout << Cluster_Name << " Method name: " << methodName;
+            cout << ", Method Type: " << Typestr << endl;
 
             // Read JSON File
             Json::Value event;
-            string file_name = Cluster_Name + "_Report.json";
+            string file_name = Cluster_Name + "_Reporting.json";
             string cluster_name = Cluster_Name;
             ifstream f(file_name);
             Json::Reader R;
@@ -44,6 +46,16 @@ namespace ara
             std::ofstream json_file(file_name);
             json_file << event;
             json_file.close();
+
+            // if (SIMULATION_ACTIVE)
+            // {
+            //     static simulation simulation_socket{8088};
+            //     char current_dir[256];
+            //     getcwd(current_dir, 256);
+            //     std::string path(current_dir);
+            //     path += "/" + file_name;
+            //     simulation_socket.send_file((char *)(path.c_str()));
+            // }
         }
 
         void AddServiceDiscoveryRequest(uint16_t ServiceID, uint16_t InstanceID, ServiceDiscoveryMethodType Type, bool GrantResult, string Cluster_Name)
@@ -65,7 +77,7 @@ namespace ara
 
             // Read JSON File
             Json::Value event;
-            string file_name = Cluster_Name + "_Report.json";
+            string file_name = Cluster_Name + "_Reporting.json";
             string cluster_name = Cluster_Name;
             ifstream f(file_name);
             Json::Reader R;
@@ -91,6 +103,16 @@ namespace ara
             std::ofstream json_file(file_name);
             json_file << event;
             json_file.close();
+
+            // if (SIMULATION_ACTIVE)
+            // {
+            //     static simulation simulation_socket{8088};
+            //     char current_dir[256];
+            //     getcwd(current_dir, 256);
+            //     std::string path(current_dir);
+            //     path += "/" + file_name;
+            //     simulation_socket.send_file((char *)(path.c_str()));
+            // }
         }
     }
 }

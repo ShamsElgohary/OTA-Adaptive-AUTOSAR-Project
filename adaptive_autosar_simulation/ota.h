@@ -6,12 +6,14 @@
 #include <QtWidgets>
 #include "simulation.hpp"
 #include "./jsoncpp/header/json.h"
+#include"com.h"
+#include "../utility/general.hpp"
 
 class ota: public QWidget
 {
     Q_OBJECT
 public:
-    explicit ota(QWidget *parent = nullptr);
+    explicit ota(QWidget *parent = nullptr,GUI_COMM*ptr = nullptr);
 public slots:
     void update_ota();
     void ota_handler();
@@ -37,6 +39,11 @@ private:
     QPushButton * discard_update =new QPushButton;
 
     QTextBrowser *ucm_console_text = new QTextBrowser;
+
+    GUI_COMM * com_ptr;
+
+    QString reportPath = QString::fromStdString(CUSTOMIZED_PROJECT_PATH) +"executables/em/bin/ota_Reporting.json";
+    QString serviceInstanceManifestPath = QString::fromStdString(CUSTOMIZED_PROJECT_PATH) +"executables/ota/0.1/etc/service_manifest.json";
 
 
 };

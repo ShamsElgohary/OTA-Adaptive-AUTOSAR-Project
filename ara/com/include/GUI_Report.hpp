@@ -28,6 +28,7 @@ namespace ara
             Find_Method = 2U,
             Stop_Method = 3U
         };
+        
         void AddMethodCall(int methodID, string methodName, MethodType Type, uint16_t ServiceID, string Cluster_Name);
         void AddServiceDiscoveryRequest(uint16_t ServiceID, uint16_t InstanceID, ServiceDiscoveryMethodType Type, bool GrantResult, string Cluster_Name);
     }

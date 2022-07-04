@@ -10,11 +10,11 @@
 #include <errno.h>
 #include <bits/stdc++.h>
 
-sm::sm(QWidget *parent): QWidget{parent}
+sm::sm(QWidget *parent,GUI_COMM * ptr): QWidget{parent}
 {
-
+    com_ptr = ptr;
     main_layout->addWidget(state_management, 0, 0, 2, 1);
-    main_layout->addWidget(com, 0 ,1, 4, 1);
+    //main_layout->addWidget(com, 0 ,1, 4, 1);
     main_layout->addWidget(console,  2 ,0, 2, 1);
 
        QFont font;
@@ -53,7 +53,7 @@ sm::sm(QWidget *parent): QWidget{parent}
     console->layout()->addWidget(console_text);
     console->layout()->addWidget(console_text);
 
-    com->setLayout(new QVBoxLayout);
+   // com->setLayout(new QVBoxLayout);
     
 
     setLayout(main_layout);
@@ -61,6 +61,7 @@ sm::sm(QWidget *parent): QWidget{parent}
     sim=new simulation(8088);
     connect(this,SIGNAL(sm_signal()),this,SLOT(update_sm()));
     connect(this,SIGNAL(sm_signal()),this,SLOT(update_terminal()));
+    com_ptr->parseManifest(serviceInstanceManifestPath);
 }
 void sm::sm_handler()
 {
@@ -109,6 +110,10 @@ void sm::update_sm()
             function_group_state_table->setItem(i,1,new QTableWidgetItem(QString(states[fg].asCString())));
             i++;
         }
+
+        com_ptr->parse(reportPath);
+
+
     }
 void sm::update_terminal()
 {

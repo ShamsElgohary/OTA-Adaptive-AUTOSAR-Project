@@ -4,11 +4,9 @@
 ucm_tab::ucm_tab(QWidget *parent)
     : QWidget{parent}
 {
-    ucm *ucm_t = new ucm();
-    main_layout->addWidget(ucm_t,3);
-
     GUI_COMM *com_t = new GUI_COMM();
+    ucm_instance = new ucm(nullptr,com_t);
+    main_layout->addWidget(ucm_instance,3);
     main_layout->addWidget(com_t,1);
-    //com_t->parse("/home/maher/Development/Qt/second rty/untitled/GUI_Report.json");
     setLayout(main_layout);
 }

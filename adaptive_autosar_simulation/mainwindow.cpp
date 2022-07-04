@@ -9,10 +9,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
    this->tabWidget->addTab(exec_tab,"Execution Manager");
    simulation_button->setText("start simulation");
-   ota_button->setText("update system");
+   ota_button->setText("Update System");
    vertical_layout_control->addWidget(simulation_button);
    vertical_layout_control->addWidget(ota_button);
-   end_simulation_button->setText("restart simulation");
+   end_simulation_button->setText("Restart simulation");
    vertical_layout_control->addWidget(end_simulation_button);
    ota_button->setVisible(false);
 
@@ -101,10 +101,11 @@ void MainWindow::choose_handler(simulation::exe_name name)
         this->exec_tab->em_handler();
         break;
     case (simulation::exe_name::ucm) :
-        ucm_tab->ucm_handler();
+        UCM_tab->ucm_instance->ucm_handler();
+        ota_button->setVisible(true);
         break;
     case (simulation::exe_name::ota) :
-        ota_tab->ota_handler();
+        OTA_tab->ota_instance->ota_handler();
         break;
     case (simulation::exe_name::sd) :
         sd_tab->sd_handler();
@@ -114,7 +115,7 @@ void MainWindow::choose_handler(simulation::exe_name name)
         ota_button->setVisible(true);
         break;
     case (simulation::exe_name::sm) :
-        sm_tab->sm_handler();
+        SM_tab->sm_instance->sm_handler();
         break;
     }
 }
@@ -124,13 +125,13 @@ void MainWindow::open_tab(simulation::exe_name name)
     switch(name)
     {
     case (simulation::exe_name::sm) :
-        this->tabWidget->addTab(sm_tab,"State Manager");
+        this->tabWidget->addTab(SM_tab,"State Manager");
         break;
     case (simulation::exe_name::ucm) :
-        this->tabWidget->addTab(ucm_tab,"Update and Configuration Manager");
+        this->tabWidget->addTab(UCM_tab,"Update and Configuration Manager");
         break;
     case (simulation::exe_name::ota) :
-        this->tabWidget->addTab(ota_tab,"OTA");
+        this->tabWidget->addTab(OTA_tab,"OTA");
         break;
     case (simulation::exe_name::sd) :
         this->tabWidget->addTab(sd_tab,"Service Discovery");
@@ -158,8 +159,8 @@ void MainWindow::on_ota_button_clicked()
     if(count==1)
     {
         QThread*th= QThread::create([this]{
-        sm_tab->run_cluster(sm::clusters::OTA);
-        sm_tab->sm_handler();
+        SM_tab->sm_instance->run_cluster(sm::clusters::OTA);
+        SM_tab->sm_instance->sm_handler();
         });
         th->start();
         count=0;
@@ -200,9 +201,9 @@ MainWindow::~MainWindow()
     delete com;
     delete widget;
     delete exec_tab;
-    delete sm_tab;
+    delete SM_tab;
     delete exec_tab;
     delete iam_tab;
-    delete ucm_tab;
+    delete UCM_tab;
     delete sd_tab;
 }

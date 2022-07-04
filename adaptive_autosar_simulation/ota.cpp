@@ -1,8 +1,9 @@
 #include "ota.h"
 
-ota::ota(QWidget *parent)
+ota::ota(QWidget *parent,GUI_COMM*ptr)
     : QWidget{parent}
 {
+    com_ptr = ptr;
 
     main_layout->addWidget(over_the_air, 0, 0, 3, 1);
         main_layout->addWidget(ucm, 0 ,1, 3, 1);
@@ -76,11 +77,13 @@ ota::ota(QWidget *parent)
         setLayout(main_layout);
 
     connect(this,SIGNAL(ota_signal()),this,SLOT(update_ota()));
+    com_ptr->parseManifest(serviceInstanceManifestPath);
 }
 
 
 void ota::update_ota()
 {
+        com_ptr->parse(reportPath);
         std::ifstream file_input(to_string(simulation::exe_name::ota)); //path to be updated
         Json::Reader reader;
         Json::Value root;

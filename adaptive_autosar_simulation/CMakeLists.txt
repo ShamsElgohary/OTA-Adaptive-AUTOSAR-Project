@@ -40,6 +40,12 @@ set(PROJECT_SOURCES
         sd.cpp
         com.h
         com.cpp
+        ucm_tab.h
+        ucm_tab.cpp
+        sm_tab.h
+        sm_tab.cpp
+        ota_tab.h
+        ota_tab.cpp
         ../utility/general.hpp
 )
 

@@ -1,8 +1,9 @@
 #include "ucm.h"
 
-ucm::ucm(QWidget *parent)
+ucm::ucm(QWidget *parent, GUI_COMM *ptr)
     : QWidget{parent}
 {
+    com_ptr = ptr;
     main_layout->addWidget(ucmBox,0,0,1,4);
 
 
@@ -143,7 +144,7 @@ ucm::ucm(QWidget *parent)
 
     //add widget conf(y,x,col,row)
 
-    main_layout->addWidget(comBox,0,4,1,1);
+   // main_layout->addWidget(comBox,0,4,1,1);
 
 
 //    updateActivateRate();
@@ -161,6 +162,7 @@ ucm::ucm(QWidget *parent)
     connect(this,SIGNAL(update_ucm()),this,SLOT(readActivateNewCluster()));
     connect(this,SIGNAL(update_ucm()),this,SLOT(updateTransferRate()));
     connect(this,SIGNAL(update_ucm()),this,SLOT(updateActivateRate()));
+    com_ptr->parseManifest(serviceInstanceManifestPath);
 
 }
 
@@ -172,6 +174,7 @@ void ucm::updateLog()
         file.open(QIODevice::ReadOnly);
         QTextStream in(&file);
         logList->setText(in.readAll());
+        com_ptr->parse(reportPath);
 }
 
 

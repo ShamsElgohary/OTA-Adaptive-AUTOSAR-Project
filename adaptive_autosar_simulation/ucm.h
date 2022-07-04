@@ -7,9 +7,8 @@
 #include <fstream>
 #include <iostream>
 #include "simulation.hpp"
+#include"com.h"
 #include "../utility/general.hpp"
-
-
 using namespace std;
 using namespace Json;
 
@@ -17,7 +16,7 @@ class ucm: public QWidget
 {
     Q_OBJECT
 public:
-    explicit ucm(QWidget *parent = nullptr);
+    explicit ucm(QWidget *parent = nullptr,GUI_COMM*ptr=nullptr);
 
 public slots:
     void updateLog();
@@ -83,7 +82,11 @@ private:
     string guiReportPath = to_string(simulation::exe_name::ucm);
     QString activeLogPath = QString::fromStdString((CUSTOMIZED_PROJECT_PATH) + "executables/em/bin/ActionsLog.txt");
     //COM GridBox setup
-     QGroupBox *comBox = new QGroupBox("COM");
+     //QGroupBox *comBox = new QGroupBox("COM");
+
+    GUI_COMM * com_ptr;
+    QString reportPath = QString::fromStdString(CUSTOMIZED_PROJECT_PATH) +"executables/em/bin/ucm_Reporting.json";
+    QString serviceInstanceManifestPath = QString::fromStdString(CUSTOMIZED_PROJECT_PATH) +"executables/ucm/0.1/etc/service_manifest.json";
 };
 
 #endif // UCM_H

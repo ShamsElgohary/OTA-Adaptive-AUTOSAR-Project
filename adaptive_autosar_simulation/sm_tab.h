@@ -3,12 +3,14 @@
 
 #include <QWidget>
 #include<QLayout>
+#include"sm.h"
 
 class sm_tab : public QWidget
 {
     Q_OBJECT
 public:
     explicit sm_tab(QWidget *parent = nullptr);
+    sm *sm_instance;
 private:
     QHBoxLayout * main_layout = new QHBoxLayout;
 
