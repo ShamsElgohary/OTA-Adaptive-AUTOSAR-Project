@@ -224,13 +224,14 @@ void servicestorage::Addtorequests(uint16_t Service_ID, uint16_t instance_id)
     }
 }
 
-void servicestorage::addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint32_t ttl, uint16_t TYPE, uint16_t port_num, string ipv4_address)
+void servicestorage::addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint32_t ttl, uint16_t TYPE, uint16_t port_num, string ipv4_address, someip::MessageType m, MessageID messageID, ProtocolVersion protocol_version, InterfaceVersion interface_version)
 {
 
     Json::Value event;
     ifstream f("SD_Report.json");
     Json::Reader R;
     string msgtype;
+    string headertype;
     R.parse(f, event);
     if (!event)
     {
@@ -259,12 +260,20 @@ void servicestorage::addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint
         Temp3["Port Number"] = port_num;
     }
 
+    if (m == NOTIFICATION)
+    {
+        headertype = "NOTIFICATION";
+    }
+
     Temp3["Service ID"] = Service_ID;
     Temp3["Instance ID"] = instance_id;
     Temp3["IP"] = ipv4_address;
     Temp3["Type"] = msgtype;
     Temp3["ttl"] = ttl;
-
+    Temp3["Message ID"] = messageID;
+    Temp3["Interface Version"] = interface_version;
+    Temp3["Protocol Version"] = protocol_version;
+    Temp3["Message Type"] = headertype;
     event["SD"]["Received SD messages"].append(Temp3);
 
     // std::cout << event << std::endl;

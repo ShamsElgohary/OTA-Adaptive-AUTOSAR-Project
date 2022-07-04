@@ -11,6 +11,11 @@ uint16_t instance_id;
 uint32_t TTL;
 uint16_t TYPE;
 uint16_t port_num;
+MessageID messageID;
+ProtocolVersion protocolVersion;
+InterfaceVersion interfaceVersion;
+someip::MessageType msgtype;
+
 void handle_sigTerm(int sig)
 {
     ExecutionClient exec;
@@ -23,11 +28,10 @@ int main()
     sa.sa_flags = SA_RESTART;
     sa.sa_handler = handle_sigTerm;
     sigaction(SIGTERM, &sa, NULL);
-    
+
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
 
-    
     servicestorage ServiceStorage;
     Json::Value event;
     ifstream f("SD_Report.json");
@@ -40,7 +44,6 @@ int main()
     std::ofstream json_file("SD_Report.json");
     json_file << event;
     json_file.close();
-
 
     while (1)
     {
@@ -61,16 +64,20 @@ int main()
                   << std::endl;
 
         serverUser->ServerListen();
-
-        ss << serverUser->ReceiveMessage().payload;
+        msg1 = serverUser->ReceiveMessage();
+        ss << msg1.payload;
+        messageID = msg1.header.getMessageID();
+        msgtype = msg1.header.getMessageType();
+        protocolVersion = msg1.header.getProtocolVersion();
+        interfaceVersion = msg1.header.getInterfaceVersion();
+        
 
         Deserializer D;
         D.Deserialize(ss, service_id, instance_id, TTL, TYPE);
         D.Deserialize(ss, ipv4_address);
         D.Deserialize(ss, port_num);
-        
 
-        ServiceStorage.addmsgtoGUI(service_id,instance_id,TTL,TYPE,port_num,ipv4_address);
+        ServiceStorage.addmsgtoGUI(service_id,instance_id,TTL,TYPE,port_num,ipv4_address,msgtype,messageID,protocolVersion,interfaceVersion);
 
         uint16_t SID = service_id;
         uint16_t IID = instance_id;

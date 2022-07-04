@@ -3,7 +3,7 @@
 #include "fstream"
 #include <QTableWidget>
 #include "iostream"
-#include "../utility/general.hpp""
+#include "../utility/general.hpp"
 
 void sd::sd_handler()
 {
@@ -100,12 +100,22 @@ void sd::update_sd()
             std::string port = Received_SD_messages[i]["Port Number"].asString();
             std::string ttl = Received_SD_messages[i]["ttl"].asString();
             std::string type = Received_SD_messages[i]["Type"].asString();
-            std::string result="SD MSG : service_id : " +service_id
-                               +" Instance id : "+instance_id
-                               +"\n IP : "+ip
-                               +" Port : "+port
-                    +" Time To Live: "+ttl
-                    +" type: "+type+"\n";
+            std::string msgID = Received_SD_messages[i]["Message ID"].asString();
+            std::string msgtype = Received_SD_messages[i]["Message Type"].asString();
+            std::string intversion = Received_SD_messages[i]["Interface Version"].asString();
+            std::string protocolversion = Received_SD_messages[i]["Protocol Version"].asString();
+            std::string result="\n [Someip Header] :"
+              " \n       Message ID: " +msgID
+             +" \n       Message Type: "+msgtype
+             +" \n       Protocol Version: "+protocolversion
+             +" \n       Interface Version: "+intversion
+             + "\n [SD Message] : "+
+               "\n       service_id : " +service_id
+                               +" \n       Instance id : "+instance_id
+                               +"\n       IP : "+ip
+                               +" \n       Port : "+port
+                    +"\n       Time To Live: "+ttl
+                    +" \n       Type: "+type+"\n";
 
             console_text->insertPlainText(result.c_str());
             console_text->setTextColor(QColor(Qt::white));

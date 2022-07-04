@@ -46,7 +46,7 @@ serviceinfo SetServiceInfo(uint16_t Instance_ID,std::string ipv4_address,uint16_
 
 void addtoGUI(uint16_t Service_ID, serviceinfo serviceinformation);
 void Addtorequests(uint16_t Service_ID, uint16_t instance_id);
-void addmsgtoGUI(uint16_t Service_ID,uint16_t instance_id,uint32_t ttl,uint16_t TYPE,uint16_t port_num, string ipv4_address);
+void addmsgtoGUI(uint16_t Service_ID,uint16_t instance_id,uint32_t ttl,uint16_t TYPE,uint16_t port_num, string ipv4_address,someip::MessageType m, MessageID messageID,ProtocolVersion protocol_version,InterfaceVersion interface_version);
 void removefromlist();
 
 };

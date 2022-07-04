@@ -9,6 +9,8 @@ MethodID methodID = 0x8100;
 ProtocolVersion protocol_version = 0x01;
 InterfaceVersion interface_version = 0x01;
 // ReturnCode returnCode=0x00;
+MessageID msgID=0xFFFF8100;
+RequestID requestid=0x00000001;
 someip::MessageType messagetype = someip::MessageType::NOTIFICATION;
 
 servicediscovery::servicediscovery()
@@ -17,7 +19,7 @@ servicediscovery::servicediscovery()
 void servicediscovery::offer_service(uint16_t service_id, uint16_t instance_id, std::string ipv4_address, uint16_t port_num)
 {
     someip_sd_message message1;
-    someip::someipHeader h1;
+    someip::someipHeader h1(msgID,requestid,interface_version,messagetype,E_OK);
     std::stringstream ss;
     someip::someipMessage m1(h1, ss);
     message1.header = m1.header;
@@ -38,7 +40,7 @@ void servicediscovery::offer_service(uint16_t service_id, uint16_t instance_id, 
 std::vector<serviceinfo> servicediscovery::find_service(uint16_t service_id, uint16_t instance_id)
 {
     someip_sd_message message1;
-    someip::someipHeader h1;
+    someip::someipHeader h1(msgID,requestid,interface_version,messagetype,E_OK);
     std::stringstream ss;
     someip::someipMessage m1(h1, ss);
     message1.header = m1.header;
@@ -83,7 +85,7 @@ std::vector<serviceinfo> servicediscovery::find_service(uint16_t service_id, uin
 void servicediscovery::stop_offer_service(uint16_t service_id, uint16_t instance_id)
 {
     someip_sd_message message1;
-    someip::someipHeader h1;
+    someip::someipHeader h1(msgID,requestid,interface_version,messagetype,E_OK);
     std::stringstream ss;
     someip::someipMessage m1(h1, ss);
     message1.header = m1.header;
