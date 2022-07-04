@@ -72,8 +72,13 @@ void MainWindow::on_simulation_button_clicked()
     simulation_running=true;
     if(flag==0)
     {
-         string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
-         mkfifo(path.c_str(),0777);
+        SM_tab=new sm_tab();
+        UCM_tab=new ucm_tab();
+        OTA_tab=new ota_tab();
+        iam_tab=new IAM();
+        sd_tab=new sd();
+        string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
+        mkfifo(path.c_str(),0777);
         process_id= fork();
         if (process_id == 0)
         {
@@ -102,7 +107,6 @@ void MainWindow::choose_handler(simulation::exe_name name)
         break;
     case (simulation::exe_name::ucm) :
         UCM_tab->ucm_instance->ucm_handler();
-        ota_button->setVisible(true);
         break;
     case (simulation::exe_name::ota) :
         OTA_tab->ota_instance->ota_handler();
@@ -112,7 +116,6 @@ void MainWindow::choose_handler(simulation::exe_name name)
         break;
     case (simulation::exe_name::iam) :
         iam_tab->iam_handler();
-        ota_button->setVisible(true);
         break;
     case (simulation::exe_name::sm) :
         SM_tab->sm_instance->sm_handler();
@@ -129,6 +132,7 @@ void MainWindow::open_tab(simulation::exe_name name)
         break;
     case (simulation::exe_name::ucm) :
         this->tabWidget->addTab(UCM_tab,"Update and Configuration Manager");
+        ota_button->setVisible(true);
         break;
     case (simulation::exe_name::ota) :
         this->tabWidget->addTab(OTA_tab,"OTA");
@@ -144,28 +148,12 @@ void MainWindow::open_tab(simulation::exe_name name)
 }
 void MainWindow::on_ota_button_clicked()
 {
-    //static int count;
-    int count=1;
-    /*if(count==0)
-    {
-        QThread*th= QThread::create([this]{
-        sm_tab->run_cluster(sm::clusters::UCM);
-        sm_tab->sm_handler();
-        });
-        th->start();
-        count++;
-        ota_button->setText("Run OTA");
-    }*/
-    if(count==1)
-    {
         QThread*th= QThread::create([this]{
         SM_tab->sm_instance->run_cluster(sm::clusters::OTA);
         SM_tab->sm_instance->sm_handler();
         });
         th->start();
-        count=0;
-        ota_button->setText("Run OTA");
-    }
+        ota_button->setVisible(false);
 }
 void MainWindow::end_simulation_button_clicked()
 {
