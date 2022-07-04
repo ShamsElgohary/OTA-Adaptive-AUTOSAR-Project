@@ -67,6 +67,5 @@ private:
     int process_id;
     bool simulation_running=false;
     int flag=0;
-
 };
 #endif // MAINWINDOW_H
