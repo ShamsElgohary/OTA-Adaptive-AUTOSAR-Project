@@ -27,7 +27,6 @@ int main()
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
 
-    sleep(1);
     
     servicestorage ServiceStorage;
     Json::Value event;
