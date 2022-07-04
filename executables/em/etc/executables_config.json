@@ -143,7 +143,7 @@
 		"fn1" : "terminate",
 		"fn2" : "off",
 		"fn3" : "off",
-		"machineFG" : "startup"
+		"machineFG" : "running"
 	},
 	"function_groups" : 
 	{
@@ -193,24 +193,30 @@
 	[
 		{
 			"current_state" : "Krunning",
-			"name" : "ex2",
-			"pid" : 62618
+			"name" : "iam",
+			"pid" : 67072
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 62589
+			"pid" : 67034
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "someip_sd",
+			"pid" : 67071
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ucm",
+			"pid" : 67073
 		}
 	],
 	"sm_request" : 
 	{
-		"fng" : "fn1",
-		"fng_state" : "terminate"
+		"fng" : "machineFG",
+		"fng_state" : "running"
 	},
 	"to_run" : [],
-	"to_term" : 
-	[
-		"ex1",
-		"ex2"
-	]
+	"to_term" : []
 }
