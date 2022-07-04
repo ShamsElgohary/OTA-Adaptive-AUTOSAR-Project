@@ -6,7 +6,7 @@ exec::exec(QWidget *parent): QWidget{parent}
 {
 
 
-    machine_configGbx->setLayout(new QHBoxLayout());
+    //machine_configGbx->setLayout(new QHBoxLayout());
 
     main_layout->addWidget(Running_executables, 0, 0, 1, 1 );
     main_layout->addWidget(sm_requestsGbx, 1 ,0, 1, 1);
@@ -29,12 +29,12 @@ exec::exec(QWidget *parent): QWidget{parent}
     fng_states_gbx->setLayout(new QHBoxLayout);
     fng_states_gbx->layout()->addWidget(fng_states);
 
-    QVBoxLayout * left=new QVBoxLayout;
-    QVBoxLayout * right=new QVBoxLayout;
-    QVBoxLayout * v=new QVBoxLayout;
+    QVBoxLayout * left=new QVBoxLayout();
+    QVBoxLayout * right=new QVBoxLayout();
+    QVBoxLayout * v=new QVBoxLayout();
 
-    QHBoxLayout * htop=new QHBoxLayout;
-    QHBoxLayout * hdown=new QHBoxLayout;
+    QHBoxLayout * htop=new QHBoxLayout();
+    QHBoxLayout * hdown=new QHBoxLayout();
 
     sm_requestsGbx->setLayout(hdown);
 

@@ -37,7 +37,8 @@ void MainWindow::create_server()
             QThread::create([this,new_socket]()
             {
                 auto name = this->s->recive_exe_name(new_socket);
-                open_tab(name);
+                //open_tab(name);
+                emit receive_cluster(name);
                 auto handler = [name,this](){choose_handler(name);};
                 while(1)
                 {
@@ -54,9 +55,13 @@ void MainWindow::create_server()
 
 void MainWindow::connect_fun()
 {
+    QSignalMapper* signalmapper=new QSignalMapper(this);
+
     connect(simulation_button, SIGNAL(clicked()), this, SLOT(on_simulation_button_clicked()));
     connect(ota_button, SIGNAL(clicked()), this, SLOT(on_ota_button_clicked()));
     connect(end_simulation_button, SIGNAL(clicked()), this, SLOT(end_simulation_button_clicked()));
+    connect(this, SIGNAL(receive_cluster(simulation::exe_name)), this, SLOT(open_tab(simulation::exe_name)));
+
 }
 void MainWindow::on_simulation_button_clicked()
 {

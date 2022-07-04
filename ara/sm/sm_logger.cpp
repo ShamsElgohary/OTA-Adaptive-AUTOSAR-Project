@@ -17,7 +17,7 @@ int sm_logger::fd=-1;
 std::thread sm_logger::gui_thread;
 sm_logger::sm_logger(int server_port)
 {
-//freopen("sm.txt","w+",stdout); //write cout and printf to txt file
+freopen("sm.txt","w+",stdout); //write cout and printf to txt file
 this->sim=new simulation(server_port);
 this->sim->connect_to_socket();
 this->sim->send_exe_name(simulation::exe_name::sm);

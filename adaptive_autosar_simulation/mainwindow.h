@@ -26,7 +26,6 @@ public:
     ~MainWindow();
     void connect_fun();
     void choose_handler(simulation::exe_name name);
-    void open_tab(simulation::exe_name name);
 
     void create_server();
     void closeEvent(QCloseEvent *e);
@@ -34,6 +33,9 @@ private slots:
     void on_simulation_button_clicked();
     void on_ota_button_clicked();
     void end_simulation_button_clicked();
+    void open_tab(simulation::exe_name name);
+signals:
+    void receive_cluster(simulation::exe_name name);
 
 
 private:
