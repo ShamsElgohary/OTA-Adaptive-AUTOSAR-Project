@@ -156,6 +156,7 @@ ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{roo
     remove("SD_Report.json");
     remove("ota_Report.json");
     remove("sm.txt");
+    system("rm *.json");
     if (SIMULATION_ACTIVE)
     {
         sim_socket.connect_to_socket();

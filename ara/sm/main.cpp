@@ -21,12 +21,12 @@ int main()
     ExecutionClient client{};
     client.ReportExecutionStaste(ExecutionState::Krunning);
     StateClient x;
-    // x.setState(FunctionGroupState::Preconstruct("fn1", "idle"));
-    // sleep(1);
-    // x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
-    // sleep(4);
-    // x.setState(FunctionGroupState::Preconstruct("fn1", "terminate"));
-    // sleep(1);
+    x.setState(FunctionGroupState::Preconstruct("fn1", "idle"));
+    sleep(1);
+    x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
+    sleep(4);
+    x.setState(FunctionGroupState::Preconstruct("fn1", "terminate"));
+    sleep(1);
     x.setState(FunctionGroupState::Preconstruct("machineFG", "running"));
 
     /********Test*************/
