@@ -37,7 +37,8 @@ void MainWindow::create_server()
             QThread::create([this,new_socket]()
             {
                 auto name = this->s->recive_exe_name(new_socket);
-                open_tab(name);
+                //open_tab(name);
+                emit receive_cluster(name);
                 while(1)
                 {
                     if(this->s->recive_file(new_socket,name)){
