@@ -23,8 +23,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
    setCentralWidget(widget);
    s=new simulation(8088);
-   create_server();
    connect_fun();
+   create_server();
 }
 void MainWindow::create_server()
 {
@@ -37,8 +37,7 @@ void MainWindow::create_server()
             QThread::create([this,new_socket]()
             {
                 auto name = this->s->recive_exe_name(new_socket);
-                //open_tab(name);
-                open_tab_notifier(name);
+                open_tab(name);
                 while(1)
                 {
                     if(this->s->recive_file(new_socket,name)){
@@ -63,7 +62,11 @@ void MainWindow::connect_fun()
     connect(simulation_button, SIGNAL(clicked()), this, SLOT(on_simulation_button_clicked()));
     connect(ota_button, SIGNAL(clicked()), this, SLOT(on_ota_button_clicked()));
     connect(end_simulation_button, SIGNAL(clicked()), this, SLOT(end_simulation_button_clicked()));
-    connect(this, SIGNAL(receive_cluster(simulation::exe_name)), this, SLOT(open_tab(simulation::exe_name)));
+    connect(this, SIGNAL(add_sm_s()), this, SLOT(add_sm()));
+    connect(this, SIGNAL(add_ucm_s()), this, SLOT(add_ucm()));
+    connect(this, SIGNAL(add_ota_s()), this, SLOT(add_ota()));
+    connect(this, SIGNAL(add_iam_s()), this, SLOT(add_iam()));
+    connect(this, SIGNAL(add_sd_s()), this, SLOT(add_sd()));
 
 }
 void MainWindow::on_simulation_button_clicked()
@@ -97,6 +100,7 @@ void MainWindow::on_simulation_button_clicked()
         simulation_button->setText("Process SM Request");
     }
 }
+
 void MainWindow::choose_handler(simulation::exe_name name)
 {
     switch(name)
@@ -121,29 +125,51 @@ void MainWindow::choose_handler(simulation::exe_name name)
         break;
     }
 }
+void MainWindow::add_sm()
+{
+    this->tabWidget->addTab(SM_tab,"State Manager");
+}
+void MainWindow::add_ucm()
+{
+    this->tabWidget->addTab(UCM_tab,"Update and Configuration Manager");
+    ota_button->setVisible(true);
+}
+
+void MainWindow::add_ota()
+{
+    this->tabWidget->addTab(OTA_tab,"OTA");
+}
+
+void MainWindow::add_sd()
+{
+    this->tabWidget->addTab(sd_tab,"Service Discovery");
+}
+
+void MainWindow::add_iam()
+{
+    this->tabWidget->addTab(iam_tab,"Identity and Access Manager");
+}
 
 void MainWindow::open_tab(simulation::exe_name name)
 {
     switch(name)
     {
-    case (simulation::exe_name::sm) :
-        this->tabWidget->addTab(SM_tab,"State Manager");
-        break;
-    case (simulation::exe_name::ucm) :
-        this->tabWidget->addTab(UCM_tab,"Update and Configuration Manager");
-        ota_button->setVisible(true);
-        break;
-    case (simulation::exe_name::ota) :
-        this->tabWidget->addTab(OTA_tab,"OTA");
-        break;
-    case (simulation::exe_name::sd) :
-        this->tabWidget->addTab(sd_tab,"Service Discovery");
-        break;
-    case (simulation::exe_name::iam) :
-        this->tabWidget->addTab(iam_tab,"Identity and Access Manager");
-        break;
+        case (simulation::exe_name::sm) :
+            emit add_sm_s();
+            break;
+        case (simulation::exe_name::ucm) :
+             emit add_ucm_s();
+            break;
+        case (simulation::exe_name::ota) :
+            emit add_ota_s();
+            break;
+        case (simulation::exe_name::sd) :
+            emit add_sd_s();
+            break;
+        case (simulation::exe_name::iam) :
+            emit add_iam_s();
+            break;
     }
-
 }
 void MainWindow::on_ota_button_clicked()
 {
@@ -177,24 +203,8 @@ void MainWindow::closeEvent(QCloseEvent *e)
     end_simulation_button_clicked();
     e->accept();
 }
-void MainWindow::open_tab_notifier(simulation::exe_name name)
-{
-    emit receive_cluster(name);
-}
+
 MainWindow::~MainWindow()
 {
-    s->~simulation();
-
     delete ui;
-    delete main_layout;
-    delete vertical_layout_tabs;
-    delete vertical_layout_control;
-    delete com;
-    delete widget;
-    delete exec_tab;
-    delete SM_tab;
-    delete exec_tab;
-    delete iam_tab;
-    delete UCM_tab;
-    delete sd_tab;
 }

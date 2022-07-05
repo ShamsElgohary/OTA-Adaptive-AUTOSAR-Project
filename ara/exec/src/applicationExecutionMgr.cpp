@@ -130,7 +130,7 @@ void ApplicationExecutionMgr::initialize()
     if (SIMULATION_ACTIVE)
     {
         reportConfig_simulation();
-        sleep(1);
+        //sleep(1);
     }
     iam_future = IAM_handle();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
@@ -138,7 +138,7 @@ void ApplicationExecutionMgr::initialize()
     if (SIMULATION_ACTIVE)
     {
         reportConfig_simulation();
-        sleep(1);
+        //sleep(1);
     }
     Execute();
     transitionChanges_.toStart_.clear();

@@ -136,29 +136,12 @@
 				}
 			],
 			"name" : "ucm"
-		},
-		{
-			"confg" : 
-			[
-				{
-					"depends" : {},
-					"function_group" : 
-					{
-						"fn1" : 
-						[
-							"idle",
-							"play"
-						]
-					}
-				}
-			],
-			"name" : "SWCL_TEST1_VENDOR_A"
 		}
 	],
 	"function_group_states" : 
 	{
-		"fn1" : "verify",
-		"fn2" : "end",
+		"fn1" : "off",
+		"fn2" : "idle",
 		"fn3" : "off",
 		"machineFG" : "running"
 	},
@@ -211,33 +194,33 @@
 		{
 			"current_state" : "Krunning",
 			"name" : "iam",
-			"pid" : 5340
+			"pid" : 26755
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "ota",
-			"pid" : 5358
+			"pid" : 26769
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 5318
+			"pid" : 26747
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "someip_sd",
-			"pid" : 5339
+			"pid" : 26753
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "ucm",
-			"pid" : 5342
+			"pid" : 26759
 		}
 	],
 	"sm_request" : 
 	{
 		"fng" : "fn2",
-		"fng_state" : "end"
+		"fng_state" : "idle"
 	},
 	"to_run" : [],
 	"to_term" : []

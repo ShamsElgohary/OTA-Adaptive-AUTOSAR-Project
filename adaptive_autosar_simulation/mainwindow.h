@@ -32,17 +32,24 @@ public:
 
     void create_server();
     void closeEvent(QCloseEvent *e);
-private slots:
+    void open_tab(simulation::exe_name name);
+
+public slots:
     void on_simulation_button_clicked();
     void on_ota_button_clicked();
     void end_simulation_button_clicked();
-    void open_tab(simulation::exe_name name);
+    void add_sm();
+    void add_ucm();
+    void add_ota();
+    void add_sd();
+    void add_iam();
 signals:
-    void receive_cluster(simulation::exe_name name);
-
-
+    void add_sm_s();
+    void add_ucm_s();
+    void add_ota_s();
+    void add_iam_s();
+    void add_sd_s();
 private:
-    void open_tab_notifier(simulation::exe_name name);
     Ui::MainWindow *ui;
     QHBoxLayout *main_layout =new QHBoxLayout ;
     QVBoxLayout *vertical_layout_tabs =new QVBoxLayout ;

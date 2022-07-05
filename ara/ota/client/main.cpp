@@ -325,7 +325,7 @@ int main()
     sigaction(SIGTERM, &sa, NULL);
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
-    sleep(1);
+    //sleep(1);
     
     simulation s(8088);
     s.connect_to_socket();
