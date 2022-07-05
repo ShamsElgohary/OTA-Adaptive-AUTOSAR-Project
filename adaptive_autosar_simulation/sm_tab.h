@@ -11,6 +11,7 @@ class sm_tab : public QWidget
 public:
     explicit sm_tab(QWidget *parent = nullptr);
     sm *sm_instance;
+    GUI_COMM *com_t = new GUI_COMM;
 private:
     QHBoxLayout * main_layout = new QHBoxLayout;
 

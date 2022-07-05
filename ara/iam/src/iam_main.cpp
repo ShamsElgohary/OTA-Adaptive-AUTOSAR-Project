@@ -19,13 +19,14 @@ int main()
     sa.sa_flags = SA_RESTART;
     sa.sa_handler = handle_sigTerm;
     sigaction(SIGTERM, &sa, NULL);
-
-    ara::exec::ExecutionClient exec;
-    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
     sleep(1);
-
     ara::iam::AccessManager iam;
     iam.InitGrantStorage(CUSTOMIZED_PROJECT_PATH + "executables/etc/system/iam/access_control_lists.json");
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
+    
+
+    
     iam.InitServerAdapter();
     iam.RunEventLoop();
 

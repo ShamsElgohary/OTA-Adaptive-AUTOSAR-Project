@@ -19,9 +19,9 @@ class simulation
 private:
     char *ip;
     int port_num;
-    boost::asio::io_service *io_service;
-    tcp::acceptor *acceptor_;
-    tcp::socket* socket_;
+    boost::asio::io_service *io_service=nullptr;
+    tcp::acceptor *acceptor_=nullptr;
+    tcp::socket* socket_=nullptr;
 
 public:
     typedef enum

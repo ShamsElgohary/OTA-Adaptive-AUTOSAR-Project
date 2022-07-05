@@ -10,7 +10,10 @@ simulation::simulation(int port)
 
 simulation::~simulation()
 {
-    socket_->close();
+    if(socket_!=nullptr && socket_->is_open())
+    {
+        socket_->close();
+    }
     delete socket_;
     delete io_service;
     delete acceptor_;
@@ -30,9 +33,9 @@ void simulation::connect_to_socket()
 }
 void simulation::create_server()
 {
-    boost::asio::io_service ios;
+    io_service = new boost::asio::io_service();
     try{
-        acceptor_ = new tcp::acceptor(ios, tcp::endpoint(tcp::v4(), port_num));
+        acceptor_ = new tcp::acceptor(*io_service, tcp::endpoint(tcp::v4(), port_num));
     }
     catch ( boost::system::system_error e)
     {
@@ -45,14 +48,13 @@ void simulation::create_server()
         system("pkill -x ucm");
         system("pkill -x ex1");
         system("pkill -x ex2");
-        acceptor_ = new tcp::acceptor(ios, tcp::endpoint(tcp::v4(), port_num));
+        acceptor_ = new tcp::acceptor(*io_service, tcp::endpoint(tcp::v4(), port_num));
     }
 }
 
 tcp::socket *simulation::listen_l()
 {
-    boost::asio::io_service ios;
-    tcp::socket *socket_ = new tcp::socket{ios};
+    tcp::socket *socket_ = new tcp::socket{*io_service};
     try{
         acceptor_->accept(*socket_);
     }

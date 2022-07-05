@@ -30,6 +30,7 @@ private:
     QVBoxLayout * manifestLayout = new QVBoxLayout;
     QTreeWidget * commTree = new QTreeWidget;
     QTreeWidget * ManifestTree = new QTreeWidget;
+    unsigned char firstTimeParseFlag = 1;
 
 
     void addTreeRoot(QString,QTreeWidget*,QString);

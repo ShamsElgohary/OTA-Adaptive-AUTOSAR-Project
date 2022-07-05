@@ -2,6 +2,9 @@
 
 void GUI_COMM::parse(QString path)
 {
+    if(firstTimeParseFlag != 1)
+        commTree->clear();
+    firstTimeParseFlag = 0;
     QFile file(path);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
         qDebug() << "can't open error!";
@@ -38,8 +41,7 @@ void GUI_COMM::addTreeRoot(QString name,QTreeWidget* x,QString path)
 {
     QTreeWidgetItem * itm = new QTreeWidgetItem(x);
     itm->setText(0,name);
-    //ui->treeWidget->addTopLevelItem(itm);
-    //addTreeChild(itm,"Method_ID : 1");
+    itm->setExpanded(true);
 
     QFile file(path);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -108,7 +110,11 @@ GUI_COMM::GUI_COMM(QWidget *parent): QWidget{parent}
     ManifestTree->setColumnCount(1);
     manifestLayout->addWidget(ManifestTree);
     srvcInstManifest->setLayout(manifestLayout);
-
+    QFont font;
+    font.setPointSize(11);
+    font.setBold(true);
+    commTree->header()->setFont(font);
+    ManifestTree->header()->setFont(font);
     main_layout->addWidget(commBox);
     main_layout->addWidget(srvcInstManifest);
     main_box->setLayout(main_layout);
@@ -156,6 +162,7 @@ void GUI_COMM::addTreeRootManifest(QString name,QTreeWidget* x,QString path)
 {
     QTreeWidgetItem * itm = new QTreeWidgetItem(x);
     itm->setText(0,name);
+    itm->setExpanded(true);
     //ui->treeWidget->addTopLevelItem(itm);
     //addTreeChild(itm,"Method_ID : 1");
 

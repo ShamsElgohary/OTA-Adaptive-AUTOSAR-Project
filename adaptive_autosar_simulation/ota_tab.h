@@ -11,6 +11,7 @@ class ota_tab : public QWidget
 public:
     explicit ota_tab(QWidget *parent = nullptr);
     ota * ota_instance;
+    GUI_COMM *com_t = new GUI_COMM;
 private:
     QHBoxLayout * main_layout = new QHBoxLayout;
 

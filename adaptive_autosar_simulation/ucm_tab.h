@@ -11,6 +11,7 @@ class ucm_tab : public QWidget
 public:
     explicit ucm_tab(QWidget *parent = nullptr);
     ucm * ucm_instance;
+    GUI_COMM *com_t = new GUI_COMM;
 private:
     QHBoxLayout * main_layout = new QHBoxLayout;
 
