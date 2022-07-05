@@ -38,7 +38,7 @@ void MainWindow::create_server()
             {
                 auto name = this->s->recive_exe_name(new_socket);
                 //open_tab(name);
-                emit receive_cluster(name);
+                open_tab_notifier(name);
                 while(1)
                 {
                     if(this->s->recive_file(new_socket,name)){
@@ -60,8 +60,6 @@ void MainWindow::create_server()
 
 void MainWindow::connect_fun()
 {
-    QSignalMapper* signalmapper=new QSignalMapper(this);
-
     connect(simulation_button, SIGNAL(clicked()), this, SLOT(on_simulation_button_clicked()));
     connect(ota_button, SIGNAL(clicked()), this, SLOT(on_ota_button_clicked()));
     connect(end_simulation_button, SIGNAL(clicked()), this, SLOT(end_simulation_button_clicked()));
@@ -178,6 +176,10 @@ void MainWindow::closeEvent(QCloseEvent *e)
 {
     end_simulation_button_clicked();
     e->accept();
+}
+void MainWindow::open_tab_notifier(simulation::exe_name name)
+{
+    emit receive_cluster(name);
 }
 MainWindow::~MainWindow()
 {

@@ -42,6 +42,7 @@ signals:
 
 
 private:
+    void open_tab_notifier(simulation::exe_name name);
     Ui::MainWindow *ui;
     QHBoxLayout *main_layout =new QHBoxLayout ;
     QVBoxLayout *vertical_layout_tabs =new QVBoxLayout ;
