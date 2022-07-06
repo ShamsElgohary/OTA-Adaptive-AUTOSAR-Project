@@ -23,9 +23,12 @@ PackageManagerState::PackageManagerState(PackageManagerStatusType pkgmgr_Current
         JsonInStream >> CurrentProcessList;
         PackageManagerState::ProcessListVersion = CurrentProcessList["Process List Version"];
         json::iterator it = CurrentProcessList.begin();
-        ++it;
         for (; it != CurrentProcessList.end(); ++it)
         {
+            if (it.key() == "Process List Version")
+            {
+                continue;
+            }
             ara::ucm::SwClusterInfoType SWCluster;
             SWCluster.Name = it.key();
             SWCluster.Version = CurrentProcessList[it.key()]["Version"];
@@ -39,7 +42,7 @@ PackageManagerState::PackageManagerState(PackageManagerStatusType pkgmgr_Current
     }
     catch (const std::exception &e)
     {
-        std::cout << e.what() << std::endl;
+        std::cout << "[UCM] ERROR Catch ProcessList: " << e.what() << std::endl;
         PackageManagerState::ProcessListVersion = 0;
     }
 }
@@ -279,7 +282,6 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
     {
         return ara::ucm::OperationResultType::kOperationNotPermitted;
     }
-
     SWPackagesCounter++;
     /* CURRENT STATUS OF UCM = START PROCESSING */
     (CurrentStatus) = PackageManagerStatusType::kProcessing;
@@ -308,10 +310,8 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
     SWPackagePath = SWParser_instance.UnzipPackage(SWPackagePath);
 
     SWParser_instance.SwPackageManifestParser(SWPackagePath);
-
     /* GET SW CLUSTER INFORMATION FROM PARSING */
     SwClusterInfoType NewSwClusterInfo{SWParser_instance.GetSwClusterInfo(SWPackagePath)};
-
     /* GET SW ACTION TYPE FROM PARSING */
     ActionType action{SWParser_instance.GetActionType()};
 
@@ -320,10 +320,12 @@ ara::ucm::OperationResultType PackageManagerState::ProcessSwPackageInternal(Tran
     /* ADD SWCLUSTER & EXECUTE */
     actionPtr = SWCLManager::AddSWCLChangeInfo(NewSwClusterInfo, action, SWPackagePath);
 
+
     (CurrentStatus) = PackageManagerStatusType::kReady;
 
     /* CHANGE STATE TO KPROCESSING */
     ptrToSwPkg->SetPackageState(SwPackageStateType::kProcessed);
+
 
     // JSON (GUI SIMULATION)
     GUI_Logger.pkgAction("kProcessed",1);

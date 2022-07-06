@@ -1,5 +1,5 @@
 {
-    "actionType": "update",
+    "actionType": "Update",
     "activationAction": "0",
     "compressedSoftwarePackageSize": "9150",
     "isDeltaPackage": "true",

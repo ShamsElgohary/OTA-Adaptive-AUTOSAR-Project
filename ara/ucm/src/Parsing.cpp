@@ -2,10 +2,10 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-
 namespace pt = boost::property_tree;
 
 using namespace ara::ucm::parsing;
+using namespace std;
 
 SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
 {
@@ -22,8 +22,7 @@ SwClusterInfoType SoftwarePackageParser::GetSwClusterInfo(string PackagePath)
     swClusterInfo.Version = version;
     swClusterInfo.Name = name;
 
-    GUI_Logger.newPkgCluster(name,version);
-
+    GUI_Logger.newPkgCluster(name, version);
 
     return swClusterInfo;
 }
@@ -35,20 +34,21 @@ void SoftwarePackageParser::SwPackageManifestParser(string PackagePath)
     pt::ptree root;
     // Load the json file in this ptree
     pt::read_json(Path, root);
-
+    
     string actionTypeString{root.get<string>("actionType")};
-
-    if (actionTypeString == "Install")
+    std::for_each(actionTypeString.begin(), actionTypeString.end(), [](char &c)
+                  { c = ::tolower(c); });
+    if (actionTypeString == "install")
     {
         actionType = ara::ucm::ActionType::kInstall;
     }
 
-    else if (actionTypeString == "Update")
+    else if (actionTypeString == "update")
     {
         actionType = ara::ucm::ActionType::kUpdate;
     }
 
-    else if (actionTypeString == "Remove")
+    else if (actionTypeString == "remove")
     {
         actionType = ara::ucm::ActionType::kRemove;
     }
@@ -59,7 +59,7 @@ void SoftwarePackageParser::SwPackageManifestParser(string PackagePath)
 
     // LOGGING & GUI SIMULATION
     GUI_Logger.ReportJsonGUI("ProcessedActionType", actionTypeString);
-    
+
     // deltaPackageApplicableVersion = root.get<std::string>("deltaPackageApplicableVersion");
 }
 

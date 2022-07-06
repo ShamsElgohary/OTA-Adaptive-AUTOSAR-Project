@@ -23,3 +23,5 @@ executables/ucm/0.1/bin/ucm
 utility/general.hpp
 Package/build-Car_GUI-Desktop_Qt_5_15_2_GCC_64bit-Debug
 PackageUpdate/build-Car_GUI-Desktop_Qt_5_15_2_GCC_64bit-Debug
+executables/em/bin/em
+executables/em/bin/em

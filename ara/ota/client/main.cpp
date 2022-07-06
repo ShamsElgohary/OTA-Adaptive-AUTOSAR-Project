@@ -125,12 +125,13 @@ public:
             }
             else
             {
-                int it = myline.find("#");
-                string file_name = myline.substr(0, it);
-                string number = myline.substr(it + 1);
-                int num = stoi(number);
+                int itdot = myline.rfind(".");
+                string fullName = myline.substr(0, itdot);
+                int ithash = fullName.find("#");
+                string file_name = fullName.substr(0, ithash);
+                string number = fullName.substr(ithash + 1);
                 x.Name = file_name;
-                x.Version = std::to_string(num);
+                x.Version = number;
                 trail.push_back(x);
             }
         }
@@ -190,7 +191,6 @@ public:
         RecService->TransferExit(transfer_start.id);
         RecService->ProcessSwPackage(transfer_start.id);
         RecService->Activate();
-        // RecService.Rollback();
         RecService->Finish();
     }
 
@@ -199,33 +199,41 @@ public:
 
         for (auto cluster : trail)
         {
-            bool test = false;
-
+            bool test = true;
+            int itdot = cluster.Version.find(".");
+            int MjrVersionCloud;
+            int MnrVersionCloud;
+            if (itdot != string::npos)
+            {
+                MjrVersionCloud = stoi(cluster.Version.substr(0, itdot));
+                MnrVersionCloud = stoi(cluster.Version.substr(itdot + 1));
+            }
+            else
+            {
+                MjrVersionCloud = stoi(cluster.Version);
+                MnrVersionCloud = 0;
+            }
+            
             for (auto UCM_Cluster : UCM_trail)
             {
-                if (cluster.Name != UCM_Cluster.Name)
+                int itdot = UCM_Cluster.Version.find(".");
+                int MjrVersionUCM;
+                int MnrVersionUCM;
+                if (itdot != string::npos)
                 {
-                    test = true;
+                    MjrVersionUCM = stoi(UCM_Cluster.Version.substr(0, itdot));
+                    MnrVersionUCM = stoi(UCM_Cluster.Version.substr(itdot + 1));
                 }
-                else if (cluster.Name == UCM_Cluster.Name)
+                else
                 {
-                    if (stoi(cluster.Version) <= stoi(UCM_Cluster.Version))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        download_trail.push_back(cluster);
+                    MjrVersionUCM = stoi(UCM_Cluster.Version);
+                    MnrVersionUCM = 0;
+                }
 
-                        // if (compare_hash(pckg))
-                        // {
-                        //     this->Transfer2UCM(pckg);
-                        // }
-                        // else
-                        // {
-                        //     cout << "Error: Different hash " << endl;
-                        // }
-                    }
+                if (cluster.Name == UCM_Cluster.Name && MjrVersionCloud <= MjrVersionUCM && MnrVersionCloud <= MnrVersionUCM)
+                {
+                    test = false;
+                    continue;
                 }
             }
             if (test == true)
@@ -244,8 +252,9 @@ public:
     }
     void transfer_pkg_ucm(string name)
     {
+
         download(name);
-        //usleep(2000000);
+        // usleep(2000000);
         this->Transfer2UCM(name);
     }
     void Get_UCM_Clusters()
@@ -297,7 +306,8 @@ public:
     {
         string path(CUSTOMIZED_PROJECT_PATH + "gui_ota");
         int fd = open(path.c_str(), O_RDONLY);
-        if(fd<0)cout<<"cannot open pipe from ota";
+        if (fd < 0)
+            cout << "cannot open pipe from ota";
         int tmp;
         char buff[100];
         read(fd, &tmp, sizeof(int));
@@ -310,6 +320,7 @@ public:
     }
     void run()
     {
+
         simulation s(8088);
         s.connect_to_socket();
         s.send_exe_name(simulation::exe_name::ota);
@@ -327,7 +338,8 @@ public:
         sim_json();
         s.send_file("ota_Report.json");
         cout << "ota 4" << endl;
-        string name= get_pkg_name();
+        string name = get_pkg_name();
+        cout << "Package Name 1: " << name << endl;
         transfer_pkg_ucm(name);
         cout << "ota 5" << endl;
     }
@@ -348,11 +360,12 @@ int main()
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
     // sleep(1);
-
     CLIENT_OTA x;
 
     // ClearJSONReport();
     x.run();
-    while (1){}
+    while (1)
+    {
+    }
     return 0;
 }

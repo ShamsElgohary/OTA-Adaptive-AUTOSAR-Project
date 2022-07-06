@@ -37,6 +37,6 @@ int main()
             cout<<"Sm offering service"<<endl;
             updaterequest.OfferService(); })
         .join();
-    x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
-    //x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
+    // x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
+    // x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
 }

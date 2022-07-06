@@ -71,7 +71,6 @@ namespace ara::ucm::pkgmgr
     {
 
         std::promise<ara::ucm::pkgmgr::PackageManagerImpl::ProcessSwPackageOutput> promise;
-
         ara::ucm::pkgmgr::PackageManagerImpl::ProcessSwPackageOutput ProcessReturn;
 
         try
@@ -83,6 +82,7 @@ namespace ara::ucm::pkgmgr
         {
             ProcessReturn.OperationReturn = ara::ucm::OperationResultType::kOperationNotPermitted;
         }
+
 
         promise.set_value(ProcessReturn);
 
