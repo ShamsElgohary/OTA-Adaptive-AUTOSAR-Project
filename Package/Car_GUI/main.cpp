@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "../../utility/general.hpp"
-#include "exe_lib/include/execution_client.hpp"
+#include "execution_client.hpp"
 
 #include <QApplication>
 

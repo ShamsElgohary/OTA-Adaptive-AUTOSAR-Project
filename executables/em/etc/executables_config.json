@@ -6,23 +6,6 @@
 			"confg" : 
 			[
 				{
-					"depends" : {},
-					"function_group" : 
-					{
-						"fn1" : 
-						[
-							"idle",
-							"play"
-						]
-					}
-				}
-			],
-			"name" : "Car_GUI"
-		},
-		{
-			"confg" : 
-			[
-				{
 					"depends" : 
 					{
 						"someip_sd" : "Krunning"
@@ -107,12 +90,29 @@
 				}
 			],
 			"name" : "ucm"
+		},
+		{
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"fn1" : 
+						[
+							"idle",
+							"play"
+						]
+					}
+				}
+			],
+			"name" : "Car_GUI"
 		}
 	],
 	"function_group_states" : 
 	{
-		"fn1" : "idle",
-		"fn2" : "off",
+		"fn1" : "verify",
+		"fn2" : "end",
 		"fn3" : "off",
 		"machineFG" : "running"
 	},
@@ -165,32 +165,34 @@
 		{
 			"current_state" : "Krunning",
 			"name" : "iam",
-			"pid" : 9323
+			"pid" : 46053
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ota",
+			"pid" : 46075
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 9296
+			"pid" : 46045
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "someip_sd",
-			"pid" : 9321
+			"pid" : 46051
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "ucm",
-			"pid" : 9327
+			"pid" : 46057
 		}
 	],
 	"sm_request" : 
 	{
-		"fng" : "fn1",
-		"fng_state" : "idle"
+		"fng" : "fn2",
+		"fng_state" : "end"
 	},
-	"to_run" : 
-	[
-		"Car_GUI"
-	],
+	"to_run" : [],
 	"to_term" : []
 }

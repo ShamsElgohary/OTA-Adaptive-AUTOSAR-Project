@@ -26,15 +26,8 @@ int main()
     // x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
     // sleep(4);
     // x.setState(FunctionGroupState::Preconstruct("fn1", "terminate"));
-    sleep(1);
     x.setState(FunctionGroupState::Preconstruct("machineFG", "running"));
-    sleep(1);
-    x.setState(FunctionGroupState::Preconstruct("fn1", "idle"));
-    sleep(1);
-    x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
-    sleep(4);
-    x.setState(FunctionGroupState::Preconstruct("fn1", "terminate"));
-
+   
     /********Test*************/
     UpdateRequestImpl updaterequest(&logger, 1, ara::com::MethodCallProcessingMode::kEvent);
     updaterequest.log->gui_receive(&updaterequest);
@@ -43,7 +36,7 @@ int main()
                 {
             cout<<"Sm offering service"<<endl;
             updaterequest.OfferService(); })
-        .detach();
+        .join();
+    x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
     //x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
-    sleep(1000);
 }

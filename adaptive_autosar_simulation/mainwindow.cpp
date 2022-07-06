@@ -47,7 +47,7 @@ void MainWindow::create_server()
                 {
                     if(this->s->recive_file(new_socket,name)){
                         choose_handler(name);
-                        usleep(500);
+                        usleep(100);
                     }
                     else
                     {

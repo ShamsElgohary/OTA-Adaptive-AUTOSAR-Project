@@ -82,13 +82,13 @@ namespace ara
             }
             void skeletonBase::serve()
             {
+                this->ptr2bindingProtocol->ServerListen();
                 while (1)
                 {
                     if (stopOfferFlag == true)
                     {
                         break;
                     }
-                    this->ptr2bindingProtocol->ServerListen();
                     handleMethod();
                 }
             }

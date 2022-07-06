@@ -118,7 +118,6 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             RejectedCounter++;
         }
         PrepareTrials += 1;
-        usleep(1000);
     }
 
     GUI_Logger.ReportJsonGUI( "PrepareUpdate", "Prepared" , true );
@@ -199,7 +198,6 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
             RejectedCounter++;
         }
         VerifyTrails += 1;
-        usleep(1000);
     }
 
     GUI_Logger.ReportJsonGUI( "VerifyUpdate", "Verified", true );

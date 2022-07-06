@@ -5,11 +5,7 @@ using namespace std ;
 using namespace boost::filesystem;
 using namespace ara::exec ;
 
-ExecutionClient::ExecutionClient()
-{
-    
 
-}
 
 void ExecutionClient::ReportExecutionStaste(ExecutionState state)
 {

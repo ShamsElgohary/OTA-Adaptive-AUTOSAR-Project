@@ -109,8 +109,10 @@ namespace ara::ucm::transfer
         SwPkg->UpdateFinishRate();
         
         // GUI SIMULATION
-        GUI_Logger.ReportJsonGUI( "TransferFinishRate" , SwPkg->GetFinishRate()*100);
-        // DELAY TO SHOW RATE?
+        GUI_Logger.ReportJsonGUI( "TransferFinishRate" , SwPkg->GetFinishRate()*100);\
+        usleep(20000);
+        // DELAY TO SHOW RATE? 
+        // NO
 
         return ara::ucm::OperationResultType::kSuccess;
     }

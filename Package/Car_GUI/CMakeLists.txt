@@ -24,7 +24,7 @@ set(PROJECT_SOURCES
 )
 
 ###############################EM_LIB###############################
-set(exec_source_dir "${CMAKE_SOURCE_DIR}/exe_lib")
+set(exec_source_dir "${CMAKE_SOURCE_DIR}/../../ara/exec")
 add_library(execution_lib STATIC ${exec_source_dir}/src/execution_client.cpp ${exec_source_dir}/src/state_client.cpp ${exec_source_dir}/src/function_group_state.cpp ${exec_source_dir}/src/find_process_client.cpp)
 target_include_directories(execution_lib PUBLIC  ${exec_source_dir}/include)
 
@@ -52,7 +52,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(Car_GUI PRIVATE Qt${5}::Widgets execution_lib)
+target_link_libraries(Car_GUI PRIVATE Qt5::Widgets execution_lib)
 
 set_target_properties(Car_GUI PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

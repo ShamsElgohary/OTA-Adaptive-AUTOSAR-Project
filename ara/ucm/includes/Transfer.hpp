@@ -17,7 +17,7 @@ namespace ara
 					uint64_t receivedBytes = 0;
 					uint32_t expectedBlocks;
 					uint32_t receivedBlocks = 0;
-					uint32_t blockSize = 512;
+					uint32_t blockSize = 512*4;
 					float 	 TransferFinishRate = 0;
 					string path;
 					ara::ucm::SwPackageStateType TransferState;

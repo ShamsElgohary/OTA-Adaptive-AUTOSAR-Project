@@ -25,7 +25,7 @@ namespace ara {
         
 
             void ReportExecutionStaste(ExecutionState state);
-            ExecutionClient();
+            ExecutionClient()=default;
             ~ExecutionClient();
         };
     }
