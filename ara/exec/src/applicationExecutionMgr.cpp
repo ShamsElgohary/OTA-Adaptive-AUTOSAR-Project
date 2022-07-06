@@ -124,9 +124,8 @@ void ApplicationExecutionMgr::initialize()
 {
     mkfifo("smFifo", 0777);
     debugging_mode=true;
-    wait_for_gui(); // waiting for debugging mode
+    wait_for_gui(); // waiting for load configurations
     loadMachineConfigrations();
-    wait_for_gui();
     loadExecutablesConfigrations();
     wait_for_gui(); // waiting for load configurations
     if (SIMULATION_ACTIVE)
@@ -152,7 +151,6 @@ ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{roo
     remove("sm.txt");
     system("rm *.json");    
     system("rm *.zip");
-
     if (SIMULATION_ACTIVE)
     {
         sim_socket.connect_to_socket();
@@ -355,13 +353,13 @@ void ApplicationExecutionMgr::wait_for_gui()
 {
     if(debugging_mode)
     {
-    std::string path(CUSTOMIZED_PROJECT_PATH + "gui_em");
-    printf("waiting\n");
-    fd1 = open(path.c_str(), O_RDONLY);
-    bool res;
-    read(fd1, &res, sizeof(bool));
-    this->debugging_mode=res;
-    close(fd1);
+        std::string path(CUSTOMIZED_PROJECT_PATH + "gui_em");
+        printf("waiting\n");
+        fd1 = open(path.c_str(), O_RDONLY);
+        bool res;
+        read(fd1, &res, sizeof(bool));
+        this->debugging_mode=res;
+        close(fd1);
     }
 }
 

@@ -202,6 +202,7 @@ void MainWindow::end_simulation_button_clicked()
     string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
     remove(path.c_str());
     flag=0;
+    ota_flag=true;
     debugging_mode=false;
 
 }
