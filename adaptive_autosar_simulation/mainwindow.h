@@ -40,6 +40,7 @@ public slots:
     void on_simulation_button_clicked();
     void on_ota_button_clicked();
     void end_simulation_button_clicked();
+    void on_debug_button_clicked();
     void add_sm();
     void add_ucm();
     void add_ota();
@@ -71,10 +72,12 @@ private:
     QPushButton * simulation_button =new QPushButton;
     QPushButton * ota_button =new QPushButton;
     QPushButton * end_simulation_button =new QPushButton;
+    QPushButton * debug_button =new QPushButton;
     
     simulation*s ;
     int process_id;
     bool simulation_running=false;
-    int flag=0;
+    int flag;
+    bool debugging_mode;
 };
 #endif // MAINWINDOW_H

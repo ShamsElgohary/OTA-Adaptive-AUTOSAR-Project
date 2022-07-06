@@ -403,10 +403,9 @@ void exec::update_exec( )
 }
 void exec::em_connect()
 {
-    int c=1;
     string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
     fd=open(path.c_str(), O_WRONLY);
-    write(fd,&c,sizeof(int));
+    write(fd,&debugging_mode,sizeof(bool));
     ::close(fd);
 }
 

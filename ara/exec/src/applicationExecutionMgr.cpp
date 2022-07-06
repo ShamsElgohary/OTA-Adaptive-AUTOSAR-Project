@@ -122,11 +122,13 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 
 void ApplicationExecutionMgr::initialize()
 {
-    
     mkfifo("smFifo", 0777);
+    debugging_mode=true;
+    wait_for_gui(); // waiting for debugging mode
     loadMachineConfigrations();
     wait_for_gui();
     loadExecutablesConfigrations();
+    wait_for_gui(); // waiting for load configurations
     if (SIMULATION_ACTIVE)
     {
         reportConfig_simulation();
@@ -351,11 +353,16 @@ void ApplicationExecutionMgr::reportConfig_simulation()
 }
 void ApplicationExecutionMgr::wait_for_gui()
 {
+    if(debugging_mode)
+    {
     std::string path(CUSTOMIZED_PROJECT_PATH + "gui_em");
+    printf("waiting\n");
     fd1 = open(path.c_str(), O_RDONLY);
-    int tmp;
-    read(fd1, &tmp, sizeof(int));
+    bool res;
+    read(fd1, &res, sizeof(bool));
+    this->debugging_mode=res;
     close(fd1);
+    }
 }
 
 void ApplicationExecutionMgr::reparse()

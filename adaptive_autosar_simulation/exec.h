@@ -23,6 +23,7 @@ public:
     void clear_widget();
     void em_connect();
     int fd;
+    bool debugging_mode;
 public slots:
     void update_exec();
 signals:

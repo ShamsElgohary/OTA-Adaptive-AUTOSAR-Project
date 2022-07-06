@@ -60,6 +60,7 @@ namespace ara
             map<string, FunctionGroup *> function_groups_;
             map<string, string> excutables_map;//{name,path}
             const string rootPath;
+            bool debugging_mode;
             TransitionChanges transitionChanges_;
             simulation sim_socket{8088};
             ApplicationExecutionMgr(string rootPath);

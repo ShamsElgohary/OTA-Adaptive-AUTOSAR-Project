@@ -10,7 +10,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
    this->tabWidget->addTab(exec_tab,"Execution Manager");
    simulation_button->setText("start simulation");
    ota_button->setText("Update System");
+   debug_button->setText("Start Debugging");
    vertical_layout_control->addWidget(simulation_button);
+   vertical_layout_control->addWidget(debug_button);
    vertical_layout_control->addWidget(ota_button);
    end_simulation_button->setText("Restart simulation");
    vertical_layout_control->addWidget(end_simulation_button);
@@ -25,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
    s=new simulation(8088);
    connect_fun();
    create_server();
+   string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
+   mkfifo(path.c_str(),0777);
+   flag=0;
 }
 void MainWindow::create_server()
 {
@@ -62,6 +67,7 @@ void MainWindow::connect_fun()
     connect(simulation_button, SIGNAL(clicked()), this, SLOT(on_simulation_button_clicked()));
     connect(ota_button, SIGNAL(clicked()), this, SLOT(on_ota_button_clicked()));
     connect(end_simulation_button, SIGNAL(clicked()), this, SLOT(end_simulation_button_clicked()));
+    connect(debug_button, SIGNAL(clicked()), this, SLOT(on_debug_button_clicked()));
     connect(this, SIGNAL(add_sm_s()), this, SLOT(add_sm()));
     connect(this, SIGNAL(add_ucm_s()), this, SLOT(add_ucm()));
     connect(this, SIGNAL(add_ota_s()), this, SLOT(add_ota()));
@@ -71,18 +77,14 @@ void MainWindow::connect_fun()
 }
 void MainWindow::on_simulation_button_clicked()
 {
+    simulation_button->setEnabled(false);
+    debug_button->setVisible(false);
     simulation_running=true;
-    if(flag==0)
-    {
         SM_tab=new sm_tab();
         UCM_tab=new ucm_tab();
         OTA_tab=new ota_tab();
         iam_tab=new IAM();
         sd_tab=new sd();
-        string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
-        mkfifo(path.c_str(),0777);
-        path = CUSTOMIZED_PROJECT_PATH+"gui_ota";
-        mkfifo(path.c_str(),0777);
         process_id= fork();
         if (process_id == 0)
         {
@@ -90,17 +92,10 @@ void MainWindow::on_simulation_button_clicked()
             chdir(path.c_str());
             execl("em", nullptr);
         }
-        flag=1;
-        simulation_button->setText("Load Configurations");
-    }
-    else if(flag==1)
-    {
-        QThread*th= QThread::create([this]{
+        debugging_mode=false;
+        exec_tab->debugging_mode=this->debugging_mode;
         exec_tab->em_connect();
-        });
-        th->start();
-        simulation_button->setText("Process SM Request");
-    }
+
 }
 
 void MainWindow::choose_handler(simulation::exe_name name)
@@ -200,7 +195,52 @@ void MainWindow::end_simulation_button_clicked()
     simulation_running=false;
     simulation_button->setText("start simulation");
     flag=0;
-    ota_flag=true;
+    simulation_button->setEnabled(true);
+    simulation_button->setVisible(true);
+    debug_button->setVisible(true);
+    debug_button->setText("Start Debugging");
+    string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
+    remove(path.c_str());
+    flag=0;
+    debugging_mode=false;
+
+}
+void MainWindow::on_debug_button_clicked()
+{
+        simulation_button->setVisible(false);
+        simulation_running=true;
+        if(flag==0)
+        {
+            SM_tab=new sm_tab();
+            UCM_tab=new ucm_tab();
+            OTA_tab=new ota_tab();
+            iam_tab=new IAM();
+            sd_tab=new sd();
+            string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
+            mkfifo(path.c_str(),0777);
+            process_id= fork();
+            if (process_id == 0)
+            {
+                string path=CUSTOMIZED_PROJECT_PATH+"executables/em/bin/";
+                chdir(path.c_str());
+                execl("em", nullptr);
+            }
+            flag=1;
+            this->debugging_mode=true;
+            exec_tab->debugging_mode=this->debugging_mode;
+            exec_tab->em_connect();
+            debug_button->setText("Load Configurations");
+        }
+        else if(flag==1)
+        {
+            QThread*th= QThread::create([this]{
+            exec_tab->em_connect();
+            });
+            th->start();
+            debug_button->setText("Process SM Request");
+        }
+
+
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {
