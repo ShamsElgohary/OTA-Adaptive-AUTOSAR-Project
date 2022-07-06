@@ -7,3 +7,17 @@ executables/em/etc/executables_config.json
 build-adaptive_autosar_simulation-Desktop_Qt_6_3_0_GCC_64bit-Debug
 build-Car_GUI-Desktop-Debug
 build-Car_GUI-Desktop-Release
+executables/em/bin/em
+executables/com_skeleton_test/0.1/bin/com_skeleton_test
+executables/com_proxy_test/0.1/bin/com_proxy_test
+executables/com_proxy_test/0.1/bin/com_proxy_test
+executables/com_skeleton_test/0.1/bin/com_skeleton_test
+executables/em/bin/em
+executables/ex1/0.1/bin/ex1
+executables/ex2/0.1/bin/ex2
+executables/iam/0.1/bin/iam
+executables/ota/0.1/bin/ota
+executables/sm/0.1/bin/sm
+executables/someip_sd/0.1/bin/someip_sd
+executables/ucm/0.1/bin/ucm
+utility/general.hpp

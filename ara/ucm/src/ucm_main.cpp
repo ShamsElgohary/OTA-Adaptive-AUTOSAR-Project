@@ -8,7 +8,6 @@
 
 using namespace std;
 using namespace ara::ucm;
-using namespace std;
 using namespace ara::exec;
 void handle_sigTerm(int sig)
 {

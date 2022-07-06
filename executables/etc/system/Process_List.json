@@ -3,15 +3,7 @@
         "Path": "/Car_GUI/0.1/",
         "Version": "0.1"
     },
-    "Process List Version": 2,
-    "ex1": {
-        "Path": "/ex1/0.1/",
-        "Version": "0.1"
-    },
-    "ex2": {
-        "Path": "/ex2/0.1/",
-        "Version": "0.1"
-    },
+    "Process List Version": 3,
     "iam": {
         "Path": "/iam/0.1/",
         "Version": "0.1"

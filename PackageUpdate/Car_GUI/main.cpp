@@ -1,12 +1,30 @@
 #include "mainwindow.h"
+#include "../../utility/general.hpp"
+#include "exe_lib/include/execution_client.hpp"
 
 #include <QApplication>
-#include "../../utility/general.hpp"
+
+using namespace ara::exec;
+
+void handle_sigTerm(int sig)
+{
+    ExecutionClient exec;
+    exec.ReportExecutionStaste(ExecutionState::Kterminate);
+    exit(1);
+}
 
 int main(int argc, char *argv[])
 {
+    struct sigaction sa;
+    sa.sa_flags = SA_RESTART;
+    sa.sa_handler = handle_sigTerm;
+    sigaction(SIGTERM, &sa, NULL);
+
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
+
     QApplication a(argc, argv);
-       MainWindow w;
+    MainWindow w;
     w.setWindowTitle("Car Engine");
     QString qss_path=CUSTOMIZED_PROJECT_PATH.c_str()+QString("utility/Theme/SpyBot2.qss");
         QFile stylesheetfile(qss_path);

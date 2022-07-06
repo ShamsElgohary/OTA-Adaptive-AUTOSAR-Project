@@ -31,10 +31,10 @@ IAM::IAM(QWidget *parent): QWidget{parent}
     request->setHorizontalHeaderLabels(columnsheader2);
     request->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    console->setLayout(new QVBoxLayout());
-    main_layout->addWidget(console, 3, 0, 2, 3);
+//    console->setLayout(new QVBoxLayout());
+//    main_layout->addWidget(console, 3, 0, 2, 3);
 
-    console->layout()->addWidget(console_text);
+//    console->layout()->addWidget(console_text);
 
     setLayout(main_layout);
     sim=new simulation(8088);
