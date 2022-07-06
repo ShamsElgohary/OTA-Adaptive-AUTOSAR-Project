@@ -72,11 +72,11 @@ void sm_logger::gui_receive(ara::sm::UpdateRequestImpl* ptr)
           string path(CUSTOMIZED_PROJECT_PATH+"gui_sm");
           while(1)
           {
-          fd=open(path.c_str(),O_RDONLY);
-          //std::cout<<"received cluster\n";
-          int cluster;
-          read(fd,&cluster,sizeof(int));
-          ptr->run_cluster(cluster);
+            fd=open(path.c_str(),O_RDONLY);
+            //std::cout<<"received cluster\n";
+            int cluster;
+            read(fd,&cluster,sizeof(int));
+            ptr->run_cluster(cluster);
           }
       });
       gui_thread.detach();

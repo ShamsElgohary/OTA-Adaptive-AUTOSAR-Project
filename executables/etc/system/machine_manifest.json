@@ -11,11 +11,7 @@
     },
     "fn2": 
     {
-      "states": ["off","idle","run","end"]
-    },
-    "fn3": 
-    {
-      "states": ["off","idle","run","end"]
+      "states": ["off","run","end"]
     }
   }
 

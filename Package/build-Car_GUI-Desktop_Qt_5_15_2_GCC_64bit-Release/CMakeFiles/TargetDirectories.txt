@@ -1,0 +1,8 @@
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/Package/build-Car_GUI-Desktop_Qt_5_15_2_GCC_64bit-Release/CMakeFiles/rebuild_cache.dir
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/Package/build-Car_GUI-Desktop_Qt_5_15_2_GCC_64bit-Release/CMakeFiles/edit_cache.dir
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/Package/build-Car_GUI-Desktop_Qt_5_15_2_GCC_64bit-Release/CMakeFiles/Car_GUI.dir
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/Package/build-Car_GUI-Desktop_Qt_5_15_2_GCC_64bit-Release/CMakeFiles/execution_lib.dir
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/Package/build-Car_GUI-Desktop_Qt_5_15_2_GCC_64bit-Release/CMakeFiles/Car_GUI_autogen_timestamp_deps.dir
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/Package/build-Car_GUI-Desktop_Qt_5_15_2_GCC_64bit-Release/CMakeFiles/Car_GUI_autogen.dir
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/Package/build-Car_GUI-Desktop_Qt_5_15_2_GCC_64bit-Release/CMakeFiles/execution_lib_autogen_timestamp_deps.dir
+/home/loay/Documents/GitHub/OTA-Adaptive-AUTOSAR-Project/Package/build-Car_GUI-Desktop_Qt_5_15_2_GCC_64bit-Release/CMakeFiles/execution_lib_autogen.dir
