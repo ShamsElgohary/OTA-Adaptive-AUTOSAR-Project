@@ -48,6 +48,7 @@ void simulation::create_server()
         system("pkill -x ucm");
         system("pkill -x ex1");
         system("pkill -x ex2");
+        sleep(1);
         acceptor_ = new tcp::acceptor(*io_service, tcp::endpoint(tcp::v4(), port_num));
     }
 }

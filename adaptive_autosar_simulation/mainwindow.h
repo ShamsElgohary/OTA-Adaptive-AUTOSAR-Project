@@ -33,6 +33,8 @@ public:
     void create_server();
     void closeEvent(QCloseEvent *e);
     void open_tab(simulation::exe_name name);
+    QTabWidget *tabWidget =new QTabWidget ;
+
 
 public slots:
     void on_simulation_button_clicked();
@@ -66,7 +68,6 @@ private:
     //ota* ota_tab=new ota  ;
     ota_tab * OTA_tab = new ota_tab;
     
-    QTabWidget *tabWidget =new QTabWidget ;
     QPushButton * simulation_button =new QPushButton;
     QPushButton * ota_button =new QPushButton;
     QPushButton * end_simulation_button =new QPushButton;

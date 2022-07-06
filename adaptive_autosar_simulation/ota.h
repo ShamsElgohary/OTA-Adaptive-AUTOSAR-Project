@@ -8,19 +8,22 @@
 #include "./jsoncpp/header/json.h"
 #include"com.h"
 #include "../utility/general.hpp"
-
+#include <iostream>
 class ota: public QWidget
 {
     Q_OBJECT
 public:
     explicit ota(QWidget *parent = nullptr,GUI_COMM*ptr = nullptr);
+    void ota_connect();
+    string update_signal();
+
 public slots:
     void update_ota();
     void ota_handler();
-
-signals: void ota_signal();
+    void update_thread();
+signals:
+    void ota_signal();
 private:
-
     QGridLayout *main_layout = new QGridLayout;
     QGroupBox *over_the_air = new QGroupBox("OTA", this);
     QGroupBox *ucm = new QGroupBox("UCM", this);
@@ -36,7 +39,6 @@ private:
     QTableWidget *ucm_package_tabel = new QTableWidget;
 
     QPushButton * update =new QPushButton;
-    QPushButton * discard_update =new QPushButton;
 
     QTextBrowser *ucm_console_text = new QTextBrowser;
 

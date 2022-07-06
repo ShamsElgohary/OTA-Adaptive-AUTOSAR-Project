@@ -17,23 +17,6 @@
 					}
 				}
 			],
-			"name" : "Car_GUI"
-		},
-		{
-			"confg" : 
-			[
-				{
-					"depends" : {},
-					"function_group" : 
-					{
-						"fn1" : 
-						[
-							"idle",
-							"play"
-						]
-					}
-				}
-			],
 			"name" : "ex1"
 		},
 		{
@@ -157,10 +140,10 @@
 	],
 	"function_group_states" : 
 	{
-		"fn1" : "idle",
-		"fn2" : "off",
+		"fn1" : "off",
+		"fn2" : "end",
 		"fn3" : "off",
-		"machineFG" : "startup"
+		"machineFG" : "running"
 	},
 	"function_groups" : 
 	{
@@ -210,20 +193,35 @@
 	[
 		{
 			"current_state" : "Krunning",
+			"name" : "iam",
+			"pid" : 72380
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ota",
+			"pid" : 72391
+		},
+		{
+			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 77350
+			"pid" : 72372
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "someip_sd",
+			"pid" : 72378
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ucm",
+			"pid" : 72384
 		}
 	],
 	"sm_request" : 
 	{
-		"fng" : "fn1",
-		"fng_state" : "idle"
+		"fng" : "fn2",
+		"fng_state" : "end"
 	},
-	"to_run" : 
-	[
-		"Car_GUI",
-		"ex1",
-		"ex2"
-	],
+	"to_run" : [],
 	"to_term" : []
 }

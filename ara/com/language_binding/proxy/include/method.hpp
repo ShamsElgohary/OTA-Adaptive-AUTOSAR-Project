@@ -29,30 +29,30 @@ namespace ara
                         stringstream payload;
                         Serializer2 S;
                         S.serialize(payload, in);
-                        usleep(8000);
+                        //usleep(500);
                         // REQUEST SENDS A MESSAGES AND RECEIVES RESPONSE
                         stringstream out_ss = this->Delegate->SendRequest(this->ID, payload);
                         Deserializer2 D;
                         D.deserialize(out_ss, out);
-                        this -> Delegate ->CloseConnection();
+                       // this -> Delegate ->CloseConnection();
                     }
                     
                     template <typename output>
                     void process_method_call(output &out)
                     {
                         stringstream payload;
-                        usleep(8000);
+                        //usleep(500);
                         // REQUEST SENDS A MESSAGES AND RECEIVES RESPONSE (NO INPUT PAYLOAD IS EMPTY)
                         stringstream out_ss = this->Delegate->SendRequest(this->ID, payload);
                         Deserializer2 D;
                         D.deserialize(out_ss, out);
-                        this -> Delegate ->CloseConnection();
+                        //this -> Delegate ->CloseConnection();
                     }
                     
                     void process_method_call()
                     {
                         stringstream payload;
-                        usleep(8000);
+                        //usleep(500);
                         this->Delegate->SendFireAndForget(this->ID, payload);
                     }
                 };

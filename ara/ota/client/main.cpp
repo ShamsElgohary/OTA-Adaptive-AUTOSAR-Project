@@ -36,7 +36,7 @@ public:
         }
         else
         {
-            cout << "[ota] NO UCM Handle Found"<<endl;
+            cout << "[ota] NO UCM Handle Found" << endl;
         }
     }
 
@@ -228,7 +228,7 @@ public:
                     }
                 }
             }
-            if (test = true)
+            if (test == true)
             {
                 download_trail.push_back(cluster);
                 // if (compare_hash(pckg))
@@ -241,15 +241,12 @@ public:
                 // }
             }
         }
-
-        for (auto y : download_trail)
-        {
-
-            string pckg = y.Name + y.Version;
-            download(pckg);
-            usleep(2000000);
-            this->Transfer2UCM(pckg);
-        }
+    }
+    void transfer_pkg_ucm(string name)
+    {
+        download(name);
+        //usleep(2000000);
+        this->Transfer2UCM(name);
     }
     void Get_UCM_Clusters()
     {
@@ -296,21 +293,46 @@ public:
         json_file << event;
         json_file.close();
     }
+    string get_pkg_name()
+    {
+        string path(CUSTOMIZED_PROJECT_PATH + "gui_ota");
+        int fd = open(path.c_str(), O_RDONLY);
+        if(fd<0)cout<<"cannot open pipe from ota";
+        int tmp;
+        char buff[100];
+        read(fd, &tmp, sizeof(int));
+        for (int i = 0; i <= tmp; i++)
+        {
+            read(fd, &buff[i], sizeof(char));
+        }
+        close(fd);
+        return buff;
+    }
     void run()
     {
+        simulation s(8088);
+        s.connect_to_socket();
+        s.send_exe_name(simulation::exe_name::ota);
+
         get_meta_data();
         cout << "ota 1" << endl;
         parse_meta_data();
+        sim_json();
+        s.send_file("ota_Report.json");
+        sleep(1);
         cout << "ota 2" << endl;
         Get_UCM_Clusters();
-        usleep(2000000);
         cout << "ota 3" << endl;
         Compare();
-        cout << "ota 4" << endl;
         sim_json();
+        s.send_file("ota_Report.json");
+        cout << "ota 4" << endl;
+        string name= get_pkg_name();
+        transfer_pkg_ucm(name);
         cout << "ota 5" << endl;
     }
 };
+
 void handle_sigTerm(int sig)
 {
     ara::exec::ExecutionClient exec;
@@ -325,22 +347,12 @@ int main()
     sigaction(SIGTERM, &sa, NULL);
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
-    //sleep(1);
-    
-    simulation s(8088);
-    s.connect_to_socket();
-    s.send_exe_name(simulation::exe_name::ota);
-    
+    // sleep(1);
+
     CLIENT_OTA x;
 
     // ClearJSONReport();
     x.run();
-    if (SIMULATION_ACTIVE)
-    {
-        s.send_file("ota_Report.json");
-    }
-    while (1)
-    {
-    }
+    while (1){}
     return 0;
 }

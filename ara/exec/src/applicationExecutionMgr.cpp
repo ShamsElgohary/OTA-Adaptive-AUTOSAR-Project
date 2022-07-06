@@ -122,15 +122,14 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 
 void ApplicationExecutionMgr::initialize()
 {
-    std::string path(CUSTOMIZED_PROJECT_PATH + "gui_em");
-    fd1 = open(path.c_str(), O_RDONLY);
+    
     mkfifo("smFifo", 0777);
     loadMachineConfigrations();
+    wait_for_gui();
     loadExecutablesConfigrations();
     if (SIMULATION_ACTIVE)
     {
         reportConfig_simulation();
-        //sleep(1);
     }
     iam_future = IAM_handle();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
@@ -138,7 +137,6 @@ void ApplicationExecutionMgr::initialize()
     if (SIMULATION_ACTIVE)
     {
         reportConfig_simulation();
-        //sleep(1);
     }
     Execute();
     transitionChanges_.toStart_.clear();
@@ -148,15 +146,11 @@ void ApplicationExecutionMgr::initialize()
 ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{rootPath}
 {
     outdata.open("em_report.txt");
-    remove("sm_Report.json");
-    remove("ucm_Report.json");
-    remove("sm_Report.json");
     remove("ActionsLog.txt");
-    remove("GUI_Report.json");
-    remove("SD_Report.json");
-    remove("ota_Report.json");
     remove("sm.txt");
-    system("rm *.json");
+    system("rm *.json");    
+    system("rm *.zip");
+
     if (SIMULATION_ACTIVE)
     {
         sim_socket.connect_to_socket();
@@ -366,7 +360,6 @@ void ApplicationExecutionMgr::wait_for_gui()
 
 void ApplicationExecutionMgr::reparse()
 {
-
     Json::Value v;
     Json::Reader r;
     std::ifstream is;

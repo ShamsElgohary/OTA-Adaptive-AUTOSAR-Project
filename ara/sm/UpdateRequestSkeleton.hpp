@@ -93,7 +93,6 @@ namespace ara
 
                     int methodID;
                     string methodName;
-                    this->ptr2bindingProtocol->ServerListen();
                     stringstream payload = this->ptr2bindingProtocol->ReceiveMessage(methodID);
                     Deserializer2 D;
                     Serializer2 S;
@@ -144,7 +143,7 @@ namespace ara
                         break;
                     }
                     }
-                    this->ptr2bindingProtocol -> CloseConnection();
+                    //this->ptr2bindingProtocol -> CloseConnection();
                     ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method, 1, Cluster_Name);
                 }
             };

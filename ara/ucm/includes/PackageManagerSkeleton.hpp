@@ -272,7 +272,7 @@ namespace ara
                 {
                     int methodID;
                     string methodName;
-                    this->ptr2bindingProtocol->ServerListen();
+                    //this->ptr2bindingProtocol->ServerListen();
                     stringstream payload = this->ptr2bindingProtocol->ReceiveMessage(methodID);
                     cout << "[UCM Skeleton] handle: " << methodID << endl;
                     switch (methodID)
@@ -436,7 +436,7 @@ namespace ara
                         break;
                     }
                     }
-                    this->ptr2bindingProtocol -> CloseConnection();
+                    //this->ptr2bindingProtocol -> CloseConnection();
                     ara::com::AddMethodCall (methodID, methodName, ara::com::MethodType::Skeleton_Method, 2, Cluster_Name);
                 }
             };

@@ -88,6 +88,7 @@ namespace ara
                     {
                         break;
                     }
+                    this->ptr2bindingProtocol->ServerListen();
                     handleMethod();
                 }
             }

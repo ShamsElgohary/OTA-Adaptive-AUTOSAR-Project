@@ -81,6 +81,8 @@ void MainWindow::on_simulation_button_clicked()
         sd_tab=new sd();
         string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
         mkfifo(path.c_str(),0777);
+        path = CUSTOMIZED_PROJECT_PATH+"gui_ota";
+        mkfifo(path.c_str(),0777);
         process_id= fork();
         if (process_id == 0)
         {
@@ -180,6 +182,7 @@ void MainWindow::on_ota_button_clicked()
         th->start();
         ota_button->setVisible(false);
 }
+extern bool ota_flag;
 void MainWindow::end_simulation_button_clicked()
 {
     system("pkill -x em");
@@ -197,6 +200,7 @@ void MainWindow::end_simulation_button_clicked()
     simulation_running=false;
     simulation_button->setText("start simulation");
     flag=0;
+    ota_flag=true;
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {
