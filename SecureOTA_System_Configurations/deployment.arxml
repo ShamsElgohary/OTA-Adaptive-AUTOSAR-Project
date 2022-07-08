@@ -102,6 +102,12 @@
                   <METHOD-ID>103</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
               </METHOD-DEPLOYMENTS>
+              <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/ota/service_interfaces/PackageManager</SERVICE-INTERFACE-REF>
+              <SERVICE-INTERFACE-ID>2000</SERVICE-INTERFACE-ID>
+              <SERVICE-INTERFACE-VERSION>
+                <MAJOR-VERSION>1</MAJOR-VERSION>
+                <MINOR-VERSION>0</MINOR-VERSION>
+              </SERVICE-INTERFACE-VERSION>
             </SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
           </ELEMENTS>
           <AR-PACKAGES>
@@ -131,9 +137,6 @@
               </ELEMENTS>
             </AR-PACKAGE>
           </AR-PACKAGES>
-        </AR-PACKAGE>
-        <AR-PACKAGE UUID="5faa59dc-463f-4a50-8577-a28464ccf2b6">
-          <SHORT-NAME>instances</SHORT-NAME>
         </AR-PACKAGE>
       </AR-PACKAGES>
     </AR-PACKAGE>

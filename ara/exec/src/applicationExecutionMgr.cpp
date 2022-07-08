@@ -149,6 +149,7 @@ ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{roo
     outdata.open("em_report.txt");
     remove("ActionsLog.txt");
     remove("sm.txt");
+    remove("NetworkMessages.txt");
     system("rm *.json");    
     system("rm *.zip");
     if (SIMULATION_ACTIVE)
