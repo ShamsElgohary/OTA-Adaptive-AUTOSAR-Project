@@ -6,8 +6,8 @@ class DeploymentParser:
         print("Deployment Parser \n")
     
     def Parse(self):
-        tree = ET.parse(self.xmlString)
-        root = tree.getroot()
+        root = ET.fromstring(self.xmlString)
+        # root = tree.getroot()
         ns = (root.tag.split("}"))[0] + "}"
         
         Deployments = {}
@@ -70,6 +70,6 @@ class DeploymentInfo:
         serviceFields = fields  
 
 
-dep = DeploymentParser("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/SecureOTA_System_Configurations/deployment.arxml")
+# dep = DeploymentParser("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/SecureOTA_System_Configurations/deployment.arxml")
 
-dep.Parse()
+# dep.Parse()
