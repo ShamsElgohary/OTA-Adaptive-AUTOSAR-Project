@@ -90,27 +90,27 @@ class Generator:
     def __ScanDT(self):
         print("Scanning DataTypes")
         DT = DataTypeParser(self.CurrentXMLString)
-        DT.Parse()
+        self.DataTypes = DT.Parse()
 
     def __ScanSI(self):
         print("Scanning Service Interfaces")
         SI = ServiceInfParser(self.CurrentXMLString)
-        SI.Parse()
+        self.ServiceInterfaces = SI.Parse()
 
     def __ScanSC(self):
         print("Scanning Software Compounents")
         SWC = SWParser(self.CurrentXMLString)
-        SWC.Parse()
+        self.SoftwareCompounents = SWC.Parse()
 
     def __ScanD(self):
         print("Scanning Deployments")
         Dep = DeploymentParser(self.CurrentXMLString)
-        Dep.Parse()
+        self.Deployments = Dep.Parse()
 
     def __ScanMP(self):
         print("Scanning Mappings")
         Map = MappingParser(self.CurrentXMLString)
-        Map.Parse()
+        self.Mapping = Map.Parse()
 
 
     def __CheckPName(self):
