@@ -1,9 +1,5 @@
 {
-    "Car_GUI": {
-        "Path": "/Car_GUI/0.2/",
-        "Version": "0.2"
-    },
-    "Process List Version": 8,
+    "Process List Version": 1,
     "iam": {
         "Path": "/iam/0.1/",
         "Version": "0.1"
