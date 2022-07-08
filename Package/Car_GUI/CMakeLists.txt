@@ -29,7 +29,7 @@ add_library(execution_lib STATIC ${exec_source_dir}/src/execution_client.cpp ${e
 target_include_directories(execution_lib PUBLIC  ${exec_source_dir}/include)
 
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 5)
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Car_GUI
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
@@ -52,7 +52,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(Car_GUI PRIVATE Qt6::Widgets execution_lib)
+target_link_libraries(Car_GUI PRIVATE Qt5::Widgets execution_lib)
 
 set_target_properties(Car_GUI PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

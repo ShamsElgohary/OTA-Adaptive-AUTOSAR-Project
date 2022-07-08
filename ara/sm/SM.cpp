@@ -10,11 +10,11 @@ std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateReq
 
     std::promise<UpdateRequestSkeleton::StartUpdateSessionOutput> promise;
     UpdateRequestSkeleton::StartUpdateSessionOutput out;
-    FunctionGroupState state = FunctionGroupState::Preconstruct("fn2", "end");
+    FunctionGroupState state = FunctionGroupState::Preconstruct("machineFG", "update");
     bool success = client->setState(state);
     if (success)
     {
-        UpdateRequestImpl::FunctionGroupStates[state.fg_name] = "end";
+        UpdateRequestImpl::FunctionGroupStates[state.fg_name] = "update";
         out.AppError = success;
         std::cout << state.fg_name << " now is in state " << state.fg_newState << std::endl;
     }
@@ -34,12 +34,17 @@ void UpdateRequestImpl::StopUpdateSession()
 {
     cout << "Stop Updating Session" << std::endl;
     sm_functions functions = {.sm_StartUpdateSession = (0), .sm_StopUpdateSession = (1), .sm_PrepareUpdate = (0), .sm_VerifyUpdate = (0)};
-
-    FunctionGroupState state = FunctionGroupState::Preconstruct("fn2", "end");
+    
+    FunctionGroupState state = FunctionGroupState::Preconstruct("machineFG", "running");
     bool success = UpdateRequestImpl::client->setState(state);
     if (success)
         this->FunctionGroupStates[state.fg_name] = state.fg_newState;
-
+    
+    StateClient client{};
+    FunctionGroupState state2 = FunctionGroupState::Preconstruct("fn1", "idle");
+    success = client.setState(state2);
+    if (success)
+        this->FunctionGroupStates[state2.fg_name] = state2.fg_newState;
     log->update_logger(functions, this->FunctionGroupStates);
 }
 std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
@@ -51,7 +56,7 @@ std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestI
     StateClient client{};
     std::promise<UpdateRequestSkeleton::PrepareUpdateOutput> promise;
     UpdateRequestSkeleton::PrepareUpdateOutput out;
-    if (this->FunctionGroupStates["fn2"] == "end")
+    if (this->FunctionGroupStates["machineFG"] == "update")
     {
         for (auto fg : FunctionGroups)
         {
@@ -91,7 +96,7 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
     bool success;
     std::promise<UpdateRequestSkeleton::VerifyUpdateOutput> promise;
     UpdateRequestSkeleton::VerifyUpdateOutput out;
-    if (this->FunctionGroupStates["fn2"] == "end")
+    if (this->FunctionGroupStates["machineFG"] == "update")
     {
         for (auto fg : FunctionGroups)
         {
@@ -134,7 +139,7 @@ void UpdateRequestImpl::run_cluster(int cluster)
     if (cluster == (int)clusters::OTA)
     {
         printf("ota cluster received\n");
-        FunctionGroupState s = FunctionGroupState::Preconstruct("fn2", "idle");
+        FunctionGroupState s = FunctionGroupState::Preconstruct("fn2", "run");
         client->setState(s);
         FunctionGroupStates[s.fg_name] = s.fg_newState;
         log->update_logger({0, 0, 0, 0},FunctionGroupStates);

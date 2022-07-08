@@ -188,6 +188,8 @@ void MainWindow::end_simulation_button_clicked()
     system("pkill -x ucm");
     system("pkill -x ex1");
     system("pkill -x ex2");
+    system("pkill -x Car_GUI");
+
     tabWidget->clear();
     exec_tab->clear_widget();
     this->tabWidget->addTab(exec_tab,"Execution Manager");

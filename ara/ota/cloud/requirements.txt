@@ -1,0 +1,8 @@
+asgiref==3.2.10
+Django==2.2.12
+django-widget-tweaks==1.4.12
+gunicorn==20.1.0
+Pillow==7.0.0
+pytz==2019.3
+sqlparse==0.2.4
+whitenoise==6.0.0

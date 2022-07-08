@@ -27,16 +27,17 @@ int main()
     // sleep(4);
     // x.setState(FunctionGroupState::Preconstruct("fn1", "terminate"));
     x.setState(FunctionGroupState::Preconstruct("machineFG", "running"));
-   
+    sleep(1);
+    cout<<"not gui up and running"<<endl;
+    x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
+    cout<<"gui up and running"<<endl;
     /********Test*************/
     UpdateRequestImpl updaterequest(&logger, 1, ara::com::MethodCallProcessingMode::kEvent);
     updaterequest.log->gui_receive(&updaterequest);
     /******Offer_Service*************/
-    std::thread([&updaterequest]()
-                {
-            cout<<"Sm offering service"<<endl;
-            updaterequest.OfferService(); })
-        .join();
+   
+    cout<<"Sm offering service"<<endl;
+    updaterequest.OfferService(); 
+
     // x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
-    // x.setState(FunctionGroupState::Preconstruct("fn2", "idle"));
 }
