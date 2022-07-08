@@ -25,12 +25,13 @@
               <METHODS>
                 <CLIENT-SERVER-OPERATION UUID="806665ce-2686-41a5-82a8-9ae6d914e5df">
                   <SHORT-NAME>StartUpdateSession</SHORT-NAME>
-                  <POSSIBLE-AP-ERROR-REFS>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kPrepareFailed</POSSIBLE-AP-ERROR-REF>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kRejected</POSSIBLE-AP-ERROR-REF>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kRollbackFailed</POSSIBLE-AP-ERROR-REF>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kVerifyFailed</POSSIBLE-AP-ERROR-REF>
-                  </POSSIBLE-AP-ERROR-REFS>
+                  <ARGUMENTS>
+                    <ARGUMENT-DATA-PROTOTYPE UUID="45249944-3f10-4568-87ca-3cd5fd94d8ac">
+                      <SHORT-NAME>Result</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SM_ApplicationError</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                  </ARGUMENTS>
                 </CLIENT-SERVER-OPERATION>
                 <CLIENT-SERVER-OPERATION UUID="57e50ebe-012e-41c2-918e-ac3289471a0c">
                   <SHORT-NAME>PrepareUpdate</SHORT-NAME>
@@ -40,13 +41,12 @@
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/FunctionGroupList</TYPE-TREF>
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
+                    <ARGUMENT-DATA-PROTOTYPE UUID="45249944-3f10-4568-87ca-3cd5fd94d8ac">
+                      <SHORT-NAME>Result</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SM_ApplicationError</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
                   </ARGUMENTS>
-                  <POSSIBLE-AP-ERROR-REFS>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kPrepareFailed</POSSIBLE-AP-ERROR-REF>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kRejected</POSSIBLE-AP-ERROR-REF>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kRollbackFailed</POSSIBLE-AP-ERROR-REF>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kVerifyFailed</POSSIBLE-AP-ERROR-REF>
-                  </POSSIBLE-AP-ERROR-REFS>
                 </CLIENT-SERVER-OPERATION>
                 <CLIENT-SERVER-OPERATION UUID="db6fb6f2-3f1d-4c9f-b946-10dd80e830e8">
                   <SHORT-NAME>VerifyUpdate</SHORT-NAME>
@@ -56,13 +56,12 @@
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/FunctionGroupList</TYPE-TREF>
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
+                    <ARGUMENT-DATA-PROTOTYPE UUID="45249944-3f10-4568-87ca-3cd5fd94d8ac">
+                      <SHORT-NAME>Result</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SM_ApplicationError</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
                   </ARGUMENTS>
-                  <POSSIBLE-AP-ERROR-REFS>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kPrepareFailed</POSSIBLE-AP-ERROR-REF>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kRejected</POSSIBLE-AP-ERROR-REF>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kRollbackFailed</POSSIBLE-AP-ERROR-REF>
-                    <POSSIBLE-AP-ERROR-REF DEST="AP-APPLICATION-ERROR">/ota/errors/SM_ApplicationError/kVerifyFailed</POSSIBLE-AP-ERROR-REF>
-                  </POSSIBLE-AP-ERROR-REFS>
                 </CLIENT-SERVER-OPERATION>
                 <CLIENT-SERVER-OPERATION UUID="a21df8c5-f765-4e25-ac93-49a9ca284f50">
                   <SHORT-NAME>StopUpdateSession</SHORT-NAME>
@@ -101,7 +100,7 @@
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="e0ab9b5c-f61c-4e61-afff-f3459952e600">
                       <SHORT-NAME>Result</SHORT-NAME>
-                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultOutput</TYPE-TREF>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                   </ARGUMENTS>
@@ -115,8 +114,18 @@
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                     <ARGUMENT-DATA-PROTOTYPE UUID="eedd7f5b-9b5c-4c98-a2cb-c645f9c23d26">
-                      <SHORT-NAME>TransferStartOutput</SHORT-NAME>
-                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/TransferStartOutput</TYPE-TREF>
+                      <SHORT-NAME>id</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/TransferIdType</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                    <ARGUMENT-DATA-PROTOTYPE UUID="eedd7f5b-9b5c-4c98-a2cb-c645f9c23d26">
+                      <SHORT-NAME>BlockSize</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/std_types/uint32_t</TYPE-TREF>
+                      <DIRECTION>OUT</DIRECTION>
+                    </ARGUMENT-DATA-PROTOTYPE>
+                    <ARGUMENT-DATA-PROTOTYPE UUID="eedd7f5b-9b5c-4c98-a2cb-c645f9c23d26">
+                      <SHORT-NAME>TransferStartResult</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                   </ARGUMENTS>
@@ -155,8 +164,8 @@
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                     <ARGUMENT-DATA-PROTOTYPE UUID="25b23645-a0ad-40a2-8ff3-39a57b9bd4d3">
-                      <SHORT-NAME>OperationResultOutput</SHORT-NAME>
-                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultOutput</TYPE-TREF>
+                      <SHORT-NAME>Result</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                   </ARGUMENTS>
@@ -170,8 +179,8 @@
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                     <ARGUMENT-DATA-PROTOTYPE UUID="9d8d7499-3269-49ae-af99-2dc4d0f51619">
-                      <SHORT-NAME>OperationResultOutput</SHORT-NAME>
-                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultOutput</TYPE-TREF>
+                      <SHORT-NAME>Result</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                   </ARGUMENTS>
@@ -185,8 +194,8 @@
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                     <ARGUMENT-DATA-PROTOTYPE UUID="e6133bea-967b-49dc-a259-9f76172ef7d5">
-                      <SHORT-NAME>OperationResultOutput</SHORT-NAME>
-                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultOutput</TYPE-TREF>
+                      <SHORT-NAME>Result</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                   </ARGUMENTS>
@@ -195,8 +204,8 @@
                   <SHORT-NAME>Activate</SHORT-NAME>
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="83432008-a361-4ba7-85ce-eac9f05f04b0">
-                      <SHORT-NAME>OperationResultOutput</SHORT-NAME>
-                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultOutput</TYPE-TREF>
+                      <SHORT-NAME>Result</SHORT-NAME>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                   </ARGUMENTS>
@@ -205,7 +214,7 @@
                   <SHORT-NAME>GetSwClusterInfo</SHORT-NAME>
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="54e231eb-4e7f-4ebc-ac52-4cb42402ad3f">
-                      <SHORT-NAME>GetSWClusterInfoOutput</SHORT-NAME>
+                      <SHORT-NAME>Result</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SwClusterInfoVectorType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
@@ -216,7 +225,7 @@
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="45249944-3f10-4568-87ca-3cd5fd94d8ac">
                       <SHORT-NAME>Result</SHORT-NAME>
-                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultOutput</TYPE-TREF>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                   </ARGUMENTS>
@@ -226,7 +235,7 @@
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="4fbfb1c5-6a36-42f7-a4fc-8ef34fd5571c">
                       <SHORT-NAME>Result</SHORT-NAME>
-                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultOutput</TYPE-TREF>
+                      <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                   </ARGUMENTS>

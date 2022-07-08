@@ -160,27 +160,22 @@
 		{
 			"current_state" : "Krunning",
 			"name" : "iam",
-			"pid" : 88317
-		},
-		{
-			"current_state" : "Krunning",
-			"name" : "ota",
-			"pid" : 88372
+			"pid" : 69726
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 88309
+			"pid" : 69719
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "someip_sd",
-			"pid" : 88315
+			"pid" : 69724
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "ucm",
-			"pid" : 88321
+			"pid" : 69730
 		}
 	],
 	"sm_request" : 

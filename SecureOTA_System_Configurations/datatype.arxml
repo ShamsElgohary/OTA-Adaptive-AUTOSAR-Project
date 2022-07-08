@@ -127,44 +127,17 @@
               </SW-DATA-DEF-PROPS>
               <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/std_types/uint8_t</TYPE-REFERENCE-REF>
             </STD-CPP-IMPLEMENTATION-DATA-TYPE>
-            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="ab744635-e048-4428-8866-fd7bbe5e6990">
-              <SHORT-NAME>OperationResultOutput</SHORT-NAME>
-              <CATEGORY>STRUCT</CATEGORY>
-              <SUB-ELEMENTS>
-                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="7a1ed695-7bbd-4a5b-9705-c32c30d8d141">
-                  <SHORT-NAME>OperationReturn</SHORT-NAME>
-                  <TYPE-REFERENCE>
-                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-REFERENCE-REF>
-                  </TYPE-REFERENCE>
-                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
-              </SUB-ELEMENTS>
-            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
-            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="f342291d-a31e-4ed4-9ae4-556881d3f3c3">
-              <SHORT-NAME>TransferStartOutput</SHORT-NAME>
-              <CATEGORY>STRUCT</CATEGORY>
-              <SUB-ELEMENTS>
-                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="afe7fbad-6d59-40bf-9391-40b366830f1e">
-                  <SHORT-NAME>id</SHORT-NAME>
-                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
-                  <TYPE-REFERENCE>
-                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/TransferIdType</TYPE-REFERENCE-REF>
-                  </TYPE-REFERENCE>
-                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
-                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="7e5d9f78-8189-41b6-b564-29836b655121">
-                  <SHORT-NAME>BlockSize</SHORT-NAME>
-                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
-                  <TYPE-REFERENCE>
-                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/std_types/uint32_t</TYPE-REFERENCE-REF>
-                  </TYPE-REFERENCE>
-                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
-                <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="e9af474c-6478-458f-a419-2cfd1b1257e9">
-                  <SHORT-NAME>TransferStartResult</SHORT-NAME>
-                  <CATEGORY>TYPE_REFERENCE</CATEGORY>
-                  <TYPE-REFERENCE>
-                    <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-REFERENCE-REF>
-                  </TYPE-REFERENCE>
-                </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
-              </SUB-ELEMENTS>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="87575a70-96a9-4c6a-acc1-19013f4400d5">
+              <SHORT-NAME>SM_ApplicationError</SHORT-NAME>
+              <CATEGORY>TEXTTABLE</CATEGORY>
+              <SW-DATA-DEF-PROPS>
+                <SW-DATA-DEF-PROPS-VARIANTS>
+                  <SW-DATA-DEF-PROPS-CONDITIONAL>
+                    <COMPU-METHOD-REF DEST="COMPU-METHOD">/ota/compu_methods/SM_ApplicationError_compu_method</COMPU-METHOD-REF>
+                  </SW-DATA-DEF-PROPS-CONDITIONAL>
+                </SW-DATA-DEF-PROPS-VARIANTS>
+              </SW-DATA-DEF-PROPS>
+              <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/std_types/uint8_t</TYPE-REFERENCE-REF>
             </STD-CPP-IMPLEMENTATION-DATA-TYPE>
             <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="af8da5cd-4f4d-4cfd-884b-6312a00a5588">
               <SHORT-NAME>SwClusterInfoVectorType</SHORT-NAME>
@@ -176,32 +149,6 @@
               </TEMPLATE-ARGUMENTS>
             </STD-CPP-IMPLEMENTATION-DATA-TYPE>
           </ELEMENTS>
-        </AR-PACKAGE>
-        <AR-PACKAGE UUID="7e1be076-1e39-4b81-b0c0-422c3c7f320e">
-          <SHORT-NAME>errors</SHORT-NAME>
-          <AR-PACKAGES>
-            <AR-PACKAGE UUID="5ce22fa9-72a2-4241-b178-d82bd5dc0a7a">
-              <SHORT-NAME>SM_ApplicationError</SHORT-NAME>
-              <ELEMENTS>
-                <AP-APPLICATION-ERROR UUID="ddd83dc1-53b9-4adc-8b8b-bff00e651777">
-                  <SHORT-NAME>kRejected</SHORT-NAME>
-                  <ERROR-CODE>5</ERROR-CODE>
-                </AP-APPLICATION-ERROR>
-                <AP-APPLICATION-ERROR UUID="4c9ee878-2e4d-4835-81d6-da6cee4d2121">
-                  <SHORT-NAME>kVerifyFailed</SHORT-NAME>
-                  <ERROR-CODE>6</ERROR-CODE>
-                </AP-APPLICATION-ERROR>
-                <AP-APPLICATION-ERROR UUID="92d42d8a-ae6e-4ef3-8259-0fef637c7dc0">
-                  <SHORT-NAME>kPrepareFailed</SHORT-NAME>
-                  <ERROR-CODE>7</ERROR-CODE>
-                </AP-APPLICATION-ERROR>
-                <AP-APPLICATION-ERROR UUID="d5c361e4-6883-491f-bc24-87809f78b61e">
-                  <SHORT-NAME>kRollbackFailed</SHORT-NAME>
-                  <ERROR-CODE>8</ERROR-CODE>
-                </AP-APPLICATION-ERROR>
-              </ELEMENTS>
-            </AR-PACKAGE>
-          </AR-PACKAGES>
         </AR-PACKAGE>
         <AR-PACKAGE UUID="441bbb64-4825-4fcd-b9c3-c44e4201d616">
           <SHORT-NAME>compu_methods</SHORT-NAME>
@@ -369,6 +316,55 @@
                     <UPPER-LIMIT INTERVAL-TYPE="CLOSED">3</UPPER-LIMIT>
                     <COMPU-CONST>
                       <VT>kRemoved</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                </COMPU-SCALES>
+              </COMPU-INTERNAL-TO-PHYS>
+            </COMPU-METHOD>
+            <COMPU-METHOD UUID="5ce22fa9-72a2-4241-b178-d82bd5dc0a7a">
+              <SHORT-NAME>SM_ApplicationError_compu_method</SHORT-NAME>
+              <COMPU-INTERNAL-TO-PHYS>
+                <COMPU-SCALES>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kPrepared</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kVerified</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">5</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">5</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kRejected</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">6</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">6</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kVerifyFailed</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">7</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">7</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kPrepareFailed</VT>
+                    </COMPU-CONST>
+                  </COMPU-SCALE>
+                  <COMPU-SCALE>
+                    <LOWER-LIMIT INTERVAL-TYPE="CLOSED">8</LOWER-LIMIT>
+                    <UPPER-LIMIT INTERVAL-TYPE="CLOSED">8</UPPER-LIMIT>
+                    <COMPU-CONST>
+                      <VT>kRollbackFailed</VT>
                     </COMPU-CONST>
                   </COMPU-SCALE>
                 </COMPU-SCALES>
