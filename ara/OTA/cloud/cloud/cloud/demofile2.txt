@@ -1,3 +1,0 @@
-karim.txt#1
-b.txt#2
-c.txt#3
