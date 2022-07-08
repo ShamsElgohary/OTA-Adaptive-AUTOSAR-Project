@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <title>django upload download</title>
+</head>
+
+<style>
+    .makeitcenter {
+        right: 50%;
+        bottom: 50%;
+        transform: translate(50%, 50%);
+        position: absolute;
+    }
+    
+    body {
+      height: 90vh;
+      background-image: url("{% static 'img/dark_.jpg' %}") ;
+      background-size: cover;
+      background-repeat: no-repeat;
+      /*background-color: black !important;*/
+    }
+    
+    .card {
+        padding-left: 20px;
+        padding-right: 20px;
+        box-shadow: 0 0px 20px 0 rgba(12, 12, 12, 0.2);
+        background-color:#76B947 !important;
+        transition: 0.3s;
+    }
+    .navbar {
+        opacity: 0.8; }
+        #home-section {
+            
+            min-height: 700px; }
+            #home-section .dark-overlay {
+              background-color: rgba(0, 0, 0, 0.7);
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              min-height: 700px; }
+            #home-section .home-inner {
+              padding-top: 150px; }
+            #home-section .card-form {
+              opacity: 0.8; }
+            #home-section .fa {
+              color: #046ef0;
+              background: #fff;
+              padding: 4px;
+              border-radius: 5px;
+              font-size: 30px; }
+</style>
+<body>
+
+  <!-- NAVBAR SECTION -->
+  <div>
+    <nav class="navbar navbar-expand-sm bg-white  fixed-top">
+      <div class="container">
+          <a href="" class="navbar-brand">
+             <h4 class="d-inline align-middle" style="color: #4b0082">OTA</h4>
+            </a>
+        <div >
+          <ul class="navbar-nav ml-auto">
+            
+            <a href="{% url 'core:logout' %}" class=" nav-link" style="color: #4b0082">Logout</a>
+
+            <a class="btn" style="display: block;  color:black" href="{% url 'core:index' %}"><i class="fas fa-sun fa-lg" style="font-size:25px;color:#4b0082"></i></a>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div class="container2" style="margin-top: 70px;">
+    <div class="row">
+      <div class="col-lg-6">
+        
+
+          <!-- FORM SECTION -->
+                  
+          <div class="d-flex justify-content-center" style="margin-top: 70px;">
+              <div class="card  text-center card-form ">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col text-center">  
+                          <div class="py-5">
+
+                          <form method="POST" enctype= "multipart/form-data">
+                              {%csrf_token%}
+
+                              <div class="form-group">
+                                  {{form.file_upload | add_class:"form-control"}}
+                                  <div class="py-3">
+                                    
+                                    {{form.file_name}}
+                                    
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Save</button>
+                          </form>
+                          <div class="py-3">
+
+
+                          <url>
+                              
+                              {%for item in get_files%}
+                              <div class="border  border-dark rounded " style="margin:5px">
+                              
+                                  
+                                <a class="text-dark" href="{{item.file_upload.url}}" download>{{item.file_name}} </a>
+                              
+                              
+                          </div>
+
+                              {%endfor%}
+                              
+                          </url>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+          
+
+          
+          
+
+
+      
+      <div class="col-lg-6 d-none d-lg-block" >
+        
+        <img src="{% static 'img/car_cloud_.png' %}"  width="700" height="600">
+      </div>
+     
+    </div>
+  </div>
+
+
+
+</body>
+</html>

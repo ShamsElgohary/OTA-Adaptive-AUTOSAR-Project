@@ -1,0 +1,188 @@
+{
+	"Cluster_name" : "em_json",
+	"executables_configurations" : 
+	[
+		{
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"fn1" : 
+						[
+							"idle",
+							"play"
+						]
+					}
+				}
+			],
+			"name" : "Car_GUI"
+		},
+		{
+			"confg" : 
+			[
+				{
+					"depends" : 
+					{
+						"someip_sd" : "Krunning"
+					},
+					"function_group" : 
+					{
+						"machineFG" : 
+						[
+							"running",
+							"update"
+						]
+					}
+				}
+			],
+			"name" : "iam"
+		},
+		{
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"fn2" : 
+						[
+							"run"
+						]
+					}
+				}
+			],
+			"name" : "ota"
+		},
+		{
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"machineFG" : 
+						[
+							"startup",
+							"running",
+							"update"
+						]
+					}
+				}
+			],
+			"name" : "sm"
+		},
+		{
+			"confg" : 
+			[
+				{
+					"depends" : {},
+					"function_group" : 
+					{
+						"machineFG" : 
+						[
+							"running",
+							"update"
+						]
+					}
+				}
+			],
+			"name" : "someip_sd"
+		},
+		{
+			"confg" : 
+			[
+				{
+					"depends" : 
+					{
+						"iam" : "Krunning"
+					},
+					"function_group" : 
+					{
+						"machineFG" : 
+						[
+							"running",
+							"update"
+						]
+					}
+				}
+			],
+			"name" : "ucm"
+		}
+	],
+	"function_group_states" : 
+	{
+		"fn1" : "idle",
+		"fn2" : "run",
+		"machineFG" : "running"
+	},
+	"function_groups" : 
+	{
+		"fn1" : 
+		{
+			"states" : 
+			[
+				"off",
+				"idle",
+				"play",
+				"terminate"
+			]
+		},
+		"fn2" : 
+		{
+			"states" : 
+			[
+				"off",
+				"run",
+				"end"
+			]
+		},
+		"machineFG" : 
+		{
+			"states" : 
+			[
+				"off",
+				"startup",
+				"running",
+				"update",
+				"sleep"
+			]
+		}
+	},
+	"running_executables" : 
+	[
+		{
+			"current_state" : "Krunning",
+			"name" : "Car_GUI",
+			"pid" : 88477
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "iam",
+			"pid" : 69726
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "sm",
+			"pid" : 69719
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "someip_sd",
+			"pid" : 69724
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ucm",
+			"pid" : 69730
+		}
+	],
+	"sm_request" : 
+	{
+		"fng" : "fn1",
+		"fng_state" : "idle"
+	},
+	"to_run" : [],
+	"to_term" : []
+}

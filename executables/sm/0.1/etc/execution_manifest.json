@@ -1,0 +1,15 @@
+{
+	"platform_application": "false",
+	"startup_configs": 
+	{
+		"Config 1": 
+		{
+			"depends": {},
+			"machine_states": ["startup","running","update"],
+			"function_group_states": {}
+		}
+	}
+}
+
+
+

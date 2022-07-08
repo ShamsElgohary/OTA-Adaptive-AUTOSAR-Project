@@ -1,0 +1,27 @@
+{
+    "Car_GUI": {
+        "Path": "/Car_GUI/0.1/",
+        "Version": "0.1"
+    },
+    "Process List Version": 2,
+    "iam": {
+        "Path": "/iam/0.1/",
+        "Version": "0.1"
+    },
+    "ota": {
+        "Path": "/ota/0.1/",
+        "Version": "0.1"
+    },
+    "sm": {
+        "Path": "/sm/0.1/",
+        "Version": "0.1"
+    },
+    "someip_sd": {
+        "Path": "/someip_sd/0.1/",
+        "Version": "0.1"
+    },
+    "ucm": {
+        "Path": "/ucm/0.1/",
+        "Version": "0.1"
+    }
+}
