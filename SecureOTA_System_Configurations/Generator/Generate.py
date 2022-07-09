@@ -1,3 +1,4 @@
+from poplib import POP3_PORT
 import xml.etree.ElementTree as ET          
 from DataType import DataTypeParser
 from Service_Interface import ServiceInfParser
@@ -97,27 +98,27 @@ class Generator:
     def __ScanDT(self):
         print("Scanning DataTypes")
         DT = DataTypeParser(self.CurrentXMLString)
-        self.DataTypes = DT.Parse()
+        DT.Parse()
 
     def __ScanSI(self):
         print("Scanning Service Interfaces")
         SI = ServiceInfParser(self.CurrentXMLString)
-        self.ServiceInterfaces = SI.Parse()
+        SI.Parse()
 
     def __ScanSC(self):
         print("Scanning Software Compounents")
         SWC = SWParser(self.CurrentXMLString)
-        self.SoftwareCompounents = SWC.Parse()
+        self.SoftwareCompounents=SWC.Parse()
 
     def __ScanD(self):
         print("Scanning Deployments")
         Dep = DeploymentParser(self.CurrentXMLString)
-        self.Deployments = Dep.Parse()
+        self.Deployments=Dep.Parse()
 
     def __ScanMP(self):
         print("Scanning Mappings")
         Map = MappingParser(self.CurrentXMLString)
-        self.Mapping = Map.Parse()
+        self.Mapping=Map.Parse()
 
 
     def __CheckPName(self):
@@ -175,33 +176,65 @@ class Generator:
                             temp.append(Map[4])
                             temp.append(Map[5])
                             Manifests[Swc_name]["R_PORT"].append(temp)
-        
-        
-        
+        print (Manifests)
+        for swc in self.SoftwareCompounents:
+            name=swc[0]
+            #######PROVIDED#########
+            port=[]
+            p_list=[]
+            list1=[]
+            list2=[]
+            provided_list=Manifests[name]['P_PORT']
+            for list in provided_list:
+                dictionary={}
+                dictionary["port"] = list[1]
+                dictionary["service_id"]=list[2]
+                dictionary["instance_id"]=list[3]
+                dictionary["type"]="SOME/IP"
+                dictionary["ipv4"]="127.0.0.1"
+                list1.append(dictionary)
+                print("list 1",list1)
+            #######REQUIRED#########
+            required_list=Manifests[name]['R_PORT']
+            for list in required_list:
+                dictionary2={}
+                dictionary2["service_id"]=list[1]
+                dictionary2["instance_id"]=list[2]
+                dictionary2["type"]="SOME/IP"
+                list2.append(dictionary2)
 
-        print(Manifests)
-        return Manifests
 
-    [
-        ["PackageManager_provided_instance", 2 ,1],
-        ["PackageManager_required_instance", 2 ,1], 
-        ["UpdateRequest_provided_instance", 1 ,1], 
-        ["UpdateRequest_requested_instance", 1 ,1]
-    ]
+            datajson = {
+                    "ap_service_instances":{
+                    "required_ap_service_instances":list2,
+                    "provided_ap_service_instances":list1
+                    }
+                }
+            with open("executables/"+name+"/0.1/etc/"+" service_manifest2", 'w') as f:
+                json.dump(datajson, f, 
+                                    indent=4,  
+                                    separators=(',',': '))
+                f.close()
 
+
+{'ucm_swc': {'P_PORT': [['package_manager', '2253', 2, 1]], 'R_PORT': [['update_request', 1, 1]]}, 
+'ota_swc': {'P_PORT': [], 'R_PORT': [['package_manager', 2, 1]]},
+ 'sm_swc': {'P_PORT': [['update_request', '2522', 1, 1]], 'R_PORT': []}}
+
+
+{
+    'ucm_swc': 
     {
-        'ucm_swc': 
-        {
-            'P_PORT': [['package_manager', '2253', 2, 1]], 
-            'R_PORT': [['update_request', 1, 1]]
-        }, 
-        'ota_swc': 
-        {
-            'P_PORT': [], 
-            'R_PORT': [['package_manager', 2, 1]]
-        }, 
-        'sm_swc': 
-        {
-            'P_PORT': [['update_request', '2522', 1, 1]], 'R_PORT': []
-        }
+        'P_PORT': [['package_manager', '2253', 2, 1]], 
+        'R_PORT': [['update_request', 1, 1]]
+    }, 
+    'ota_swc': 
+    {
+        'P_PORT': [], 
+        'R_PORT': [['package_manager', 2, 1]]
+    }, 
+    'sm_swc': 
+    {
+        'P_PORT': [['update_request', '2522', 1, 1]], 'R_PORT': []
     }
+}

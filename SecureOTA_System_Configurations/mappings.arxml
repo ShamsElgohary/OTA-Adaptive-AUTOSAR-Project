@@ -47,7 +47,7 @@
               <SHORT-NAME>provided_package_manager_port_mapping</SHORT-NAME>
               <PORT-PROTOTYPE-IREF>
                 <CONTEXT-ROOT-SW-COMPONENT-PROTOTYPE-REF DEST="ROOT-SW-COMPONENT-PROTOTYPE">/ota/executables/ucm_exec/RootSwComponentPrototype1</CONTEXT-ROOT-SW-COMPONENT-PROTOTYPE-REF>
-                <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ota/software_componenets/ucm_swc/package_manager</TARGET-PORT-PROTOTYPE-REF>
+                <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ota/software_componenets/ucm/package_manager</TARGET-PORT-PROTOTYPE-REF>
               </PORT-PROTOTYPE-IREF>
               <PROCESS-DESIGN-REF DEST="PROCESS-DESIGN">/ota/processes/process_design/ucm_process_design</PROCESS-DESIGN-REF>
               <PROCESS-REF DEST="PROCESS">/ota/processes/ota_process</PROCESS-REF>
@@ -57,7 +57,7 @@
               <SHORT-NAME>required_package_manager_port_mapping</SHORT-NAME>
               <PORT-PROTOTYPE-IREF>
                 <CONTEXT-ROOT-SW-COMPONENT-PROTOTYPE-REF DEST="ROOT-SW-COMPONENT-PROTOTYPE">/ota/executables/ota_exec/RootSwComponentPrototype1</CONTEXT-ROOT-SW-COMPONENT-PROTOTYPE-REF>
-                <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ota/software_componenets/ota_swc/package_manager</TARGET-PORT-PROTOTYPE-REF>
+                <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ota/software_componenets/ota/package_manager</TARGET-PORT-PROTOTYPE-REF>
               </PORT-PROTOTYPE-IREF>
               <PROCESS-DESIGN-REF DEST="PROCESS-DESIGN">/ota/processes/process_design/ota_process_design</PROCESS-DESIGN-REF>
               <PROCESS-REF DEST="PROCESS">/ota/processes/ota_process</PROCESS-REF>
@@ -67,7 +67,7 @@
               <SHORT-NAME>required_update_request_port_mapping</SHORT-NAME>
               <PORT-PROTOTYPE-IREF>
                 <CONTEXT-ROOT-SW-COMPONENT-PROTOTYPE-REF DEST="ROOT-SW-COMPONENT-PROTOTYPE">/ota/executables/ucm_exec/RootSwComponentPrototype1</CONTEXT-ROOT-SW-COMPONENT-PROTOTYPE-REF>
-                <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ota/software_componenets/ucm_swc/update_request</TARGET-PORT-PROTOTYPE-REF>
+                <TARGET-PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ota/software_componenets/ucm/update_request</TARGET-PORT-PROTOTYPE-REF>
               </PORT-PROTOTYPE-IREF>
               <PROCESS-DESIGN-REF DEST="PROCESS-DESIGN">/ota/processes/process_design/ucm_process_design</PROCESS-DESIGN-REF>
               <PROCESS-REF DEST="PROCESS">/ota/processes/ucm_process</PROCESS-REF>
@@ -77,7 +77,7 @@
               <SHORT-NAME>provided_update_request_port_mapping</SHORT-NAME>
               <PORT-PROTOTYPE-IREF>
                 <CONTEXT-ROOT-SW-COMPONENT-PROTOTYPE-REF DEST="ROOT-SW-COMPONENT-PROTOTYPE">/ota/executables/sm_exec/RootSwComponentPrototype1</CONTEXT-ROOT-SW-COMPONENT-PROTOTYPE-REF>
-                <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ota/software_componenets/sm_swc/update_request</TARGET-PORT-PROTOTYPE-REF>
+                <TARGET-PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ota/software_componenets/sm/update_request</TARGET-PORT-PROTOTYPE-REF>
               </PORT-PROTOTYPE-IREF>
               <PROCESS-DESIGN-REF DEST="PROCESS-DESIGN">/ota/processes/process_design/sm_process_design</PROCESS-DESIGN-REF>
               <PROCESS-REF DEST="PROCESS">/ota/processes/sm_process</PROCESS-REF>

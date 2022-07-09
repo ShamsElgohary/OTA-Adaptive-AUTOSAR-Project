@@ -21,7 +21,7 @@ class MappingParser:
             tem = path.rfind("/")
             D_name = path[tem+1:]
             data.append(name.text)
-            data.append(port.text)
+            data.append(int(port.text))
             data.append(path)
             data.append(D_name)
             self.valuesPorts.append(data)

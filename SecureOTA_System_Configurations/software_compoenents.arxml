@@ -8,7 +8,7 @@
           <SHORT-NAME>software_componenets</SHORT-NAME>
           <ELEMENTS>
             <ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE UUID="97764c0b-3c1d-4a77-aa1b-f4f067a51b0b">
-              <SHORT-NAME>ucm_swc</SHORT-NAME>
+              <SHORT-NAME>ucm</SHORT-NAME>
               <PORTS>
                 <P-PORT-PROTOTYPE UUID="3e685594-40ca-4d47-a3d2-52c5f01c5e22">
                   <SHORT-NAME>package_manager</SHORT-NAME>
@@ -21,7 +21,7 @@
               </PORTS>
             </ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
             <ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE UUID="7cd1bc29-4a0f-456f-843b-20fa7dc89aaf">
-              <SHORT-NAME>ota_swc</SHORT-NAME>
+              <SHORT-NAME>ota</SHORT-NAME>
               <PORTS>
                 <R-PORT-PROTOTYPE UUID="957823b7-ac7b-42e6-a8ec-c241088f617f">
                   <SHORT-NAME>package_manager</SHORT-NAME>
@@ -30,7 +30,7 @@
               </PORTS>
             </ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE>
             <ADAPTIVE-APPLICATION-SW-COMPONENT-TYPE UUID="2db19e28-e9f3-4139-9322-904d6c0b27ef">
-              <SHORT-NAME>sm_swc</SHORT-NAME>
+              <SHORT-NAME>sm</SHORT-NAME>
               <PORTS>
                 <P-PORT-PROTOTYPE UUID="752fe919-3dfe-44f8-8f44-5806af006d31">
                   <SHORT-NAME>update_request</SHORT-NAME>
