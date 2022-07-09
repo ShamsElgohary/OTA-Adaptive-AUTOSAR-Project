@@ -21,6 +21,10 @@
                   <SHORT-NAME>sm</SHORT-NAME>
                   <SYMBOL>sm</SYMBOL>
                 </SYMBOL-PROPS>
+                <SYMBOL-PROPS>
+                  <SHORT-NAME>UpdateRequest</SHORT-NAME>
+                  <SYMBOL>UpdateRequest</SYMBOL>
+                </SYMBOL-PROPS>
               </NAMESPACES>
               <METHODS>
                 <CLIENT-SERVER-OPERATION UUID="806665ce-2686-41a5-82a8-9ae6d914e5df">
