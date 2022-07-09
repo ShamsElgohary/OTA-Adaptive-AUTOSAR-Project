@@ -3,6 +3,7 @@ from DataType import DataTypeParser
 from Service_Interface import ServiceInfParser
 from Deployment import DeploymentParser
 from Mapping_SwCompounent import MappingParser, SWParser
+import json
 
 class Generator:
     def __init__(self):
@@ -12,6 +13,12 @@ class Generator:
         self.ServiceInterfaces = {}
         self.DataTypes = {}
         self.Deployments = {}
+        self.Deployments_Manifest = [
+                                ["PackageManager_provided_instance", 2 ,1],
+                                ["PackageManager_required_instance", 2 ,1], 
+                                ["UpdateRequest_provided_instance", 1 ,1], 
+                                ["UpdateRequest_requested_instance", 1 ,1]
+                            ]
         self.SoftwareCompounents = {}
         self.Mapping = {}
     
@@ -140,8 +147,61 @@ class Generator:
 
     def GenerateManifest(self):
         Manifest = "Generate Interface Manifest"
-        print("Generate Interface Manifest")
-        return Manifest
 
+        for Map in self.Mapping:
+            for Inst in self.Deployments_Manifest:
+                if Inst[0] == Map[0]:
+                    Map.append(Inst[1])
+                    Map.append(Inst[2])
+                    
+        Manifests = {}
+        for SoftwareCompounent in self.SoftwareCompounents:
+            Swc_name = SoftwareCompounent[0]
+            Manifests[Swc_name] = {"P_PORT":[], "R_PORT" : []}
+            for Port in SoftwareCompounent[1]:
+                P_name = Port[1]
+                for Map in self.Mapping:
+                    if Map[2] == Swc_name and Map[3] == P_name:
+                        if Port[0] == "P-PORT name":
+                            temp = []
+                            temp.append(Port[1])
+                            temp.append(Map[1])
+                            temp.append(Map[4])
+                            temp.append(Map[5])
+                            Manifests[Swc_name]["P_PORT"].append(temp)
+                        elif Port[0] == "R-PORT name":
+                            temp = []
+                            temp.append(Port[1])
+                            temp.append(Map[4])
+                            temp.append(Map[5])
+                            Manifests[Swc_name]["R_PORT"].append(temp)
+        
+        
+        
 
+        print(Manifests)
+        return Manifests
 
+    [
+        ["PackageManager_provided_instance", 2 ,1],
+        ["PackageManager_required_instance", 2 ,1], 
+        ["UpdateRequest_provided_instance", 1 ,1], 
+        ["UpdateRequest_requested_instance", 1 ,1]
+    ]
+
+    {
+        'ucm_swc': 
+        {
+            'P_PORT': [['package_manager', '2253', 2, 1]], 
+            'R_PORT': [['update_request', 1, 1]]
+        }, 
+        'ota_swc': 
+        {
+            'P_PORT': [], 
+            'R_PORT': [['package_manager', 2, 1]]
+        }, 
+        'sm_swc': 
+        {
+            'P_PORT': [['update_request', '2522', 1, 1]], 'R_PORT': []
+        }
+    }

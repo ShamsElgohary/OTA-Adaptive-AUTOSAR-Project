@@ -13,8 +13,8 @@
               <SERVICE-INSTANCE-REFS>
                 <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/ota/deployments/Instances/PackageManager_provided_instance</SERVICE-INSTANCE-REF>
               </SERVICE-INSTANCE-REFS>
-              <TCP-PORT>1001</TCP-PORT>
-              <UDP-PORT>1002</UDP-PORT>
+              <TCP-PORT>2253</TCP-PORT>
+              <UDP-PORT>2253</UDP-PORT>
             </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
             <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING UUID="0c61add1-3174-41c8-a9c4-39783b72fdbd">
               <SHORT-NAME>required_update_request_mapping</SHORT-NAME>
@@ -22,8 +22,8 @@
               <SERVICE-INSTANCE-REFS>
                 <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/ota/deployments/Instances/UpdateRequest_requested_instance</SERVICE-INSTANCE-REF>
               </SERVICE-INSTANCE-REFS>
-              <TCP-PORT>2001</TCP-PORT>
-              <UDP-PORT>2002</UDP-PORT>
+              <TCP-PORT>2522</TCP-PORT>
+              <UDP-PORT>2522</UDP-PORT>
             </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
             <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING UUID="5ef8cb54-c185-41bb-a5c2-9ef706d16716">
               <SHORT-NAME>provided_update_request_mapping</SHORT-NAME>
@@ -31,8 +31,8 @@
               <SERVICE-INSTANCE-REFS>
                 <SERVICE-INSTANCE-REF DEST="PROVIDED-SOMEIP-SERVICE-INSTANCE">/ota/deployments/Instances/UpdateRequest_provided_instance</SERVICE-INSTANCE-REF>
               </SERVICE-INSTANCE-REFS>
-              <TCP-PORT>2001</TCP-PORT>
-              <UDP-PORT>2002</UDP-PORT>
+              <TCP-PORT>2522</TCP-PORT>
+              <UDP-PORT>2522</UDP-PORT>
             </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
             <SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING UUID="f400910b-d949-437c-bec5-6f51191cec5c">
               <SHORT-NAME>required_package_manager_mapping</SHORT-NAME>
@@ -40,8 +40,8 @@
               <SERVICE-INSTANCE-REFS>
                 <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/ota/deployments/Instances/PackageManager_required_instance</SERVICE-INSTANCE-REF>
               </SERVICE-INSTANCE-REFS>
-              <TCP-PORT>1001</TCP-PORT>
-              <UDP-PORT>1002</UDP-PORT>
+              <TCP-PORT>2253</TCP-PORT>
+              <UDP-PORT>2253</UDP-PORT>
             </SOMEIP-SERVICE-INSTANCE-TO-MACHINE-MAPPING>
             <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING UUID="d4b12774-f412-4e8e-8774-9c89edcb2608">
               <SHORT-NAME>provided_package_manager_port_mapping</SHORT-NAME>

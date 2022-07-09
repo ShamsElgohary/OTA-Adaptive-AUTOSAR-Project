@@ -74,6 +74,8 @@ class DataType:
         self.subTypePath = None
         self.enumPath = None
         self.enum = None
+        self.subElementPath = None
+        self.structElement = None
 
     def Definition (self):
         Def = ""
@@ -112,8 +114,30 @@ class DataType:
                     for value in compu_method.Values:
                         Def += f"{value[0]} = {value[1]}U, \n"
                     Def += "};\n"
+
         elif (self.Cat == "STRUCT"):
-            Def = "STRUCT"
+            elements = []
+            Def = f"struct {self.S_Name}" + "{\n"
+            Temp = self.root.find(pre + "SUB-ELEMENTS")
+            Temp = self.root.findall(".//"+pre + "CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT")
+            for element in Temp:
+                name = element.find(pre + "SHORT-NAME").text
+                tem = element.find(pre + "TYPE-REFERENCE")
+                self.subElementPath = tem.find(pre + "TYPE-REFERENCE-REF").text
+                tem = self.subElementPath.rfind("/")
+                self.structElement = self.subElementPath[tem+1:]
+                elements.append(name)
+                Def += "\t" + self.structElement + " " + name + ";\n"
+            Def += "private:\n"
+            Def += "\ttemplate <typename Archive>\n"
+            Def += "\tvoid serialize(Archive &ar, const unsigned int version)\n\t{\n"
+            for i in elements:
+                Def += f"\t\tar &{i};\n"
+            Def += "\t}\n"
+            Def += "\tfriend class boost::serialization::access;\n"
+            Def += "};\n"
+
+
 
         else:
             Def = "Unknown Type"

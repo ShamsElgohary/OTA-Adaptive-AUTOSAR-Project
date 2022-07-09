@@ -15,7 +15,7 @@
                   <FIELD-REF DEST="FIELD">/ota/service_interfaces/PackageManager/CurrentStatus</FIELD-REF>
                   <GET UUID="e8508262-d5aa-4f91-af64-312f8c0cc3c7">
                     <SHORT-NAME>SomeipMethodDeployment1</SHORT-NAME>
-                    <METHOD-ID>100</METHOD-ID>
+                    <METHOD-ID>11</METHOD-ID>
                   </GET>
                 </SOMEIP-FIELD-DEPLOYMENT>
               </FIELD-DEPLOYMENTS>
@@ -23,56 +23,56 @@
                 <SOMEIP-METHOD-DEPLOYMENT UUID="930da28e-6fe5-4c8b-9d65-4d3391d7157c">
                   <SHORT-NAME>TransferStart</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/PackageManager/TransferStart</METHOD-REF>
-                  <METHOD-ID>101</METHOD-ID>
+                  <METHOD-ID>1</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="527e223d-2a66-49b7-bdaa-f87de8d73f60">
                   <SHORT-NAME>TransferData</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/PackageManager/TransferData</METHOD-REF>
-                  <METHOD-ID>100</METHOD-ID>
+                  <METHOD-ID>2</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="640e6169-50d3-441f-8888-7c4525116911">
                   <SHORT-NAME>TransferExit</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/PackageManager/TransferExit</METHOD-REF>
-                  <METHOD-ID>102</METHOD-ID>
+                  <METHOD-ID>3</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="ce059246-84a5-4b2f-a79b-afc968870e04">
                   <SHORT-NAME>TransferDelete</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/PackageManager/TransferDelete</METHOD-REF>
-                  <METHOD-ID>103</METHOD-ID>
+                  <METHOD-ID>4</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="232420e8-cd17-484c-8210-58a4240ca927">
                   <SHORT-NAME>ProcessSwPackage</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/PackageManager/ProcessSwPackage</METHOD-REF>
-                  <METHOD-ID>104</METHOD-ID>
+                  <METHOD-ID>5</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="c3cc467e-1940-4e34-aa1a-cb8cb540ad76">
                   <SHORT-NAME>Activate</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/PackageManager/Activate</METHOD-REF>
-                  <METHOD-ID>105</METHOD-ID>
+                  <METHOD-ID>6</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="cea44fcc-6a63-4ece-99d6-2a097446f882">
                   <SHORT-NAME>GetSwClusterInfo</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/PackageManager/GetSwClusterInfo</METHOD-REF>
-                  <METHOD-ID>106</METHOD-ID>
+                  <METHOD-ID>7</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="32f4af18-019e-4808-9cdd-c35ed18e431e">
                   <SHORT-NAME>Rollback</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/PackageManager/Rollback</METHOD-REF>
-                  <METHOD-ID>107</METHOD-ID>
+                  <METHOD-ID>8</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="5597385a-8e67-4dde-b2b1-9972f37473ed">
                   <SHORT-NAME>RevertProcessedSwPackages</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/PackageManager/RevertProcessedSwPackages</METHOD-REF>
-                  <METHOD-ID>108</METHOD-ID>
+                  <METHOD-ID>9</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="9cda1668-65db-4d1a-a3b9-38a10044848c">
                   <SHORT-NAME>Finish</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/PackageManager/Finish</METHOD-REF>
-                  <METHOD-ID>109</METHOD-ID>
+                  <METHOD-ID>10</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
               </METHOD-DEPLOYMENTS>
               <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/ota/service_interfaces/PackageManager</SERVICE-INTERFACE-REF>
-              <SERVICE-INTERFACE-ID>1000</SERVICE-INTERFACE-ID>
+              <SERVICE-INTERFACE-ID>2</SERVICE-INTERFACE-ID>
               <SERVICE-INTERFACE-VERSION>
                 <MAJOR-VERSION>1</MAJOR-VERSION>
                 <MINOR-VERSION>0</MINOR-VERSION>
@@ -142,4 +142,5 @@
     </AR-PACKAGE>
   </AR-PACKAGES>
 </AUTOSAR>
+
 
