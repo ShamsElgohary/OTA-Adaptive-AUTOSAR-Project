@@ -74,8 +74,8 @@
               <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/ota/service_interfaces/PackageManager</SERVICE-INTERFACE-REF>
               <SERVICE-INTERFACE-ID>2</SERVICE-INTERFACE-ID>
               <SERVICE-INTERFACE-VERSION>
-                <MAJOR-VERSION>1</MAJOR-VERSION>
-                <MINOR-VERSION>0</MINOR-VERSION>
+                <MAJOR-VERSION>0</MAJOR-VERSION>
+                <MINOR-VERSION>1</MINOR-VERSION>
               </SERVICE-INTERFACE-VERSION>
             </SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
             <SOMEIP-SERVICE-INTERFACE-DEPLOYMENT UUID="dbd3490f-0cb9-472d-8127-2b18bab3dac8">
@@ -84,29 +84,29 @@
                 <SOMEIP-METHOD-DEPLOYMENT UUID="3b4bc04a-b3bb-4fe5-928e-0eaf82f37a84">
                   <SHORT-NAME>StartUpdateSession</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/UpdateRequest/StartUpdateSession</METHOD-REF>
-                  <METHOD-ID>100</METHOD-ID>
+                  <METHOD-ID>1</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="dcf200dc-8715-4ce3-bad3-4ca6441d446d">
                   <SHORT-NAME>PrepareUpdate</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/UpdateRequest/PrepareUpdate</METHOD-REF>
-                  <METHOD-ID>101</METHOD-ID>
+                  <METHOD-ID>2</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="a8798a67-e994-4724-ba80-f1975ed58352">
                   <SHORT-NAME>VerifyUpdate</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/UpdateRequest/VerifyUpdate</METHOD-REF>
-                  <METHOD-ID>102</METHOD-ID>
+                  <METHOD-ID>3</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
                 <SOMEIP-METHOD-DEPLOYMENT UUID="3778dc95-e401-43ab-b28a-19f0248565fb">
                   <SHORT-NAME>StopUpdateSession</SHORT-NAME>
                   <METHOD-REF DEST="CLIENT-SERVER-OPERATION">/ota/service_interfaces/UpdateRequest/StopUpdateSession</METHOD-REF>
-                  <METHOD-ID>103</METHOD-ID>
+                  <METHOD-ID>4</METHOD-ID>
                 </SOMEIP-METHOD-DEPLOYMENT>
               </METHOD-DEPLOYMENTS>
               <SERVICE-INTERFACE-REF DEST="SERVICE-INTERFACE">/ota/service_interfaces/PackageManager</SERVICE-INTERFACE-REF>
-              <SERVICE-INTERFACE-ID>2000</SERVICE-INTERFACE-ID>
+              <SERVICE-INTERFACE-ID>1</SERVICE-INTERFACE-ID>
               <SERVICE-INTERFACE-VERSION>
-                <MAJOR-VERSION>1</MAJOR-VERSION>
-                <MINOR-VERSION>0</MINOR-VERSION>
+                <MAJOR-VERSION>0</MAJOR-VERSION>
+                <MINOR-VERSION>1</MINOR-VERSION>
               </SERVICE-INTERFACE-VERSION>
             </SOMEIP-SERVICE-INTERFACE-DEPLOYMENT>
           </ELEMENTS>

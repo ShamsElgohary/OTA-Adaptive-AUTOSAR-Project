@@ -28,22 +28,24 @@ class DeploymentParser:
                     serviceInterfaces += serviceName
                     serviceId = service.find(ns + "SERVICE-INTERFACE-ID").text
 
-                    print(serviceName, serviceId)  
-
+                    # print(serviceName, serviceId)  
+                    serviceMethods = {}
                     # GET METHOD IDS
                     for method in service.findall(ns + "METHOD-DEPLOYMENTS/" + ns + "SOMEIP-METHOD-DEPLOYMENT"):
                         methodName = method.find(ns + "SHORT-NAME").text
-                        methodPath = method.find(ns + "METHOD-REF").text
+                        # methodPath = method.find(ns + "METHOD-REF").text
                         methodId = method.find(ns + "METHOD-ID").text
                         # Dictionary key = methodID , Values are methodName and methodPath
-                        serviceMethods[methodId] = [methodName,methodPath]
-                        print(methodId, methodName, methodPath)
-                        
+                        # serviceMethods[methodName] = [methodId, methodPath]
+                        serviceMethods[methodName] = methodId
+                    # print(serviceMethods)
 
-                    # GET FIELD
+                    # print(serviceName, serviceId)  
+                    serviceFields = {}
+                    # GET FIELD IDs
                     for field in service.findall(ns + "FIELD-DEPLOYMENTS/" + ns + "SOMEIP-FIELD-DEPLOYMENT"):
                         fieldName = field.find(ns + "SHORT-NAME").text
-                        fieldPath = field.find(ns + "FIELD-REF").text
+                        # fieldPath = field.find(ns + "FIELD-REF").text
                         fieldGet = field.find(ns + "GET")
                         if fieldGet != None:
                             fieldGet = fieldGet.find(ns + "METHOD-ID").text
@@ -61,36 +63,31 @@ class DeploymentParser:
                             fieldNot = fieldNot.find(ns + "METHOD-ID").text
                         else:
                             fieldNot = "No Notifier Method"
-
+                        # Dictionary key = methodID , Values are methodName and methodPath
+                        # serviceFields[fieldName] = [[fieldGet,fieldSet, fieldNot], fieldPath]
                         serviceFields[fieldName] = [fieldGet,fieldSet, fieldNot]
-
-                    serviceInstance = DeploymentInfo(serviceId, serviceName, serviceMethods)
-                    Deployments[serviceId] = [serviceInstance]
-
-
-
-        #print(serviceMethods)                 
-
-
+                    # print(serviceFields)
+                    #for method in service.findall(ns + "METHOD-DEPLOYMENTS/" + ns + "SOMEIP-METHOD-DEPLOYMENT"):
+                    Deployments[serviceName] = [serviceId, serviceMethods, serviceFields]
+                print(Deployments)                 
         return Deployments
 
 
 
-class DeploymentInfo:
+# class DeploymentInfo:
 
-    serviceId = 0
-    serviceName = ''
-    serviceMethods = {}
-    serviceFields = {}
-    #serviceEvents = {}
+#     serviceId = 0
+#     serviceName = ''
+#     serviceMethods = {}
+#     serviceFields = {}
+#     #serviceEvents = {}
 
-    def __init__(self,id,name,methods,fields=None):
-        serviceId = id
-        serviceName = name
-        serviceMethods = methods   
-        serviceFields = fields  
+#     def __init__(self,id,name,methods,fields=None):
+#         self.serviceId = id
+#         self.serviceName = name
+#         self.serviceMethods = methods   
+#         self.serviceFields = fields  
 
 
 # dep = DeploymentParser("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/SecureOTA_System_Configurations/deployment.arxml")
-
 # dep.Parse()

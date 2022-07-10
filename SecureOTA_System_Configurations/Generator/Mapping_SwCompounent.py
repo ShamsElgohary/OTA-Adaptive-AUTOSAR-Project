@@ -57,7 +57,7 @@ class MappingParser:
                     self.values.append(temp)
         
 
-        print(self.values)
+        # print(self.values)
         return self.values
                 
 
@@ -97,6 +97,6 @@ class SWParser:
             tempDect.append(name.text)
             tempDect.append(myMap)
             self.SWC .append(tempDect)
-        print (self.SWC)
+        # print (self.SWC)
         return self.SWC
         
