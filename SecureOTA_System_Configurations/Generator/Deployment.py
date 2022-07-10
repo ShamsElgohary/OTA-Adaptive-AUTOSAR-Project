@@ -41,7 +41,28 @@ class DeploymentParser:
                         
 
                     # GET FIELD
-                    #for method in service.findall(ns + "METHOD-DEPLOYMENTS/" + ns + "SOMEIP-METHOD-DEPLOYMENT"):
+                    for field in service.findall(ns + "FIELD-DEPLOYMENTS/" + ns + "SOMEIP-FIELD-DEPLOYMENT"):
+                        fieldName = field.find(ns + "SHORT-NAME").text
+                        fieldPath = field.find(ns + "FIELD-REF").text
+                        fieldGet = field.find(ns + "GET")
+                        if fieldGet != None:
+                            fieldGet = fieldGet.find(ns + "METHOD-ID").text
+                        else:
+                            fieldGet = "No Getter Method"
+
+                        fieldSet = field.find(ns + "SET")
+                        if fieldSet != None:
+                            fieldSet = fieldSet.find(ns + "METHOD-ID").text
+                        else:
+                            fieldSet = "No Setter Method"
+
+                        fieldNot = field.find(ns + "NOTIFY")
+                        if fieldNot != None:
+                            fieldNot = fieldNot.find(ns + "METHOD-ID").text
+                        else:
+                            fieldNot = "No Notifier Method"
+
+                        serviceFields[fieldName] = [fieldGet,fieldSet, fieldNot]
 
                     serviceInstance = DeploymentInfo(serviceId, serviceName, serviceMethods)
                     Deployments[serviceId] = [serviceInstance]
