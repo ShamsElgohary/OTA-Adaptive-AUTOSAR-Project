@@ -1,14 +1,13 @@
 import xml.etree.ElementTree as ET
 
-
 class DeploymentParser:
-    def _init_(self, xmlString):
+    def __init__(self, xmlString):
         self.xmlString = xmlString
         print("Deployment Parser \n")
     
     def Parse(self):
-        root = ET.fromstring(self.xmlString)
-        # root = tree.getroot()
+        tree = ET.parse(self.xmlString)
+        root = tree.getroot()
         ns = (root.tag.split("}"))[0] + "}"
         
         Deployments = {}
@@ -42,28 +41,7 @@ class DeploymentParser:
                         
 
                     # GET FIELD
-                    for field in service.findall(ns + "FIELD-DEPLOYMENTS/" + ns + "SOMEIP-FIELD-DEPLOYMENT"):
-                        fieldName = field.find(ns + "SHORT-NAME").text
-                        fieldPath = field.find(ns + "FIELD-REF").text
-                        fieldGet = field.find(ns + "GET")
-                        if fieldGet != None:
-                            fieldGet = fieldGet.find(ns + "METHOD-ID").text
-                        else:
-                            fieldGet = "No Getter Method"
-
-                        fieldSet = field.find(ns + "SET")
-                        if fieldSet != None:
-                            fieldSet = fieldSet.find(ns + "METHOD-ID").text
-                        else:
-                            fieldSet = "No Setter Method"
-
-                        fieldNot = field.find(ns + "NOTIFY")
-                        if fieldNot != None:
-                            fieldNot = fieldNot.find(ns + "METHOD-ID").text
-                        else:
-                            fieldNot = "No Notifier Method"
-
-                    serviceFields[fieldName] = [fieldGet,fieldSet, fieldNot]
+                    #for method in service.findall(ns + "METHOD-DEPLOYMENTS/" + ns + "SOMEIP-METHOD-DEPLOYMENT"):
 
                     serviceInstance = DeploymentInfo(serviceId, serviceName, serviceMethods)
                     Deployments[serviceId] = [serviceInstance]
@@ -75,6 +53,8 @@ class DeploymentParser:
 
         return Deployments
 
+
+
 class DeploymentInfo:
 
     serviceId = 0
@@ -83,8 +63,13 @@ class DeploymentInfo:
     serviceFields = {}
     #serviceEvents = {}
 
-    def _init_(self,id,name,methods,fields=None):
+    def __init__(self,id,name,methods,fields=None):
         serviceId = id
         serviceName = name
         serviceMethods = methods   
-        serviceFields = fields
+        serviceFields = fields  
+
+
+dep = DeploymentParser("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/SecureOTA_System_Configurations/deployment.arxml")
+
+dep.Parse()
