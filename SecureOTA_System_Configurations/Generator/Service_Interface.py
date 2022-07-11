@@ -5,7 +5,7 @@ from xml.dom.minidom import Element
 import xml.etree.ElementTree as ET
 from xxlimited import new
 pre = ""
-machine_name=""
+machine_name = ""
 
 class argument:
     def __init__(self, name, path ,id,direction):
@@ -51,6 +51,7 @@ class ServiceInf:
         self.ServiceInf_name=name
         self.ServiceInf_id=id
         self.field=[]
+        self.shared_types = []
     
     def add_method(self,method):
         self.methods.append(method)
@@ -65,22 +66,24 @@ class ServiceInf:
     
 
 class ServiceInfParser:
-    def __init__(self,path):
+    def __init__(self,xmlString):
+        self.xmlString = xmlString
         self.service_interface={}
-        self.tree = ET.parse(path)
 
     def add_Service(self,name,service):
         self.service_interface[name]=service
         # print("Service Inf added to map successfulllyyyyy")
     
     def Parse(self):
-        root = self.tree.getroot()
+        global pre
+        root = ET.fromstring(self.xmlString)
         prelist = root.tag.split("}")
         pre = prelist[0] + "}"
+
         Tempnode = root.find(pre + "AR-PACKAGES")
         Tempnode = Tempnode.find(pre + "AR-PACKAGE")
         machinnode = Tempnode.find(pre + "SHORT-NAME")
-        machine_name=machinnode.text
+        machine_name = machinnode.text
         Tempnode = Tempnode.find(pre + "AR-PACKAGES")
         d=Tempnode.getchildren()
         for x in d:
@@ -111,6 +114,11 @@ class ServiceInfParser:
                     id=field.attrib
                     name=field.find(pre+"SHORT-NAME").text
                     path=field.find(pre+"TYPE-TREF").text
+
+                    pathlist = path.split("/")
+                    if (pathlist[-2] == "shared_types"):
+                        s.shared_types.append(pathlist[-1])
+
                     getter=field.find(pre+"HAS-GETTER").text
                     setter=field.find(pre+"HAS-SETTER").text
                     notifier=field.find(pre+"HAS-NOTIFIER").text
@@ -130,6 +138,11 @@ class ServiceInfParser:
                         arg_id=x.attrib
                         arg_name=x.find(pre+"SHORT-NAME").text
                         arg_path=x.find(pre+"TYPE-TREF").text
+
+                        pathlist = arg_path.split("/")
+                        if (pathlist[-2] == "shared_types"):
+                            s.shared_types.append(pathlist[-1])
+
                         arg_dir=x.find(pre+"DIRECTION").text
                         a=argument(arg_name,arg_path,arg_id,arg_dir)
                         m_new.add_argument(a)
@@ -140,7 +153,7 @@ class ServiceInfParser:
 def new_line(fd):
     fd.write("\n")
 
-def method_genrator(fd,method_name,method_id,service_id,in_args,out_args):
+def Proxy_method_genrator(fd,method_name,method_id,in_args,out_args):
     method_input=method_name+"Input"
     method_output=method_name+"Output"
     fd.write("                    class ")
@@ -226,26 +239,3 @@ def method_genrator(fd,method_name,method_id,service_id,in_args,out_args):
     fd.write("                    };")
     new_line(fd)    
     
-
-
-
-
-SI_parser=ServiceInfParser("service_interfaces.arxml")
-SI_parser.Parse()
-
-for i in SI_parser.service_interface.keys():
-    filename=i+"proxy.hpp"
-    f = open(filename, "w")
-    f.write("                namespace methods ")
-    new_line(f)
-    f.write("                { ")
-    new_line(f)
-
-    kk=SI_parser.service_interface[i]
-    mm=kk.methods
-    for j in mm:
-        method_genrator(f,j.name,"1",3,j.in_args,j.out_args)
-    f.write("                }")
-          
-
-f.close()

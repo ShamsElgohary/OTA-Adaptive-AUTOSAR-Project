@@ -31,7 +31,7 @@
                   <SHORT-NAME>StartUpdateSession</SHORT-NAME>
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="45249944-3f10-4568-87ca-3cd5fd94d8ac">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>AppError</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SM_ApplicationError</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
@@ -46,7 +46,7 @@
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                     <ARGUMENT-DATA-PROTOTYPE UUID="45249944-3f10-4568-87ca-3cd5fd94d8ac">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>AppError</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SM_ApplicationError</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
@@ -61,7 +61,7 @@
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                     <ARGUMENT-DATA-PROTOTYPE UUID="45249944-3f10-4568-87ca-3cd5fd94d8ac">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>AppError</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SM_ApplicationError</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
