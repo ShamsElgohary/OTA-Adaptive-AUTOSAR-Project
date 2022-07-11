@@ -3,7 +3,7 @@ using namespace ara::sm;
 using namespace ara::exec;
 using namespace std;
 std::map<Functiongroup, std::string> UpdateRequestImpl::FunctionGroupStates;
-std::future<UpdateRequest::skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateRequestImpl::StartUpdateSession()
+std::future<UpdateRequest::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateRequestImpl::StartUpdateSession()
 {
     sm_functions functions = {.sm_StartUpdateSession = (1), .sm_StopUpdateSession = (0), .sm_PrepareUpdate = (0), .sm_VerifyUpdate = (0)};
     std::cout << "Starting Update Session" << std::endl;
@@ -47,7 +47,7 @@ void UpdateRequestImpl::StopUpdateSession()
         this->FunctionGroupStates[state2.fg_name] = state2.fg_newState;
     log->update_logger(functions, this->FunctionGroupStates);
 }
-std::future<UpdateRequest::skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
+std::future<UpdateRequest::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
 {
     cout << "Preparing Update" << std::endl;
     sm_functions functions = {.sm_StartUpdateSession = (0), .sm_StopUpdateSession = (0), .sm_PrepareUpdate = (1), .sm_VerifyUpdate = (0)};
@@ -88,7 +88,7 @@ std::future<UpdateRequest::skeleton::UpdateRequestSkeleton::PrepareUpdateOutput>
 
     return promise.get_future();
 }
-std::future<UpdateRequest::skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
+std::future<UpdateRequest::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
 {
     std::cout << "Verifying Update" << std::endl;
     sm_functions functions = {.sm_StartUpdateSession = (0), .sm_StopUpdateSession = (0), .sm_PrepareUpdate = (0), .sm_VerifyUpdate = (1)};

@@ -12,9 +12,6 @@ namespace ara
     {
         namespace UpdateRequest
         {
-
-            namespace skeleton
-            {
                 class UpdateRequestSkeleton : public ara::com::skeleton::skeletonBase
                 {
                 public:
@@ -151,7 +148,6 @@ namespace ara
                         ara::com::AddMethodCall(methodID, methodName, ara::com::MethodType::Skeleton_Method, 1, Cluster_Name);
                     }
                 };
-            }
         }
     }
 }
