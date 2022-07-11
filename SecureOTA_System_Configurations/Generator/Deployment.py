@@ -1,36 +1,37 @@
 import xml.etree.ElementTree as ET
 
+
 class DeploymentParser:
     def __init__(self, xmlString):
         self.xmlString = xmlString
         print("Deployment Parser \n")
-    
+
     def Parse(self):
         root = ET.fromstring(self.xmlString)
+
+        # tree = ET.parse(self.xmlString)
         # root = tree.getroot()
+
         ns = (root.tag.split("}"))[0] + "}"
-        
+
         Deployments = {}
-        serviceInterfaces=[]
-        serviceMethods={}
+        serviceInterfaces = []
+        ServiceInstances = []
 
         for node in root.iter(ns + "AR-PACKAGE"):
-            #print(node.find(ns + "SHORT-NAME").text)
+
             if node.find(ns + "SHORT-NAME").text == "deployments":
 
                 RootElements = node.find(ns + "ELEMENTS")
-                # RootElements = RootElements.find(ns + "SOMEIP-SERVICE-INTERFACE-DEPLOYMENT")
-                # RootElements = RootElements.find(ns + "SHORT-NAME")
 
                 for service in RootElements.iter(ns + "SOMEIP-SERVICE-INTERFACE-DEPLOYMENT"):
-                    #GET SERVICE INTERFACE NAME AND ID
+                    # GET SERVICE INTERFACE NAME AND ID
                     serviceName = (service.find(ns + "SHORT-NAME").text).split('_')[0]
                     serviceInterfaces += serviceName
                     serviceId = service.find(ns + "SERVICE-INTERFACE-ID").text
 
-                    # print(serviceName, serviceId)  
-                    serviceMethods = {}
                     # GET METHOD IDS
+                    serviceMethods = {}
                     for method in service.findall(ns + "METHOD-DEPLOYMENTS/" + ns + "SOMEIP-METHOD-DEPLOYMENT"):
                         methodName = method.find(ns + "SHORT-NAME").text
                         # methodPath = method.find(ns + "METHOD-REF").text
@@ -40,39 +41,52 @@ class DeploymentParser:
                         serviceMethods[methodName] = methodId
                     # print(serviceMethods)
 
-                    # print(serviceName, serviceId)  
-                    serviceFields = {}
                     # GET FIELD IDs
+                    serviceFields = {}
                     for field in service.findall(ns + "FIELD-DEPLOYMENTS/" + ns + "SOMEIP-FIELD-DEPLOYMENT"):
+                        # FIELD NAME
                         fieldName = field.find(ns + "SHORT-NAME").text
-                        # fieldPath = field.find(ns + "FIELD-REF").text
+
+                        # FIELD GETTERS
                         fieldGet = field.find(ns + "GET")
                         if fieldGet != None:
                             fieldGet = fieldGet.find(ns + "METHOD-ID").text
                         else:
                             fieldGet = "No Getter Method"
 
+                        # FIELD SETTERS
                         fieldSet = field.find(ns + "SET")
                         if fieldSet != None:
                             fieldSet = fieldSet.find(ns + "METHOD-ID").text
                         else:
                             fieldSet = "No Setter Method"
 
+                        # FIELD NOTIFIERS
                         fieldNot = field.find(ns + "NOTIFY")
                         if fieldNot != None:
                             fieldNot = fieldNot.find(ns + "METHOD-ID").text
                         else:
                             fieldNot = "No Notifier Method"
-                        # Dictionary key = methodID , Values are methodName and methodPath
-                        # serviceFields[fieldName] = [[fieldGet,fieldSet, fieldNot], fieldPath]
-                        serviceFields[fieldName] = [fieldGet,fieldSet, fieldNot]
-                    # print(serviceFields)
-                    #for method in service.findall(ns + "METHOD-DEPLOYMENTS/" + ns + "SOMEIP-METHOD-DEPLOYMENT"):
+
+                        serviceFields[fieldName] = [fieldGet, fieldSet, fieldNot]
                     Deployments[serviceName] = [serviceId, serviceMethods, serviceFields]
-                print(Deployments)                 
+
+            # SERVICE INSTANCES
+            if node.find(ns + "SHORT-NAME").text == "Instances":
+                RootElements = node.find(ns + "ELEMENTS")
+                for instance in RootElements.findall(ns + "PROVIDED-SOMEIP-SERVICE-INSTANCE"):
+                    InstanceName = (instance.find(ns + "SHORT-NAME").text)
+                    InstanceName = InstanceName.split('_')[0]
+                    instanceId = instance.find(ns + "SERVICE-INSTANCE-ID").text
+
+                    # Path = instance.find(ns + "SERVICE-INTERFACE-DEPLOYMENT-REF").text
+                    serviceId = Deployments[InstanceName][0]
+                    ServiceInstances.append([InstanceName, serviceId, instanceId])
+
+        #        print(ServiceInstances)
+
+        #        print(Deployments)
         return Deployments
-
-
 
 # class DeploymentInfo:
 
@@ -85,8 +99,8 @@ class DeploymentParser:
 #     def __init__(self,id,name,methods,fields=None):
 #         self.serviceId = id
 #         self.serviceName = name
-#         self.serviceMethods = methods   
-#         self.serviceFields = fields  
+#         self.serviceMethods = methods
+#         self.serviceFields = fields
 
 
 # dep = DeploymentParser("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/SecureOTA_System_Configurations/deployment.arxml")
