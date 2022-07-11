@@ -15,10 +15,10 @@ namespace ara
 {
     namespace sm
     {
-        class UpdateRequestImpl : public ara::sm::skeleton::UpdateRequestSkeleton
+        class UpdateRequestImpl : public ara::sm::UpdateRequest::skeleton::UpdateRequestSkeleton
         {
         public:
-            UpdateRequestImpl(sm_logger*logger,ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::skeleton::UpdateRequestSkeleton(I_id, mode)
+            UpdateRequestImpl(sm_logger*logger,ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : ara::sm::UpdateRequest::skeleton::UpdateRequestSkeleton(I_id, mode)
             {
                 //freopen("sm.txt", "w+", stdout); // write cout and printf to txt file
                 FunctionGroupStates = {};
