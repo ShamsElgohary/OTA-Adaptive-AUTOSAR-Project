@@ -210,7 +210,7 @@ class Generator:
                     "provided_ap_service_instances":list1
                     }
                 }
-            with open("executables/"+name+"/0.1/etc/"+" service_manifest2", 'w') as f:
+            with open("executables/"+name+"/0.1/etc/"+" service_manifest2.json", 'w') as f:
                 json.dump(datajson, f, 
                                     indent=4,  
                                     separators=(',',': '))
