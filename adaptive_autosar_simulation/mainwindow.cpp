@@ -80,6 +80,9 @@ void MainWindow::connect_fun()
 }
 void MainWindow::on_simulation_button_clicked()
 {
+    string command="cp "+CUSTOMIZED_PROJECT_PATH+"executables/etc/system/Process_List.json "+CUSTOMIZED_PROJECT_PATH+"executables/Process_List.json";
+    system(command.c_str());
+
     simulation_button->setEnabled(false);
     debug_button->setVisible(false);
     simulation_running=true;
@@ -193,6 +196,21 @@ void MainWindow::end_simulation_button_clicked()
     system("pkill -x ex2");
     system("pkill -x Car_GUI");
 
+    //return original process list
+    string command="mv "+CUSTOMIZED_PROJECT_PATH+"executables/Process_List.json "+CUSTOMIZED_PROJECT_PATH+"executables/etc/system";
+    system(command.c_str());
+    string backup_path=CUSTOMIZED_PROJECT_PATH+"executables/Backup";
+    if(DirectoryExists(backup_path.c_str()))
+    //if(true)
+    {
+    //remove updated gui
+    command = "rm -r "+CUSTOMIZED_PROJECT_PATH+"executables/Car_GUI";
+    system(command.c_str());
+
+    //rename Backup
+    command="mv "+CUSTOMIZED_PROJECT_PATH+"executables/Backup "+CUSTOMIZED_PROJECT_PATH+"executables/Car_GUI";
+    system(command.c_str());
+    }
     tabWidget->clear();
     exec_tab->clear_widget();
     this->tabWidget->addTab(exec_tab,"Execution Manager");
@@ -213,6 +231,8 @@ void MainWindow::end_simulation_button_clicked()
 }
 void MainWindow::on_debug_button_clicked()
 {
+        string command="cp "+CUSTOMIZED_PROJECT_PATH+"executables/etc/system/Process_List.json "+CUSTOMIZED_PROJECT_PATH+"executables/Process_List.json";
+        system(command.c_str());
         simulation_button->setVisible(false);
         simulation_running=true;
         if(flag==0)
@@ -247,6 +267,23 @@ void MainWindow::on_debug_button_clicked()
         }
 
 
+}
+bool MainWindow::DirectoryExists( const char* pzPath )
+{
+    if ( pzPath == NULL) return false;
+
+    DIR *pDir;
+    bool bExists = false;
+
+    pDir = opendir (pzPath);
+
+    if (pDir != NULL)
+    {
+        bExists = true;
+        (void) closedir (pDir);
+    }
+
+    return bExists;
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {

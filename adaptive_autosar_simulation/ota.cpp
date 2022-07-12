@@ -108,6 +108,12 @@ string ota::update_signal()
 
 void ota::update_ota()
 {
+        ucm_package_tabel->reset();
+        meta_data_tabel->reset();
+        download_data_tabel->reset();
+        ucm_package_tabel->setRowCount(0);
+        meta_data_tabel->setRowCount(0);
+        download_data_tabel->setRowCount(0);
         com_ptr->parse(reportPath);
         std::ifstream file_input(to_string(simulation::exe_name::ota)); //path to be updated
         Json::Reader reader;
