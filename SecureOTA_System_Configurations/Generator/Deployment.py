@@ -17,7 +17,7 @@ class DeploymentParser:
         Deployments = {}
         serviceInterfaces = []
         ServiceInstances = []
-
+        R_ServiceInstances=[]
         for node in root.iter(ns + "AR-PACKAGE"):
 
             if node.find(ns + "SHORT-NAME").text == "deployments":
@@ -74,6 +74,7 @@ class DeploymentParser:
             # SERVICE INSTANCES
             if node.find(ns + "SHORT-NAME").text == "Instances":
                 RootElements = node.find(ns + "ELEMENTS")
+                # provided instances parser
                 for instance in RootElements.findall(ns + "PROVIDED-SOMEIP-SERVICE-INSTANCE"):
                     InstanceName = (instance.find(ns + "SHORT-NAME").text)
                     InstanceName = InstanceName.split('_')[0]
@@ -82,6 +83,15 @@ class DeploymentParser:
                     # Path = instance.find(ns + "SERVICE-INTERFACE-DEPLOYMENT-REF").text
                     serviceId = Deployments[InstanceName][0]
                     ServiceInstances.append([InstanceName, serviceId, instanceId])
+                    #required instances parser
+                    for instance in RootElements.findall(ns + "REQUIRED-SOMEIP-SERVICE-INSTANCE"):
+                        R_InstanceName = (instance.find(ns + "SHORT-NAME").text)
+                        R_InstanceName = R_InstanceName.split('_')[0]
+                        R_instanceId = instance.find(ns + "SERVICE-INSTANCE-ID").text
+
+                        # Path = instance.find(ns + "SERVICE-INTERFACE-DEPLOYMENT-REF").text
+                        R_serviceId = Deployments[R_InstanceName][0]
+                        R_ServiceInstances.append([R_InstanceName, serviceId, R_instanceId])
 
         #        print(ServiceInstances)
 
