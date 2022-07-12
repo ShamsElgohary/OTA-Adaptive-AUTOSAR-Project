@@ -15,6 +15,7 @@ class DeploymentParser:
         ns = (root.tag.split("}"))[0] + "}"
 
         Deployments = {}
+        Instances=[]
         serviceInterfaces = []
         ServiceInstances = []
         R_ServiceInstances=[]
@@ -70,7 +71,7 @@ class DeploymentParser:
 
                         serviceFields[fieldName] = [fieldGet, fieldSet, fieldNot]
                     Deployments[serviceName] = [serviceId, serviceMethods, serviceFields]
-
+                    return Deployments
             # SERVICE INSTANCES
             if node.find(ns + "SHORT-NAME").text == "Instances":
                 RootElements = node.find(ns + "ELEMENTS")
@@ -92,11 +93,12 @@ class DeploymentParser:
                         # Path = instance.find(ns + "SERVICE-INTERFACE-DEPLOYMENT-REF").text
                         R_serviceId = Deployments[R_InstanceName][0]
                         R_ServiceInstances.append([R_InstanceName, serviceId, R_instanceId])
-
+                        Instances.append(ServiceInstances)
+                        Instances.append(R_ServiceInstances)
         #        print(ServiceInstances)
 
         #        print(Deployments)
-        return Deployments
+
 
 # class DeploymentInfo:
 
