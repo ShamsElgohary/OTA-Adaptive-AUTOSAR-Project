@@ -4,141 +4,12 @@ from pickle import NONE
 from xml.dom.minidom import Element
 import xml.etree.ElementTree as ET
 from xxlimited import new
-pre = ""
-machine_name=""
+from Service_Interface import ServiceInfParser
 
-class argument:
-    def __init__(self, name, path ,id,direction):
-        self.name = name
-        self.path=path
-        self.id=id
-        self.direction=direction
-        type_location=path.find("/",5)+1
-        self.type=path[type_location:]  
- 
-
-
-class Method:
-    def __init__(self,name,id):
-        self.name = name
-        self.id=id
-        self.in_args=[]
-        self.out_args=[]
-        # print("method initialized")
-        
-    def add_argument(self,arg):
-        if arg.direction=="IN":
-            self.in_args.append(arg)
-        elif arg.direction=="OUT":
-            self.out_args.append(arg)   
-    
-
-
-class Field:
-    def __init__(self,name,id,path,getter,notifier,setter):
-        self.path=path
-        self.name=name
-        self.id=id
-        self.getter=getter
-        self.notifier=notifier
-        self.setter=setter
-
-
-class ServiceInf:
-    def __init__(self,name,id):
-        self.methods=[]
-        self.namespace=[]
-        self.ServiceInf_name=name
-        self.ServiceInf_id=id
-        self.field=[]
-    
-    def add_method(self,method):
-        self.methods.append(method)
-        # print("method added")
-    
-    def add_field(self,field):
-        self.field.append(field)
-        # print("field added")
-    
-    def add_namespace(self,namespace):
-        self.namespace.append(namespace)
-    
-
-class ServiceInfParser:
-    def __init__(self,path):
-        self.service_interface={}
-        self.tree = ET.parse(path)
-
-    def add_Service(self,name,service):
-        self.service_interface[name]=service
-        # print("Service Inf added to map successfulllyyyyy")
-    
-    def Parse(self):
-        root = self.tree.getroot()
-        prelist = root.tag.split("}")
-        pre = prelist[0] + "}"
-        Tempnode = root.find(pre + "AR-PACKAGES")
-        Tempnode = Tempnode.find(pre + "AR-PACKAGE")
-        machinnode = Tempnode.find(pre + "SHORT-NAME")
-        machine_name=machinnode.text
-        Tempnode = Tempnode.find(pre + "AR-PACKAGES")
-        d=Tempnode.getchildren()
-        for x in d:
-            # print(x.tag)
-            # print(x.attrib)
-            if x.find(pre + "SHORT-NAME").text=="service_interfaces":
-                interface_p=x
-        # print(interface_p.tag) 
-        Elements=interface_p.find(pre+"ELEMENTS")
-        # print(Elements.tag)
-        nodes=Elements.getchildren()
-        for SI in nodes:
-            id=SI.attrib
-            name=SI.find(pre+"SHORT-NAME").text
-            s=ServiceInf(name,id)
-            # print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-            # print(s.ServiceInf_name,s.ServiceInf_id)
-            nspaces_=SI.find(pre+"NAMESPACES")
-            nss=nspaces_.getchildren()
-            for i in nss:
-                nspace=i.find(pre+"SHORT-NAME")
-                s.add_namespace(nspace.text)
-            # s.add_namespace(nspaces_)
-            f=SI.find(pre+"FIELDS")
-            if(f!=None):
-                f=f.getchildren()
-                for field in f:
-                    id=field.attrib
-                    name=field.find(pre+"SHORT-NAME").text
-                    path=field.find(pre+"TYPE-TREF").text
-                    getter=field.find(pre+"HAS-GETTER").text
-                    setter=field.find(pre+"HAS-SETTER").text
-                    notifier=field.find(pre+"HAS-NOTIFIER").text
-                    new_field=Field(name,id,path,getter,notifier,setter)
-                    s.add_field(new_field)
-            m=SI.find(pre+"METHODS").getchildren()
-            for i in m:
-                id=i.attrib
-                name=i.find(pre+"SHORT-NAME").text
-                m_new=Method(name,id)
-                # print(m_new.name,m_new.id)
-                args=i.find(pre+"ARGUMENTS")
-                if args!=None:
-                    sss=args.getchildren()
-                    for x in sss:
-                        # print(x.attrib)
-                        arg_id=x.attrib
-                        arg_name=x.find(pre+"SHORT-NAME").text
-                        arg_path=x.find(pre+"TYPE-TREF").text
-                        arg_dir=x.find(pre+"DIRECTION").text
-                        a=argument(arg_name,arg_path,arg_id,arg_dir)
-                        m_new.add_argument(a)
-                s.add_method(m_new)
-                # print("#####################")
-            self.add_Service(s.ServiceInf_name,s)
 
 def new_line(fd):
     fd.write("\n")
+
 
 def method_genrator(fd,method_name,method_id,service_id,in_args,out_args):
     method_input=method_name+"Input"
@@ -175,7 +46,7 @@ def method_genrator(fd,method_name,method_id,service_id,in_args,out_args):
             fd.write(" , ")
     fd.write(")")
     new_line(fd)
-    fd.write("                            {")
+    fd.write("                        {")
     new_line(fd)
     if len(in_args)!=0:
         fd.write("                            ")
@@ -225,7 +96,8 @@ def method_genrator(fd,method_name,method_id,service_id,in_args,out_args):
     new_line(fd)
     fd.write("                    };")
     new_line(fd)    
-    
+
+
 def class_genrator(fd,service):
     if service.ServiceInf_name=="UpdateRequest":
         service_id="1"
@@ -233,7 +105,7 @@ def class_genrator(fd,service):
         service_id="2"
     service_proxy_name=service.ServiceInf_name+"proxy"
     fd.write("                class ")
-    fd.write(service.ServiceInf_name)
+    fd.write(service_proxy_name)
     fd.write(" : public ara::com::proxy::ProxyBase")
     new_line(fd)
     fd.write("                {")
@@ -308,11 +180,13 @@ def class_genrator(fd,service):
             fd.write(f_name)
             fd.write(";")
             new_line(fd)
+    fd.write("                };")
+    new_line(fd)    
         
 
 def field_helper(fd,service,decider,name,id):
             f_name=decider+name
-            output_type=decider+f.name
+            output_type=decider+name
             fd.write("                    class ")
             fd.write(f_name)
             fd.write(" : public ara::com::proxy::method::MethodBase")
@@ -356,6 +230,9 @@ def field_helper(fd,service,decider,name,id):
             fd.write("                            return out;")
             new_line(fd)
             fd.write("                        }")
+            new_line(fd)
+            fd.write("                    };")
+            new_line(fd)
         
 
 def field_genrator(fd,service,id):
@@ -377,33 +254,82 @@ def field_genrator(fd,service,id):
             field_helper(fd,service,decider,f.name,id)
         
         new_line(fd)
-        fd.write("                };")
+    fd.write("                }")
+    new_line(fd)
+
+
+def method_namespace(fd):
+    fd.write("                namespace methods ")
+    new_line(fd)
+    fd.write("                { ")
+    new_line(fd)
+
+
+def namespaces_genration(fd,service):
+    space=""
+    for name_space in service.namespace:
+        n=space+"namespace "
+        b=space+"{"
+        fd.write(n)
+        fd.write(name_space)
+        new_line(fd)
+        fd.write(b)
+        new_line(fd)
+        space=space+"    "
+    fd.write("            namespace proxy")
+    new_line(fd)
+    fd.write("            {")
+    new_line(fd)
+
+
+def closing_namespaces(fd,service):
+    for n in range (len(service.namespace),-1,-1):
+        space=n*"    "
+        strr=space+"}"
+        fd.write(strr)
         new_line(fd)
 
 
+def includes(fd):
+    fd.write("#pragma once")
+    new_line(fd)
+    fd.write("#include <vector>")
+    new_line(fd)
+    fd.write('#include "serviceProxy.hpp"')
+    new_line(fd)
+    fd.write('#include "method.hpp"')
+    new_line(fd)
+    fd.write('#include "types.hpp"')
+    new_line(fd)
+    fd.write('using namespace std;')
+    new_line(fd)
 
-SI_parser=ServiceInfParser("service_interfaces.arxml")
-SI_parser.Parse()
 
-for i in SI_parser.service_interface.keys():
+def proxy_genrator():
+    SI_parser=ServiceInfParser("service_interfaces.arxml")
+    SI_parser.Parse()
+    for i in SI_parser.service_interface.keys():
+        # creating proxy file 
+        filename=i+"proxy.hpp"
+        f = open(filename, "w")
+        includes(f)
+        # accessing the Service interface 
+        SI=SI_parser.service_interface[i]
+        namespaces_genration(f,SI)
 
-    filename=i+"proxy.hpp"
-    f = open(filename, "w")
-    kk=SI_parser.service_interface[i]
-    if len(kk.field)>0:
-        field_genrator(f,kk,"10")
+        #genrating the methods of the service interface    
+        method_namespace(f)
+        mm=SI.methods
+        for j in mm:
+            method_genrator(f,j.name,"1",3,j.in_args,j.out_args)
+        f.write("                }")
+        new_line(f)
+        #genrating the fields of the service interface    
+        if len(SI.field)>0:
+            field_genrator(f,SI,"10")
+        class_genrator(f,SI)
+        closing_namespaces(f,SI)
+    f.close()
 
-    f.write("                namespace methods ")
-    new_line(f)
-    f.write("                { ")
-    new_line(f)
-    mm=kk.methods
-    for j in mm:
-        method_genrator(f,j.name,"1",3,j.in_args,j.out_args)
-    f.write("                }")
-    new_line(f)
-    
-    
-          
 
-f.close()
+proxy_genrator()
