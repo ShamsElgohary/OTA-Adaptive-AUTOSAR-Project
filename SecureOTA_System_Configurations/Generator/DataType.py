@@ -7,7 +7,7 @@ class DataTypeParser:
     def __init__(self, xmlString):
         self.xmlString = xmlString
         print("DataType Parser")
-        self.DataTypes = {"std_types": [], "shared_types" : []}
+        self.DataTypes = {"std_types": {}, "shared_types" : {}}
 
     def Parse(self):
         global pre
@@ -34,7 +34,8 @@ class DataTypeParser:
                 print ("Unkown DataType Found")
         
         # for Temp in self.DataTypes["shared_types"]:
-        #     print(Temp.Definition())
+        #     print(self.DataTypes["shared_types"][Temp].Definition())
+        #     print(self.DataTypes["shared_types"][Temp].subTypes)
 
         return self.DataTypes
 
@@ -44,7 +45,7 @@ class DataTypeParser:
         Elements = Temp.getchildren()
         for Element in Elements:
             Temp = DataType(Element)
-            self.DataTypes["std_types"].append(Temp)
+            self.DataTypes["std_types"][Temp.S_Name] = Temp
     
     def Shared_Parse(self, root):
         global pre
@@ -52,7 +53,7 @@ class DataTypeParser:
         Elements = Temp.getchildren()
         for Element in Elements:
             Temp = DataType(Element)
-            self.DataTypes["shared_types"].append(Temp)
+            self.DataTypes["shared_types"][Temp.S_Name] = Temp
 
     def Compu_Parse(self, root):
         global pre
@@ -69,13 +70,8 @@ class DataType:
         self.root = root
         self.Cat = root.find(pre + "CATEGORY").text
         self.S_Name = root.find(pre + "SHORT-NAME").text
-        self.subType = None
-        self.ArrSize = None
-        self.subTypePath = None
-        self.enumPath = None
-        self.enum = None
-        self.subElementPath = None
-        self.structElement = None
+        self.subTypes = []
+
 
     def Definition (self):
         Def = ""
@@ -88,16 +84,18 @@ class DataType:
         elif (self.Cat == "VECTOR" or self.Cat == "ARRAY" ):
             Temp = self.root.find(pre + "TEMPLATE-ARGUMENTS")
             Temp = Temp.find(pre + "CPP-TEMPLATE-ARGUMENT")
-            self.subTypePath= Temp.find(pre + "TEMPLATE-TYPE-REF").text
-            temp = self.subTypePath.rfind("/")
-            self.subType = self.subTypePath[temp+1:]
+            self.subTypePath = Temp.find(pre + "TEMPLATE-TYPE-REF").text
+            self.subTypePathlist = self.subTypePath.split("/")
+            self.subType = self.subTypePathlist[-1]
+            if (self.subTypePathlist[-2] == "shared_types"):
+                self.subTypes.append(self.subType)
 
             if (self.Cat == "ARRAY"):
                 self.ArrSize = self.root.find(pre + "ARRAY-SIZE").text
-                Def = "using " + self.S_Name + " = std::array<" + self.subType + ", " + self.ArrSize + ">;\n"
+                Def += "using " + self.S_Name + " = std::array<" + self.subType + ", " + self.ArrSize + ">;\n"
 
             if (self.Cat == "VECTOR"):
-                Def = "using " + self.S_Name + " = std::vector<" + self.subType + ">;\n"
+                Def += "using " + self.S_Name + " = std::vector<" + self.subType + ">;\n"
 
         elif (self.Cat == "TEXTTABLE"):
             global compu_methods
@@ -124,8 +122,12 @@ class DataType:
                 name = element.find(pre + "SHORT-NAME").text
                 tem = element.find(pre + "TYPE-REFERENCE")
                 self.subElementPath = tem.find(pre + "TYPE-REFERENCE-REF").text
-                tem = self.subElementPath.rfind("/")
-                self.structElement = self.subElementPath[tem+1:]
+
+                self.subElementPathlist = self.subElementPath.split("/")
+                self.structElement = self.subElementPathlist[-1]
+                if (self.subElementPathlist[-2] == "shared_types"):
+                    self.subTypes.append(self.structElement)
+
                 elements.append(name)
                 Def += "\t" + self.structElement + " " + name + ";\n"
             Def += "private:\n"

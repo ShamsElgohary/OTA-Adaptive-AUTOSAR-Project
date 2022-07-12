@@ -39,10 +39,9 @@ void UpdateRequestImpl::StopUpdateSession()
     bool success = UpdateRequestImpl::client->setState(state);
     if (success)
         this->FunctionGroupStates[state.fg_name] = state.fg_newState;
-    
-    StateClient client{};
+    log->update_logger(functions, this->FunctionGroupStates);
     FunctionGroupState state2 = FunctionGroupState::Preconstruct("fn1", "idle");
-    success = client.setState(state2);
+    success = UpdateRequestImpl::client->setState(state2);
     if (success)
         this->FunctionGroupStates[state2.fg_name] = state2.fg_newState;
     log->update_logger(functions, this->FunctionGroupStates);

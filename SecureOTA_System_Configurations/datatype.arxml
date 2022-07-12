@@ -92,14 +92,14 @@
                   </TYPE-REFERENCE>
                 </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
                 <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="8a72b6d1-7bdc-4635-82ed-93cb64843e9e">
-                  <SHORT-NAME>StrongRevisionLabelString</SHORT-NAME>
+                  <SHORT-NAME>Version</SHORT-NAME>
                   <CATEGORY>TYPE_REFERENCE</CATEGORY>
                   <TYPE-REFERENCE>
                     <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/StrongRevisionLabelString</TYPE-REFERENCE-REF>
                   </TYPE-REFERENCE>
                 </CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT>
                 <CPP-IMPLEMENTATION-DATA-TYPE-ELEMENT UUID="e5be77fd-a5b3-4507-9813-6b7b599db892">
-                  <SHORT-NAME>SwClusterStateType</SHORT-NAME>
+                  <SHORT-NAME>State</SHORT-NAME>
                   <CATEGORY>TYPE_REFERENCE</CATEGORY>
                   <TYPE-REFERENCE>
                     <TYPE-REFERENCE-REF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SwClusterStateType</TYPE-REFERENCE-REF>

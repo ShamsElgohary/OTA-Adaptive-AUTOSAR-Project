@@ -1,7 +1,7 @@
 from poplib import POP3_PORT
 import xml.etree.ElementTree as ET          
 from DataType import DataTypeParser
-from Service_Interface import ServiceInfParser
+from Service_Interface import ServiceInfParser, new_line, Proxy_method_genrator
 from Deployment import DeploymentParser
 from Mapping_SwCompounent import MappingParser, SWParser
 import json
@@ -11,7 +11,6 @@ class Generator:
         self.CurrentXMLString = ""
         self.Name = ""
         self.Machines = {}
-        self.ServiceInterfaces = {}
         self.DataTypes = {}
         self.Deployments = {}
         self.Deployments_Manifest = [
@@ -98,27 +97,27 @@ class Generator:
     def __ScanDT(self):
         print("Scanning DataTypes")
         DT = DataTypeParser(self.CurrentXMLString)
-        DT.Parse()
+        self.DataTypes = DT.Parse()
 
     def __ScanSI(self):
         print("Scanning Service Interfaces")
-        SI = ServiceInfParser(self.CurrentXMLString)
-        SI.Parse()
+        self.SI = ServiceInfParser(self.CurrentXMLString)
+        self.SI.Parse()
 
     def __ScanSC(self):
         print("Scanning Software Compounents")
         SWC = SWParser(self.CurrentXMLString)
-        self.SoftwareCompounents=SWC.Parse()
+        self.SoftwareCompounents = SWC.Parse()
 
     def __ScanD(self):
         print("Scanning Deployments")
         Dep = DeploymentParser(self.CurrentXMLString)
-        self.Deployments=Dep.Parse()
+        self.Deployments = Dep.Parse()
 
     def __ScanMP(self):
         print("Scanning Mappings")
         Map = MappingParser(self.CurrentXMLString)
-        self.Mapping=Map.Parse()
+        self.Mapping = Map.Parse()
 
 
     def __CheckPName(self):
@@ -136,19 +135,49 @@ class Generator:
         else:
             return 0
 
+    def Datatypeslisting(self,shared_type, list):
+        for k in self.DataTypes["shared_types"][shared_type].subTypes:
+            self.Datatypeslisting(k, list)
+            list.append(k) 
+
     def GenerateSkeleton(self):
         Skeleton = "Generate Interface Skeleton"
         print("Generate Interface Skeleton")
         return Skeleton
 
     def GenerateProxy(self):
-        Proxy = "Generate Interface Proxy"
         print("Generate Interface Proxy")
-        return Proxy
+        for i in self.SI.service_interface.keys():
+            filename = i+"Proxy.hpp"
+            f = open(filename, "w")
+
+            # Shared Data Types Definition
+            shared_list = []
+            shared_str = ""
+            for j in self.SI.service_interface[i].shared_types:
+                self.Datatypeslisting(j, shared_list)
+                shared_list.append(j)
+
+            shared_list = set(shared_list)
+            for j in shared_list:
+                shared_str += self.DataTypes["shared_types"][j].Definition()
+            f.write(shared_str)
+            new_line(f)
+
+            # Methods Namespaces
+            f.write("                namespace methods ")
+            new_line(f)
+            f.write("                { ")
+            new_line(f)
+            interface = self.SI.service_interface[i]
+            methods = interface.methods
+            for j in methods:
+                Proxy_method_genrator(f,j.name,"1",j.in_args,j.out_args)
+            f.write("                }")      
+            f.close()
+
 
     def GenerateManifest(self):
-        Manifest = "Generate Interface Manifest"
-
         for Map in self.Mapping:
             for Inst in self.Deployments_Manifest:
                 if Inst[0] == Map[0]:
@@ -215,26 +244,3 @@ class Generator:
                                     indent=4,  
                                     separators=(',',': '))
                 f.close()
-
-
-{'ucm_swc': {'P_PORT': [['package_manager', '2253', 2, 1]], 'R_PORT': [['update_request', 1, 1]]}, 
-'ota_swc': {'P_PORT': [], 'R_PORT': [['package_manager', 2, 1]]},
- 'sm_swc': {'P_PORT': [['update_request', '2522', 1, 1]], 'R_PORT': []}}
-
-
-{
-    'ucm_swc': 
-    {
-        'P_PORT': [['package_manager', '2253', 2, 1]], 
-        'R_PORT': [['update_request', 1, 1]]
-    }, 
-    'ota_swc': 
-    {
-        'P_PORT': [], 
-        'R_PORT': [['package_manager', 2, 1]]
-    }, 
-    'sm_swc': 
-    {
-        'P_PORT': [['update_request', '2522', 1, 1]], 'R_PORT': []
-    }
-}
