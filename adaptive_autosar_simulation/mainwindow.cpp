@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
    create_server();
    string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
    mkfifo(path.c_str(),0777);
+   string path1(CUSTOMIZED_PROJECT_PATH+"gui_ota");
+   mkfifo(path1.c_str(),0777);
    flag=0;
 }
 void MainWindow::create_server()
@@ -52,6 +54,7 @@ void MainWindow::create_server()
                     else
                     {
                         cout<<"socket closed"<<endl;
+                        cout<<name<<endl;
                         new_socket->close();
                         delete new_socket;
                         break;

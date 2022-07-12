@@ -342,6 +342,7 @@ public:
         cout << "Package Name 1: " << name << endl;
         transfer_pkg_ucm(name);
         cout << "ota 5" << endl;
+        while(1);
     }
 };
 
@@ -364,8 +365,5 @@ int main()
 
     // ClearJSONReport();
     x.run();
-    while (1)
-    {
-    }
     return 0;
 }
