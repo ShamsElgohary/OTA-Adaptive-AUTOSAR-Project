@@ -324,7 +324,9 @@ public:
         simulation s(8088);
         s.connect_to_socket();
         s.send_exe_name(simulation::exe_name::ota);
-
+        
+        //while(1)
+        //{
         get_meta_data();
         cout << "ota 1" << endl;
         parse_meta_data();
@@ -342,6 +344,7 @@ public:
         cout << "Package Name 1: " << name << endl;
         transfer_pkg_ucm(name);
         cout << "ota 5" << endl;
+        //}
         while(1);
     }
 };
