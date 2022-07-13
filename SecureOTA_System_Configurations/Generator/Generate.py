@@ -2,7 +2,8 @@ from poplib import POP3_PORT
 import xml.etree.ElementTree as ET          
 from DataType import DataTypeParser
 from Service_Interface import ServiceInfParser
-from proxy_gen import proxy_genrator
+from proxy_gen import proxy_generator
+from skeleton_gen import skeleton_generator
 from Deployment import DeploymentParser
 from Mapping_SwCompounent import MappingParser, SWParser
 import json
@@ -133,11 +134,11 @@ class Generator:
 
     def GenerateSkeleton(self):
         print("Generate Interface Skeleton")
-
+        skeleton_generator(self.SI, self.DataTypes, self.Deployments)
 
     def GenerateProxy(self):
         print("Generate Interface Proxy")
-        proxy_genrator(self.SI, self.DataTypes, self.Deployments)
+        proxy_generator(self.SI, self.DataTypes, self.Deployments)
 
     def GenerateManifest(self):
         for Map in self.Mapping:

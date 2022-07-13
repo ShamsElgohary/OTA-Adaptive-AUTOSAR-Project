@@ -1,16 +1,6 @@
-from asyncore import write
 from curses.ascii import SI
-from doctest import master
 from pickle import NONE
-from xml.dom.minidom import Element
-import xml.etree.ElementTree as ET
-from xxlimited import new
-from service_interface import ServiceInfParser
-
-
-
-def new_line(fd):
-    fd.write("\n")
+from Skel_Prxy_common import Datatypeslisting, unique, new_line, arg_struct, field_struct
 
 
 def virtual_method_genrator(fd,service):
@@ -33,31 +23,32 @@ def virtual_method_genrator(fd,service):
         fd.write(")")     
         fd.write(" = 0;")   
         new_line(fd)
-    for field in service.field:       
-            if field.getter == "true":
-                field_decider="Get"+field.name+"Field"
-                name_decider= "Get"+field.name    
-            if field.setter == "true":
-                field_decider="Set"+field.name+"Field"
-                name_decider= "Set"+field.name        
-            if field.notifier == "true":
-                field_decider="notifier"+field.name+"Field"
-                name_decider= "notifier"+field.name    
-            length=len(service.field)
-            counter=0
-            fd.write("                    virtual std::future<")
-            fd.write(field_decider)
-            fd.write("> ")
-            fd.write(name_decider)
-            fd.write(" (")
-            fd.write(")")     
-            fd.write(" = 0;")   
-            new_line(fd)        
+    for field in service.field:     
+        field_decider=field.name+"Field"  
+        if field.getter == "true":
+            name_decider= "Get"+field.name 
+               
+        if field.setter == "true":
+            name_decider= "Set"+field.name  
+
+        if field.notifier == "true":
+            name_decider= "notifier"+field.name    
+
+        length=len(service.field)
+        counter=0
+        fd.write("                    virtual std::future<")
+        fd.write(field_decider)
+        fd.write("> ")
+        fd.write(name_decider)
+        fd.write(" (")
+        fd.write(")")     
+        fd.write(" = 0;")   
+        new_line(fd)        
 
 
 
 
-def handle_method(fd,service):
+def handle_method(fd,service, Deployment):
     new_line(fd)
     fd.write("                    void handleMethod() override")
     new_line(fd)
@@ -73,8 +64,8 @@ def handle_method(fd,service):
     fd.write("                    switch (methodID)")
     new_line(fd)
     fd.write("                    {")
-    method_counter=1
     for method in service.methods:
+        method_counter = Deployment[1][method.name]
         new_line(fd)
         length=len(method.in_args)
         counter=0
@@ -85,8 +76,7 @@ def handle_method(fd,service):
         # out_var="out"+str(counter)
         new_line(fd)
         fd.write("                        case ")
-        fd.write(str(method_counter))
-        method_counter+=1
+        fd.write(f"{str(method_counter)}:")
         new_line(fd)
         fd.write("                        {")
         new_line(fd)
@@ -120,7 +110,7 @@ def handle_method(fd,service):
 
         if len(method.in_args) ==0:
             fd.write(method.name)
-            fd.write("()")
+            fd.write("();")
             new_line(fd)
         else:
             fd.write(method.name)
@@ -159,21 +149,24 @@ def handle_method(fd,service):
     for field in service.field:
         new_line(fd)
         name=""
-        field_name=""
+        
+        field_name=field.name+"Field"
         if field.getter=="true":
+            method_counter = Deployment[2][field.name][0]
             name="Get"+field.name
-            field_name=name+"Field"
+
         elif field.setter=="true":
+            method_counter = Deployment[2][field.name][1]
             name="Set"+field.name
-            field_name=name+"Field"
+
         elif field.notifier=="true":
+            method_counter = Deployment[2][field.name][2]
             name="notify"+field.name
-            field_name=name+"Field"
+
         output_var_op="F_op"
         # out_var="out"+str(counter)
         fd.write("                        case ")
-        fd.write(str(method_counter))
-        method_counter+=1
+        fd.write(f"{str(method_counter)}:")
         new_line(fd)
         fd.write("                        {")
         new_line(fd)
@@ -188,14 +181,14 @@ def handle_method(fd,service):
         fd.write(output_var_op)
         fd.write(" = ")
         fd.write(name)
-        fd.write("()")
+        fd.write("();")
         new_line(fd)
         fd.write("                        Serializer2 S;")
         new_line(fd)
         fd.write("                        stringstream result;")
         new_line(fd)
         fd.write("                        ")
-        fd.write(method_output)
+        fd.write(field_name)
         fd.write(" op = ")
         fd.write(output_var_op)
         fd.write(".get();")
@@ -214,11 +207,7 @@ def handle_method(fd,service):
 
 
 
-def class_genrator(fd,service):
-    if service.ServiceInf_name=="UpdateRequest":
-        service_id="1"
-    elif service.ServiceInf_name=="PackageManager":    
-        service_id="2"
+def class_genrator(fd,service, service_id, Deployment):
     serice_sklaton_name=service.ServiceInf_name+"Skeleton"
     fd.write("                class ")
     fd.write(serice_sklaton_name)
@@ -238,7 +227,7 @@ def class_genrator(fd,service):
     fd.write("}")
     new_line(fd)
     virtual_method_genrator(fd,service)
-    handle_method(fd,service)
+    handle_method(fd,service, Deployment)
     new_line(fd)
     fd.write("                        ara::com::AddMethodCall(methodID, methodName, ara::com::MethodType::Skeleton_Method, ")
     fd.write(service_id)
@@ -288,21 +277,45 @@ def includes(fd):
     new_line(fd)
 
 
-def skelaton_genrator():
-    SI_parser=ServiceInfParser("service_interfaces.arxml")
-    SI_parser.Parse()
+def skeleton_generator(SI_parser, DataTypes, Deployment):
     for i in SI_parser.service_interface.keys():
         # creating proxy file 
-        filename=i+"Selaton.hpp"
+        serv_id = Deployment[i][0]
+
+        SI=SI_parser.service_interface[i]
+        
+        # creating proxy file 
+        filename=i+"Skeleton.hpp"
         f = open(filename, "w")
         includes(f)
-        # accessing the Service interface 
-        SI=SI_parser.service_interface[i]
         namespaces_genration(f,SI)
-        class_genrator(f,SI)
+        # Shared Data Types Definition
+        shared_list = []
+        shared_str = ""
+
+        for j in SI.shared_types:
+            Datatypeslisting(j, shared_list, DataTypes)
+            shared_list.append(j)
+
+        shared_list = unique(shared_list)
+        for j in shared_list:
+            shared_str += DataTypes["shared_types"][j].Definition()
+        f.write(shared_str)
+        new_line(f)
+
+        # accessing the Service interface 
+
+        mm = SI.methods
+        flds = SI.field
+        #generate the Struct of the Methods Arguments
+        for j in mm:
+            arg_struct(f, j, DataTypes)
+
+        for j in flds:
+            field_struct(f, j, DataTypes)
+        InfDeployment = Deployment[i]
+        class_genrator(f,SI, serv_id, InfDeployment)
         closing_namespaces(f,SI)
     f.close()
 
-
-skelaton_genrator()
 
