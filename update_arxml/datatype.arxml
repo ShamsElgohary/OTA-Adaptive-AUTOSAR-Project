@@ -25,7 +25,11 @@
           <SHORT-NAME>shared_types</SHORT-NAME>
           <ELEMENTS>
             <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="39dfdd65-a19c-4a00-a0e1-23a962fcbc3e">
-              <SHORT-NAME>Functiongroup</SHORT-NAME>
+              <SHORT-NAME>ActionType</SHORT-NAME>
+              <CATEGORY>STRING</CATEGORY>
+            </STD-CPP-IMPLEMENTATION-DATA-TYPE>
+            <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="39dfdd65-a19c-4a00-a0e1-23a962fcbc3e">
+              <SHORT-NAME>ResultType</SHORT-NAME>
               <CATEGORY>STRING</CATEGORY>
             </STD-CPP-IMPLEMENTATION-DATA-TYPE>
             <STD-CPP-IMPLEMENTATION-DATA-TYPE UUID="995b34ef-5535-4829-a2c8-973fa1a0be23">
