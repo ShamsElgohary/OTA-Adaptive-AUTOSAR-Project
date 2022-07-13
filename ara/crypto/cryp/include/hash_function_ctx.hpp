@@ -22,7 +22,7 @@ namespace ara
                 friend class CryptoProvider;
                 HashTransformation* h = nullptr;
                 size_t digest_length;
-                byte *digest = nullptr;
+                unsigned char *digest = nullptr;
                 HashFunctionCtx(AlgId AlgID);
 
             public:

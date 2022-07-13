@@ -1,8 +1,10 @@
 #pragma once
-
+#include <vector>
+#include <array>
 #include "serviceProxy.hpp"
 #include "method.hpp"
 #include "types.hpp"
+using namespace std;
 namespace ara
 {
     namespace sm
@@ -11,8 +13,6 @@ namespace ara
         {
             namespace proxy
             {
-                using Functiongroup = std::string;
-                using FunctionGroupList = std::vector<Functiongroup>;
                 enum class SM_ApplicationError : uint8_t
                 {
                     kPrepared = 1U,
@@ -22,7 +22,9 @@ namespace ara
                     kPrepareFailed = 7U,
                     kRollbackFailed = 8U,
                 };
-                /** StartUpdateSession **/
+                using Functiongroup = std::string;
+                using FunctionGroupList = std::vector<Functiongroup>;
+
                 struct StartUpdateSessionOutput
                 {
                     SM_ApplicationError AppError;
@@ -36,7 +38,6 @@ namespace ara
                     friend class boost::serialization::access;
                 };
 
-                /** PrepareUpdate **/
                 struct PrepareUpdateInput
                 {
                     FunctionGroupList FunctionGroups;
@@ -63,7 +64,6 @@ namespace ara
                     friend class boost::serialization::access;
                 };
 
-                /** VerifyUpdate **/
                 struct VerifyUpdateInput
                 {
                     FunctionGroupList FunctionGroups;
@@ -104,30 +104,28 @@ namespace ara
                             return out;
                         }
                     };
-
                     class PrepareUpdate : public ara::com::proxy::method::MethodBase
                     {
                     public:
                         PrepareUpdate(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 2) {}
-                        PrepareUpdateOutput operator()(FunctionGroupList fg)
+                        PrepareUpdateOutput operator()(FunctionGroupList FunctionGroups)
                         {
                             PrepareUpdateInput in;
-                            in.FunctionGroups = fg;
+                            in.FunctionGroups = FunctionGroups;
                             PrepareUpdateOutput out;
                             process_method_call<PrepareUpdateOutput, PrepareUpdateInput>(in, out);
                             ara::com::AddMethodCall(2, "PrepareUpdate", ara::com::MethodType::Proxy_Method, 1, Cluster_Name);
                             return out;
                         }
                     };
-
                     class VerifyUpdate : public ara::com::proxy::method::MethodBase
                     {
                     public:
                         VerifyUpdate(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 3) {}
-                        VerifyUpdateOutput operator()(FunctionGroupList fg)
+                        VerifyUpdateOutput operator()(FunctionGroupList FunctionGroups)
                         {
                             VerifyUpdateInput in;
-                            in.FunctionGroups = fg;
+                            in.FunctionGroups = FunctionGroups;
                             VerifyUpdateOutput out;
                             process_method_call<VerifyUpdateOutput, VerifyUpdateInput>(in, out);
                             ara::com::AddMethodCall(3, "VerifyUpdate", ara::com::MethodType::Proxy_Method, 1, Cluster_Name);
@@ -140,17 +138,15 @@ namespace ara
                         StopUpdateSession(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 4) {}
                         void operator()()
                         {
-                            // fire and forget
                             process_method_call();
                             ara::com::AddMethodCall(4, "StopUpdateSession", ara::com::MethodType::Proxy_Method, 1, Cluster_Name);
                         }
                     };
                 }
-
-                class UpdateRequestproxy : public ara::com::proxy::ProxyBase
+                class UpdateRequestProxy : public ara::com::proxy::ProxyBase
                 {
                 public:
-                    UpdateRequestproxy(HandleType handle) : ProxyBase(handle), StartUpdateSession(handle.ptr2bindingProtocol), PrepareUpdate(handle.ptr2bindingProtocol), VerifyUpdate(handle.ptr2bindingProtocol), StopUpdateSession(handle.ptr2bindingProtocol)
+                    UpdateRequestProxy(HandleType handle) : ProxyBase(handle), StartUpdateSession(handle.ptr2bindingProtocol), PrepareUpdate(handle.ptr2bindingProtocol), VerifyUpdate(handle.ptr2bindingProtocol), StopUpdateSession(handle.ptr2bindingProtocol)
                     {
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
@@ -167,7 +163,6 @@ namespace ara
                     methods::StopUpdateSession StopUpdateSession;
                 };
             }
-
         }
     }
 }
