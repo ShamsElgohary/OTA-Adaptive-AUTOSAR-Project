@@ -1,7 +1,7 @@
 #include "cpr/cpr.h"
 #include "iostream"
 #include <filesystem>
-//#include "../../crypto/cryp/include/crypto_provider.hpp"
+#include "../../crypto/cryp/include/crypto_provider.hpp"
 #include "PackageManagerProxy.hpp"
 #include "execution_client.hpp"
 #include "fstream"
@@ -11,11 +11,11 @@
 #include <unistd.h>
 using namespace std;
 using namespace ara::exec;
-// using std::filesystem::current_path;
-using namespace std;
+using std::filesystem::current_path;
 using namespace ara::ucm::pkgmgr::proxy;
 using namespace ara::com::proxy;
-// using namespace ara::crypto;
+using namespace ara::crypto;
+using namespace std;
 
 class CLIENT_OTA
 {
@@ -44,70 +44,71 @@ public:
     {
         // string filename = packagename + ".zip";
         cout << packagename << endl;
-        string url_final = "https://cloud-ota-server.herokuapp.com/hash/" + packagename + ".zip";
+        string url_final = "https://cloudserverota.herokuapp.com/hash/" + packagename + ".zip";
         auto responce = cpr::Get(cpr::Url{url_final});
         // std::cout<<responce.text<<std::endl;
         return responce.text;
     }
 
-    // string crypto_get_hash(string packagename)
-    // {
-    //     std::string path = CUSTOMIZED_PROJECT_PATH + "/executables/ota/bin/" + packagename + ".zip";
+    string crypto_get_hash(string packagename)
+    {
+        std::string path = CUSTOMIZED_PROJECT_PATH + "/executables/ota/bin/" + packagename + ".zip";
 
-    //     ifstream ifs(path, ios::binary | ios::ate);
-    //     ifstream::pos_type pos = ifs.tellg();
-    //     std::vector<char> result(pos);
-    //     ifs.seekg(0, ios::beg);
-    //     ifs.read(&result[0], pos);
+        ifstream ifs(path, ios::binary | ios::ate);
+        ifstream::pos_type pos = ifs.tellg();
+        std::vector<char> result(pos);
+        ifs.seekg(0, ios::beg);
+        ifs.read(&result[0], pos);
 
-    //     char *result_arr = nullptr;
-    //     result_arr = &result[0];
+        char *result_arr = nullptr;
+        result_arr = &result[0];
 
-    //     std::vector<unsigned char> Digest;
+        // vector<unsigned char> Digest;
+        // vector<> v;
+        cryp::CryptoProvider cryp_provider;
+        cryp::HashFunctionCtx::Uptr hash = cryp_provider.CreateHashFunctionCtx(cryp::HashCtx_AlgID::SHA1_ID);
+        hash->Start();
+        hash->Update(ReadOnlyMemRegion(result_arr), result.size());
 
-    //     cryp::CryptoProvider cryp_provider;
-    //     cryp::HashFunctionCtx::Uptr hash = cryp_provider.CreateHashFunctionCtx(cryp::HashCtx_AlgID::SHA1_ID);
-    //     hash->Start();
-    //     hash->Update(ReadOnlyMemRegion(result_arr), result.size());
+        // std::cout << "Message: " << msg << std::endl;
 
-    //     // std::cout << "Message: " << msg << std::endl;
+        hash->Finish();
+        auto Digest = hash->GetDigest();
 
-    //     Digest = hash->Finish();
+        std::stringstream ss;
 
-    //     std::stringstream ss;
+        for (int i = 0; i < Digest.size(); i++)
+        {
+            // std::cout << static_cast<unsigned>(Digest[i]) << "    ";
+            if (Digest[i] >= 0 && Digest[i] <= 15)
+            {
+                ss << "0" << std::hex << int(Digest[i]);
+            }
+            else
+            {
+                ss << std::hex << int(Digest[i]);
+            }
+        }
 
-    //     for (int i = 0; i < Digest.size(); i++)
-    //     {
-    //         // std::cout << static_cast<unsigned>(Digest[i]) << "    ";
-    //         if (Digest[i] >= 0 && Digest[i] <= 15)
-    //         {
-    //             ss << "0" << std::hex << int(Digest[i]);
-    //         }
-    //         else
-    //         {
-    //             ss << std::hex << int(Digest[i]);
-    //         }
-    //     }
+        std::string res(ss.str());
 
-    //     std::string res(ss.str());
-
-    //     return res;
-    // }
-    // bool compare_hash(string packagename)
-    // {
-    //     std::string hash_server = hash(packagename);
-    //     cout << "Server Hash: " << hash_server << endl;
-    //     std::string hash_cryp = crypto_get_hash(packagename);
-    //     cout << "Crypto Hash: " << hash_cryp << endl;
-    //     if (hash_server == hash_cryp)
-    //     {
-    //         return 1;
-    //     }
-    //     else
-    //     {
-    //         return 0;
-    //     }
-    // }
+        return res;
+    }
+    bool compare_hash(string packagename)
+    {
+        std::string hash_server = hash(packagename);
+        cout << "Server Hash: " << hash_server << endl;
+        std::string hash_cryp = crypto_get_hash(packagename);
+        cout << "Crypto Hash: " << hash_cryp << endl;
+        if (hash_server == hash_cryp)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 
     void parse_meta_data()
     {
@@ -139,7 +140,7 @@ public:
 
     void get_meta_data()
     {
-        string url_final = "https://cloud-ota-server.herokuapp.com/meta_data_send";
+        string url_final = "https://cloudserverota.herokuapp.com/meta_data_send";
         auto responce = cpr::Get(cpr::Url{url_final});
         // std::cout<<responce.text<<std::endl;
         std::ofstream myfile;
@@ -151,7 +152,7 @@ public:
     void download(string packagename)
     {
         string filename = packagename + ".zip";
-        string url_final = "https://cloud-ota-server.herokuapp.com/download/" + packagename + ".zip";
+        string url_final = "https://cloudserverota.herokuapp.com/download/" + packagename + ".zip";
         auto responce = cpr::Get(cpr::Url{url_final});
         //  std::cout<<responce.text<<std::endl;
         std::ofstream myfile;
@@ -213,7 +214,7 @@ public:
                 MjrVersionCloud = stoi(cluster.Version);
                 MnrVersionCloud = 0;
             }
-            
+
             for (auto UCM_Cluster : UCM_trail)
             {
                 int itdot = UCM_Cluster.Version.find(".");
@@ -239,14 +240,7 @@ public:
             if (test == true)
             {
                 download_trail.push_back(cluster);
-                // if (compare_hash(pckg))
-                // {
-                //     this->Transfer2UCM(pckg);
-                // }
-                // else
-                // {
-                //     cout << "Error: Different hash " << endl;
-                // }
+                std::cout << cluster.Name << endl;
             }
         }
     }
@@ -255,7 +249,16 @@ public:
 
         download(name);
         // usleep(2000000);
-        this->Transfer2UCM(name);
+
+        // if (compare_hash(name))
+        if (true)
+        {
+            this->Transfer2UCM(name);
+        }
+        else
+        {
+            cout << "Error: Different hash " << endl;
+        }
     }
     void Get_UCM_Clusters()
     {
@@ -266,7 +269,7 @@ public:
 
     void sim_json()
     {
-
+        remove("ota_Report.json");
         std::ofstream json_file("ota_Report.json");
         Json::Value event;
         event["Cluster_name"] = "ota";
@@ -301,6 +304,9 @@ public:
         }
         json_file << event;
         json_file.close();
+        trail.clear();
+        UCM_trail.clear();
+        download_trail.clear();
     }
     string get_pkg_name()
     {
@@ -324,28 +330,23 @@ public:
         simulation s(8088);
         s.connect_to_socket();
         s.send_exe_name(simulation::exe_name::ota);
-        
-        //while(1)
-        //{
-        get_meta_data();
-        cout << "ota 1" << endl;
-        parse_meta_data();
-        sim_json();
-        s.send_file("ota_Report.json");
-        sleep(1);
-        cout << "ota 2" << endl;
-        Get_UCM_Clusters();
-        cout << "ota 3" << endl;
-        Compare();
-        sim_json();
-        s.send_file("ota_Report.json");
-        cout << "ota 4" << endl;
-        string name = get_pkg_name();
-        cout << "Package Name 1: " << name << endl;
-        transfer_pkg_ucm(name);
-        cout << "ota 5" << endl;
-        //}
-        while(1);
+        while (1)
+        {
+            get_meta_data();
+            cout << "ota 1" << endl;
+            parse_meta_data();
+            cout << "ota 2" << endl;
+            Get_UCM_Clusters();
+            cout << "ota 3" << endl;
+            Compare();
+            sim_json();
+            s.send_file("ota_Report.json");
+            cout << "ota 4" << endl;
+            string name = get_pkg_name();
+            cout << "Package Name 1: " << name << endl;
+            transfer_pkg_ucm(name);
+            cout << "ota 5" << endl;
+        }
     }
 };
 
@@ -363,10 +364,8 @@ int main()
     sigaction(SIGTERM, &sa, NULL);
     ara::exec::ExecutionClient exec;
     exec.ReportExecutionStaste(ara::exec::ExecutionState::Krunning);
-    // sleep(1);
     CLIENT_OTA x;
 
-    // ClearJSONReport();
     x.run();
     return 0;
 }

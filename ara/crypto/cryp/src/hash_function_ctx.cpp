@@ -25,10 +25,10 @@ void HashFunctionCtx::Update (ReadOnlyMemRegion in, int length)
 {
     h->Update(in, length);
 }
-std::vector<byte> HashFunctionCtx::Finish()
+std::vector<unsigned char> HashFunctionCtx::Finish()
 {
     h->Final(digest);
-    std::vector <byte> result(digest,digest+digest_length);
+    std::vector <unsigned char> result(digest,digest+digest_length+1);
     return result;
 }            
 std::vector<byte> HashFunctionCtx::GetDigest (std::size_t offset)

@@ -263,6 +263,38 @@ ara::ucm::OperationResultType PackageManagerState::FinishInternal()
 
     // command = "rm " + ProcessListPath + "Backup/Process_List.json";
     // system(command.c_str());
+    SWCLManager::PresentSWCLChangeInfo();
+    json CurrentProcessList;
+    std::ifstream JsonInStream(ProcessListPath + "Process_List.json");
+    try
+    {
+        
+        JsonInStream >> CurrentProcessList;
+        PackageManagerState::ProcessListVersion = CurrentProcessList["Process List Version"];
+        json::iterator it = CurrentProcessList.begin();
+        for (; it != CurrentProcessList.end(); ++it)
+        {
+            if (it.key() == "Process List Version")
+            {
+                continue;
+            }
+            ara::ucm::SwClusterInfoType SWCluster;
+            SWCluster.Name = it.key();
+            SWCluster.Version = CurrentProcessList[it.key()]["Version"];
+            SWCluster.State = ara::ucm::SwClusterStateType::kPresent;
+            cout<<SWCluster.Name<<endl;
+            SWCLManager::PushInSWCLusters(SWCluster);
+            
+        }
+    
+    GUI_Logger.ReportPresentSWClusters(SWCLManager::GetPresentSWCLs());
+    
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << "[UCM] ERROR Catch ProcessList: " << e.what() << std::endl;
+        PackageManagerState::ProcessListVersion = 0;
+    }
 
     /*change UCM status into Kcleaningup*/
     (CurrentStatus) = PackageManagerStatusType::kIdle;
