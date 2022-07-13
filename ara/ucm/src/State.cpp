@@ -60,7 +60,7 @@ void PackageManagerState::DependencyCheck(void)
 
 ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
 {
-    ara::com::ServiceHandleContainer<UpdateRequestproxy::HandleType> handles_container = ara::sm::UpdateRequest::proxy::UpdateRequestproxy::FindService();
+    ara::com::ServiceHandleContainer<UpdateRequestProxy::HandleType> handles_container = ara::sm::UpdateRequest::proxy::UpdateRequestProxy::FindService();
 
     if (handles_container.size() == 0)
     {   
@@ -70,7 +70,7 @@ ara::ucm::OperationResultType PackageManagerState::ActivateInternal()
     else
     {
         cout<<"[ucm] SM Handle Found"<<endl;
-        proxy = std::make_shared<UpdateRequestproxy>(handles_container[0]);
+        proxy = std::make_shared<UpdateRequestProxy>(handles_container[0]);
     }
 
     if ((CurrentStatus) != PackageManagerStatusType::kReady)

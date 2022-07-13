@@ -103,7 +103,7 @@
                   <SHORT-NAME>Finish</SHORT-NAME>
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="e0ab9b5c-f61c-4e61-afff-f3459952e600">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>OperationReturn</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
@@ -168,7 +168,7 @@
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                     <ARGUMENT-DATA-PROTOTYPE UUID="25b23645-a0ad-40a2-8ff3-39a57b9bd4d3">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>OperationReturn</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
@@ -183,7 +183,7 @@
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                     <ARGUMENT-DATA-PROTOTYPE UUID="9d8d7499-3269-49ae-af99-2dc4d0f51619">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>OperationReturn</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
@@ -198,7 +198,7 @@
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                     <ARGUMENT-DATA-PROTOTYPE UUID="e6133bea-967b-49dc-a259-9f76172ef7d5">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>OperationReturn</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
@@ -208,7 +208,7 @@
                   <SHORT-NAME>Activate</SHORT-NAME>
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="83432008-a361-4ba7-85ce-eac9f05f04b0">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>OperationReturn</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
@@ -218,7 +218,7 @@
                   <SHORT-NAME>GetSwClusterInfo</SHORT-NAME>
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="54e231eb-4e7f-4ebc-ac52-4cb42402ad3f">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>vectorOfClusterInfo</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/SwClusterInfoVectorType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
@@ -228,7 +228,7 @@
                   <SHORT-NAME>Rollback</SHORT-NAME>
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="45249944-3f10-4568-87ca-3cd5fd94d8ac">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>OperationReturn</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
@@ -238,7 +238,7 @@
                   <SHORT-NAME>RevertProcessedSwPackages</SHORT-NAME>
                   <ARGUMENTS>
                     <ARGUMENT-DATA-PROTOTYPE UUID="4fbfb1c5-6a36-42f7-a4fc-8ef34fd5571c">
-                      <SHORT-NAME>Result</SHORT-NAME>
+                      <SHORT-NAME>OperationReturn</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>

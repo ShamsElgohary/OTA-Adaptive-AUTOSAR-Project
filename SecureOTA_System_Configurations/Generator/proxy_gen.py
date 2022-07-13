@@ -65,21 +65,21 @@ def method_genrator(fd, method_name, method_id, service_id, in_args, out_args):
         fd.write(" (")    
         fd.write("in , ")
         fd.write("out")
-        fd.write(")")  
+        fd.write(");")  
     elif len(in_args) == 0 and len(out_args) != 0:
         fd.write("                            process_method_call<")
         fd.write(method_output)
         fd.write(">")
         fd.write(" (")    
         fd.write("out")
-        fd.write(")")  
+        fd.write(");")  
     else:
         fd.write("                            process_method_call();")
     new_line(fd)
     fd.write("                            ara::com::AddMethodCall(")
     fd.write(method_id)
     fd.write(" , ")
-    fd.write(method_name)
+    fd.write(f'"{method_name}"')
     fd.write(" , ara::com::MethodType::Proxy_Method, ")
     fd.write(service_id)
     fd.write(" , Cluster_Name);")
@@ -94,7 +94,7 @@ def method_genrator(fd, method_name, method_id, service_id, in_args, out_args):
 
 
 def class_genrator(fd,service, service_id):
-    service_proxy_name=service.ServiceInf_name+"proxy"
+    service_proxy_name=service.ServiceInf_name+"Proxy"
     fd.write("                class ")
     fd.write(service_proxy_name)
     fd.write(" : public ara::com::proxy::ProxyBase")
@@ -108,6 +108,16 @@ def class_genrator(fd,service, service_id):
     fd.write("(HandleType handle) : ProxyBase(handle), ")
     counter=0
     length=len(service.methods)
+    for f in service.field:
+        if f.setter == "true":
+            fd.write(f"Set{f.name}(handle.ptr2bindingProtocol) ")
+            fd.write(", ")
+        if f.getter == "true":
+            fd.write(f"Get{f.name}(handle.ptr2bindingProtocol) ")
+            fd.write(", ")
+        if f.notifier == "true":
+            fd.write(f"Notify{f.name}(handle.ptr2bindingProtocol) ")
+            fd.write(", ")
     for i in service.methods:
         counter+=1
         fd.write(i.name)
@@ -191,7 +201,7 @@ def field_helper(fd,service,decider,name,id, service_id):
     fd.write(") {}")
     new_line(fd)
     fd.write("                        ")
-    fd.write(f_name)
+    fd.write(output_type)
     fd.write(" operator()()")
     new_line(fd)
     fd.write("                        {")

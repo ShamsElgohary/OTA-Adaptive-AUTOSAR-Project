@@ -19,7 +19,7 @@ namespace ara
                 uint8_t SWPackagesCounter=0;
                 static uint16_t ProcessListVersion;
                 //shared ptr creation
-                std::shared_ptr <ara::sm::UpdateRequest::proxy::UpdateRequestproxy> proxy = nullptr;
+                std::shared_ptr <ara::sm::UpdateRequest::proxy::UpdateRequestProxy> proxy = nullptr;
 
             public:
                 PackageManagerState(PackageManagerStatusType pkgmgr_CurrentStatus);

@@ -97,7 +97,7 @@
 	"function_group_states" : 
 	{
 		"fn1" : "play",
-		"fn2" : "off",
+		"fn2" : "run",
 		"machineFG" : "running"
 	},
 	"function_groups" : 
@@ -138,28 +138,33 @@
 		{
 			"current_state" : "Krunning",
 			"name" : "iam",
-			"pid" : 40395
+			"pid" : 68044
+		},
+		{
+			"current_state" : "Krunning",
+			"name" : "ota",
+			"pid" : 68054
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 40388
+			"pid" : 68037
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "someip_sd",
-			"pid" : 40393
+			"pid" : 68042
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "ucm",
-			"pid" : 40399
+			"pid" : 68048
 		}
 	],
 	"sm_request" : 
 	{
-		"fng" : "fn1",
-		"fng_state" : "play"
+		"fng" : "fn2",
+		"fng_state" : "run"
 	},
 	"to_run" : [],
 	"to_term" : []

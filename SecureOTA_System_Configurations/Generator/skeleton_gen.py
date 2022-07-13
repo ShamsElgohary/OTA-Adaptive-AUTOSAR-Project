@@ -8,9 +8,12 @@ def virtual_method_genrator(fd,service):
         method_output=method.name+"Output"
         length=len(method.in_args)
         counter=0
-        fd.write("                    virtual std::future<")
-        fd.write(method_output)
-        fd.write("> ")
+        if len(method.out_args) > 0:
+            fd.write("                    virtual std::future<")
+            fd.write(method_output)
+            fd.write("> ")
+        else:
+            fd.write("                    virtual void ")
         fd.write(method.name)
         fd.write(" (")
         for arg in method.in_args:
@@ -80,66 +83,70 @@ def handle_method(fd,service, Deployment):
         new_line(fd)
         fd.write("                        {")
         new_line(fd)
-        #method name
         fd.write('                        methodName = "')
         fd.write(method.name)
         fd.write('" ;')
         new_line(fd)
         # deserialize input
-        if len(method.in_args) !=0:
+        if len(method.out_args) !=0:
+            if len(method.in_args) != 0:
+                fd.write("                        ")
+                fd.write(method_input)
+                fd.write(" ")
+                fd.write(input_var_ip)
+                fd.write(" ;")
+                new_line(fd)
+                fd.write("                        Deserializer2 D;")
+                new_line(fd)
+                fd.write("                        D.deserialize(payload, ")
+                fd.write(input_var_ip)
+                fd.write(");")
+                new_line(fd)
+                fd.write("                        std::future<")    
+                fd.write(method_output)
+                fd.write("> ")
+                fd.write(output_var_op)
+                fd.write(" = ")
+                fd.write(method.name)
+                fd.write("(")
+                for arg in method.in_args:
+                    counter+=1
+                    fd.write("ip.")
+                    fd.write(arg.name)
+                    if counter<length:
+                        fd.write(" , ")
+                fd.write(") ;")
+            elif len(method.in_args) == 0:
+                fd.write("                        std::future<")    
+                fd.write(method_output)
+                fd.write("> ")
+                fd.write(output_var_op)
+                fd.write(" = ")
+                fd.write(method.name)
+                fd.write("();")
+
+            new_line(fd)
+            new_line(fd)
+            fd.write("                        Serializer2 S;")
+            new_line(fd)
+            fd.write("                        stringstream result;")
+            new_line(fd)
             fd.write("                        ")
-            fd.write(method_input)
-            fd.write(" ")
-            fd.write(input_var_ip)
-            fd.write(" ;")
+            fd.write(method_output)
+            fd.write(" op = ")
+            fd.write(output_var_op)
+            fd.write(".get();")
             new_line(fd)
-            fd.write("                        Deserializer2 D;")
+            fd.write("                        S.serialize(result, op);")
             new_line(fd)
-            fd.write("                        D.deserialize(payload, ")
-            fd.write(input_var_ip)
-            fd.write(");")
+            fd.write("                        this->ptr2bindingProtocol->SendResponse(")
+            fd.write(str(method_counter))
+            fd.write(", result);")
 
-            # fd.write(method_input)
-            # fd.write(");")
-            new_line(fd)
-        fd.write("                        std::future<")    
-        fd.write(method_output)
-        fd.write("> ")
-        fd.write(output_var_op)
-        fd.write(" = ")
 
-        if len(method.in_args) ==0:
-            fd.write(method.name)
-            fd.write("();")
-            new_line(fd)
-        else:
-            fd.write(method.name)
-            fd.write("(")
-            for arg in method.in_args:
-                counter+=1
-                fd.write("ip.")
-                fd.write(arg.name)
-                if counter<length:
-                  fd.write(" , ")
-            fd.write(") ;")
-            new_line(fd)
-            new_line(fd)
-        new_line(fd)
-        fd.write("                        Serializer2 S;")
-        new_line(fd)
-        fd.write("                        stringstream result;")
-        new_line(fd)
-        fd.write("                        ")
-        fd.write(method_output)
-        fd.write(" op = ")
-        fd.write(output_var_op)
-        fd.write(".get();")
-        new_line(fd)
-        fd.write("                        S.serialize(result, op);")
-        new_line(fd)
-        fd.write("                        this->ptr2bindingProtocol->SendResponse(")
-        fd.write(str(method_counter))
-        fd.write(", result);")
+        elif len(method.out_args) == 0:
+            fd.write(f"                        {method.name}();")
+
         new_line(fd)
         fd.write("                        break;")
         new_line(fd)
@@ -207,7 +214,7 @@ def handle_method(fd,service, Deployment):
 
 
 
-def class_genrator(fd,service, service_id, Deployment):
+def class_genrator(fd,service, service_id, Deployment, DataTypes):
     serice_sklaton_name=service.ServiceInf_name+"Skeleton"
     fd.write("                class ")
     fd.write(serice_sklaton_name)
@@ -226,6 +233,14 @@ def class_genrator(fd,service, service_id, Deployment):
     fd.write("                    {")
     fd.write("}")
     new_line(fd)
+    mm = service.methods
+    flds = service.field
+    #generate the Struct of the Methods Arguments
+    for j in mm:
+        arg_struct(fd, j, DataTypes)
+    for j in flds:
+        field_struct(fd, j, DataTypes)
+        
     virtual_method_genrator(fd,service)
     handle_method(fd,service, Deployment)
     new_line(fd)
@@ -289,32 +304,10 @@ def skeleton_generator(SI_parser, DataTypes, Deployment):
         f = open(filename, "w")
         includes(f)
         namespaces_genration(f,SI)
-        # Shared Data Types Definition
-        shared_list = []
-        shared_str = ""
-
-        for j in SI.shared_types:
-            Datatypeslisting(j, shared_list, DataTypes)
-            shared_list.append(j)
-
-        shared_list = unique(shared_list)
-        for j in shared_list:
-            shared_str += DataTypes["shared_types"][j].Definition()
-        f.write(shared_str)
-        new_line(f)
 
         # accessing the Service interface 
-
-        mm = SI.methods
-        flds = SI.field
-        #generate the Struct of the Methods Arguments
-        for j in mm:
-            arg_struct(f, j, DataTypes)
-
-        for j in flds:
-            field_struct(f, j, DataTypes)
         InfDeployment = Deployment[i]
-        class_genrator(f,SI, serv_id, InfDeployment)
+        class_genrator(f,SI, serv_id, InfDeployment, DataTypes)
         closing_namespaces(f,SI)
     f.close()
 

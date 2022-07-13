@@ -10,18 +10,11 @@ namespace ara
         namespace UpdateRequest
         {
 
-enum class SM_ApplicationError : uint8_t 
-{
-kPrepared = 1U, 
-kVerified = 1U, 
-kRejected = 5U, 
-kVerifyFailed = 6U, 
-kPrepareFailed = 7U, 
-kRollbackFailed = 8U, 
-};
-using Functiongroup = std::string;
-using FunctionGroupList = std::vector<Functiongroup>;
-
+                class UpdateRequestSkeleton : public ara::com::skeleton::skeletonBase
+                {
+                public:
+                    UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/etc/service_manifest.json", 1, I_id, Cluster_Name, mode)
+                    {}
                     struct StartUpdateSessionOutput
                     {
                         SM_ApplicationError AppError;
@@ -85,15 +78,10 @@ using FunctionGroupList = std::vector<Functiongroup>;
                         friend class boost::serialization::access;
                     };
 
-                class UpdateRequestSkeleton : public ara::com::skeleton::skeletonBase
-                {
-                public:
-                    UpdateRequestSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/etc/service_manifest.json", 1, I_id, Cluster_Name, mode)
-                    {}
                     virtual std::future<StartUpdateSessionOutput> StartUpdateSession () = 0;
                     virtual std::future<PrepareUpdateOutput> PrepareUpdate (FunctionGroupList FunctionGroups) = 0;
                     virtual std::future<VerifyUpdateOutput> VerifyUpdate (FunctionGroupList FunctionGroups) = 0;
-                    virtual std::future<StopUpdateSessionOutput> StopUpdateSession () = 0;
+                    virtual void StopUpdateSession () = 0;
 
                     void handleMethod() override
                     {
@@ -126,7 +114,6 @@ using FunctionGroupList = std::vector<Functiongroup>;
                         D.deserialize(payload, ip);
                         std::future<PrepareUpdateOutput> F_op = PrepareUpdate(ip.FunctionGroups) ;
 
-
                         Serializer2 S;
                         stringstream result;
                         PrepareUpdateOutput op = F_op.get();
@@ -144,7 +131,6 @@ using FunctionGroupList = std::vector<Functiongroup>;
                         D.deserialize(payload, ip);
                         std::future<VerifyUpdateOutput> F_op = VerifyUpdate(ip.FunctionGroups) ;
 
-
                         Serializer2 S;
                         stringstream result;
                         VerifyUpdateOutput op = F_op.get();
@@ -157,13 +143,7 @@ using FunctionGroupList = std::vector<Functiongroup>;
                         case 4:
                         {
                         methodName = "StopUpdateSession" ;
-                        std::future<StopUpdateSessionOutput> F_op = StopUpdateSession();
-
-                        Serializer2 S;
-                        stringstream result;
-                        StopUpdateSessionOutput op = F_op.get();
-                        S.serialize(result, op);
-                        this->ptr2bindingProtocol->SendResponse(4, result);
+                        StopUpdateSession();
                         break;
                         }
                     }

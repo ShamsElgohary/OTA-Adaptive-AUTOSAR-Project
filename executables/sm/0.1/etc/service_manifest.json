@@ -1,14 +1,14 @@
 {
-	"ap_service_instances": {
-		"required_ap_service_instances": [],
-		"provided_ap_service_instances": [
-			{
-				"service_id": 1,
-				"type": "SOME/IP",
-				"instance_id": 1,
-				"ipv4": "127.0.0.1",
-				"port": 2522
-			}
-		]
-	}
+    "ap_service_instances": {
+        "required_ap_service_instances": [],
+        "provided_ap_service_instances": [
+            {
+                "port": 2522,
+                "service_id": 1,
+                "instance_id": 1,
+                "type": "SOME/IP",
+                "ipv4": "127.0.0.1"
+            }
+        ]
+    }
 }

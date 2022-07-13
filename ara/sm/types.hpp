@@ -9,6 +9,8 @@ namespace ara
         using FunctionGroupList = std::vector<Functiongroup>;
         enum class SM_ApplicationError : uint8_t
         {
+            kPrepared = 1U,
+            kVerified = 1U,
             kRejected = 5U,
             kVerifyFailed = 6U,
             kPrepareFailed = 7U,
