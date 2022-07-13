@@ -1,7 +1,8 @@
 from poplib import POP3_PORT
 import xml.etree.ElementTree as ET          
 from DataType import DataTypeParser
-from Service_Interface import ServiceInfParser, new_line, Proxy_method_genrator
+from Service_Interface import ServiceInfParser
+from proxy_gen import proxy_genrator
 from Deployment import DeploymentParser
 from Mapping_SwCompounent import MappingParser, SWParser
 import json
@@ -13,12 +14,7 @@ class Generator:
         self.Machines = {}
         self.DataTypes = {}
         self.Deployments = {}
-        self.Deployments_Manifest = [
-                                ["PackageManager_provided_instance", 2 ,1],
-                                ["PackageManager_required_instance", 2 ,1], 
-                                ["UpdateRequest_provided_instance", 1 ,1], 
-                                ["UpdateRequest_requested_instance", 1 ,1]
-                            ]
+        self.Deployments_Manifest = []
         self.SoftwareCompounents = {}
         self.Mapping = {}
     
@@ -112,7 +108,7 @@ class Generator:
     def __ScanD(self):
         print("Scanning Deployments")
         Dep = DeploymentParser(self.CurrentXMLString)
-        self.Deployments = Dep.Parse()
+        self.Deployments, self.Deployments_Manifest = Dep.Parse()
 
     def __ScanMP(self):
         print("Scanning Mappings")
@@ -135,47 +131,13 @@ class Generator:
         else:
             return 0
 
-    def Datatypeslisting(self,shared_type, list):
-        for k in self.DataTypes["shared_types"][shared_type].subTypes:
-            self.Datatypeslisting(k, list)
-            list.append(k) 
-
     def GenerateSkeleton(self):
-        Skeleton = "Generate Interface Skeleton"
         print("Generate Interface Skeleton")
-        return Skeleton
+
 
     def GenerateProxy(self):
         print("Generate Interface Proxy")
-        for i in self.SI.service_interface.keys():
-            filename = i+"Proxy.hpp"
-            f = open(filename, "w")
-
-            # Shared Data Types Definition
-            shared_list = []
-            shared_str = ""
-            for j in self.SI.service_interface[i].shared_types:
-                self.Datatypeslisting(j, shared_list)
-                shared_list.append(j)
-
-            shared_list = set(shared_list)
-            for j in shared_list:
-                shared_str += self.DataTypes["shared_types"][j].Definition()
-            f.write(shared_str)
-            new_line(f)
-
-            # Methods Namespaces
-            f.write("                namespace methods ")
-            new_line(f)
-            f.write("                { ")
-            new_line(f)
-            interface = self.SI.service_interface[i]
-            methods = interface.methods
-            for j in methods:
-                Proxy_method_genrator(f,j.name,"1",j.in_args,j.out_args)
-            f.write("                }")      
-            f.close()
-
+        proxy_genrator(self.SI, self.DataTypes, self.Deployments)
 
     def GenerateManifest(self):
         for Map in self.Mapping:
@@ -205,7 +167,6 @@ class Generator:
                             temp.append(Map[4])
                             temp.append(Map[5])
                             Manifests[Swc_name]["R_PORT"].append(temp)
-        print (Manifests)
         for swc in self.SoftwareCompounents:
             name=swc[0]
             #######PROVIDED#########

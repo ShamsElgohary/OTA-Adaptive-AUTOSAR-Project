@@ -153,7 +153,7 @@
                       <DIRECTION>IN</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>
                     <ARGUMENT-DATA-PROTOTYPE UUID="436502dd-6080-4e99-94f7-21d3602c42e1">
-                      <SHORT-NAME>ArgumentDataPt</SHORT-NAME>
+                      <SHORT-NAME>OperationReturn</SHORT-NAME>
                       <TYPE-TREF DEST="STD-CPP-IMPLEMENTATION-DATA-TYPE">/ota/shared_types/OperationResultType</TYPE-TREF>
                       <DIRECTION>OUT</DIRECTION>
                     </ARGUMENT-DATA-PROTOTYPE>

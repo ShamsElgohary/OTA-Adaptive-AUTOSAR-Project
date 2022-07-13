@@ -448,7 +448,7 @@ namespace ara
                     class GetCurrentStatus : public ara::com::proxy::method::MethodBase
                     {
                     public:
-                        GetCurrentStatus(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 10) {}
+                        GetCurrentStatus(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, 11) {}
                         GetCurrentStatusField operator()()
                         {
                             GetCurrentStatusField out;

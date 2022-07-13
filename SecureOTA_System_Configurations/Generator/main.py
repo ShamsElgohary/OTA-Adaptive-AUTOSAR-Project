@@ -86,14 +86,6 @@ class Ui_MainWindow(object):
         self.MnFGn_btn.setObjectName("MnFGn_btn")
         self.MnFGn_btn.setEnabled(False)
 
-        # Save Button
-        # self.Save_btn = QtWidgets.QPushButton()
-        # self.LowerHorizontalLayout.addWidget(self.Save_btn)
-        # font.setPointSize(16)
-        # self.Save_btn.setFont(font)
-        # self.Save_btn.setObjectName("Save_btn")
-        # self.Save_btn.setEnabled(False)
-
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setObjectName("menubar")
@@ -113,10 +105,8 @@ class Ui_MainWindow(object):
         self.SklGn_btn.setText(_translate("MainWindow", "Generate Skeletons"))
         self.PrxGn_btn.setText(_translate("MainWindow", "Generate Proxies"))
         self.MnFGn_btn.setText(_translate("MainWindow", "Generate Manifests"))
-        # self.Save_btn.setText(_translate("MainWindow", "Save"))
         self.browse_btn.clicked.connect(self.browse_handler)
         self.Scan_btn.clicked.connect(self.scan_handler)
-        # self.Save_btn.clicked.connect(self.save_handler)
         self.SklGn_btn.clicked.connect(self.SklGn_handler)
         self.PrxGn_btn.clicked.connect(self.PrxGn_handler)
         self.MnFGn_btn.clicked.connect(self.MnFGn_handler)
@@ -158,47 +148,19 @@ class Ui_MainWindow(object):
         self.SklGn_btn.setEnabled(True)
         self.PrxGn_btn.setEnabled(True)
         self.MnFGn_btn.setEnabled(True)
-        # self.Save_btn.setEnabled(False)
 
     def SklGn_handler(self):
         self.rtn = self.Gen.GenerateSkeleton()
-        # self.Save_btn.setEnabled(True)
         self.Out_Skeleton = True
 
     def PrxGn_handler(self):
         self.rtn = self.Gen.GenerateProxy()
-        # self.Save_btn.setEnabled(True)
         self.Out_Proxy = False
 
     def MnFGn_handler(self):
         self.rtn = self.Gen.GenerateManifest()
-        # self.Save_btn.setEnabled(True)
         self.Out_Manifest = False
 
-
-    # def save_handler(self):
-    #     for SI in self.rtn:
-    #         if self.Out_Skeleton:
-    #             suffix = 'Skeleton'
-    #         else:
-    #             suffix = "Proxy"
-
-    #         filename = QFileDialog.getSaveFileName(
-    #             caption = f'Save {SI[0]}{suffix}.hpp',
-    #             directory= f'{SI[0]}{suffix}.hpp',
-    #         )
-    #         path = filename[0]
-    #         with open(path, "w", encoding='utf-8') as f:
-    #             f.write(SI[1])
-
-    #         # Message Box
-    #         msg = QMessageBox()
-    #         msg.setIcon(QMessageBox.Information)
-    #         msg.setText("Saved")
-    #         msg.setText(f"{SI[0]}{suffix}.hpp is Saved in '{path}'")
-    #         msg.setWindowTitle("Information")
-    #         msg.setStandardButtons(QMessageBox.Ok)
-    #         msg.exec_()
 
 
 

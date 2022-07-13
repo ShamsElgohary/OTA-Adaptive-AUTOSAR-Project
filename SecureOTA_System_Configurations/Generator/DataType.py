@@ -33,9 +33,9 @@ class DataTypeParser:
             else:
                 print ("Unkown DataType Found")
         
-        # for Temp in self.DataTypes["shared_types"]:
-        #     print(self.DataTypes["shared_types"][Temp].Definition())
-        #     print(self.DataTypes["shared_types"][Temp].subTypes)
+        for Temp in self.DataTypes["shared_types"]:
+            print(self.DataTypes["shared_types"][Temp].Definition())
+            print(self.DataTypes["shared_types"][Temp].subTypes)
 
         return self.DataTypes
 

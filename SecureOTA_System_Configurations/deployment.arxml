@@ -11,7 +11,7 @@
               <SHORT-NAME>PackageManager_someip_dep</SHORT-NAME>
               <FIELD-DEPLOYMENTS>
                 <SOMEIP-FIELD-DEPLOYMENT UUID="30b1c536-8dd5-4942-88b1-e3f03a4ffcf5">
-                  <SHORT-NAME>CurrentState</SHORT-NAME>
+                  <SHORT-NAME>CurrentStatus</SHORT-NAME>
                   <FIELD-REF DEST="FIELD">/ota/service_interfaces/PackageManager/CurrentStatus</FIELD-REF>
                   <GET UUID="e8508262-d5aa-4f91-af64-312f8c0cc3c7">
                     <SHORT-NAME>SomeipMethodDeployment1</SHORT-NAME>

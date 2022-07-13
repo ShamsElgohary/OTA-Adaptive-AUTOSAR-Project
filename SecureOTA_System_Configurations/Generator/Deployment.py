@@ -27,7 +27,7 @@ class DeploymentParser:
 
                 for service in RootElements.iter(ns + "SOMEIP-SERVICE-INTERFACE-DEPLOYMENT"):
                     # GET SERVICE INTERFACE NAME AND ID
-                    serviceName = (service.find(ns + "SHORT-NAME").text).split('_')[0]
+                    serviceName = (service.find(ns + "SHORT-NAME").text).split("_")[0]
                     serviceInterfaces += serviceName
                     serviceId = service.find(ns + "SERVICE-INTERFACE-ID").text
 
@@ -70,50 +70,32 @@ class DeploymentParser:
                             fieldNot = "No Notifier Method"
 
                         serviceFields[fieldName] = [fieldGet, fieldSet, fieldNot]
-                    Deployments[serviceName] = [serviceId, serviceMethods, serviceFields]
-                    return Deployments
+                    Deployments[serviceName] = [serviceId, serviceMethods, serviceFields]     
             # SERVICE INSTANCES
             if node.find(ns + "SHORT-NAME").text == "Instances":
                 RootElements = node.find(ns + "ELEMENTS")
                 # provided instances parser
                 for instance in RootElements.findall(ns + "PROVIDED-SOMEIP-SERVICE-INSTANCE"):
-                    InstanceName = (instance.find(ns + "SHORT-NAME").text)
-                    InstanceName = InstanceName.split('_')[0]
-                    instanceId = instance.find(ns + "SERVICE-INSTANCE-ID").text
+                    InstName = (instance.find(ns + "SHORT-NAME").text)
+                    Dep_ref = (instance.find(ns + "SERVICE-INTERFACE-DEPLOYMENT-REF").text)
+                    Dep_Name = Dep_ref.split("/")[-1]
+                    InstanceName = Dep_Name.split("_")[0]
+                    instanceId = int(instance.find(ns + "SERVICE-INSTANCE-ID").text)
 
-                    # Path = instance.find(ns + "SERVICE-INTERFACE-DEPLOYMENT-REF").text
-                    serviceId = Deployments[InstanceName][0]
-                    ServiceInstances.append([InstanceName, serviceId, instanceId])
-                    #required instances parser
-                    for instance in RootElements.findall(ns + "REQUIRED-SOMEIP-SERVICE-INSTANCE"):
-                        R_InstanceName = (instance.find(ns + "SHORT-NAME").text)
-                        R_InstanceName = R_InstanceName.split('_')[0]
-                        R_instanceId = instance.find(ns + "SERVICE-INSTANCE-ID").text
+                    serviceId = int(Deployments[InstanceName][0])
+                    ServiceInstances = [InstName, serviceId, instanceId]
+                    Instances.append(ServiceInstances)
+                #required instances parser
+                for instance in RootElements.findall(ns + "REQUIRED-SOMEIP-SERVICE-INSTANCE"):
+                    R_InstName = (instance.find(ns + "SHORT-NAME").text)
+                    R_Dep_ref = (instance.find(ns + "SERVICE-INTERFACE-DEPLOYMENT-REF").text)
+                    R_Dep_Name = R_Dep_ref.split("/")[-1]
+                    R_InstanceName = R_Dep_Name.split("_")[0]
+                    R_instanceId = int(instance.find(ns + "REQUIRED-SERVICE-INSTANCE-ID").text)
 
-                        # Path = instance.find(ns + "SERVICE-INTERFACE-DEPLOYMENT-REF").text
-                        R_serviceId = Deployments[R_InstanceName][0]
-                        R_ServiceInstances.append([R_InstanceName, serviceId, R_instanceId])
-                        Instances.append(ServiceInstances)
-                        Instances.append(R_ServiceInstances)
-        #        print(ServiceInstances)
+                    R_serviceId = int(Deployments[R_InstanceName][0])
+                    R_ServiceInstances = [R_InstName, R_serviceId, R_instanceId]
+                    Instances.append(R_ServiceInstances)
+        # print(Deployments) 
+        return Deployments, Instances
 
-        #        print(Deployments)
-
-
-# class DeploymentInfo:
-
-#     serviceId = 0
-#     serviceName = ''
-#     serviceMethods = {}
-#     serviceFields = {}
-#     #serviceEvents = {}
-
-#     def __init__(self,id,name,methods,fields=None):
-#         self.serviceId = id
-#         self.serviceName = name
-#         self.serviceMethods = methods
-#         self.serviceFields = fields
-
-
-# dep = DeploymentParser("/home/shams/Github/OTA-Adaptive-AUTOSAR-Project/SecureOTA_System_Configurations/deployment.arxml")
-# dep.Parse()

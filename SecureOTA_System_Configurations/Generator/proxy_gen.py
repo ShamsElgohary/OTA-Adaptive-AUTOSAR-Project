@@ -11,7 +11,7 @@ def new_line(fd):
     fd.write("\n")
 
 
-def method_genrator(fd,method_name,method_id,service_id,in_args,out_args):
+def method_genrator(fd, method_name, method_id, service_id, in_args, out_args):
     method_input=method_name+"Input"
     method_output=method_name+"Output"
     fd.write("                    class ")
@@ -31,7 +31,7 @@ def method_genrator(fd,method_name,method_id,service_id,in_args,out_args):
     if(len(out_args)!=0):
         fd.write("                        ")
         fd.write(method_name)
-        fd.write("output")
+        fd.write("Output")
     else:
         fd.write("                        void ")
     fd.write(" operator()(")
@@ -65,28 +65,32 @@ def method_genrator(fd,method_name,method_id,service_id,in_args,out_args):
         fd.write(method_output)
         fd.write(" out; ")
         new_line(fd)
-    if  len(out_args)!=0 or  len(in_args)!=0:
+    if  len(out_args)!=0 and len(in_args)!=0:
         fd.write("                            process_method_call<")
-        if len(out_args)!=0:
-            fd.write(method_output)
-        if len(in_args)!=0:
-            fd.write(" , ")
-            fd.write(method_input)
+        fd.write(method_output)
+        fd.write(" , ")
+        fd.write(method_input)
         fd.write(">")
         fd.write(" (")    
-        if len(in_args)!=0:
-            fd.write("in , ")
-        if len(out_args)!=0:
-            fd.write("out")
-        fd.write(")")    
+        fd.write("in , ")
+        fd.write("out")
+        fd.write(")")  
+    elif len(in_args) == 0 and len(out_args) != 0:
+        fd.write("                            process_method_call<")
+        fd.write(method_output)
+        fd.write(">")
+        fd.write(" (")    
+        fd.write("out")
+        fd.write(")")  
     else:
         fd.write("                            process_method_call();")
     new_line(fd)
     fd.write("                            ara::com::AddMethodCall(")
-    fd.write("1 , ")
+    fd.write(method_id)
+    fd.write(" , ")
     fd.write(method_name)
     fd.write(" , ara::com::MethodType::Proxy_Method, ")
-    fd.write("1")
+    fd.write(service_id)
     fd.write(" , Cluster_Name);")
     new_line(fd)
     if len(out_args)!=0:
@@ -98,11 +102,7 @@ def method_genrator(fd,method_name,method_id,service_id,in_args,out_args):
     new_line(fd)    
 
 
-def class_genrator(fd,service):
-    if service.ServiceInf_name=="UpdateRequest":
-        service_id="1"
-    elif service.ServiceInf_name=="PackageManager":    
-        service_id="2"
+def class_genrator(fd,service, service_id):
     service_proxy_name=service.ServiceInf_name+"proxy"
     fd.write("                class ")
     fd.write(service_proxy_name)
@@ -184,74 +184,73 @@ def class_genrator(fd,service):
     new_line(fd)    
         
 
-def field_helper(fd,service,decider,name,id):
-            f_name=decider+name
-            output_type=decider+name
-            fd.write("                    class ")
-            fd.write(f_name)
-            fd.write(" : public ara::com::proxy::method::MethodBase")
-            new_line(fd)
-            fd.write("                    {")
-            new_line(fd)
-            fd.write("                    public:")
-            new_line(fd)
-            fd.write("                        GetCurrentStatus(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, ")
-            fd.write(id)
-            fd.write(") {}")
-            new_line(fd)
-            fd.write("                        ")
-            fd.write(f_name)
-            fd.write(" operator()()")
-            new_line(fd)
-            fd.write("                        {")
-            new_line(fd)
-            fd.write("                            ")
-            fd.write(output_type)
-            fd.write(" out ;")
-            new_line(fd)
-            fd.write("                            process_method_call<")
-            fd.write(output_type)
-            fd.write(")>(out);")
-            new_line(fd)
-            fd.write("                            ara::com::AddMethodCall(")
-            fd.write(id)
-            fd.write(", ")
-            fd.write('"')
-            fd.write(f_name)
-            fd.write('", ')
-            fd.write("ara::com::MethodType::Proxy_Method,")
-            if service.ServiceInf_name=="UpdateRequest":
-                service_id="1"
-            elif service.ServiceInf_name=="PackageManager":    
-                service_id="2"
-            fd.write(service_id)
-            fd.write(", Cluster_Name);")
-            new_line(fd)
-            fd.write("                            return out;")
-            new_line(fd)
-            fd.write("                        }")
-            new_line(fd)
-            fd.write("                    };")
-            new_line(fd)
+def field_helper(fd,service,decider,name,id, service_id):
+    f_name=decider+name
+    output_type=name+"Field"
+    fd.write("                    class ")
+    fd.write(f_name)
+    fd.write(" : public ara::com::proxy::method::MethodBase")
+    new_line(fd)
+    fd.write("                    {")
+    new_line(fd)
+    fd.write("                    public:")
+    new_line(fd)
+    fd.write(f"                        {f_name}(std::shared_ptr<ara::com::NetworkBindingBase> h) : MethodBase(h, ")
+    fd.write(id)
+    fd.write(") {}")
+    new_line(fd)
+    fd.write("                        ")
+    fd.write(f_name)
+    fd.write(" operator()()")
+    new_line(fd)
+    fd.write("                        {")
+    new_line(fd)
+    fd.write("                            ")
+    fd.write(output_type)
+    fd.write(" out ;")
+    new_line(fd)
+    fd.write("                            process_method_call<")
+    fd.write(output_type)
+    fd.write(">(out);")
+    new_line(fd)
+    fd.write("                            ara::com::AddMethodCall(")
+    fd.write(id)
+    fd.write(", ")
+    fd.write('"')
+    fd.write(f_name)
+    fd.write('", ')
+    fd.write("ara::com::MethodType::Proxy_Method,")
+    fd.write(service_id)
+    fd.write(", Cluster_Name);")
+    new_line(fd)
+    fd.write("                            return out;")
+    new_line(fd)
+    fd.write("                        }")
+    new_line(fd)
+    fd.write("                    };")
+    new_line(fd)
         
 
-def field_genrator(fd,service,id):
+def field_genrator(fd,service, fields, serv_id):
     fd.write("                namespace fields")
     new_line(fd)
     fd.write("                {")
     new_line(fd)
     for f in service.field:
         if f.getter == "true":
+            id = fields[f.name][0]
             decider="Get"
-            field_helper(fd,service,decider,f.name,id)
+            field_helper(fd,service,decider,f.name,id, serv_id)
 
         if f.setter == "true":
+            id = fields[f.name][1]
             decider="Set"
-            field_helper(fd,service,decider,f.name,id)
+            field_helper(fd,service,decider,f.name,id, serv_id)
            
         if f.notifier == "true":
+            id = fields[f.name][2]
             decider="Notify"
-            field_helper(fd,service,decider,f.name,id)
+            field_helper(fd,service,decider,f.name,id, serv_id)
         
         new_line(fd)
     fd.write("                }")
@@ -295,6 +294,8 @@ def includes(fd):
     new_line(fd)
     fd.write("#include <vector>")
     new_line(fd)
+    fd.write("#include <array>")
+    new_line(fd)
     fd.write('#include "serviceProxy.hpp"')
     new_line(fd)
     fd.write('#include "method.hpp"')
@@ -304,12 +305,108 @@ def includes(fd):
     fd.write('using namespace std;')
     new_line(fd)
 
+def arg_struct(f, Method,DataTypes):
+    if len(Method.in_args) > 0:
+        f.write(f"                    struct {Method.name}Input")
+        new_line(f)
+        f.write("                    {")
+        new_line(f)
+        for in_arg in Method.in_args:
+            Pathlist = in_arg.path.split("/")
+            Type = DataTypes[Pathlist[-2]][Pathlist[-1]]
+            f.write(f"                        {Type.Instantation(in_arg.name)}")
+        f.write("                    private:")
+        new_line(f)
+        f.write("                        template <typename Archive>")
+        new_line(f)
+        f.write("                    void serialize(Archive &ar, const unsigned int version)")
+        new_line(f)
+        f.write("                        {")
+        new_line(f)
+        for in_arg in Method.in_args:
+            f.write(f"                        ar &{in_arg.name};")
+            new_line(f)
+        f.write("                        }")
+        new_line(f)
+        f.write("                        friend class boost::serialization::access;")
+        new_line(f)
+        f.write("                    };")
+        new_line(f)
+        new_line(f)
 
-def proxy_genrator():
-    SI_parser=ServiceInfParser("service_interfaces.arxml")
-    SI_parser.Parse()
+    if len(Method.out_args) > 0:
+        f.write(f"                    struct {Method.name}Output")
+        new_line(f)
+        f.write("                    {")
+        new_line(f)
+        for out_arg in Method.out_args:
+            Pathlist = out_arg.path.split("/")
+            Type = DataTypes[Pathlist[-2]][Pathlist[-1]]
+            f.write(f"                        {Type.Instantation(out_arg.name)}")
+            new_line(f)
+        f.write("                    private:")
+        new_line(f)
+        f.write("                        template <typename Archive>")
+        new_line(f)
+        f.write("void serialize(Archive &ar, const unsigned int version)")
+        new_line(f)
+        f.write("                        {")
+        new_line(f)
+        for out_arg in Method.out_args:
+            f.write(f"ar &{out_arg.name};")
+            new_line(f)
+        f.write("                        }")
+        new_line(f)
+        f.write("                        friend class boost::serialization::access;")
+        new_line(f)
+        f.write("                    };")
+        new_line(f)
+        new_line(f)
+
+def field_struct(f, Field, DataTypes):
+    f.write(f"                    struct {Field.name}Field")
+    new_line(f)
+    f.write("                    {")
+    new_line(f)
+
+    Pathlist = Field.path.split("/")
+    Type = DataTypes[Pathlist[-2]][Pathlist[-1]]
+    f.write(f"                        {Type.Instantation(Field.name)}")
+
+    f.write("                    private:")
+    new_line(f)
+    f.write("                        template <typename Archive>")
+    new_line(f)
+    f.write("                    void serialize(Archive &ar, const unsigned int version)")
+    new_line(f)
+    f.write("                        {")
+    new_line(f)
+
+    f.write(f"                        ar &{Field.name};")
+    new_line(f)
+    
+    f.write("                        }")
+    new_line(f)
+    f.write("                        friend class boost::serialization::access;")
+    new_line(f)
+    f.write("                    };")
+    new_line(f)
+    new_line(f)
+
+def Datatypeslisting(shared_type, list, DataTypes):
+    for k in DataTypes["shared_types"][shared_type].subTypes:
+        Datatypeslisting(k, list, DataTypes)
+        list.append(k) 
+
+def unique(sequence):
+    seen = set()
+    return [x for x in sequence if not (x in seen or seen.add(x))]
+
+def proxy_genrator(SI_parser, DataTypes, Deployment):
     for i in SI_parser.service_interface.keys():
         # creating proxy file 
+        serv_id = Deployment[i][0]
+
         filename=i+"proxy.hpp"
         f = open(filename, "w")
         includes(f)
@@ -317,19 +414,42 @@ def proxy_genrator():
         SI=SI_parser.service_interface[i]
         namespaces_genration(f,SI)
 
-        #genrating the methods of the service interface    
-        method_namespace(f)
-        mm=SI.methods
+        # Shared Data Types Definition
+        shared_list = []
+        shared_str = ""
+
+        for j in SI.shared_types:
+            Datatypeslisting(j, shared_list, DataTypes)
+            shared_list.append(j)
+
+        shared_list = unique(shared_list)
+        for j in shared_list:
+            shared_str += DataTypes["shared_types"][j].Definition()
+        f.write(shared_str)
+        new_line(f)
+
+        mm = SI.methods
+        flds = SI.field
+        #generate the Struct of the Methods Arguments
         for j in mm:
-            method_genrator(f,j.name,"1",3,j.in_args,j.out_args)
+            arg_struct(f, j, DataTypes)
+
+        for j in flds:
+            field_struct(f, j, DataTypes)
+
+        # Genrating the methods of the service interface    
+        method_namespace(f)
+        for j in mm:
+            meth_id = None
+            meth_id = Deployment[i][1][j.name]
+            method_genrator(f, j.name, meth_id, serv_id, j.in_args, j.out_args)
+
         f.write("                }")
         new_line(f)
-        #genrating the fields of the service interface    
+        # genrating the fields of the service interface    
         if len(SI.field)>0:
-            field_genrator(f,SI,"10")
-        class_genrator(f,SI)
+            fields = Deployment[i][2]
+            field_genrator(f,SI,fields, serv_id)
+        class_genrator(f, SI, serv_id)
         closing_namespaces(f,SI)
     f.close()
-
-
-proxy_genrator()
