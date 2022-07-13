@@ -11,7 +11,7 @@
 #include <unistd.h>
 using namespace std;
 using namespace ara::exec;
-using std::filesystem::current_path;
+//using std::filesystem::current_path;
 using namespace ara::ucm::pkgmgr::proxy;
 using namespace ara::com::proxy;
 using namespace ara::crypto;
@@ -52,7 +52,7 @@ public:
 
     string crypto_get_hash(string packagename)
     {
-        std::string path = CUSTOMIZED_PROJECT_PATH + "/executables/ota/bin/" + packagename + ".zip";
+        std::string path = CUSTOMIZED_PROJECT_PATH + "/executables/em/bin/" + packagename + ".zip";
 
         ifstream ifs(path, ios::binary | ios::ate);
         ifstream::pos_type pos = ifs.tellg();
@@ -250,8 +250,8 @@ public:
         download(name);
         // usleep(2000000);
 
-        // if (compare_hash(name))
-        if (true)
+        if (compare_hash(name))
+        //if (true)
         {
             this->Transfer2UCM(name);
         }
