@@ -31,6 +31,7 @@ class Method:
             self.in_args.append(arg)
         elif arg.direction=="OUT":
             self.out_args.append(arg)   
+        # print("arg added")
     
 
 

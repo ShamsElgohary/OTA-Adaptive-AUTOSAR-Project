@@ -96,6 +96,11 @@ class DeploymentParser:
                     R_serviceId = int(Deployments[R_InstanceName][0])
                     R_ServiceInstances = [R_InstName, R_serviceId, R_instanceId]
                     Instances.append(R_ServiceInstances)
+        # print("#######################################")
         # print(Deployments) 
+        # print("##########################")
+        # print(Instances)
+        # print("#######################################")
+
         return Deployments, Instances
 
