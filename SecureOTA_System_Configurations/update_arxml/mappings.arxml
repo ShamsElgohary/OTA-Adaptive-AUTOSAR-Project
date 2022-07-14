@@ -29,7 +29,7 @@
               <SHORT-NAME>required_update_request_mapping</SHORT-NAME>
               <COMMUNICATION-CONNECTOR-REF DEST="ETHERNET-COMMUNICATION-CONNECTOR">/ota/machines/secure_ota_machine_design/LocalConnection</COMMUNICATION-CONNECTOR-REF>
               <SERVICE-INSTANCE-REFS>
-                <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/ota/deployments/Instances/UpdateRequest_requested_instance</SERVICE-INSTANCE-REF>
+                <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/ota/deployments/Instances/UpdateRequest_required_instance</SERVICE-INSTANCE-REF>
               </SERVICE-INSTANCE-REFS>
               <TCP-PORT>2522</TCP-PORT>
               <UDP-PORT>2522</UDP-PORT>
@@ -80,7 +80,7 @@
               </PORT-PROTOTYPE-IREF>
               <PROCESS-DESIGN-REF DEST="PROCESS-DESIGN">/ota/processes/process_design/ucm_process_design</PROCESS-DESIGN-REF>
               <PROCESS-REF DEST="PROCESS">/ota/processes/ucm_process</PROCESS-REF>
-              <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/ota/deployments/Instances/UpdateRequest_requested_instance</SERVICE-INSTANCE-REF>
+              <SERVICE-INSTANCE-REF DEST="REQUIRED-SOMEIP-SERVICE-INSTANCE">/ota/deployments/Instances/UpdateRequest_required_instance</SERVICE-INSTANCE-REF>
             </SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING>
             <SERVICE-INSTANCE-TO-PORT-PROTOTYPE-MAPPING UUID="b16aeb88-ac5f-40ad-a201-04dee0396bcb">
               <SHORT-NAME>provided_update_request_port_mapping</SHORT-NAME>

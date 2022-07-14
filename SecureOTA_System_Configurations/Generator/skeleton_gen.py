@@ -1,5 +1,3 @@
-from curses.ascii import SI
-from pickle import NONE
 from Skel_Prxy_common import Datatypeslisting, unique, new_line, arg_struct, field_struct
 
 
@@ -292,15 +290,21 @@ def includes(fd):
     new_line(fd)
 
 
-def skeleton_generator(SI_parser, DataTypes, Deployment):
+def skeleton_generator(SI_parser, DataTypes, Deployment, Deployment_Manifest):
     for i in SI_parser.service_interface.keys():
+        SkeletonNeeded = False
+        for inst in Deployment_Manifest:
+            if inst[0] == f"{i}_provided_instance":
+                SkeletonNeeded = True
+        if not SkeletonNeeded:
+            continue
         # creating proxy file 
         serv_id = Deployment[i][0]
 
         SI=SI_parser.service_interface[i]
         
         # creating proxy file 
-        filename=i+"Skeleton.hpp"
+        filename="SecureOTA_System_Configurations/GeneratedFiles/"+i+"Skeleton.hpp"
         f = open(filename, "w")
         includes(f)
         namespaces_genration(f,SI)

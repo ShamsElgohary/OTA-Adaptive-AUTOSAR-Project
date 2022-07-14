@@ -1,4 +1,3 @@
-from poplib import POP3_PORT
 import xml.etree.ElementTree as ET          
 from DataType import DataTypeParser
 from Service_Interface import ServiceInfParser
@@ -134,11 +133,11 @@ class Generator:
 
     def GenerateSkeleton(self):
         print("Generate Interface Skeleton")
-        skeleton_generator(self.SI, self.DataTypes, self.Deployments)
+        skeleton_generator(self.SI, self.DataTypes, self.Deployments, self.Deployments_Manifest)
 
     def GenerateProxy(self):
         print("Generate Interface Proxy")
-        proxy_generator(self.SI, self.DataTypes, self.Deployments)
+        proxy_generator(self.SI, self.DataTypes, self.Deployments, self.Deployments_Manifest)
 
     def GenerateManifest(self):
         for Map in self.Mapping:
@@ -201,8 +200,16 @@ class Generator:
                     "provided_ap_service_instances":list1
                     }
                 }
-            with open("executables/"+name+"/0.1/etc/service_manifest.json", 'w') as f:
-                json.dump(datajson, f, 
-                                    indent=4,  
-                                    separators=(',',': '))
-                f.close()
+            try:
+                with open("executables/"+name+"/0.1/etc/service_manifest.json", 'w') as f:
+                    json.dump(datajson, f, 
+                                        indent=4,  
+                                        separators=(',',': '))
+                    f.close()
+
+            except:
+                with open("SecureOTA_System_Configurations/GeneratedFiles/service_manifest.json", 'w') as f:
+                    json.dump(datajson, f, 
+                                        indent=4,  
+                                        separators=(',',': '))
+                    f.close()

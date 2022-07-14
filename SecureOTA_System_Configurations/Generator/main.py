@@ -1,8 +1,7 @@
 # IMPORT PYQT5 CLASSES:
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog, QMessageBox
-from defer import return_value
+from PyQt5.QtWidgets import QFileDialog
 
 # IMPORTS FUNCTIONS FROM FILES:
 from Generate import Generator

@@ -1,9 +1,4 @@
-from asyncore import write
-from doctest import master
-from pickle import NONE
-from xml.dom.minidom import Element
 import xml.etree.ElementTree as ET
-from xxlimited import new
 pre = ""
 machine_name = ""
 
