@@ -18,7 +18,7 @@ namespace ara
                 vector<serviceinfo> opVsomeip = ara::com::SomeIpNetworkBinding::FindService_SomeIp(serviceID);
                 for (uint8_t i = 0; i < opVsomeip.size(); i++)
                 {
-                    if (IAM_ACTIVATED)
+                    #ifdef IAM_ACTIVATED
                     {
                         ara::iam::IAMGrantQuery IGQ;
                         ara::iam::Grant G(serviceID, opVsomeip[i].Instance_ID, "ComGrant", "Require");
@@ -30,6 +30,7 @@ namespace ara
                             continue;
                         }
                     }
+                    #endif
 
                     ProxyBase::HandleType h;
                     h.serviceID = serviceID;
@@ -52,7 +53,7 @@ namespace ara
                     vector<serviceinfo> opVsomeip = ara::com::SomeIpNetworkBinding::FindService_SomeIp(serviceID, instanceId);
                     for (uint8_t i = 0; i < opVsomeip.size(); i++)
                     {
-                        if (IAM_ACTIVATED)
+                        #ifdef IAM_ACTIVATED
                         {
                             ara::iam::IAMGrantQuery IGQ;
                             ara::iam::Grant G(serviceID, opVsomeip[i].Instance_ID, "ComGrant", "Require");
@@ -64,6 +65,7 @@ namespace ara
                                 continue;
                             }
                         }
+                        #endif
                         ProxyBase::HandleType h;
                         h.serviceID = serviceID;
                         h.InstanceID = opVsomeip[i].Instance_ID;

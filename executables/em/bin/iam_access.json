@@ -1,0 +1,83 @@
+{
+	"Cluster_name" : "iam_json",
+	"Processes" : 
+	[
+		{
+			"Process" : "Car_GUI",
+			"info" : 
+			{
+				"GrantType" : "ComGrant",
+				"Instance_ID" : 1,
+				"PR_Type" : "Provide",
+				"Service_ID" : 3
+			}
+		},
+		{
+			"Process" : "ota",
+			"info" : 
+			{
+				"GrantType" : "ComGrant",
+				"Instance_ID" : 1,
+				"PR_Type" : "Require",
+				"Service_ID" : 2
+			}
+		},
+		{
+			"Process" : "sm",
+			"info" : 
+			{
+				"GrantType" : "ComGrant",
+				"Instance_ID" : 1,
+				"PR_Type" : "Provide",
+				"Service_ID" : 1
+			}
+		},
+		{
+			"Process" : "ucm",
+			"info" : 
+			{
+				"GrantType" : "ComGrant",
+				"Instance_ID" : 1,
+				"PR_Type" : "Provide",
+				"Service_ID" : 2
+			}
+		},
+		{
+			"Process" : "ucm",
+			"info" : 
+			{
+				"GrantType" : "ComGrant",
+				"Instance_ID" : 1,
+				"PR_Type" : "Require",
+				"Service_ID" : 1
+			}
+		}
+	],
+	"Requests" : 
+	[
+		{
+			"Grant_Result" : true,
+			"Process_id" : 15157,
+			"Process_name" : "ucm",
+			"info" : 
+			{
+				"GrantType" : "ComGrant",
+				"Instance_ID" : 1,
+				"PR_Type" : "Provide",
+				"Service_ID" : 2
+			}
+		},
+		{
+			"Grant_Result" : true,
+			"Process_id" : 15143,
+			"Process_name" : "sm",
+			"info" : 
+			{
+				"GrantType" : "ComGrant",
+				"Instance_ID" : 1,
+				"PR_Type" : "Provide",
+				"Service_ID" : 1
+			}
+		}
+	]
+}

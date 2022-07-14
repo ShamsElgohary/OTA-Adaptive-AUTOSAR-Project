@@ -48,7 +48,7 @@ namespace ara
             skeletonBase::skeletonBase(string path, ara::com::serviceIdentifierType serviceID, ara::com::InstanceIdentifier instanceID, string C_name, ara::com::MethodCallProcessingMode mode)
                 : instanceID{instanceID}, serviceID{serviceID}, mode{mode}, C_Name{C_name}
             {
-                if (IAM_ACTIVATED)
+                #ifdef IAM_ACTIVATED
                 {
                     ara::iam::IAMGrantQuery IGQ;
                     ara::iam::Grant G(serviceID, instanceID, "ComGrant", "Provide");
@@ -59,6 +59,7 @@ namespace ara
                         return;
                     }
                 }
+                #endif
 
                 string ip = parse(path, instanceID, serviceID, "ipv4") + " ";
                 int port = parse(path, instanceID, serviceID);
@@ -68,17 +69,28 @@ namespace ara
             }
             void skeletonBase::OfferService()
             {
-                if (grant_result || !IAM_ACTIVATED)
+                #ifdef IAM_ACTIVATED
+                {
+                    if (grant_result)
+                    {
+                        this->ptr2bindingProtocol->OfferService();
+                        ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Offer_Method, true, C_Name);
+                        serve();
+                    }
+                    else
+                    {
+                        cout << "[com::skeleton::OfferService] ACCESS FORBIDDEN !!!!!" << endl;
+                        ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Offer_Method, false, C_Name);
+                    }
+                }
+                #elif
                 {
                     this->ptr2bindingProtocol->OfferService();
                     ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Offer_Method, true, C_Name);
                     serve();
                 }
-                else
-                {
-                    cout << "[com::skeleton::OfferService] ACCESS FORBIDDEN !!!!!" << endl;
-                    ara::com::AddServiceDiscoveryRequest(serviceID, instanceID, ServiceDiscoveryMethodType::Offer_Method, false, C_Name);
-                }
+                #endif
+
             }
             void skeletonBase::serve()
             {

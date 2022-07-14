@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtWidgets>
 #include "commands.h"
+#include "execution_client.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,6 +20,8 @@ public:
     void keyPressEvent(QKeyEvent *event);
     void HideStart();
     void HideStop();
+    void closeEvent(QCloseEvent *e);
+
     ~MainWindow();
 
     QWidget *widget =new QWidget ;

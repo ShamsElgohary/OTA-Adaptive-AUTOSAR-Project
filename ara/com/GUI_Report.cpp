@@ -47,15 +47,7 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            // if (SIMULATION_ACTIVE)
-            // {
-            //     static simulation simulation_socket{8088};
-            //     char current_dir[256];
-            //     getcwd(current_dir, 256);
-            //     std::string path(current_dir);
-            //     path += "/" + file_name;
-            //     simulation_socket.send_file((char *)(path.c_str()));
-            // }
+
         }
 
         void AddServiceDiscoveryRequest(uint16_t ServiceID, uint16_t InstanceID, ServiceDiscoveryMethodType Type, bool GrantResult, string Cluster_Name)
@@ -104,15 +96,6 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            // if (SIMULATION_ACTIVE)
-            // {
-            //     static simulation simulation_socket{8088};
-            //     char current_dir[256];
-            //     getcwd(current_dir, 256);
-            //     std::string path(current_dir);
-            //     path += "/" + file_name;
-            //     simulation_socket.send_file((char *)(path.c_str()));
-            // }
         }
     }
 }

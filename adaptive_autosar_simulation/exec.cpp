@@ -5,9 +5,6 @@
 exec::exec(QWidget *parent): QWidget{parent}
 {
 
-
-    //machine_configGbx->setLayout(new QHBoxLayout());
-
     main_layout->addWidget(Running_executables, 0, 0, 1, 1 );
     main_layout->addWidget(sm_requestsGbx, 1 ,0, 1, 1);
     main_layout->addWidget(fng_states_gbx, 2 ,0, 1, 1);

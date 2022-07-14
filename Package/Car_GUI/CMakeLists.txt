@@ -21,7 +21,9 @@ set(PROJECT_SOURCES
         mainwindow.ui
         commands.h
         ../../utility/general.hpp
+
 )
+
 
 ###############################EM_LIB###############################
 set(exec_source_dir "${CMAKE_SOURCE_DIR}/../../ara/exec")

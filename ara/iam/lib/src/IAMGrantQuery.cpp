@@ -3,7 +3,7 @@
 bool ara::iam::IAMGrantQuery::HasGrant(Grant& G)
 {
     std::uint8_t rtn = ara::iam::IAMGrantQuery::IPC.Connect();
-    if (rtn == 0)
+    if (rtn)
     {
         IPC.Send(G);
         return IPC.Receive();

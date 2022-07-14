@@ -123,22 +123,29 @@ bool ApplicationExecutionMgr::setState(FunctionGroupState fgs)
 void ApplicationExecutionMgr::initialize()
 {
     mkfifo("smFifo", 0777);
-    debugging_mode=true;
-    wait_for_gui(); // waiting for load configurations
+    #ifdef SIMULATION_ACTIVE
+    {
+        debugging_mode=true;
+        wait_for_gui(); 
+    }
+    #endif
     loadMachineConfigrations();
     loadExecutablesConfigrations();
-    wait_for_gui(); // waiting for load configurations
-    if (SIMULATION_ACTIVE)
+    #ifdef SIMULATION_ACTIVE
     {
         reportConfig_simulation();
+        wait_for_gui(); 
     }
+    #endif
     iam_future = IAM_handle();
     FunctionGroupState FGS(FunctionGroupState::Preconstruct("machineFG", "startup"));
     setState(FGS);
-    if (SIMULATION_ACTIVE)
+    #ifdef SIMULATION_ACTIVE
     {
         reportConfig_simulation();
+        wait_for_gui(); 
     }
+    #endif
     Execute();
     transitionChanges_.toStart_.clear();
     transitionChanges_.toTerminate_.clear();
@@ -152,11 +159,13 @@ ApplicationExecutionMgr::ApplicationExecutionMgr(string rootPath) : rootPath{roo
     remove("NetworkMessages.txt");
     system("rm *.json");    
     system("rm *.zip");
-    if (SIMULATION_ACTIVE)
+    #ifdef SIMULATION_ACTIVE
     {
         sim_socket.connect_to_socket();
         sim_socket.send_exe_name(simulation::exe_name::exec);
     }
+     #endif
+
 }
 
 bool ApplicationExecutionMgr::run()
@@ -164,14 +173,18 @@ bool ApplicationExecutionMgr::run()
     while (true)
     {
         ProcessStateClientRequest();
+         #ifdef SIMULATION_ACTIVE
+        {
         reportConfig_simulation();
         wait_for_gui();
+        }
+        #endif
         Terminate();
         Execute();
-        report_success_sm();
         transitionChanges_.toStart_.clear();
         transitionChanges_.toTerminate_.clear();
         reparse();
+        report_success_sm();
     }
 }
 
@@ -373,19 +386,16 @@ void ApplicationExecutionMgr::reparse()
     r.parse(is, v);
     map<string, path> plist;
     int count = 0;
-    // vector<path> p;
-    // vector<string> exe_name;
+
     std::map<string, string>::iterator it2;
 
     for (Json::Value::const_iterator it = v.begin(); it != v.end(); ++it)
     {
         string key = it.key().asString();
-        // exe_name.push_back(key);
         if (key != "Process List Version")
         {
             string x = v[key]["Path"].asString();
             path y(rootPath + "executables" + x);
-            // p.push_back(y);
             plist.insert({key, y});
         }
     }
@@ -417,14 +427,9 @@ void ApplicationExecutionMgr::reparse()
         else
         {
             string pname = k.second.string() + "bin/";
-
-            // cout << "pname= " << pname << endl
-            //  << "it2.second = " << it2->second << endl;
             if (pname != it2->second)
             {
-                // cout << "test 2222" << endl;
                 string n = k.first;
-                // cout << n;
                 for (auto i : executables_)
                 {
                     if (i.manifest_.name == n)
@@ -434,27 +439,7 @@ void ApplicationExecutionMgr::reparse()
                         {
                             x->executable_path = pname;
                         }
-                        // std::vector<Executable>::iterator itr = std::find(executables_.begin(), executables_.end(), i);
-                        // executables_.erase(executables_.begin() + count);
-                        // string p2 = k.second.string() + "etc/execution_manifest.json";
-
-                        // executables_.push_back(Executable{ApplicationManifest(p2), vector<Application *>()});
-                        // for (auto &app : executables_.back().manifest_.startUpConfigurations)
-                        // {
-                        //     executables_.back().startupConfigurations_.push_back(new Application{app, executables_.back().manifest_.name, executables_.back().manifest_.executable_path});
-                        // }
-                        // for (auto &app : executables_.back().startupConfigurations_)
-                        // {
-                        //     for (auto function_group : app->configuration_.function_group_states)
-                        //     {
-                        //         for (auto state : function_group.second)
-                        //         {
-                        //             function_groups_[function_group.first]->startupConfigurations_[state].push_back(app);
-                        //         }
-                        //     }
-                        // }
                     }
-                    // count++;
                 }
             }
         }
