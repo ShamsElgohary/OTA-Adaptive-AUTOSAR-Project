@@ -13,7 +13,7 @@ namespace ara
 
         SomeIpNetworkBinding::SomeIpNetworkBinding(serviceIdentifierType service_id, InstanceIdentifier instance_id,
                                                    string ip, uint16_t port, someip::EndUserType type)
-        : ip{ip}, port{port}, serviceId{service_id}, InstanceId{instance_id}, someipConfig{someip::TransportProtocol::TCP, type, someip::SecurityType::RAW}
+        : ip{ip}, port{port}, serviceId{service_id}, InstanceId{instance_id}, someipConfig{someip::TransportProtocol::TCP, type, someip::SecurityType::TLS}
         {
 
         }
