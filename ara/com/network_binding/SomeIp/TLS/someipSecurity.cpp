@@ -293,7 +293,7 @@ namespace someip
         ClientTLS::ClientTLS(boost::asio::io_context & io_context,
                         boost::asio::ssl::context& context,
                         uint16_t port,
-                        std::string clientCertificate,
+                        std::string CA,
                         std::string IPv4)
                 : SessionTLS(context, io_context)
         {
@@ -303,7 +303,7 @@ namespace someip
             boost::asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(IPv4 ,std::to_string(port));
             
             // "Certificates/server.crt"
-            context.load_verify_file(clientCertificate);
+            context.load_verify_file(CA);
 
             ssl_socket.set_verify_mode(boost::asio::ssl::verify_peer);
 
