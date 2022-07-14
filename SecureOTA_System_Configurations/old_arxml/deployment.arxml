@@ -125,7 +125,7 @@
                   <SERVICE-INSTANCE-ID>1</SERVICE-INSTANCE-ID>
                 </PROVIDED-SOMEIP-SERVICE-INSTANCE>
                 <REQUIRED-SOMEIP-SERVICE-INSTANCE UUID="36c4b51b-6062-4f0d-aa54-bf021531399c">
-                  <SHORT-NAME>UpdateRequest_requested_instance</SHORT-NAME>
+                  <SHORT-NAME>UpdateRequest_required_instance</SHORT-NAME>
                   <SERVICE-INTERFACE-DEPLOYMENT-REF DEST="SOMEIP-SERVICE-INTERFACE-DEPLOYMENT">/ota/deployments/UpdateRequest_someip_dep</SERVICE-INTERFACE-DEPLOYMENT-REF>
                   <REQUIRED-SERVICE-INSTANCE-ID>1</REQUIRED-SERVICE-INSTANCE-ID>
                 </REQUIRED-SOMEIP-SERVICE-INSTANCE>

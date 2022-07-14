@@ -1,14 +1,4 @@
-from asyncore import write
-from doctest import master
-from pickle import NONE
-from xml.dom.minidom import Element
-import xml.etree.ElementTree as ET
-from xxlimited import new
-from Service_Interface import ServiceInfParser
-
-
-def new_line(fd):
-    fd.write("\n")
+from Skel_Prxy_common import Datatypeslisting, unique, new_line, arg_struct, field_struct
 
 
 def method_genrator(fd, method_name, method_id, service_id, in_args, out_args):
@@ -74,21 +64,21 @@ def method_genrator(fd, method_name, method_id, service_id, in_args, out_args):
         fd.write(" (")    
         fd.write("in , ")
         fd.write("out")
-        fd.write(")")  
+        fd.write(");")  
     elif len(in_args) == 0 and len(out_args) != 0:
         fd.write("                            process_method_call<")
         fd.write(method_output)
         fd.write(">")
         fd.write(" (")    
         fd.write("out")
-        fd.write(")")  
+        fd.write(");")  
     else:
         fd.write("                            process_method_call();")
     new_line(fd)
     fd.write("                            ara::com::AddMethodCall(")
     fd.write(method_id)
     fd.write(" , ")
-    fd.write(method_name)
+    fd.write(f'"{method_name}"')
     fd.write(" , ara::com::MethodType::Proxy_Method, ")
     fd.write(service_id)
     fd.write(" , Cluster_Name);")
@@ -103,7 +93,7 @@ def method_genrator(fd, method_name, method_id, service_id, in_args, out_args):
 
 
 def class_genrator(fd,service, service_id):
-    service_proxy_name=service.ServiceInf_name+"proxy"
+    service_proxy_name=service.ServiceInf_name+"Proxy"
     fd.write("                class ")
     fd.write(service_proxy_name)
     fd.write(" : public ara::com::proxy::ProxyBase")
@@ -117,6 +107,16 @@ def class_genrator(fd,service, service_id):
     fd.write("(HandleType handle) : ProxyBase(handle), ")
     counter=0
     length=len(service.methods)
+    for f in service.field:
+        if f.setter == "true":
+            fd.write(f"Set{f.name}(handle.ptr2bindingProtocol) ")
+            fd.write(", ")
+        if f.getter == "true":
+            fd.write(f"Get{f.name}(handle.ptr2bindingProtocol) ")
+            fd.write(", ")
+        if f.notifier == "true":
+            fd.write(f"Notify{f.name}(handle.ptr2bindingProtocol) ")
+            fd.write(", ")
     for i in service.methods:
         counter+=1
         fd.write(i.name)
@@ -200,7 +200,7 @@ def field_helper(fd,service,decider,name,id, service_id):
     fd.write(") {}")
     new_line(fd)
     fd.write("                        ")
-    fd.write(f_name)
+    fd.write(output_type)
     fd.write(" operator()()")
     new_line(fd)
     fd.write("                        {")
@@ -305,109 +305,18 @@ def includes(fd):
     fd.write('using namespace std;')
     new_line(fd)
 
-def arg_struct(f, Method,DataTypes):
-    if len(Method.in_args) > 0:
-        f.write(f"                    struct {Method.name}Input")
-        new_line(f)
-        f.write("                    {")
-        new_line(f)
-        for in_arg in Method.in_args:
-            Pathlist = in_arg.path.split("/")
-            Type = DataTypes[Pathlist[-2]][Pathlist[-1]]
-            f.write(f"                        {Type.Instantation(in_arg.name)}")
-        f.write("                    private:")
-        new_line(f)
-        f.write("                        template <typename Archive>")
-        new_line(f)
-        f.write("                    void serialize(Archive &ar, const unsigned int version)")
-        new_line(f)
-        f.write("                        {")
-        new_line(f)
-        for in_arg in Method.in_args:
-            f.write(f"                        ar &{in_arg.name};")
-            new_line(f)
-        f.write("                        }")
-        new_line(f)
-        f.write("                        friend class boost::serialization::access;")
-        new_line(f)
-        f.write("                    };")
-        new_line(f)
-        new_line(f)
-
-    if len(Method.out_args) > 0:
-        f.write(f"                    struct {Method.name}Output")
-        new_line(f)
-        f.write("                    {")
-        new_line(f)
-        for out_arg in Method.out_args:
-            Pathlist = out_arg.path.split("/")
-            Type = DataTypes[Pathlist[-2]][Pathlist[-1]]
-            f.write(f"                        {Type.Instantation(out_arg.name)}")
-            new_line(f)
-        f.write("                    private:")
-        new_line(f)
-        f.write("                        template <typename Archive>")
-        new_line(f)
-        f.write("void serialize(Archive &ar, const unsigned int version)")
-        new_line(f)
-        f.write("                        {")
-        new_line(f)
-        for out_arg in Method.out_args:
-            f.write(f"ar &{out_arg.name};")
-            new_line(f)
-        f.write("                        }")
-        new_line(f)
-        f.write("                        friend class boost::serialization::access;")
-        new_line(f)
-        f.write("                    };")
-        new_line(f)
-        new_line(f)
-
-def field_struct(f, Field, DataTypes):
-    f.write(f"                    struct {Field.name}Field")
-    new_line(f)
-    f.write("                    {")
-    new_line(f)
-
-    Pathlist = Field.path.split("/")
-    Type = DataTypes[Pathlist[-2]][Pathlist[-1]]
-    f.write(f"                        {Type.Instantation(Field.name)}")
-
-    f.write("                    private:")
-    new_line(f)
-    f.write("                        template <typename Archive>")
-    new_line(f)
-    f.write("                    void serialize(Archive &ar, const unsigned int version)")
-    new_line(f)
-    f.write("                        {")
-    new_line(f)
-
-    f.write(f"                        ar &{Field.name};")
-    new_line(f)
-    
-    f.write("                        }")
-    new_line(f)
-    f.write("                        friend class boost::serialization::access;")
-    new_line(f)
-    f.write("                    };")
-    new_line(f)
-    new_line(f)
-
-def Datatypeslisting(shared_type, list, DataTypes):
-    for k in DataTypes["shared_types"][shared_type].subTypes:
-        Datatypeslisting(k, list, DataTypes)
-        list.append(k) 
-
-def unique(sequence):
-    seen = set()
-    return [x for x in sequence if not (x in seen or seen.add(x))]
-
-def proxy_genrator(SI_parser, DataTypes, Deployment):
+def proxy_generator(SI_parser, DataTypes, Deployment, Deployment_Manifest):
     for i in SI_parser.service_interface.keys():
+        ProxyNeeded = False
+        for inst in Deployment_Manifest:
+            if inst[0] == f"{i}_required_instance":
+                ProxyNeeded = True
+        if not ProxyNeeded:
+            continue
         # creating proxy file 
         serv_id = Deployment[i][0]
 
-        filename=i+"proxy.hpp"
+        filename="SecureOTA_System_Configurations/GeneratedFiles/"+i+"Proxy.hpp"
         f = open(filename, "w")
         includes(f)
         # accessing the Service interface 

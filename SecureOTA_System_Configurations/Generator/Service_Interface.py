@@ -1,9 +1,4 @@
-from asyncore import write
-from doctest import master
-from pickle import NONE
-from xml.dom.minidom import Element
 import xml.etree.ElementTree as ET
-from xxlimited import new
 pre = ""
 machine_name = ""
 
@@ -31,6 +26,7 @@ class Method:
             self.in_args.append(arg)
         elif arg.direction=="OUT":
             self.out_args.append(arg)   
+        # print("arg added")
     
 
 

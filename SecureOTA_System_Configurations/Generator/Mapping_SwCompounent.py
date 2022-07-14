@@ -1,4 +1,3 @@
-from typing import Mapping
 import xml.etree.ElementTree as ET
 
 class MappingParser:
