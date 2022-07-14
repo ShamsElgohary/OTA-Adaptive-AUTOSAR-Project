@@ -1,12 +1,48 @@
 {
 	"ucm_json" : 
 	{
+		"GUI" : 
+		{
+			"Activate" : 
+			{
+				"PrepareUpdate" : "Prepared",
+				"StartUpdateSession" : "Done",
+				"StopUpdateSession" : "Stopped",
+				"VerifyUpdate" : "Verified"
+			},
+			"PackageManagerStatus" : "kIdle",
+			"ProcessedActionType" : "update",
+			"TransferFinishRate" : 100.0
+		},
+		"PKGDetails" : 
+		{
+			"Action" : "update",
+			"Clusters" : 
+			{
+				"sw1" : 
+				{
+					"name" : "Car_GUI",
+					"version" : "0.2"
+				}
+			},
+			"PackageStatus" : "kProcessed"
+		},
+		"PackageManager" : 
+		{
+			"Activate" : "kSuccess",
+			"Finish" : "kSuccess",
+			"GetSwClusterInfo" : "kSuccess",
+			"ProcessSwPackage" : "kSuccess",
+			"TransferData" : "kSuccess",
+			"TransferExit" : "kSuccess",
+			"TransferStart" : "kSuccess"
+		},
 		"PresentClusters" : 
 		{
 			"Cluster1" : 
 			{
 				"Name" : "Car_GUI",
-				"Version" : "0.1"
+				"Version" : "0.2"
 			},
 			"Cluster2" : 
 			{

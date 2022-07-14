@@ -1,0 +1,17 @@
+{
+	"Cluster_name" : "cargui",
+	"com_json" : 
+	{
+		"Proxy_Required_Method" : [],
+		"Service_Discovery_Request" : 
+		[
+			{
+				"Grant_Result" : true,
+				"Instance_ID" : 1,
+				"Service_ID" : 3,
+				"Type" : "Offer"
+			}
+		],
+		"Skeleton_Provided_Method" : []
+	}
+}

@@ -7,3 +7,21 @@ sm logger connected to gui
 IP Address: 127.0.0.1 
 Port: 2522
 Sm offering service
+ota cluster received
+[sm] setting new state from sm
+Starting Update Session
+[sm] setting new state from sm
+machineFG now is in state update
+sm Method name: StartUpdateSession, Method Type: Skeleton
+Preparing Update
+[sm] setting new state from sm
+fn1 now is in state off
+sm Method name: PrepareUpdate, Method Type: Skeleton
+Verifying Update
+[sm] setting new state from sm
+fn1 now is in state verify
+sm Method name: VerifyUpdate, Method Type: Skeleton
+Stop Updating Session
+[sm] setting new state from sm
+[sm] setting new state from sm
+sm Method name: StopUpdateSession, Method Type: Skeleton
