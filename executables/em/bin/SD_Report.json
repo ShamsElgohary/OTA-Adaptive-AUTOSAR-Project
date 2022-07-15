@@ -2,17 +2,7 @@
 	"Cluster_name" : "ServiceDiscovery",
 	"SD" : 
 	{
-		"Find Requests" : 
-		[
-			{
-				"Instance ID" : 65535,
-				"Service ID" : 2
-			},
-			{
-				"Instance ID" : 65535,
-				"Service ID" : 1
-			}
-		],
+		"Find Requests" : [],
 		"Received SD messages" : 
 		[
 			{
@@ -38,42 +28,6 @@
 				"Service ID" : 1,
 				"Type" : "offer service",
 				"ttl" : 16777215
-			},
-			{
-				"IP" : "_",
-				"Instance ID" : 65535,
-				"Interface Version" : 1,
-				"Message ID" : 4294934784,
-				"Message Type" : "NOTIFICATION",
-				"Port Number" : "_",
-				"Protocol Version" : 1,
-				"Service ID" : 2,
-				"Type" : "find service",
-				"ttl" : 16777215
-			},
-			{
-				"IP" : "_",
-				"Instance ID" : 65535,
-				"Interface Version" : 1,
-				"Message ID" : 4294934784,
-				"Message Type" : "NOTIFICATION",
-				"Port Number" : "_",
-				"Protocol Version" : 1,
-				"Service ID" : 1,
-				"Type" : "find service",
-				"ttl" : 16777215
-			},
-			{
-				"IP" : "<0x1000> ",
-				"Instance ID" : 1,
-				"Interface Version" : 1,
-				"Message ID" : 4294934784,
-				"Message Type" : "NOTIFICATION",
-				"Port Number" : 2522,
-				"Protocol Version" : 1,
-				"Service ID" : 3,
-				"Type" : "offer service",
-				"ttl" : 16777215
 			}
 		],
 		"ServiceInfoMap" : 
@@ -89,12 +43,6 @@
 				"Instance ID" : 1,
 				"Port Number" : 2522,
 				"Service ID" : 1
-			},
-			{
-				"IP" : "<0x1000> ",
-				"Instance ID" : 1,
-				"Port Number" : 2522,
-				"Service ID" : 3
 			}
 		]
 	}

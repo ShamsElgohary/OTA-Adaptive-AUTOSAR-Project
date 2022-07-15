@@ -113,8 +113,8 @@
 	],
 	"function_group_states" : 
 	{
-		"fn1" : "idle",
-		"fn2" : "run",
+		"fn1" : "play",
+		"fn2" : "off",
 		"machineFG" : "running"
 	},
 	"function_groups" : 
@@ -154,34 +154,34 @@
 	[
 		{
 			"current_state" : "Krunning",
-			"name" : "iam",
-			"pid" : 16049
+			"name" : "Car_GUI",
+			"pid" : 15180
 		},
 		{
 			"current_state" : "Krunning",
-			"name" : "ota",
-			"pid" : 16071
+			"name" : "iam",
+			"pid" : 15153
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "sm",
-			"pid" : 16039
+			"pid" : 15143
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "someip_sd",
-			"pid" : 16047
+			"pid" : 15151
 		},
 		{
 			"current_state" : "Krunning",
 			"name" : "ucm",
-			"pid" : 16053
+			"pid" : 15157
 		}
 	],
 	"sm_request" : 
 	{
 		"fng" : "fn1",
-		"fng_state" : "idle"
+		"fng_state" : "play"
 	},
 	"to_run" : [],
 	"to_term" : []

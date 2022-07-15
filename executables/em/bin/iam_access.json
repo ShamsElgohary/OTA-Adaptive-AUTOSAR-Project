@@ -57,7 +57,7 @@
 	[
 		{
 			"Grant_Result" : true,
-			"Process_id" : 16053,
+			"Process_id" : 15157,
 			"Process_name" : "ucm",
 			"info" : 
 			{
@@ -69,7 +69,7 @@
 		},
 		{
 			"Grant_Result" : true,
-			"Process_id" : 16039,
+			"Process_id" : 15143,
 			"Process_name" : "sm",
 			"info" : 
 			{
@@ -77,42 +77,6 @@
 				"Instance_ID" : 1,
 				"PR_Type" : "Provide",
 				"Service_ID" : 1
-			}
-		},
-		{
-			"Grant_Result" : true,
-			"Process_id" : 16071,
-			"Process_name" : "ota",
-			"info" : 
-			{
-				"GrantType" : "ComGrant",
-				"Instance_ID" : 1,
-				"PR_Type" : "Require",
-				"Service_ID" : 2
-			}
-		},
-		{
-			"Grant_Result" : true,
-			"Process_id" : 16053,
-			"Process_name" : "ucm",
-			"info" : 
-			{
-				"GrantType" : "ComGrant",
-				"Instance_ID" : 1,
-				"PR_Type" : "Require",
-				"Service_ID" : 1
-			}
-		},
-		{
-			"Grant_Result" : true,
-			"Process_id" : 16127,
-			"Process_name" : "Car_GUI",
-			"info" : 
-			{
-				"GrantType" : "ComGrant",
-				"Instance_ID" : 1,
-				"PR_Type" : "Provide",
-				"Service_ID" : 3
 			}
 		}
 	]

@@ -3,11 +3,17 @@
 #include "../../utility/general.hpp"
 #include "iostream"
 #include <QKeyEvent>
+#include "CarControlImpl.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    QThread::create([this]()
+    {
+        CarControlImpl service(1);
+        service.OfferService();
+    })->start();
     QString icons_path=CUSTOMIZED_PROJECT_PATH.c_str()+QString("utility/Theme/forward.png");
     QPixmap pixmap(icons_path);
     QIcon ButtonIcon(pixmap);
@@ -87,6 +93,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(startengine,SIGNAL(clicked()),this,SLOT(on_startEngine_clicked()));
 
     HideStop();
+
+
 }
 
 MainWindow::~MainWindow()
@@ -210,6 +218,15 @@ void MainWindow::HideStop()
     leftBtn->setVisible(false);
     console_text->clear();
 }
+
+
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Kterminate);
+    e->accept();
+}
+
 
 
 

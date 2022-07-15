@@ -1,28 +1,11 @@
-[EM] sm state is Krunning 16039
+[EM] sm state is Krunning 15143
 [SM] function group : machineFG new state is running
-[EM] someip_sd state is Krunning 16047
-[EM] iam state is Krunning 16049
-[IAM] process id : 16053
+[EM] someip_sd state is Krunning 15151
+[EM] iam state is Krunning 15153
+[IAM] process id : 15157
 [EM] process name : ucm
-[EM] ucm state is Krunning 16053
+[EM] ucm state is Krunning 15157
 [SM] function group : fn1 new state is play
-[EM] Car_GUI state is Krunning 16059
-[IAM] process id : 16039
+[EM] Car_GUI state is Krunning 15180
+[IAM] process id : 15143
 [EM] process name : sm
-[SM] function group : fn2 new state is run
-[EM] ota state is Krunning 16071
-[IAM] process id : 16071
-[EM] process name : ota
-[IAM] process id : 16053
-[EM] process name : ucm
-[SM] function group : machineFG new state is update
-[SM] function group : fn1 new state is off
-[EM] terminateing Car_GUI
-[EM] Car_GUI state is Kterminate
-[SM] function group : fn1 new state is verify
-[SM] function group : machineFG new state is running
-[SM] function group : fn1 new state is idle
-[EM] Car_GUI state is Krunning 16127
-[IAM] process id : 16127
-[EM] process name : Car_GUI
-[EM] Car_GUI state is Kterminate
