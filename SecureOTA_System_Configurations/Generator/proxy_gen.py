@@ -1,7 +1,7 @@
 from Skel_Prxy_common import Datatypeslisting, unique, new_line, arg_struct, field_struct
 
 
-def method_genrator(fd, method_name, method_id, service_id, in_args, out_args):
+def method_genrator(fd, method_name, method_id, service_id, in_args, out_args, SWname):
     method_input=method_name+"Input"
     method_output=method_name+"Output"
     fd.write("                    class ")
@@ -75,14 +75,15 @@ def method_genrator(fd, method_name, method_id, service_id, in_args, out_args):
     else:
         fd.write("                            process_method_call();")
     new_line(fd)
-    fd.write("                            ara::com::AddMethodCall(")
-    fd.write(method_id)
-    fd.write(" , ")
-    fd.write(f'"{method_name}"')
-    fd.write(" , ara::com::MethodType::Proxy_Method, ")
-    fd.write(service_id)
-    fd.write(" , Cluster_Name);")
-    new_line(fd)
+    if SWname == "ota" or SWname == "ucm" or SWname == "sm":
+        fd.write("                            ara::com::AddMethodCall(")
+        fd.write(method_id)
+        fd.write(" , ")
+        fd.write(f'"{method_name}"')
+        fd.write(" , ara::com::MethodType::Proxy_Method, ")
+        fd.write(service_id)
+        fd.write(" , Cluster_Name);")
+        new_line(fd)
     if len(out_args)!=0:
         fd.write("                            return out;")
     new_line(fd)
@@ -92,7 +93,7 @@ def method_genrator(fd, method_name, method_id, service_id, in_args, out_args):
     new_line(fd)    
 
 
-def class_genrator(fd,service, service_id):
+def class_genrator(fd,service, service_id, SWname):
     service_proxy_name=service.ServiceInf_name+"Proxy"
     fd.write("                class ")
     fd.write(service_proxy_name)
@@ -132,7 +133,7 @@ def class_genrator(fd,service, service_id):
     new_line(fd)
     fd.write("                    {")
     new_line(fd)
-    fd.write('                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/etc/service_manifest.json", Cluster_Name, ')
+    fd.write(f'                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "executables/{SWname}/0.1/etc/service_manifest.json", Cluster_Name, ')
     fd.write(service_id)
     fd.write(');')
     new_line(fd)
@@ -142,7 +143,7 @@ def class_genrator(fd,service, service_id):
     new_line(fd)
     fd.write("                    {")
     new_line(fd)
-    fd.write('                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/etc/service_manifest.json", Cluster_Name, ')
+    fd.write(f'                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "executables/{SWname}/0.1/etc/service_manifest.json", Cluster_Name, ')
     fd.write(service_id)
     fd.write(', InstanceID);')
     new_line(fd)
@@ -184,7 +185,7 @@ def class_genrator(fd,service, service_id):
     new_line(fd)    
         
 
-def field_helper(fd,service,decider,name,id, service_id):
+def field_helper(fd,service,decider,name,id, service_id, SWname):
     f_name=decider+name
     output_type=name+"Field"
     fd.write("                    class ")
@@ -213,16 +214,17 @@ def field_helper(fd,service,decider,name,id, service_id):
     fd.write(output_type)
     fd.write(">(out);")
     new_line(fd)
-    fd.write("                            ara::com::AddMethodCall(")
-    fd.write(id)
-    fd.write(", ")
-    fd.write('"')
-    fd.write(f_name)
-    fd.write('", ')
-    fd.write("ara::com::MethodType::Proxy_Method,")
-    fd.write(service_id)
-    fd.write(", Cluster_Name);")
-    new_line(fd)
+    if SWname == "ota" or SWname == "ucm" or SWname == "sm":
+        fd.write("                            ara::com::AddMethodCall(")
+        fd.write(id)
+        fd.write(", ")
+        fd.write('"')
+        fd.write(f_name)
+        fd.write('", ')
+        fd.write("ara::com::MethodType::Proxy_Method,")
+        fd.write(service_id)
+        fd.write(", Cluster_Name);")
+        new_line(fd)
     fd.write("                            return out;")
     new_line(fd)
     fd.write("                        }")
@@ -231,7 +233,7 @@ def field_helper(fd,service,decider,name,id, service_id):
     new_line(fd)
         
 
-def field_genrator(fd,service, fields, serv_id):
+def field_genrator(fd,service, fields, serv_id, SWname):
     fd.write("                namespace fields")
     new_line(fd)
     fd.write("                {")
@@ -240,17 +242,17 @@ def field_genrator(fd,service, fields, serv_id):
         if f.getter == "true":
             id = fields[f.name][0]
             decider="Get"
-            field_helper(fd,service,decider,f.name,id, serv_id)
+            field_helper(fd,service,decider,f.name,id, serv_id, SWname)
 
         if f.setter == "true":
             id = fields[f.name][1]
             decider="Set"
-            field_helper(fd,service,decider,f.name,id, serv_id)
+            field_helper(fd,service,decider,f.name,id, serv_id, SWname)
            
         if f.notifier == "true":
             id = fields[f.name][2]
             decider="Notify"
-            field_helper(fd,service,decider,f.name,id, serv_id)
+            field_helper(fd,service,decider,f.name,id, serv_id, SWname)
         
         new_line(fd)
     fd.write("                }")
@@ -305,60 +307,65 @@ def includes(fd):
     fd.write('using namespace std;')
     new_line(fd)
 
-def proxy_generator(SI_parser, DataTypes, Deployment, Deployment_Manifest):
+def proxy_generator(SI_parser, DataTypes, Deployment, Deployment_Manifest, Sw_Comps):
     for i in SI_parser.service_interface.keys():
-        ProxyNeeded = False
+        ProxyNeeded = []
         for inst in Deployment_Manifest:
             if inst[0] == f"{i}_required_instance":
-                ProxyNeeded = True
-        if not ProxyNeeded:
+                ProxyNeeded.append(inst)
+        if len(ProxyNeeded) == 0:
             continue
-        # creating proxy file 
-        serv_id = Deployment[i][0]
 
-        filename="SecureOTA_System_Configurations/GeneratedFiles/"+i+"Proxy.hpp"
-        f = open(filename, "w")
-        includes(f)
-        # accessing the Service interface 
-        SI=SI_parser.service_interface[i]
-        namespaces_genration(f,SI)
+        for Sw_Comp in Sw_Comps:
+            SWname = Sw_Comp[0]
+            for port in Sw_Comp[1]:
+                if port[0] == 'R-PORT name' and port[2] == i:
+                    # creating proxy file 
+                    serv_id = Deployment[i][0]
 
-        # Shared Data Types Definition
-        shared_list = []
-        shared_str = ""
+                    filename="SecureOTA_System_Configurations/GeneratedFiles/"+i+"Proxy.hpp"
+                    f = open(filename, "w")
+                    includes(f)
+                    # accessing the Service interface 
+                    SI=SI_parser.service_interface[i]
+                    namespaces_genration(f,SI)
 
-        for j in SI.shared_types:
-            Datatypeslisting(j, shared_list, DataTypes)
-            shared_list.append(j)
+                    # Shared Data Types Definition
+                    shared_list = []
+                    shared_str = ""
 
-        shared_list = unique(shared_list)
-        for j in shared_list:
-            shared_str += DataTypes["shared_types"][j].Definition()
-        f.write(shared_str)
-        new_line(f)
+                    for j in SI.shared_types:
+                        Datatypeslisting(j, shared_list, DataTypes)
+                        shared_list.append(j)
 
-        mm = SI.methods
-        flds = SI.field
-        #generate the Struct of the Methods Arguments
-        for j in mm:
-            arg_struct(f, j, DataTypes)
+                    shared_list = unique(shared_list)
+                    for j in shared_list:
+                        shared_str += DataTypes["shared_types"][j].Definition()
+                    f.write(shared_str)
+                    new_line(f)
 
-        for j in flds:
-            field_struct(f, j, DataTypes)
+                    mm = SI.methods
+                    flds = SI.field
+                    #generate the Struct of the Methods Arguments
+                    for j in mm:
+                        arg_struct(f, j, DataTypes)
 
-        # Genrating the methods of the service interface    
-        method_namespace(f)
-        for j in mm:
-            meth_id = None
-            meth_id = Deployment[i][1][j.name]
-            method_genrator(f, j.name, meth_id, serv_id, j.in_args, j.out_args)
+                    for j in flds:
+                        field_struct(f, j, DataTypes)
 
-        f.write("                }")
-        new_line(f)
-        # genrating the fields of the service interface    
-        if len(SI.field)>0:
-            fields = Deployment[i][2]
-            field_genrator(f,SI,fields, serv_id)
-        class_genrator(f, SI, serv_id)
-        closing_namespaces(f,SI)
-    f.close()
+                    # Genrating the methods of the service interface    
+                    method_namespace(f)
+                    for j in mm:
+                        meth_id = None
+                        meth_id = Deployment[i][1][j.name]
+                        method_genrator(f, j.name, meth_id, serv_id, j.in_args, j.out_args, SWname)
+
+                    f.write("                }")
+                    new_line(f)
+                    # genrating the fields of the service interface    
+                    if len(SI.field)>0:
+                        fields = Deployment[i][2]
+                        field_genrator(f,SI,fields, serv_id, SWname)
+                    class_genrator(f, SI, serv_id, SWname)
+                    closing_namespaces(f,SI)
+                    f.close()

@@ -53,6 +53,7 @@ class Generator:
                 return 1
             else:
                 return self.__ScanMP()
+
         else:
             return 2
 
@@ -104,6 +105,7 @@ class Generator:
         print("Scanning Software Compounents")
         SWC = SWParser(self.CurrentXMLString)
         self.SoftwareCompounents = SWC.Parse()
+        self.CombineManifest()
 
     def __ScanD(self):
         print("Scanning Deployments")
@@ -130,26 +132,18 @@ class Generator:
             return 1
         else:
             return 0
-
-    def GenerateSkeleton(self):
-        print("Generate Interface Skeleton")
-        skeleton_generator(self.SI, self.DataTypes, self.Deployments, self.Deployments_Manifest)
-
-    def GenerateProxy(self):
-        print("Generate Interface Proxy")
-        proxy_generator(self.SI, self.DataTypes, self.Deployments, self.Deployments_Manifest)
-
-    def GenerateManifest(self):
+    
+    def CombineManifest(self):
         for Map in self.Mapping:
             for Inst in self.Deployments_Manifest:
                 if Inst[0] == Map[0]:
                     Map.append(Inst[1])
                     Map.append(Inst[2])
                     
-        Manifests = {}
+        self.Manifests = {}
         for SoftwareCompounent in self.SoftwareCompounents:
             Swc_name = SoftwareCompounent[0]
-            Manifests[Swc_name] = {"P_PORT":[], "R_PORT" : []}
+            self.Manifests[Swc_name] = {"P_PORT":[], "R_PORT" : []}
             for Port in SoftwareCompounent[1]:
                 P_name = Port[1]
                 for Map in self.Mapping:
@@ -160,13 +154,23 @@ class Generator:
                             temp.append(Map[1])
                             temp.append(Map[4])
                             temp.append(Map[5])
-                            Manifests[Swc_name]["P_PORT"].append(temp)
+                            self.Manifests[Swc_name]["P_PORT"].append(temp)
                         elif Port[0] == "R-PORT name":
                             temp = []
                             temp.append(Port[1])
                             temp.append(Map[4])
                             temp.append(Map[5])
-                            Manifests[Swc_name]["R_PORT"].append(temp)
+                            self.Manifests[Swc_name]["R_PORT"].append(temp)
+
+    def GenerateSkeleton(self):
+        print("Generate Interface Skeleton")
+        skeleton_generator(self.SI, self.DataTypes, self.Deployments, self.Deployments_Manifest, self.SoftwareCompounents)
+
+    def GenerateProxy(self):
+        print("Generate Interface Proxy")
+        proxy_generator(self.SI, self.DataTypes, self.Deployments, self.Deployments_Manifest, self.SoftwareCompounents)
+
+    def GenerateManifest(self):
         for swc in self.SoftwareCompounents:
             name=swc[0]
             #######PROVIDED#########
@@ -174,7 +178,7 @@ class Generator:
             p_list=[]
             list1=[]
             list2=[]
-            provided_list=Manifests[name]['P_PORT']
+            provided_list=self.Manifests[name]['P_PORT']
             for list in provided_list:
                 dictionary={}
                 dictionary["port"] = list[1]
@@ -185,7 +189,7 @@ class Generator:
                 list1.append(dictionary)
                 print("list 1",list1)
             #######REQUIRED#########
-            required_list=Manifests[name]['R_PORT']
+            required_list=self.Manifests[name]['R_PORT']
             for list in required_list:
                 dictionary2={}
                 dictionary2["service_id"]=list[1]

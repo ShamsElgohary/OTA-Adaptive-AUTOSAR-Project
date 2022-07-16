@@ -1,16 +1,17 @@
 #pragma once
-#include "../../SecureOTA_System_Configurations/GeneratedFiles/types.hpp"
+#include "types.hpp"
 #include "serviceskeleton.hpp"
-#include "../../utility/serialization/serialization_simple.hpp"
+#include "serialization_simple.hpp"
+using namespace std;
 namespace carcontrol
 {
+
     class CarControlSkeleton : public ara::com::skeleton::skeletonBase
     {
     public:
         CarControlSkeleton(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(CUSTOMIZED_PROJECT_PATH + "executables/Car_GUI/0.1/etc/service_manifest.json", 3, I_id, Cluster_Name, mode)
         {
         }
-
         struct ProcessCarActionInput
         {
             CarActionType Action;
@@ -64,7 +65,6 @@ namespace carcontrol
                 break;
             }
             }
-            ara::com::AddMethodCall(methodID, methodName, ara::com::MethodType::Skeleton_Method, 3, Cluster_Name);
         }
     };
 }

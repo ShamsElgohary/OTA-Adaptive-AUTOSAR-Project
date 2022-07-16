@@ -417,11 +417,11 @@ namespace ara
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService()
                     {
-                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/etc/service_manifest.json", Cluster_Name, 2);
+                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "executables/ota/0.1/etc/service_manifest.json", Cluster_Name, 2);
                     }
                     static ara::com::ServiceHandleContainer<ProxyBase::HandleType> FindService(ara::com::InstanceIdentifier InstanceID)
                     {
-                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/etc/service_manifest.json", Cluster_Name, 2, InstanceID);
+                        return ara::com::proxy::ProxyBase::FindService(CUSTOMIZED_PROJECT_PATH + "executables/ota/0.1/etc/service_manifest.json", Cluster_Name, 2, InstanceID);
                     }
                     methods::Finish Finish;
                     methods::TransferStart TransferStart;

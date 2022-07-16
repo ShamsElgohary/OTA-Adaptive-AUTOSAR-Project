@@ -212,7 +212,7 @@ def handle_method(fd,service, Deployment):
 
 
 
-def class_genrator(fd,service, service_id, Deployment, DataTypes):
+def class_genrator(fd,service, service_id, Deployment, DataTypes, SWname):
     serice_sklaton_name=service.ServiceInf_name+"Skeleton"
     fd.write("                class ")
     fd.write(serice_sklaton_name)
@@ -224,7 +224,7 @@ def class_genrator(fd,service, service_id, Deployment, DataTypes):
     new_line(fd)
     fd.write("                    ")
     fd.write(serice_sklaton_name)
-    fd.write('(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(CUSTOMIZED_PROJECT_PATH + "executables/ucm/0.1/etc/service_manifest.json", ')
+    fd.write(f'(ara::com::InstanceIdentifier I_id, ara::com::MethodCallProcessingMode mode = ara::com::MethodCallProcessingMode::kEvent) : skeletonBase(CUSTOMIZED_PROJECT_PATH + "executables/{SWname}/0.1/etc/service_manifest.json", ')
     fd.write(service_id)
     fd.write(", I_id, Cluster_Name, mode)")
     new_line(fd)
@@ -242,9 +242,10 @@ def class_genrator(fd,service, service_id, Deployment, DataTypes):
     virtual_method_genrator(fd,service)
     handle_method(fd,service, Deployment)
     new_line(fd)
-    fd.write("                        ara::com::AddMethodCall(methodID, methodName, ara::com::MethodType::Skeleton_Method, ")
-    fd.write(service_id)
-    fd.write(", Cluster_Name);")
+    if SWname == "ota" or SWname == "ucm" or SWname == "sm":
+        fd.write("                        ara::com::AddMethodCall(methodID, methodName, ara::com::MethodType::Skeleton_Method, ")
+        fd.write(service_id)
+        fd.write(", Cluster_Name);")
     new_line(fd)
     fd.write("                }")
     new_line(fd)
@@ -290,29 +291,34 @@ def includes(fd):
     new_line(fd)
 
 
-def skeleton_generator(SI_parser, DataTypes, Deployment, Deployment_Manifest):
+def skeleton_generator(SI_parser, DataTypes, Deployment, Deployment_Manifest, Sw_Comps):
     for i in SI_parser.service_interface.keys():
-        SkeletonNeeded = False
+        SkeletonNeeded = []
         for inst in Deployment_Manifest:
             if inst[0] == f"{i}_provided_instance":
-                SkeletonNeeded = True
-        if not SkeletonNeeded:
+                SkeletonNeeded.append(inst)
+        if len (SkeletonNeeded) == 0:
             continue
-        # creating proxy file 
-        serv_id = Deployment[i][0]
+        for Sw_Comp in Sw_Comps:
+            SWname = Sw_Comp[0]
+            for port in Sw_Comp[1]:
+                if port[0] == 'P-PORT name' and port[2] == i:
+                    # creating proxy file 
+                    # creating proxy file 
+                    serv_id = Deployment[i][0]
 
-        SI=SI_parser.service_interface[i]
-        
-        # creating proxy file 
-        filename="SecureOTA_System_Configurations/GeneratedFiles/"+i+"Skeleton.hpp"
-        f = open(filename, "w")
-        includes(f)
-        namespaces_genration(f,SI)
+                    SI=SI_parser.service_interface[i]
+                    
+                    # creating proxy file 
+                    filename="SecureOTA_System_Configurations/GeneratedFiles/"+i+"Skeleton.hpp"
+                    f = open(filename, "w")
+                    includes(f)
+                    namespaces_genration(f,SI)
 
-        # accessing the Service interface 
-        InfDeployment = Deployment[i]
-        class_genrator(f,SI, serv_id, InfDeployment, DataTypes)
-        closing_namespaces(f,SI)
-    f.close()
+                    # accessing the Service interface 
+                    InfDeployment = Deployment[i]
+                    class_genrator(f,SI, serv_id, InfDeployment, DataTypes, SWname)
+                    closing_namespaces(f,SI)
+                    f.close()
 
 
