@@ -1,17 +1,20 @@
 import xml.etree.ElementTree as ET          
 from DataType import DataTypeParser
 from Service_Interface import ServiceInfParser
+from proxy_gen import proxy_generator
+from skeleton_gen import skeleton_generator
 from Deployment import DeploymentParser
 from Mapping_SwCompounent import MappingParser, SWParser
+import json
 
 class Generator:
     def __init__(self):
         self.CurrentXMLString = ""
         self.Name = ""
         self.Machines = {}
-        self.ServiceInterfaces = {}
         self.DataTypes = {}
         self.Deployments = {}
+        self.Deployments_Manifest = []
         self.SoftwareCompounents = {}
         self.Mapping = {}
     
@@ -50,6 +53,7 @@ class Generator:
                 return 1
             else:
                 return self.__ScanMP()
+
         else:
             return 2
 
@@ -90,27 +94,28 @@ class Generator:
     def __ScanDT(self):
         print("Scanning DataTypes")
         DT = DataTypeParser(self.CurrentXMLString)
-        DT.Parse()
+        self.DataTypes = DT.Parse()
 
     def __ScanSI(self):
         print("Scanning Service Interfaces")
-        SI = ServiceInfParser(self.CurrentXMLString)
-        SI.Parse()
+        self.SI = ServiceInfParser(self.CurrentXMLString)
+        self.SI.Parse()
 
     def __ScanSC(self):
         print("Scanning Software Compounents")
         SWC = SWParser(self.CurrentXMLString)
-        SWC.Parse()
+        self.SoftwareCompounents = SWC.Parse()
+        self.CombineManifest()
 
     def __ScanD(self):
         print("Scanning Deployments")
         Dep = DeploymentParser(self.CurrentXMLString)
-        Dep.Parse()
+        self.Deployments, self.Deployments_Manifest = Dep.Parse()
 
     def __ScanMP(self):
         print("Scanning Mappings")
         Map = MappingParser(self.CurrentXMLString)
-        Map.Parse()
+        self.Mapping = Map.Parse()
 
 
     def __CheckPName(self):
@@ -127,21 +132,88 @@ class Generator:
             return 1
         else:
             return 0
+    
+    def CombineManifest(self):
+        for Map in self.Mapping:
+            for Inst in self.Deployments_Manifest:
+                if Inst[0] == Map[0]:
+                    Map.append(Inst[1])
+                    Map.append(Inst[2])
+                    
+        self.Manifests = {}
+        for SoftwareCompounent in self.SoftwareCompounents:
+            Swc_name = SoftwareCompounent[0]
+            self.Manifests[Swc_name] = {"P_PORT":[], "R_PORT" : []}
+            for Port in SoftwareCompounent[1]:
+                P_name = Port[1]
+                for Map in self.Mapping:
+                    if Map[2] == Swc_name and Map[3] == P_name:
+                        if Port[0] == "P-PORT name":
+                            temp = []
+                            temp.append(Port[1])
+                            temp.append(Map[1])
+                            temp.append(Map[4])
+                            temp.append(Map[5])
+                            self.Manifests[Swc_name]["P_PORT"].append(temp)
+                        elif Port[0] == "R-PORT name":
+                            temp = []
+                            temp.append(Port[1])
+                            temp.append(Map[4])
+                            temp.append(Map[5])
+                            self.Manifests[Swc_name]["R_PORT"].append(temp)
 
     def GenerateSkeleton(self):
-        Skeleton = "Generate Interface Skeleton"
         print("Generate Interface Skeleton")
-        return Skeleton
+        skeleton_generator(self.SI, self.DataTypes, self.Deployments, self.Deployments_Manifest, self.SoftwareCompounents)
 
     def GenerateProxy(self):
-        Proxy = "Generate Interface Proxy"
         print("Generate Interface Proxy")
-        return Proxy
+        proxy_generator(self.SI, self.DataTypes, self.Deployments, self.Deployments_Manifest, self.SoftwareCompounents)
 
     def GenerateManifest(self):
-        Manifest = "Generate Interface Manifest"
-        print("Generate Interface Manifest")
-        return Manifest
+        for swc in self.SoftwareCompounents:
+            name=swc[0]
+            #######PROVIDED#########
+            port=[]
+            p_list=[]
+            list1=[]
+            list2=[]
+            provided_list=self.Manifests[name]['P_PORT']
+            for list in provided_list:
+                dictionary={}
+                dictionary["port"] = list[1]
+                dictionary["service_id"]=list[2]
+                dictionary["instance_id"]=list[3]
+                dictionary["type"]="SOME/IP"
+                dictionary["ipv4"]="127.0.0.1"
+                list1.append(dictionary)
+                print("list 1",list1)
+            #######REQUIRED#########
+            required_list=self.Manifests[name]['R_PORT']
+            for list in required_list:
+                dictionary2={}
+                dictionary2["service_id"]=list[1]
+                dictionary2["instance_id"]=list[2]
+                dictionary2["type"]="SOME/IP"
+                list2.append(dictionary2)
 
 
+            datajson = {
+                    "ap_service_instances":{
+                    "required_ap_service_instances":list2,
+                    "provided_ap_service_instances":list1
+                    }
+                }
+            try:
+                with open("executables/"+name+"/0.1/etc/service_manifest.json", 'w') as f:
+                    json.dump(datajson, f, 
+                                        indent=4,  
+                                        separators=(',',': '))
+                    f.close()
 
+            except:
+                with open("SecureOTA_System_Configurations/GeneratedFiles/service_manifest.json", 'w') as f:
+                    json.dump(datajson, f, 
+                                        indent=4,  
+                                        separators=(',',': '))
+                    f.close()

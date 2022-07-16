@@ -40,7 +40,7 @@ namespace ara
 
 				std::future<RevertProcessedSwPackagesOutput> RevertProcessedSwPackages() override;
 
-				std::future<GetCurrentStatusField> GetCurrentStatus() override;
+				std::future<CurrentStatusField> GetCurrentStatus() override;
 
 				std::future<FinishOutput> Finish() override;
 

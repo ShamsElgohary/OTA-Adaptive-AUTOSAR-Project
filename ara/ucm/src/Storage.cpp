@@ -103,6 +103,11 @@ void ara::ucm::storage::SWCLManager::ResetSWCLChangeInfo()
     NewSWClusters.clear();
 }
 
+void ara::ucm::storage::SWCLManager::PresentSWCLChangeInfo()
+{
+    SWClusters.clear();
+}
+
 void ara::ucm::storage::SWCLManager::RevertChanges()
 {
     for (auto itr = NewSWClusters.begin(); itr != NewSWClusters.end(); ++itr)

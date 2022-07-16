@@ -166,12 +166,12 @@ namespace ara::ucm::pkgmgr
         return promise.get_future();
     }
 
-    std::future<ara::ucm::pkgmgr::PackageManagerImpl::GetCurrentStatusField> PackageManagerImpl::GetCurrentStatus()
+    std::future<ara::ucm::pkgmgr::PackageManagerImpl::CurrentStatusField> PackageManagerImpl::GetCurrentStatus()
     {
-        std::promise<ara::ucm::pkgmgr::PackageManagerImpl::GetCurrentStatusField> promise;
+        std::promise<ara::ucm::pkgmgr::PackageManagerImpl::CurrentStatusField> promise;
 
-        ara::ucm::pkgmgr::PackageManagerImpl::GetCurrentStatusField StatusResult;
-        StatusResult.Status = PackageManagerStateinstance->GetStatusInternal();
+        ara::ucm::pkgmgr::PackageManagerImpl::CurrentStatusField StatusResult;
+        StatusResult.CurrentStatus = PackageManagerStateinstance->GetStatusInternal();
 
         promise.set_value(StatusResult);
 

@@ -1,0 +1,49 @@
+{
+	"Cluster_name" : "ServiceDiscovery",
+	"SD" : 
+	{
+		"Find Requests" : [],
+		"Received SD messages" : 
+		[
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Interface Version" : 1,
+				"Message ID" : 4294934784,
+				"Message Type" : "NOTIFICATION",
+				"Port Number" : 2253,
+				"Protocol Version" : 1,
+				"Service ID" : 2,
+				"Type" : "offer service",
+				"ttl" : 16777215
+			},
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Interface Version" : 1,
+				"Message ID" : 4294934784,
+				"Message Type" : "NOTIFICATION",
+				"Port Number" : 2522,
+				"Protocol Version" : 1,
+				"Service ID" : 1,
+				"Type" : "offer service",
+				"ttl" : 16777215
+			}
+		],
+		"ServiceInfoMap" : 
+		[
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2253,
+				"Service ID" : 2
+			},
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2522,
+				"Service ID" : 1
+			}
+		]
+	}
+}

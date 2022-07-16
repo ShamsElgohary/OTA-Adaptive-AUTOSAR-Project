@@ -78,7 +78,7 @@ namespace ara
 					static vector <ara::ucm::SwClusterInfoType> GetSWCLsChangeInfo();
 					static void IndexActionsAndSWCLs();
 					static void ResetSWCLChangeInfo();
-					
+					static void PresentSWCLChangeInfo();
 					static void SetSWCLState(ara::ucm::SwClusterInfoType ChangedSWCluster, ara::ucm::SwClusterStateType State);
 					static void RemoveSWCL(ara::ucm::SwClusterInfoType ChangedSWCluster);
 					static void PushInSWCLusters(ara::ucm::SwClusterInfoType ChangedSWCluster);

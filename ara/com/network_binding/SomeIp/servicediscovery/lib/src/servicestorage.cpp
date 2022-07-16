@@ -4,8 +4,12 @@ using namespace someip;
 
 servicestorage::servicestorage()
 {
-    sim_socket.connect_to_socket();
-    sim_socket.send_exe_name(simulation::exe_name::sd);
+    #ifdef SIMULATION_ACTIVE
+    {
+        sim_socket.connect_to_socket();
+        sim_socket.send_exe_name(simulation::exe_name::sd);
+    }
+    #endif
 }
 
 void servicestorage::AddToServiceRegistry(uint16_t Service_ID, serviceinfo serviceinformation)
@@ -132,8 +136,8 @@ void servicestorage::removefromlist()
     json_file << event;
     json_file.close();
 
-    if (SIMULATION_ACTIVE)
-    {
+    #ifdef SIMULATION_ACTIVE
+    
         char current_dir[256];
 
         getcwd(current_dir, 256);
@@ -143,7 +147,7 @@ void servicestorage::removefromlist()
         path += "/SD_Report.json";
 
         sim_socket.send_file((char *)(path.c_str()));
-    }
+    #endif
 }
 
 void servicestorage::addtoGUI(uint16_t Service_ID, serviceinfo serviceinformation)
@@ -174,7 +178,7 @@ void servicestorage::addtoGUI(uint16_t Service_ID, serviceinfo serviceinformatio
     json_file << event;
     json_file.close();
 
-    if (SIMULATION_ACTIVE)
+    #ifdef SIMULATION_ACTIVE
     {
         char current_dir[256];
 
@@ -186,6 +190,7 @@ void servicestorage::addtoGUI(uint16_t Service_ID, serviceinfo serviceinformatio
 
         sim_socket.send_file((char *)(path.c_str()));
     }
+    #endif
 }
 
 void servicestorage::Addtorequests(uint16_t Service_ID, uint16_t instance_id)
@@ -214,7 +219,7 @@ void servicestorage::Addtorequests(uint16_t Service_ID, uint16_t instance_id)
     json_file.close();
 
     /*connect to server*/
-    if (SIMULATION_ACTIVE)
+    #ifdef SIMULATION_ACTIVE
     {
         char current_dir[256];
         getcwd(current_dir, 256);
@@ -222,6 +227,7 @@ void servicestorage::Addtorequests(uint16_t Service_ID, uint16_t instance_id)
         path += "/SD_Report.json";
         sim_socket.send_file((char *)(path.c_str()));
     }
+    #endif
 }
 
 void servicestorage::addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint32_t ttl, uint16_t TYPE, uint16_t port_num, string ipv4_address, someip::MessageType m, MessageID messageID, ProtocolVersion protocol_version, InterfaceVersion interface_version)
@@ -280,7 +286,7 @@ void servicestorage::addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint
     std::ofstream json_file("SD_Report.json");
     json_file << event;
     json_file.close();
-    if (SIMULATION_ACTIVE)
+    #ifdef SIMULATION_ACTIVE
     {
         char current_dir[256];
         getcwd(current_dir, 256);
@@ -288,6 +294,7 @@ void servicestorage::addmsgtoGUI(uint16_t Service_ID, uint16_t instance_id, uint
         path += "/SD_Report.json";
         sim_socket.send_file((char *)(path.c_str()));
     }
+    #endif
 
     /*connect to server*/
 }

@@ -19,8 +19,10 @@ sm_logger::sm_logger(int server_port)
 {
 freopen("sm.txt","w+",stdout); //write cout and printf to txt file
 this->sim=new simulation(server_port);
-this->sim->connect_to_socket();
-this->sim->send_exe_name(simulation::exe_name::sm);
+#ifdef SIMULATION_ACTIVE
+   this->sim->connect_to_socket();
+   this->sim->send_exe_name(simulation::exe_name::sm);
+#endif
 this->functions_state={};
 std::cout<<"sm logger connected to gui\n";
 }
@@ -52,7 +54,7 @@ R.parse(f, event);
  reset();
  
  /*connect to server*/
- if (SIMULATION_ACTIVE)
+    #ifdef SIMULATION_ACTIVE
  {
     char current_dir[256];
     getcwd(current_dir,256);
@@ -60,6 +62,7 @@ R.parse(f, event);
     path+="/sm_Report.json";
     this->sim->send_file((char *)(path.c_str()));
  }
+ #endif
  
 }
 void sm_logger::reset()

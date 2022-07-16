@@ -56,13 +56,14 @@ void Application::start()
         locker.lock();
         current_state = newstate;
         locker.unlock();
+        outdata << "[EM] " << name << " state is Krunning " << id << "\n";
+        outdata.flush();
         condr.notify_all();
-        if(SIMULATION_ACTIVE)
+        #ifdef SIMULATION_ACTIVE
         {
             static_cast<ApplicationExecutionMgr*>(parent)->reportConfig_simulation();
         }
-        outdata << "[EM] " << name << " state is Krunning " << id << "\n";
-        outdata.flush();
+        #endif
         Update_status(); })
         .detach();
 }
@@ -92,10 +93,11 @@ void Application::Update_status()
     id = 0;
     close(fd);
     locker.unlock();
-    if (SIMULATION_ACTIVE)
+    #ifdef SIMULATION_ACTIVE
     {
         static_cast<ApplicationExecutionMgr *>(parent)->reportConfig_simulation();
     }
+    #endif
     outdata << "[EM] " << name << " state is Kterminate"
             << "\n";
     outdata.flush();

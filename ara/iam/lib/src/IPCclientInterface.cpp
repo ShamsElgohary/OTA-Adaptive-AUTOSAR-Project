@@ -6,11 +6,14 @@ std::uint8_t ara::iam::IPCclientInterface::Connect()
     try
     {
         socket_.connect(tcp::endpoint(boost::asio::ip::address::from_string(IAM_IP_ADDRESS), IAM_PORT_NUMBER));
+        
     }
     catch (boost::system::system_error e)
     {
         std::cout << "iam connect to socket : " << e.what() << endl;
+        return 0;
     }
+    return 1;
 }
 void ara::iam::IPCclientInterface::Send(ara::iam::Grant G)
 {

@@ -21,7 +21,9 @@ set(PROJECT_SOURCES
         mainwindow.ui
         commands.h
         ../../utility/general.hpp
+
 )
+
 
 ###############################EM_LIB###############################
 set(exec_source_dir "${CMAKE_SOURCE_DIR}/../../ara/exec")
@@ -52,7 +54,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(Car_GUI PRIVATE Qt5::Widgets execution_lib)
+target_link_libraries(Car_GUI PRIVATE Qt${QT_VERSION_MAJOR}::Widgets execution_lib)
 
 set_target_properties(Car_GUI PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

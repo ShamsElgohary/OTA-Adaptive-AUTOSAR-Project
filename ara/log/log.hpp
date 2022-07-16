@@ -10,18 +10,18 @@
 
 using namespace std;
 
-
 namespace ara
 {
     class log
     {
     public:
-        
         log()
         {
             // Connect to gui socket
-            guiSocket->connect_to_socket();
-            guiSocket->send_exe_name(simulation::exe_name::ucm);
+            #ifdef SIMULATION_ACTIVE
+                guiSocket->connect_to_socket();
+                guiSocket->send_exe_name(simulation::exe_name::ucm);
+            #endif
         }
 
         ~log()
@@ -43,12 +43,13 @@ namespace ara
                 ofstream ReportAction("ActionsLog.txt", std::ofstream::out | std::ofstream::trunc);
                 ReportAction.close();
 
-                if (SIMULATION_ACTIVE_UCM)
+                #ifdef SIMULATION_ACTIVE
                 {
                     std::string Path = "GUI_Report.json";
-                    char PathArr[Path.length() + 1]; 
+                    char PathArr[Path.length() + 1];
                     guiSocket->send_file("GUI_Report.json");
                 }
+                 #endif
             }
             catch (const std::exception &e)
             {
@@ -81,19 +82,20 @@ namespace ara
                 std::ofstream json_file("GUI_Report.json");
                 json_file << event;
                 json_file.close();
-                
             }
             catch (const std::exception &e)
             {
                 std::cout << e.what() << '\n';
             }
 
-            if (SIMULATION_ACTIVE_UCM)
+            #ifdef SIMULATION_ACTIVE
             {
                 std::string Path = "GUI_Report.json";
-                char PathArr[Path.length() + 1]; 
+                char PathArr[Path.length() + 1];
                 guiSocket->send_file("GUI_Report.json");
             }
+             #endif
+
         }
 
         void pkgAction(string actiontype, bool pkgStatus = 0)
@@ -104,23 +106,24 @@ namespace ara
             Json::Reader R;
             R.parse(inputFile, event);
 
-            if(pkgStatus)
+            if (pkgStatus)
                 event["ucm_json"]["PKGDetails"]["PackageStatus"] = Json::Value(actiontype);
 
             else
                 event["ucm_json"]["PKGDetails"]["Action"] = Json::Value(actiontype);
-            
 
             std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
 
-            if (SIMULATION_ACTIVE_UCM)
+            #ifdef SIMULATION_ACTIVE
             {
                 std::string Path = "GUI_Report.json";
-                char PathArr[Path.length() + 1]; 
+                char PathArr[Path.length() + 1];
                 guiSocket->send_file("GUI_Report.json");
             }
+             #endif
+
         }
 
         void newPkgCluster(string name, string version)
@@ -138,12 +141,14 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            if (SIMULATION_ACTIVE_UCM)
+#ifdef SIMULATION_ACTIVE
             {
                 std::string Path = "GUI_Report.json";
-                char PathArr[Path.length() + 1]; 
+                char PathArr[Path.length() + 1];
                 guiSocket->send_file("GUI_Report.json");
             }
+             #endif
+
         }
 
         void ReportStatus(uint8_t statusId)
@@ -160,12 +165,14 @@ namespace ara
             json_file << event;
             json_file.close();
 
-            if (SIMULATION_ACTIVE_UCM)
+#ifdef SIMULATION_ACTIVE
             {
                 std::string Path = "GUI_Report.json";
-                char PathArr[Path.length() + 1]; 
+                char PathArr[Path.length() + 1];
                 guiSocket->send_file("GUI_Report.json");
             }
+             #endif
+
         }
 
         template <typename T>
@@ -190,12 +197,14 @@ namespace ara
             std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
-            if (SIMULATION_ACTIVE_UCM)
+#ifdef SIMULATION_ACTIVE
             {
                 std::string Path = "GUI_Report.json";
-                char PathArr[Path.length() + 1]; 
+                char PathArr[Path.length() + 1];
                 guiSocket->send_file("GUI_Report.json");
             }
+             #endif
+
         }
 
         void ReportPresentSWClusters(vector<ara::ucm::SwClusterInfoType> presentClusters)
@@ -220,18 +229,17 @@ namespace ara
             std::ofstream json_file("GUI_Report.json");
             json_file << event;
             json_file.close();
-            if (SIMULATION_ACTIVE_UCM)
+            #ifdef SIMULATION_ACTIVE
             {
                 std::string Path = "GUI_Report.json";
-                char PathArr[Path.length() + 1]; 
+                char PathArr[Path.length() + 1];
                 guiSocket->send_file("GUI_Report.json");
             }
+            #endif
         }
 
     private:
-
         inline static simulation *guiSocket = new simulation(8088);
-        
 
         /* USED TO CONVERT THE UCM OPERATION RESULTS INTO A STRING */
         string OperationResult[7] =
@@ -241,5 +249,4 @@ namespace ara
         string CurrentStatusTypes[9] =
             {"kIdle", "kReady", "kProcessing", "kActivating", "kActivated", "kRollingBack", "kRolledBack", "kCleaningUp", "kVerifying"};
     };
-
 }

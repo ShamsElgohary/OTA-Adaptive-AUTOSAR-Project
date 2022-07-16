@@ -1,0 +1,9 @@
+sm logger connected to gui
+[sm] setting new state from sm
+[sm] setting new state from sm
+[iamClient] Awaiting server response...
+[iamClient] Result: 1
+[iamClient] Result: 1
+IP Address: 127.0.0.1 
+Port: 2522
+Sm offering service

@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
    create_server();
    string path(CUSTOMIZED_PROJECT_PATH+"gui_em");
    mkfifo(path.c_str(),0777);
+   string path1(CUSTOMIZED_PROJECT_PATH+"gui_ota");
+   mkfifo(path1.c_str(),0777);
    flag=0;
 }
 void MainWindow::create_server()
@@ -52,6 +54,7 @@ void MainWindow::create_server()
                     else
                     {
                         cout<<"socket closed"<<endl;
+                        cout<<name<<endl;
                         new_socket->close();
                         delete new_socket;
                         break;
@@ -77,6 +80,9 @@ void MainWindow::connect_fun()
 }
 void MainWindow::on_simulation_button_clicked()
 {
+    string command="cp "+CUSTOMIZED_PROJECT_PATH+"executables/etc/system/Process_List.json "+CUSTOMIZED_PROJECT_PATH+"executables/Process_List.json";
+    system(command.c_str());
+
     simulation_button->setEnabled(false);
     debug_button->setVisible(false);
     simulation_running=true;
@@ -190,6 +196,21 @@ void MainWindow::end_simulation_button_clicked()
     system("pkill -x ex2");
     system("pkill -x Car_GUI");
 
+    //return original process list
+    string command="mv "+CUSTOMIZED_PROJECT_PATH+"executables/Process_List.json "+CUSTOMIZED_PROJECT_PATH+"executables/etc/system";
+    system(command.c_str());
+    string backup_path=CUSTOMIZED_PROJECT_PATH+"executables/Backup";
+    if(DirectoryExists(backup_path.c_str()))
+    //if(true)
+    {
+    //remove updated gui
+    command = "rm -r "+CUSTOMIZED_PROJECT_PATH+"executables/Car_GUI";
+    system(command.c_str());
+
+    //rename Backup
+    command="mv "+CUSTOMIZED_PROJECT_PATH+"executables/Backup "+CUSTOMIZED_PROJECT_PATH+"executables/Car_GUI";
+    system(command.c_str());
+    }
     tabWidget->clear();
     exec_tab->clear_widget();
     this->tabWidget->addTab(exec_tab,"Execution Manager");
@@ -210,6 +231,8 @@ void MainWindow::end_simulation_button_clicked()
 }
 void MainWindow::on_debug_button_clicked()
 {
+        string command="cp "+CUSTOMIZED_PROJECT_PATH+"executables/etc/system/Process_List.json "+CUSTOMIZED_PROJECT_PATH+"executables/Process_List.json";
+        system(command.c_str());
         simulation_button->setVisible(false);
         simulation_running=true;
         if(flag==0)
@@ -232,18 +255,40 @@ void MainWindow::on_debug_button_clicked()
             this->debugging_mode=true;
             exec_tab->debugging_mode=this->debugging_mode;
             exec_tab->em_connect();
-            debug_button->setText("Load Configurations");
+            debug_button->setText("Put MachineFG In Startup");
         }
-        else if(flag==1)
+        else if(flag>=1)
         {
             QThread*th= QThread::create([this]{
             exec_tab->em_connect();
             });
             th->start();
-            debug_button->setText("Process SM Request");
+            switch (flag)
+            {
+            case 1:debug_button->setText("Run SM");
+                flag++;
+                break;
+            case 2:debug_button->setText("Process SM Request");
+                break;
+            }
         }
+}
+bool MainWindow::DirectoryExists( const char* pzPath )
+{
+    if ( pzPath == NULL) return false;
 
+    DIR *pDir;
+    bool bExists = false;
 
+    pDir = opendir (pzPath);
+
+    if (pDir != NULL)
+    {
+        bExists = true;
+        (void) closedir (pDir);
+    }
+
+    return bExists;
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtWidgets>
+#include "dirent.h"
 #include "exec.h"
 #include "sm.h"
 #include "ucm.h"
@@ -79,5 +80,7 @@ private:
     bool simulation_running=false;
     int flag;
     bool debugging_mode;
+    bool DirectoryExists(const char* pzPath);
 };
+
 #endif // MAINWINDOW_H

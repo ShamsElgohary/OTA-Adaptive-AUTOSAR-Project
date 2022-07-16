@@ -3,7 +3,7 @@ using namespace ara::sm;
 using namespace ara::exec;
 using namespace std;
 std::map<Functiongroup, std::string> UpdateRequestImpl::FunctionGroupStates;
-std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateRequestImpl::StartUpdateSession()
+std::future<UpdateRequest::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateRequestImpl::StartUpdateSession()
 {
     sm_functions functions = {.sm_StartUpdateSession = (1), .sm_StopUpdateSession = (0), .sm_PrepareUpdate = (0), .sm_VerifyUpdate = (0)};
     std::cout << "Starting Update Session" << std::endl;
@@ -15,12 +15,12 @@ std::future<skeleton::UpdateRequestSkeleton::StartUpdateSessionOutput> UpdateReq
     if (success)
     {
         UpdateRequestImpl::FunctionGroupStates[state.fg_name] = "update";
-        out.AppError = success;
+        out.AppError = ara::sm::SM_ApplicationError::kPrepared;
         std::cout << state.fg_name << " now is in state " << state.fg_newState << std::endl;
     }
     else
     {
-        out.AppError = uint8_t(SM_ApplicationError::kRejected);
+        out.AppError  = ara::sm::SM_ApplicationError::kRejected;
         std::cout << "Updating Machine is not allowed" << std::endl;
     }
 
@@ -39,15 +39,14 @@ void UpdateRequestImpl::StopUpdateSession()
     bool success = UpdateRequestImpl::client->setState(state);
     if (success)
         this->FunctionGroupStates[state.fg_name] = state.fg_newState;
-    
-    StateClient client{};
+    log->update_logger(functions, this->FunctionGroupStates);
     FunctionGroupState state2 = FunctionGroupState::Preconstruct("fn1", "idle");
-    success = client.setState(state2);
+    success = UpdateRequestImpl::client->setState(state2);
     if (success)
         this->FunctionGroupStates[state2.fg_name] = state2.fg_newState;
     log->update_logger(functions, this->FunctionGroupStates);
 }
-std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
+std::future<UpdateRequest::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestImpl::PrepareUpdate(FunctionGroupList FunctionGroups)
 {
     cout << "Preparing Update" << std::endl;
     sm_functions functions = {.sm_StartUpdateSession = (0), .sm_StopUpdateSession = (0), .sm_PrepareUpdate = (1), .sm_VerifyUpdate = (0)};
@@ -65,14 +64,14 @@ std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestI
             if (success)
             {
                 std::cout << state.fg_name << " now is in state " << state.fg_newState << std::endl;
-                out.AppError = success;
+                out.AppError = ara::sm::SM_ApplicationError::kPrepared;
                 this->FunctionGroupStates[state.fg_name] = state.fg_newState;
                 log->update_logger(functions, this->FunctionGroupStates);
             }
             else
             {
                 printf("%s not prepared correctly\n", fg.c_str());
-                out.AppError = uint8_t(SM_ApplicationError::kPrepareFailed);
+                out.AppError = ara::sm::SM_ApplicationError::kPrepareFailed;
                 log->update_logger(functions, this->FunctionGroupStates);
                 break;
             }
@@ -81,14 +80,14 @@ std::future<skeleton::UpdateRequestSkeleton::PrepareUpdateOutput> UpdateRequestI
     else
     {
         printf("StartUpdateSession must be called before\n");
-        out.AppError = (uint8_t)SM_ApplicationError::kRejected;
+        out.AppError = ara::sm::SM_ApplicationError::kRejected;
         log->update_logger(functions, this->FunctionGroupStates);
     }
     promise.set_value(out);
 
     return promise.get_future();
 }
-std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
+std::future<UpdateRequest::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestImpl::VerifyUpdate(FunctionGroupList FunctionGroups)
 {
     std::cout << "Verifying Update" << std::endl;
     sm_functions functions = {.sm_StartUpdateSession = (0), .sm_StopUpdateSession = (0), .sm_PrepareUpdate = (0), .sm_VerifyUpdate = (1)};
@@ -103,7 +102,7 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
             if (this->FunctionGroupStates[fg] != "off")
             {
                 printf("PrepareUpdate must be called before\n");
-                out.AppError = uint8_t(SM_ApplicationError::kRejected);
+                out.AppError = ara::sm::SM_ApplicationError::kRejected;
                 break;
             }
             FunctionGroupState state = FunctionGroupState::Preconstruct(fg, "verify");
@@ -111,14 +110,14 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
             if (success)
             {
                 std::cout << state.fg_name << " now is in state " << state.fg_newState << std::endl;
-                out.AppError = success;
+                out.AppError = ara::sm::SM_ApplicationError::kVerified;
                 this->FunctionGroupStates[state.fg_name] = state.fg_newState;
                 log->update_logger(functions, this->FunctionGroupStates);
             }
             else
             {
                 printf("%s in not verifiyed correctly\n", fg.c_str());
-                out.AppError = uint8_t(SM_ApplicationError::kVerifyFailed);
+                out.AppError = ara::sm::SM_ApplicationError::kVerifyFailed;
                 log->update_logger(functions, this->FunctionGroupStates);
                 break;
             }
@@ -127,7 +126,7 @@ std::future<skeleton::UpdateRequestSkeleton::VerifyUpdateOutput> UpdateRequestIm
     else
     {
         printf("StartUpdateSession must be called before\n");
-        out.AppError = (uint8_t)SM_ApplicationError::kRejected;
+        out.AppError = ara::sm::SM_ApplicationError::kRejected;
         log->update_logger(functions, this->FunctionGroupStates);
     }
     promise.set_value(out);

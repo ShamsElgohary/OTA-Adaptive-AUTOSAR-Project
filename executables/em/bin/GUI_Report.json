@@ -1,0 +1,38 @@
+{
+	"ucm_json" : 
+	{
+		"PresentClusters" : 
+		{
+			"Cluster1" : 
+			{
+				"Name" : "Car_GUI",
+				"Version" : "0.1"
+			},
+			"Cluster2" : 
+			{
+				"Name" : "iam",
+				"Version" : "0.1"
+			},
+			"Cluster3" : 
+			{
+				"Name" : "ota",
+				"Version" : "0.1"
+			},
+			"Cluster4" : 
+			{
+				"Name" : "sm",
+				"Version" : "0.1"
+			},
+			"Cluster5" : 
+			{
+				"Name" : "someip_sd",
+				"Version" : "0.1"
+			},
+			"Cluster6" : 
+			{
+				"Name" : "ucm",
+				"Version" : "0.1"
+			}
+		}
+	}
+}

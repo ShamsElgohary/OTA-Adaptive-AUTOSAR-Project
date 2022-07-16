@@ -37,25 +37,6 @@ install(TARGETS em RUNTIME DESTINATION ${em_install_dir})
 add_library(execution_lib STATIC ${exec_source_dir}/src/execution_client.cpp ${exec_source_dir}/src/state_client.cpp ${exec_source_dir}/src/function_group_state.cpp ${exec_source_dir}/src/find_process_client.cpp)
 target_include_directories(execution_lib PUBLIC  ${exec_source_dir}/include)
 
-###############################EX1###############################
-
-set(source_excutables_ex1_dir "${CMAKE_SOURCE_DIR}/executables/ex1/0.1/bin")
-add_executable(ex1 ${source_excutables_ex1_dir}/ex1.cpp) 
-target_link_libraries( ex1 execution_lib )
-install(TARGETS ex1 RUNTIME DESTINATION ${source_excutables_ex1_dir})
-
-###############################EX2###############################
-
-set(source_excutables_ex2_dir  "${CMAKE_SOURCE_DIR}/executables/ex2/0.1/bin")
-add_executable(ex2 ${source_excutables_ex2_dir}/ex2.cpp) 
-target_link_libraries( ex2 execution_lib )
-install(TARGETS ex2 RUNTIME DESTINATION ${source_excutables_ex2_dir})
-###############################EX2###############################
-
-# set(source_excutables_ex2_dir_  "${CMAKE_SOURCE_DIR}/executables/ex2/0.2/bin")
-# add_executable(ex2_ ${source_excutables_ex2_dir_}/ex2.cpp) 
-# target_link_libraries( ex2_ execution_lib )
-# install(TARGETS ex2_ RUNTIME DESTINATION ${source_excutables_ex2_dir_})
 
 ################################IAM#############################
 
@@ -136,105 +117,23 @@ add_executable(sm ${source_excutables_sm_dir_1}/main.cpp ${source_excutables_sm_
 target_link_libraries( sm execution_lib jsoncpp_lib com_lib iam_lib)
 install(TARGETS sm RUNTIME DESTINATION ${source_excutables_sm_dir})
 
-################################COM_test##########################
-
-set(test_server_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Server")
-set(test_server_install_dir "${CMAKE_SOURCE_DIR}/executables/com_skeleton_test/0.1/bin")
-add_executable(com_skeleton_test ${test_server_source_dir}/main.cpp ) 
-target_link_libraries(com_skeleton_test com_lib iam_lib execution_lib)
-target_include_directories( com_skeleton_test PUBLIC ${test_server_source_dir} )
-install(TARGETS com_skeleton_test RUNTIME DESTINATION ${test_server_install_dir})
-
-set(test_client_source_dir "${CMAKE_SOURCE_DIR}/ara/test/Client")
-set(test_client_install_dir "${CMAKE_SOURCE_DIR}/executables/com_proxy_test/0.1/bin")
-add_executable(com_proxy_test ${test_client_source_dir}/main.cpp) 
-target_include_directories( com_proxy_test PUBLIC ${test_client_source_dir})
-target_link_libraries(com_proxy_test com_lib iam_lib execution_lib)
-install(TARGETS com_proxy_test RUNTIME DESTINATION ${test_client_install_dir})
 
 
 # ################################CRYPTO_LIB#################################
 
-# set(crypto_source_dir "${CMAKE_SOURCE_DIR}/ara/crypto/cryp")
-# file(GLOB_RECURSE CRYPTO_LIB_SRC_FILES ${crypto_source_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
-# add_library(crypto_lib STATIC ${CRYPTO_LIB_SRC_FILES} )
-# target_link_libraries(crypto_lib cryptopp)
-# target_include_directories(crypto_lib PUBLIC  ${crypto_source_dir}/include)
-# add_executable(crypto_test ${CRYPTO_LIB_SRC_FILES})
-# target_link_libraries(crypto_test crypto_lib)
+ set(crypto_source_dir "${CMAKE_SOURCE_DIR}/ara/crypto/cryp")
+ file(GLOB_RECURSE CRYPTO_LIB_SRC_FILES ${crypto_source_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
+ add_library(crypto_lib STATIC ${CRYPTO_LIB_SRC_FILES} )
+ target_link_libraries(crypto_lib cryptopp)
+ target_include_directories(crypto_lib PUBLIC  ${crypto_source_dir}/include)
+ add_executable(crypto_test ${CRYPTO_LIB_SRC_FILES})
+ target_link_libraries(crypto_test crypto_lib)
 
 ######################### ota ##########################
 
 set(ota_source_dir "${CMAKE_SOURCE_DIR}/ara/ota/client")
 set(ota_install_dir "${CMAKE_SOURCE_DIR}/executables/ota/0.1/bin")
 add_executable(ota ${ota_source_dir}/main.cpp ) 
-target_link_libraries(ota com_lib iam_lib execution_lib cpr )
+target_link_libraries(ota com_lib iam_lib execution_lib cpr crypto_lib)
 install(TARGETS ota RUNTIME DESTINATION ${ota_install_dir})
 
-
-
-
-
-# project(sm)
-
-
-# set(source_ara_exec_dir
-#    "${CMAKE_SOURCE_DIR}/ara/exec")
-
-# set(source_ara_sm_dir
-#    "${CMAKE_SOURCE_DIR}/ara/sm")
-
-# file(GLOB_RECURSE SRC_FILES_ara_exec_C ${source_ara_exec_dir}/src/*.cpp CMAKE_CONFIGURE_DEPENDS)
-# file(GLOB_RECURSE SRC_FILES_ara_exec_h ${source_ara_exec_dir}/include/*.hpp CMAKE_CONFIGURE_DEPENDS)
-# file(GLOB_RECURSE SRC_FILES_ara_sm_C ${source_ara_sm_dir}/*.cpp CMAKE_CONFIGURE_DEPENDS)
-# file(GLOB_RECURSE SRC_FILES_ara_sm_h ${source_ara_sm_dir}/*.hpp CMAKE_CONFIGURE_DEPENDS)
-
-# list (REMOVE_ITEM SRC_FILES_ara_exec_C ${source_ara_exec_dir}/src/main.cpp)
-
-# add_library(
-#      ara_exec
-#      ${SRC_FILES_ara_exec_C}
-#      ${SRC_FILES_ara_exec_h} 
-#    )
-
-# # use SRC_FILES_ara_sm_C and SRC_FILES_ara_sm_h becouse we do not need main.c in add library
-# add_library(
-#      ara_sm
-#      ${source_ara_sm_dir}/SM.hpp
-#      ${source_ara_sm_dir}/SM.cpp
-# )
-
-# # named it from include_directories to target_include_directories also made it public 
-#  target_include_directories(ara_exec PUBLIC ${source_ara_exec_dir}/include )
-#  target_include_directories(ara_sm PUBLIC ${source_ara_sm_dir})
-
-#  ## for boost::filesystem at ara/exec
-# set(Boost_USE_STATIC_LIBS OFF)
-# set(Boost_USE_MULTITHREADED ON)
-# set(Boost_USE_STATIC_RUNTIME OFF)
-# find_package(Boost 1.50 REQUIRED COMPONENTS filesystem)
-# message(STATUS "Boost version: ${Boost_VERSION}")
-
-
-# if(NOT TARGET Boost::filesystem)
-#     add_library(Boost::filesystem IMPORTED INTERFACE)
-#     set_property(TARGET Boost::filesystem PROPERTY
-#         INTERFACE_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR})
-#     set_property(TARGET Boost::filesystem PROPERTY
-#         INTERFACE_LINK_LIBRARIES ${Boost_LIBRARIES})
-# endif()
-# ## generate exe
-
-# add_executable(sm
-#      ${SRC_FILES_ara_sm_C}
-#      ${SRC_FILES_ara_sm_h}
-#      ${SRC_FILES_ara_exec_C}
-#      ${SRC_FILES_ara_exec_h}
-#  )
-#  target_link_libraries(
-#   sm
-#   ara_sm
-#   ara_exec
-#   Boost::filesystem
-#   )
-  
