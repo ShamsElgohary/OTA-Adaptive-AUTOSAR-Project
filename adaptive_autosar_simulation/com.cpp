@@ -111,10 +111,12 @@ GUI_COMM::GUI_COMM(QWidget *parent): QWidget{parent}
     manifestLayout->addWidget(ManifestTree);
     srvcInstManifest->setLayout(manifestLayout);
     QFont font;
-    font.setPointSize(11);
+    font.setPointSize(14);
     font.setBold(true);
-    commTree->header()->setFont(font);
-    ManifestTree->header()->setFont(font);
+    //commTree->header()->setFont(font);
+    //ManifestTree->header()->setFont(font);
+    commTree->setStyleSheet("QTreeWidget { font-size: " + QString::number(font.pointSize()) + "pt; }");
+    ManifestTree->setStyleSheet("QTreeWidget { font-size: " + QString::number(font.pointSize()) + "pt; }");
     main_layout->addWidget(commBox);
     main_layout->addWidget(srvcInstManifest);
     main_box->setLayout(main_layout);
