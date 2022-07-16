@@ -169,6 +169,13 @@ void MainWindow::HideStop()
     console_text->clear();
 }
 
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+    ara::exec::ExecutionClient exec;
+    exec.ReportExecutionStaste(ara::exec::ExecutionState::Kterminate);
+    e->accept();
+}
+
 
 
 

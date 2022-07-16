@@ -255,18 +255,23 @@ void MainWindow::on_debug_button_clicked()
             this->debugging_mode=true;
             exec_tab->debugging_mode=this->debugging_mode;
             exec_tab->em_connect();
-            debug_button->setText("Load Configurations");
+            debug_button->setText("Put MachineFG In Startup");
         }
-        else if(flag==1)
+        else if(flag>=1)
         {
             QThread*th= QThread::create([this]{
             exec_tab->em_connect();
             });
             th->start();
-            debug_button->setText("Process SM Request");
+            switch (flag)
+            {
+            case 1:debug_button->setText("Run SM");
+                flag++;
+                break;
+            case 2:debug_button->setText("Process SM Request");
+                break;
+            }
         }
-
-
 }
 bool MainWindow::DirectoryExists( const char* pzPath )
 {

@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "../../utility/general.hpp"
-#include "execution_client.hpp"
 
 #include <QApplication>
 
@@ -38,3 +37,4 @@ int main(int argc, char *argv[])
     w.show();
     return a.exec();
 }
+

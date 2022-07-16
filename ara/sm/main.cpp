@@ -21,23 +21,13 @@ int main()
     ExecutionClient client{};
     client.ReportExecutionStaste(ExecutionState::Krunning);
     StateClient x;
-    // x.setState(FunctionGroupState::Preconstruct("fn1", "idle"));
-    // sleep(1);
-    // x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
-    // sleep(4);
-    // x.setState(FunctionGroupState::Preconstruct("fn1", "terminate"));
     x.setState(FunctionGroupState::Preconstruct("machineFG", "running"));
-    sleep(1);
-    cout<<"not gui up and running"<<endl;
     x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
-    cout<<"gui up and running"<<endl;
     /********Test*************/
     UpdateRequestImpl updaterequest(&logger, 1, ara::com::MethodCallProcessingMode::kEvent);
     updaterequest.log->gui_receive(&updaterequest);
     /******Offer_Service*************/
-   
     cout<<"Sm offering service"<<endl;
     updaterequest.OfferService(); 
 
-    // x.setState(FunctionGroupState::Preconstruct("fn1", "play"));
 }

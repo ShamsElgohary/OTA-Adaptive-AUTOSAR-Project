@@ -80,7 +80,7 @@ void ara::iam::GrantStorage::ParseJson(std::string filePath, simulation & sim_so
     std::ofstream json_file("iam_access.json");
     json_file << access;
     json_file.close();
-    if (SIMULATION_ACTIVE_IAM)
+    #ifdef SIMULATION_ACTIVE
     {
         char current_dir[256];
         getcwd(current_dir, 256);
@@ -88,6 +88,8 @@ void ara::iam::GrantStorage::ParseJson(std::string filePath, simulation & sim_so
         path += "/iam_access.json";
         sim_socket.send_file((char *)(path.c_str()));
     }
+     #endif
+
 }
 
 bool ara::iam::GrantStorage::SearchGrantStorage(const std::string P_name, const ara::iam::Grant &G)

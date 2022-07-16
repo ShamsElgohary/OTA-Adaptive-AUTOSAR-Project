@@ -79,18 +79,22 @@ class SWParser:
             if p:
                 for i in p:
                     name_p = i.find('.//{http://autosar.org/schema/r4.0}SHORT-NAME')
+                    IFname_p = i.find('.//{http://autosar.org/schema/r4.0}PROVIDED-INTERFACE-TREF').text.split('/')[-1]
                     temp = []
                     temp.append("P-PORT name")
                     temp.append(name_p.text)
+                    temp.append(IFname_p)
                     myMap.append(temp)
 
             R = child.findall('.//{http://autosar.org/schema/r4.0}R-PORT-PROTOTYPE')
             if R:
                 for i in R:
                     name_r = i.find('.//{http://autosar.org/schema/r4.0}SHORT-NAME')
+                    IFname_r = i.find('.//{http://autosar.org/schema/r4.0}REQUIRED-INTERFACE-TREF').text.split('/')[-1]
                     temp = []
                     temp.append("R-PORT name")
                     temp.append(name_r.text)
+                    temp.append(IFname_r)
                     myMap.append(temp)
             tempDect = []
             tempDect.append(name.text)

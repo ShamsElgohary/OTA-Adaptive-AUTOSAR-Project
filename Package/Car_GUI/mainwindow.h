@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtWidgets>
 #include "commands.h"
+#include "execution_client.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,6 +21,7 @@ public:
     void HideStart();
     void HideStop();
     ~MainWindow();
+    void closeEvent(QCloseEvent *e);
 
     QWidget *widget =new QWidget ;
     QGridLayout *main_layout = new QGridLayout;

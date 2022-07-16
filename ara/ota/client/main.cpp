@@ -328,8 +328,10 @@ public:
     {
 
         simulation s(8088);
-        s.connect_to_socket();
-        s.send_exe_name(simulation::exe_name::ota);
+        #ifdef SIMULATION_ACTIVE
+            s.connect_to_socket();
+            s.send_exe_name(simulation::exe_name::ota);
+        #endif
         while (1)
         {
             get_meta_data();
