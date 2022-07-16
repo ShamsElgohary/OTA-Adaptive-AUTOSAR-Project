@@ -177,14 +177,14 @@ namespace someip
             bool SessionTLS::SendFireAndForget(someipMessage &msg)
             {
                 msg.header.setMessageType( MessageType::REQUEST_NO_RETURN );
-                this->SendMessageAsynch(msg);
+                this->SendMessage(msg);
                 return true;
             }
 
             bool SessionTLS::SendNotification(someipMessage &msg)
             {
                 msg.header.setMessageType( MessageType::NOTIFICATION );
-                this->SendMessageAsynch(msg);
+                this->SendMessage(msg);
                 return true;
             }
 
@@ -212,15 +212,11 @@ namespace someip
                 |boost::asio::ssl::context::no_sslv2
                 | boost::asio::ssl::context::single_dh_use);
 
-            
-            // std::string serverCertificate = ;
-            // std::string serverKey = ;
-            // std::string dh = ;
-
-            //context_.set_password_callback(boost::bind(&server::get_password, this));
             ssl_context.use_certificate_chain_file(CertificateDir + "/server.crt");
             ssl_context.use_private_key_file(CertificateDir + "/server.key", boost::asio::ssl::context::pem);
             ssl_context.use_tmp_dh_file(CertificateDir + "/dh2048.pem");
+
+            SSL_CTX_set_cipher_list(ssl_context.native_handle(), "TLS_RSA_WITH_AES_128_CBC_SHA256");
         }
         
         void ServerTLS::ServerListen()

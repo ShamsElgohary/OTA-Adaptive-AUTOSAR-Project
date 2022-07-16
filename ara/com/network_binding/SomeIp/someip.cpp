@@ -196,11 +196,18 @@ namespace someip
 				<< "\n[Protocol Version] " << +msg.header.getProtocolVersion() << " [Interface Version] " << +msg.header.getInterfaceVersion()
 				<< " [Message Type] " << messageTypeString << " [Return Code] 0 \n\n"; 
 		
-		ofstream ReportAction("NetworkMessages.txt", ios_base::out | ios_base::app);
-		/* WRITE THE ACTION AND THE RESULT OF THIS ACTION */
-		ReportAction << monitor.str();
-		ReportAction.close();
-
+		try
+		{
+			ofstream ReportAction("NetworkMessages.txt" , ios_base::out | ios_base::app);
+			/* WRITE THE ACTION AND THE RESULT OF THIS ACTION */
+			ReportAction << monitor.str();
+			ReportAction.close();		
+		}
+		catch(const std::exception& e)
+		{
+			std::cout<<"[someip]" << e.what() << '\n';
+		}
+		
 	}
 
 } // Namespace someip
