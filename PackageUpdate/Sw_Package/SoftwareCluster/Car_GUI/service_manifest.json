@@ -1,0 +1,14 @@
+{
+    "ap_service_instances": {
+        "required_ap_service_instances": [],
+        "provided_ap_service_instances": [
+            {
+                "port": 2254,
+                "service_id": 3,
+                "instance_id": 1,
+                "type": "SOME/IP",
+                "ipv4": "127.0.0.1"
+            }
+        ]
+    }
+}

@@ -3,7 +3,7 @@
 #include "../../utility/general.hpp"
 #include "iostream"
 #include <QKeyEvent>
-#include "CarControlImpl.h"
+#include "CarControlImpl.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -93,7 +93,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(startengine,SIGNAL(clicked()),this,SLOT(on_startEngine_clicked()));
 
     HideStop();
-
 
 }
 
