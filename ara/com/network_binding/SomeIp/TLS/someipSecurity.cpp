@@ -301,7 +301,7 @@ namespace someip
             // "Certificates/server.crt"
             context.load_verify_file(CA);
 
-            ssl_socket.set_verify_mode(boost::asio::ssl::verify_peer);
+            ssl_socket.set_verify_mode(boost::asio::ssl::verify_peer  |  boost::asio::ssl::context::verify_fail_if_no_peer_cert);
 
             // SET CALL BACK, CALL VERIFY CERTIFICATE WHICH IS A FUNCTION OF THIS GIVING IT 2 PARAMETERS
             ssl_socket.set_verify_callback([this](bool p, boost::asio::ssl::verify_context& ctx) { return verify_certificate(p, ctx); });

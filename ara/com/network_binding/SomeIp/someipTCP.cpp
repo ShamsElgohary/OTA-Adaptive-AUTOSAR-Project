@@ -53,8 +53,7 @@ namespace someip {
 	someipMessage someipTCP::SendRequest(someipMessage &req)
 	{
 		req.header.setMessageType( MessageType::REQUEST );
-		/* Report Message Info */
-		//ReportMessageInfo(req);
+
 		/* SEND MESSAGE */
 		this->SendMessage(req);
 		/* RESPONSE */
@@ -74,8 +73,7 @@ namespace someip {
     bool someipTCP::SendResponse(someipMessage &responseMsg)
 	{
 		responseMsg.header.setMessageType( MessageType::RESPONSE );
-		/* Report Message Info */
-		//ReportMessageInfo(responseMsg);
+
 		bool operationStatus = this->SendMessage(responseMsg);
 		return operationStatus;
 	}
@@ -85,8 +83,7 @@ namespace someip {
 	bool someipTCP::SendFireAndForget(someipMessage &msg)
 	{
 		msg.header.setMessageType( MessageType::REQUEST_NO_RETURN );
-		/* Report Message Info */
-		//ReportMessageInfo(msg);
+
 		this->SendMessage(msg);
 		return true;
 	}
@@ -94,8 +91,7 @@ namespace someip {
 	bool someipTCP::SendNotification(someipMessage &msg)
 	{
 		msg.header.setMessageType( MessageType::NOTIFICATION );
-		/* Report Message Info */
-		//ReportMessageInfo(msg);
+
 		this->SendMessage(msg);
 		return true;
 	}
@@ -103,6 +99,8 @@ namespace someip {
 	/* FUNCTION TO SEND A SOME/IP MESSAGE USING TCP SYNCHRONOUS */
 	bool someipTCP::SendMessage(someipMessage &msg)
 	{
+		/* Report Message Info */
+		//ReportMessageInfo(msg);
 		try {
 			Serializer serializer;
 			std::stringstream ss;

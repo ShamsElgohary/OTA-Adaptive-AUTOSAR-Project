@@ -6,13 +6,6 @@ namespace someip
     ///////////////////////////////////  SOMEIP HEADER 	/////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-    someipHeader::someipHeader() 
-    {
-    messageID = requestID = 0;
-    returnCode = ReturnCode::E_OK;
-    messageType = MessageType::ERROR;
-    }   
-
 	someipHeader::someipHeader(MessageID messageID, RequestID requestID, InterfaceVersion interfaceVersion, 
                             MessageType messageType, ReturnCode returnCode) 
     {
@@ -42,6 +35,13 @@ namespace someip
 		this->requestID = 0;
 		this->interfaceVersion = 1;
 	}
+
+    someipHeader::someipHeader() 
+    {
+    messageID = requestID = 0;
+    returnCode = ReturnCode::E_OK;
+    messageType = MessageType::RESPONSE;
+    }   
 
     MessageID someipHeader::getMessageID() const {
 		return messageID;

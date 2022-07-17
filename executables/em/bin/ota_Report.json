@@ -1,0 +1,57 @@
+{
+	"Cluster_name" : "ota",
+	"ECU_Packages" : 
+	{
+		"Package1" : 
+		{
+			"Name" : "Car_GUI",
+			"Version" : "1.6"
+		},
+		"Package2" : 
+		{
+			"Name" : "iam",
+			"Version" : "0.1"
+		},
+		"Package3" : 
+		{
+			"Name" : "ota",
+			"Version" : "0.1"
+		},
+		"Package4" : 
+		{
+			"Name" : "sm",
+			"Version" : "0.1"
+		},
+		"Package5" : 
+		{
+			"Name" : "someip_sd",
+			"Version" : "0.1"
+		},
+		"Package6" : 
+		{
+			"Name" : "ucm",
+			"Version" : "0.1"
+		}
+	},
+	"ECU_packages_counter" : 6,
+	"Packges_2b_downloader_counter" : 0,
+	"Server_packages_counter" : 3,
+	"server_Packages" : 
+	{
+		"Package1" : 
+		{
+			"Name" : "Car_GUI",
+			"Version" : "1.5"
+		},
+		"Package2" : 
+		{
+			"Name" : "Car_GUI",
+			"Version" : "0.2"
+		},
+		"Package3" : 
+		{
+			"Name" : "Car_GUI",
+			"Version" : "1.6"
+		}
+	}
+}

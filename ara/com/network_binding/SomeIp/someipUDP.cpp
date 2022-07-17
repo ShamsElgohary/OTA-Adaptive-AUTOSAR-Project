@@ -49,8 +49,7 @@ namespace someip{
 	someipMessage someipUDP::SendRequest(someipMessage &req)
 	{
 		req.header.setMessageType( MessageType::REQUEST );
-		/* Report Message Info */
-		//ReportMessageInfo(req);
+
 		/* SEND MESSAGE */
 		this->SendMessage(req);
 		/* RESPONSE */
@@ -70,8 +69,7 @@ namespace someip{
     bool someipUDP::SendResponse(someipMessage &responseMsg)
 	{
 		responseMsg.header.setMessageType( MessageType::RESPONSE );
-		/* Report Message Info */
-		//ReportMessageInfo(responseMsg);
+
 		bool operationStatus = this->SendMessage(responseMsg);
 		return operationStatus;
 	}
@@ -80,8 +78,7 @@ namespace someip{
 	bool someipUDP::SendFireAndForget(someipMessage &msg)
 	{
 		msg.header.setMessageType( MessageType::REQUEST_NO_RETURN );
-		/* Report Message Info */
-		//ReportMessageInfo(msg);
+
 		this->SendMessage(msg);
 		return true;
 	}
@@ -89,8 +86,7 @@ namespace someip{
 	bool someipUDP::SendNotification(someipMessage &msg)
 	{
 		msg.header.setMessageType( MessageType::NOTIFICATION );
-		/* Report Message Info */
-		//ReportMessageInfo(msg);
+
 		this->SendMessage(msg);
 		return true;
 	}
@@ -98,6 +94,9 @@ namespace someip{
 	/* FUNCTION TO SEND A SOMEIP MESSAGE USING UDP */
 	bool someipUDP::SendMessage(someipMessage &msg)
 	{
+		/* Report Message Info */
+		//ReportMessageInfo(msg);
+
 		try {
 			// RECEIVER ENDPOINT
 			Serializer serializer;

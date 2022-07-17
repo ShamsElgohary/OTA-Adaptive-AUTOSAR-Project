@@ -1,0 +1,19 @@
+{
+	"Cluster_name" : "sm",
+	"sm_json" : 
+	{
+		"UpdateRequest" : 
+		{
+			"PrepareUpdate" : false,
+			"StartUpdateSession" : false,
+			"StopUpdateSession" : true,
+			"VerifyUpdate" : false
+		},
+		"function_group_states" : 
+		{
+			"fn1" : "verify",
+			"fn2" : "run",
+			"machineFG" : "running"
+		}
+	}
+}
