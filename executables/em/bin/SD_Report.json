@@ -28,6 +28,18 @@
 				"Service ID" : 1,
 				"Type" : "offer service",
 				"ttl" : 16777215
+			},
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Interface Version" : 1,
+				"Message ID" : 4294934784,
+				"Message Type" : "NOTIFICATION",
+				"Port Number" : 2254,
+				"Protocol Version" : 1,
+				"Service ID" : 3,
+				"Type" : "offer service",
+				"ttl" : 16777215
 			}
 		],
 		"ServiceInfoMap" : 
@@ -43,6 +55,12 @@
 				"Instance ID" : 1,
 				"Port Number" : 2522,
 				"Service ID" : 1
+			},
+			{
+				"IP" : "127.0.0.1 ",
+				"Instance ID" : 1,
+				"Port Number" : 2254,
+				"Service ID" : 3
 			}
 		]
 	}

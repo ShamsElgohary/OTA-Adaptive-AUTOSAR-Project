@@ -25,7 +25,8 @@ set(PROJECT_SOURCES
         ../../SecureOTA_System_Configurations/GeneratedFiles/CarControlSkeleton.hpp
         ../../SecureOTA_System_Configurations/GeneratedFiles/types.hpp
         ../../utility/serialization/serialization_simple.hpp
-        CarControlImpl.h
+        CarControlImpl.hpp
+        CarControlImpl.cpp
 )
 ###############################EM_LIB###############################
 

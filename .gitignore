@@ -1,6 +1,6 @@
 build*
 utility/general.hpp
-Package*
-PackageUpdate*
+Package/build*
+PackageUpdate/build*
 adaptive_autosar_simulation*
 utility/general.hpp
